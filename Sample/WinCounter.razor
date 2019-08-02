@@ -1,0 +1,11 @@
+﻿@using BlinForms.Framework.Controls
+<Button Top="50" Text="@("Click " + count)" OnClick="@IncrementCount" />
+
+@code {
+    int count = 0;
+
+    void IncrementCount()
+    {
+        count++;
+    }
+}
