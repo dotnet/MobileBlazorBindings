@@ -23,7 +23,7 @@ namespace BlinForms.Framework
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
 
-        public Task AddComponent<T>() where T: IComponent
+        public Task AddComponent<T>() where T : IComponent
         {
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);

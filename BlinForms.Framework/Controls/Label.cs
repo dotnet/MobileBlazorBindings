@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using System;
 
 namespace BlinForms.Framework.Controls
 {
@@ -21,7 +22,6 @@ namespace BlinForms.Framework.Controls
         {
             public BlazorLabel()
             {
-                Width = 200;
             }
 
             public void ApplyAttribute(ref RenderTreeFrame attribute)
