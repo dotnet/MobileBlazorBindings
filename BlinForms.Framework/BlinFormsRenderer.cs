@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -11,7 +12,7 @@ namespace BlinForms.Framework
 {
     public class BlinFormsRenderer : Renderer
     {
-        private Dictionary<int, Blontrol> _componentIdToControl = new Dictionary<int, Blontrol>();
+        private Dictionary<int, Blontrol> _componentIdToControl = new Dictionary<int, Blontrol>(); // TODO: Map to Control
 
         public BlinFormsRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider, new LoggerFactory())
@@ -27,7 +28,11 @@ namespace BlinForms.Framework
         {
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
-            var control = _componentIdToControl[componentId] = new Blontrol(this);
+            var control = _componentIdToControl[componentId] =
+                new Blontrol(this)
+                {
+                    Size = new Size(500, 500),
+                };
             RootForm.Controls.Add(control);
             return RenderRootComponentAsync(componentId);
         }

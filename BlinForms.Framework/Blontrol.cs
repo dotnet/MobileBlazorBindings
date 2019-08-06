@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using BlinForms.Framework.Controls;
 using BlinForms.Framework.Elements;
@@ -18,8 +19,6 @@ namespace BlinForms.Framework
         public Blontrol(BlinFormsRenderer renderer)
         {
             _renderer = renderer;
-            Width = 500;
-            Height = 500;
         }
 
         internal void ApplyEdits(ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames)
@@ -34,10 +33,18 @@ namespace BlinForms.Framework
                     case RenderTreeEditType.SetAttribute:
                         ApplySetAttribute(edit.SiblingIndex, ref referenceFrames.Array[edit.ReferenceFrameIndex]);
                         break;
+                    case RenderTreeEditType.RemoveFrame:
+                        ApplyRemoveFrame(edit.SiblingIndex);
+                        break;
                     default:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                 }
             }
+        }
+
+        private void ApplyRemoveFrame(int siblingIndex)
+        {
+            //Controls.RemoveAt(siblingIndex);
         }
 
         private void ApplySetAttribute(int siblingIndex, ref RenderTreeFrame attributeFrame)
@@ -51,11 +58,21 @@ namespace BlinForms.Framework
             ref var frame = ref frames[frameIndex];
             switch (frame.FrameType)
             {
-                case RenderTreeFrameType.Element:
-                    var elementControl = (Control)CreateNativeControlForElement(frames, frameIndex);
-                    AddChildControl(siblingIndex, elementControl);
+                case RenderTreeFrameType.Element: // ... then this gets called to create the native component
+                    var element = CreateNativeControlForElement(frames, frameIndex);
+
+                    // Ignoring non-controls, such as Timer Component
+
+                    if (element is Control elementControl)
+                    {
+                        AddChildControl(siblingIndex, elementControl);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
+                    }
                     break;
-                case RenderTreeFrameType.Component:
+                case RenderTreeFrameType.Component: // ... first a bunch of these get created for each "thing"
                     {
                         var childControl = _renderer.CreateControlForChildComponent(frame.ComponentId);
                         AddChildControl(siblingIndex, childControl);
@@ -67,6 +84,12 @@ namespace BlinForms.Framework
                         throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                     }
                     break;
+                case RenderTreeFrameType.Text:
+                    if (!string.IsNullOrWhiteSpace(frame.TextContent))
+                    {
+                        throw new NotImplementedException("Nonempty text: " + frame.TextContent);
+                    }
+                    break;
                 default:
                     throw new NotImplementedException($"Not supported frame type: {frame.FrameType}");
             }
@@ -75,6 +98,8 @@ namespace BlinForms.Framework
         private void AddChildControl(int siblingIndex, Control childControl)
         {
             Controls.Add(childControl);
+ 
+            // TODO: _childControls is never read from... only added to...
             if (siblingIndex < _childControls.Count)
             {
                 _childControls.Insert(siblingIndex, childControl);

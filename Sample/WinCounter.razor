@@ -1,11 +1,39 @@
 ﻿@using BlinForms.Framework.Controls
-<Button Top="50" Text="@("Click " + count)" OnClick="@IncrementCount" />
+
+<Button Top="50" Width="300" Text="@("Increment: " + count)" OnClick="@IncrementCount" />
+
+<Label Top="100" Width="200" Text="@("I'm a label: " + labelCount)"></Label>
+<Timer OnTick="@OnTimerTick" />
+
+<Button Top="200" Width="400" Text="@($"Toggle visible (visible={isDetailsVisible})")" OnClick="@ToggleVisible" />
+
+@if (isDetailsVisible)
+{
+    <Label Top="250" Width="200" Text="I am visible!"></Label>
+}
+else
+{
+    <Label Top="300" Width="200" Text="Not visible..."></Label>
+}
 
 @code {
     int count = 0;
+    int labelCount = 0;
+
+    bool isDetailsVisible;
 
     void IncrementCount()
     {
         count++;
+    }
+
+    void ToggleVisible()
+    {
+        isDetailsVisible = !isDetailsVisible;
+    }
+
+    void OnTimerTick()
+    {
+        labelCount += 10;
     }
 }

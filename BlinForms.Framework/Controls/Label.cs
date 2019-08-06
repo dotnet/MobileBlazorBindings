@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Drawing;
 
 namespace BlinForms.Framework.Controls
 {
@@ -22,6 +23,30 @@ namespace BlinForms.Framework.Controls
         {
             public BlazorLabel()
             {
+            }
+
+            protected override void OnParentChanged(EventArgs e)
+            {
+                base.OnParentChanged(e);
+
+                if (Parent != null)
+                {
+                    Parent.Location = Location;
+                    Location = Point.Empty;
+                    Parent.Size = Size;
+                }
+            }
+
+            protected override void OnSizeChanged(EventArgs e)
+            {
+                base.OnSizeChanged(e);
+
+                if (Parent != null)
+                {
+                    Parent.Location = Location;
+                    Location = Point.Empty;
+                    Parent.Size = Size;
+                }
             }
 
             public void ApplyAttribute(ref RenderTreeFrame attribute)

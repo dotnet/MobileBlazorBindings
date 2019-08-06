@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
@@ -33,6 +34,30 @@ namespace BlinForms.Framework.Controls
                         renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs());
                     }
                 };
+            }
+
+            protected override void OnParentChanged(EventArgs e)
+            {
+                base.OnParentChanged(e);    
+
+                if (Parent != null)
+                {
+                    Parent.Location = Location;
+                    Location = Point.Empty;
+                    Parent.Size = Size;
+                }
+            }
+
+            protected override void OnSizeChanged(EventArgs e)
+            {
+                base.OnSizeChanged(e);
+
+                if (Parent != null)
+                {
+                    Parent.Location = Location;
+                    Location = Point.Empty;
+                    Parent.Size = Size;
+                }
             }
 
             public void ApplyAttribute(ref RenderTreeFrame attribute)
