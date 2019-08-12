@@ -30,29 +30,29 @@ namespace BlinForms.Framework.Controls
         {
         }
 
-        public static void ApplyAttribute(Control control, ref RenderTreeFrame attributeFrame)
+        public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            switch (attributeFrame.AttributeName)
+            switch (attributeName)
             {
                 // TODO: Fix not setting default values for types. Maybe use nullable types on components?
                 case nameof(Top):
-                    if ((attributeFrame.AttributeValue as string) != "0")
-                        control.Top = int.Parse((string)attributeFrame.AttributeValue);
+                    if ((attributeValue as string) != "0")
+                        control.Top = int.Parse((string)attributeValue);
                     break;
                 case nameof(Left):
-                    if ((attributeFrame.AttributeValue as string) != "0")
-                        control.Left = int.Parse((string)attributeFrame.AttributeValue);
+                    if ((attributeValue as string) != "0")
+                        control.Left = int.Parse((string)attributeValue);
                     break;
                 case nameof(Width):
-                    if ((attributeFrame.AttributeValue as string) != "0")
-                        control.Width = int.Parse((string)attributeFrame.AttributeValue);
+                    if ((attributeValue as string) != "0")
+                        control.Width = int.Parse((string)attributeValue);
                     break;
                 case nameof(Height):
-                    if ((attributeFrame.AttributeValue as string) != "0")
-                        control.Height = int.Parse((string)attributeFrame.AttributeValue);
+                    if ((attributeValue as string) != "0")
+                        control.Height = int.Parse((string)attributeValue);
                     break;
                 default:
-                    throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeFrame.AttributeName}'");
+                    throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");
             }
         }
     }

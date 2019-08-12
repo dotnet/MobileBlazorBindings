@@ -4,6 +4,6 @@ namespace BlinForms.Framework.Controls
 {
     internal interface IBlazorNativeControl
     {
-        void ApplyAttribute(ref RenderTreeFrame attribute);
+        void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
     }
 }

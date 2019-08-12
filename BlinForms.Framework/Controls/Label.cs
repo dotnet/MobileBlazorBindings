@@ -23,15 +23,15 @@ namespace BlinForms.Framework.Controls
             {
             }
 
-            public void ApplyAttribute(ref RenderTreeFrame attribute)
+            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                switch (attribute.AttributeName)
+                switch (attributeName)
                 {
                     case nameof(Text):
-                        Text = (string)attribute.AttributeValue;
+                        Text = (string)attributeValue;
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, ref attribute);
+                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

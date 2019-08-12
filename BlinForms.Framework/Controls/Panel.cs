@@ -32,21 +32,21 @@ namespace BlinForms.Framework.Controls
             {
             }
 
-            public void ApplyAttribute(ref RenderTreeFrame attribute)
+            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                switch (attribute.AttributeName)
+                switch (attributeName)
                 {
                     case nameof(Visible):
-                        Visible = (bool)attribute.AttributeValue;
+                        Visible = (bool)attributeValue;
                         break;
                     case nameof(BackColor):
-                        BackColor = Color.FromArgb(argb: (int)attribute.AttributeValue);
+                        BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
                         break;
                     //case "onclick":
-                    //    ClickEventHandlerId = attribute.AttributeEventHandlerId;
+                    //    ClickEventHandlerId = attributeEventHandlerId;
                     //    break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, ref attribute);
+                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

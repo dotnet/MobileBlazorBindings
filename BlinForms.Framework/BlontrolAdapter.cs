@@ -65,8 +65,9 @@ namespace BlinForms.Framework
 
         private void ApplySetAttribute(int siblingIndex, ref RenderTreeFrame attributeFrame)
         {
-            //var target = (IBlazorNativeControl)Controls[siblingIndex];
-            //target.ApplyAttribute(ref attributeFrame);
+            // TODO: What to do with siblingIndex here?
+            var mapper = GetControlPropertyMapper(TargetControl);
+            mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
 
         private void ApplyPrependFrame(int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
@@ -136,9 +137,8 @@ namespace BlinForms.Framework
             foreach (var attribute in AttributeUtil.ElementAttributeFrames(frames, frameIndex))
             {
                 // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
-                var attributeCopy = attribute;
                 var mapper = GetControlPropertyMapper(nativeControl);
-                mapper.SetControlProperty(attributeCopy.AttributeEventHandlerId, attributeCopy.AttributeName, attributeCopy.AttributeValue, attributeCopy.AttributeEventUpdatesAttributeName);
+                mapper.SetControlProperty(attribute.AttributeEventHandlerId, attribute.AttributeName, attribute.AttributeValue, attribute.AttributeEventUpdatesAttributeName);
             }
 
             return nativeControl;
