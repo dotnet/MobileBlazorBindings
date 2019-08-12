@@ -20,15 +20,21 @@ namespace BlinForms.Framework.Controls
             builder.AddAttribute(200, nameof(Left), Left);
             builder.AddAttribute(300, nameof(Width), Width);
             builder.AddAttribute(400, nameof(Height), Height);
+            RenderContents(builder);
             builder.CloseElement();
         }
 
         protected abstract void RenderAttributes(RenderTreeBuilder builder);
 
+        protected virtual void RenderContents(RenderTreeBuilder builder)
+        {
+        }
+
         public static void ApplyAttribute(Control control, ref RenderTreeFrame attributeFrame)
         {
             switch (attributeFrame.AttributeName)
             {
+                // TODO: Fix not setting default values for types. Maybe use nullable types on components?
                 case nameof(Top):
                     if ((attributeFrame.AttributeValue as string) != "0")
                         control.Top = int.Parse((string)attributeFrame.AttributeValue);

@@ -1,19 +1,23 @@
 ﻿@using BlinForms.Framework.Controls
+@using System.Drawing
 
-<Button Top="50" Width="300" Text="@("Increment: " + count)" OnClick="@IncrementCount" />
+<Button Top="50" Width="300" Text="@("Increment: " + count)" Height="20" OnClick="@IncrementCount" />
 
-<Label Top="100" Width="200" Text="@("I'm a label: " + labelCount)"></Label>
-<Timer OnTick="@OnTimerTick" />
+<Panel Visible="true" BackColor="Color.Red" Top="300" Left="300" Width="300" Height="50">
+</Panel>
 
-<Button Top="200" Width="400" Text="@($"Toggle visible (visible={isDetailsVisible})")" OnClick="@ToggleVisible" />
+<Label Top="100" Width="200" Height="20" Text="@("I'm a label: " + labelCount)"></Label>
+@*<Timer OnTick="@OnTimerTick" />*@
+
+<Button Top="200" Width="400" Height="20" Text="@($"Toggle visible (visible={isDetailsVisible})")" OnClick="@ToggleVisible" />
 
 @if (isDetailsVisible)
 {
-    <Label Top="250" Width="200" Text="I am visible!"></Label>
+    <Label Top="250" Width="200" Height="20" Text="I am visible!"></Label>
 }
 else
 {
-    <Label Top="300" Width="200" Text="Not visible..."></Label>
+    <Label Top="300" Width="200" Height="20" Text="Not visible..."></Label>
 }
 
 @code {

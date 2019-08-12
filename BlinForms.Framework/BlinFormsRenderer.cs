@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +11,7 @@ namespace BlinForms.Framework
 {
     public class BlinFormsRenderer : Renderer
     {
-        private Dictionary<int, Blontrol> _componentIdToControl = new Dictionary<int, Blontrol>(); // TODO: Map to Control
+        private Dictionary<int, BlontrolAdapter> _componentIdToAdapter = new Dictionary<int, BlontrolAdapter>();
 
         public BlinFormsRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider, new LoggerFactory())
@@ -28,12 +27,20 @@ namespace BlinForms.Framework
         {
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
-            var control = _componentIdToControl[componentId] =
-                new Blontrol(this)
+            var adapter = _componentIdToAdapter[componentId] =
+                new BlontrolAdapter(this)
                 {
-                    Size = new Size(500, 500),
+                    Name = "Root BlontrolAdapter",
+                    // TODO: Might actually want to keep this dummy control so that Blinforms can be an island in a form. But, need
+                    // to figure out its default size etc. Perhaps top-level Razor class implements ITopLevel{FormSettings} interface
+                    // to control 'container Form' options?
+                    TargetControl = new Control()
+                    {
+                        Width = 500,
+                        Height = 500,
+                    },
                 };
-            RootForm.Controls.Add(control);
+            RootForm.Controls.Add(adapter.TargetControl);
             return RenderRootComponentAsync(componentId);
         }
 
@@ -46,17 +53,17 @@ namespace BlinForms.Framework
         {
             foreach (var updatedComponent in renderBatch.UpdatedComponents.Array.Take(renderBatch.UpdatedComponents.Count))
             {
-                var control = _componentIdToControl[updatedComponent.ComponentId];
-                control.ApplyEdits(updatedComponent.Edits, renderBatch.ReferenceFrames);
+                var adapter = _componentIdToAdapter[updatedComponent.ComponentId];
+                adapter.ApplyEdits(updatedComponent.Edits, renderBatch.ReferenceFrames);
             }
 
             return Task.CompletedTask;
         }
 
-        internal Blontrol CreateControlForChildComponent(int componentId)
+        internal BlontrolAdapter CreateAdapterForChildComponent(int componentId)
         {
-            var result = new Blontrol(this);
-            _componentIdToControl[componentId] = result;
+            var result = new BlontrolAdapter(this);
+            _componentIdToAdapter[componentId] = result;
             return result;
         }
     }
