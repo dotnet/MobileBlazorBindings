@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -12,6 +13,9 @@ namespace BlinForms.Framework.Controls
         [Parameter] public int Width { get; set; }
         [Parameter] public int Height { get; set; }
 
+        [Parameter] public bool Visible { get; set; }
+        [Parameter] public Color BackColor { get; set; }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             builder.OpenElement(0, GetType().FullName);
@@ -20,6 +24,8 @@ namespace BlinForms.Framework.Controls
             builder.AddAttribute(101, nameof(Left), Left);
             builder.AddAttribute(102, nameof(Width), Width);
             builder.AddAttribute(103, nameof(Height), Height);
+            builder.AddAttribute(104, nameof(Visible), Visible);
+            builder.AddAttribute(105, nameof(BackColor), BackColor.ToArgb());
             RenderContents(builder);
             builder.CloseElement();
         }
@@ -50,6 +56,12 @@ namespace BlinForms.Framework.Controls
                 case nameof(Height):
                     if ((attributeValue as string) != "0")
                         control.Height = int.Parse((string)attributeValue);
+                    break;
+                case nameof(Visible):
+                    control.Visible = (bool)attributeValue;
+                    break;
+                case nameof(BackColor):
+                    control.BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
                     break;
                 default:
                     throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");

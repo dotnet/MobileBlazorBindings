@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
@@ -12,13 +11,9 @@ namespace BlinForms.Framework.Controls
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
-        [Parameter] public bool Visible { get; set; }
-        [Parameter] public Color BackColor { get; set; }
 
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
-            builder.AddAttribute(1, nameof(Visible), Visible);
-            builder.AddAttribute(2, nameof(BackColor), BackColor.ToArgb());
         }
 
         protected override void RenderContents(RenderTreeBuilder builder)
@@ -36,12 +31,6 @@ namespace BlinForms.Framework.Controls
             {
                 switch (attributeName)
                 {
-                    case nameof(Visible):
-                        Visible = (bool)attributeValue;
-                        break;
-                    case nameof(BackColor):
-                        BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
-                        break;
                     //case "onclick":
                     //    ClickEventHandlerId = attributeEventHandlerId;
                     //    break;
