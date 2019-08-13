@@ -17,9 +17,9 @@ namespace BlinForms.Framework.Controls
             builder.OpenElement(0, GetType().FullName);
             RenderAttributes(builder);
             builder.AddAttribute(100, nameof(Top), Top);
-            builder.AddAttribute(200, nameof(Left), Left);
-            builder.AddAttribute(300, nameof(Width), Width);
-            builder.AddAttribute(400, nameof(Height), Height);
+            builder.AddAttribute(101, nameof(Left), Left);
+            builder.AddAttribute(102, nameof(Width), Width);
+            builder.AddAttribute(103, nameof(Height), Height);
             RenderContents(builder);
             builder.CloseElement();
         }

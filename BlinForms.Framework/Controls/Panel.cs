@@ -23,7 +23,7 @@ namespace BlinForms.Framework.Controls
 
         protected override void RenderContents(RenderTreeBuilder builder)
         {
-            builder.AddContent(999999, ChildContent);
+            builder.AddContent(1000, ChildContent);
         }
 
         class BlazorPanel : System.Windows.Forms.Panel, IBlazorNativeControl
