@@ -22,7 +22,7 @@ namespace BlinForms.Framework
         public BlontrolAdapter Parent { get; set; }
         public List<BlontrolAdapter> Children { get; } = new List<BlontrolAdapter>();
 
-        // TODO: Is this the right concept? A component might have multiple WinForms controls created?
+        // TODO: Is this the right concept? Can a component have multiple WinForms controls created?
         public Control TargetControl { get; set; }
 
         public BlinFormsRenderer Renderer { get; private set; }
@@ -60,12 +60,20 @@ namespace BlinForms.Framework
 
         private void ApplyRemoveFrame(int siblingIndex)
         {
-            //Controls.RemoveAt(siblingIndex);
+            var childToRemove = Children[siblingIndex];
+
+            // If there's a target control for the child adapter, remove it from the live control tree.
+            // Not all adapters have target controls; Adapters for markup/text have no associated native control.
+            if (childToRemove.TargetControl != null)
+            {
+                TargetControl.Controls.Remove(childToRemove.TargetControl);
+            }
+            Children.RemoveAt(siblingIndex);
         }
 
         private void ApplySetAttribute(int siblingIndex, ref RenderTreeFrame attributeFrame)
         {
-            // TODO: What to do with siblingIndex here?
+            // TODO: What to do with siblingIndex here? So far always seems to be 0
             var mapper = GetControlPropertyMapper(TargetControl);
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
@@ -112,6 +120,7 @@ namespace BlinForms.Framework
                         {
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
+                        Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy markup, sib#={siblingIndex}" });
                         break;
                     }
                 case RenderTreeFrameType.Text:
@@ -121,6 +130,7 @@ namespace BlinForms.Framework
                         {
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
+                        Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy text, sib#={siblingIndex}" });
                         break;
                     }
                 default:
@@ -147,6 +157,10 @@ namespace BlinForms.Framework
         private void AddChildAdapter(int siblingIndex, BlontrolAdapter childAdapter)
         {
             childAdapter.Parent = this;
+
+            // TODO: Maybe tag each adapter with the "expected" siblingIndex so that later we can use that to
+            // map which sibling is where during inserts, etc. Right now this is handled by having dummy adapters
+            // in the tree so that the index locations match between Blazor and the adapter tree.
 
             if (siblingIndex < Children.Count)
             {

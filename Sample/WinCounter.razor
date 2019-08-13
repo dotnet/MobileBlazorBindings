@@ -9,29 +9,29 @@
 <Label Top="100" Width="200" Height="20" Text="@("I'm a label: " + labelCount)"></Label>
 @*<Timer OnTick="@OnTimerTick" />*@
 
-<Button Top="200" Width="400" Height="20" Text="@($"Toggle visible (visible={isDetailsVisible})")" OnClick="@ToggleVisible" />
+<Button Top="200" Width="400" Height="20" Text="@($"Show details... (visible={isDetailsVisible})")" OnClick="@ToggleDetailsVisible" />
 
 @if (isDetailsVisible)
 {
-    <Label Top="250" Width="200" Height="20" Text="I am visible!"></Label>
+    <Label Top="250" Width="200" Height="20" Text="Details visible.."></Label>
 }
 else
 {
-    <Label Top="300" Width="200" Height="20" Text="Not visible..."></Label>
+    <Label Top="300" Width="200" Height="20" Text="Details NOT visible..."></Label>
 }
 
 @code {
     int count = 0;
     int labelCount = 0;
 
-    bool isDetailsVisible;
+    bool isDetailsVisible = true;
 
     void IncrementCount()
     {
         count++;
     }
 
-    void ToggleVisible()
+    void ToggleDetailsVisible()
     {
         isDetailsVisible = !isDetailsVisible;
     }
