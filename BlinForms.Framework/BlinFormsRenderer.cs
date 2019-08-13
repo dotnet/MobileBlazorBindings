@@ -11,7 +11,7 @@ namespace BlinForms.Framework
 {
     public class BlinFormsRenderer : Renderer
     {
-        private Dictionary<int, BlontrolAdapter> _componentIdToAdapter = new Dictionary<int, BlontrolAdapter>();
+        private readonly Dictionary<int, BlontrolAdapter> _componentIdToAdapter = new Dictionary<int, BlontrolAdapter>();
 
         public BlinFormsRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider, new LoggerFactory())
