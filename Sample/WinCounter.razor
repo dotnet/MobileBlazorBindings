@@ -1,8 +1,10 @@
 ﻿@using BlinForms.Framework.Controls
 @using System.Drawing
 
-<Panel Visible="true" BackColor="Color.Red" Top="300" Left="300" Width="300" Height="100">
+<Panel Visible="true" BackColor="Color.Red" Top="200" Left="300" Width="300" Height="200" Anchor="@(System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)">
     <Label Top="50" Left="10" Width="150" Height="23" BackColor="Color.Yellow" Text="This label is nested"></Label>
+
+    <TextBox Top="75" Left="20" Height="100" Width="150" Text="Heeeeeeey" Multiline="true" ScrollBars="System.Windows.Forms.ScrollBars.Vertical"></TextBox>
 </Panel>
 
 
@@ -13,15 +15,15 @@
 <Label Top="100" Width="200" Height="23" BackColor="Color.AliceBlue" Text="@("I'm a label: " + labelCount)"></Label>
 
 
-<Button Top="200" Width="400" Height="23" BackColor="Color.Orange" Text="@($"Show details... (visible={isDetailsVisible})")" OnClick="@ToggleDetailsVisible" />
+<Button Top="200" Width="250" Height="23" BackColor="Color.Orange" Text="@($"Show details... (visible={isDetailsVisible})")" OnClick="@ToggleDetailsVisible" />
 
 @if (isDetailsVisible)
 {
-    <Label Top="250" Width="200" Height="23" BackColor="Color.Cyan" Text="Details visible.."></Label>
+    <Label Top="250" Width="200" Height="23" Text="Details visible.."></Label>
 }
 else
 {
-    <Label Top="300" Width="200" Height="23" BackColor="Color.Magenta" Text="Details NOT visible..."></Label>
+    <Label Top="300" Width="200" Height="23" Text="Details NOT visible..."></Label>
 }
 
 @code {

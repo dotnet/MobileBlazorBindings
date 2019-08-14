@@ -13,8 +13,12 @@ namespace BlinForms.Framework.Controls
         [Parameter] public int Width { get; set; }
         [Parameter] public int Height { get; set; }
 
+        [Parameter] public int TabIndex { get; set; }
+
         [Parameter] public bool Visible { get; set; }
         [Parameter] public Color BackColor { get; set; }
+
+        [Parameter] public AnchorStyles Anchor { get; set; }
 
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
@@ -26,6 +30,8 @@ namespace BlinForms.Framework.Controls
             builder.AddAttribute(103, nameof(Height), Height);
             builder.AddAttribute(104, nameof(Visible), Visible);
             builder.AddAttribute(105, nameof(BackColor), BackColor.ToArgb());
+            builder.AddAttribute(106, nameof(TabIndex), TabIndex);
+            builder.AddAttribute(107, nameof(Anchor), (int)Anchor);
             RenderContents(builder);
             builder.CloseElement();
         }
@@ -63,7 +69,16 @@ namespace BlinForms.Framework.Controls
                     control.Visible = (bool)attributeValue;
                     break;
                 case nameof(BackColor):
-                    control.BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
+                    if ((attributeValue as string) != "0")
+                        control.BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
+                    break;
+                case nameof(TabIndex):
+                    if ((attributeValue as string) != "0")
+                        control.TabIndex = int.Parse((string)attributeValue);
+                    break;
+                case nameof(Anchor):
+                    if ((attributeValue as string) != "0")
+                        control.Anchor = (AnchorStyles)int.Parse((string)attributeValue);
                     break;
                 default:
                     throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");
