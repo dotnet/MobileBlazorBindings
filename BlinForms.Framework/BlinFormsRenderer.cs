@@ -36,8 +36,7 @@ namespace BlinForms.Framework
                     // to control 'container Form' options?
                     TargetControl = new Control()
                     {
-                        Width = 500,
-                        Height = 500,
+                        Dock = DockStyle.Fill,
                     },
                 };
             RootForm.Controls.Add(adapter.TargetControl);
