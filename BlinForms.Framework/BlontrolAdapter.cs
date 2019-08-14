@@ -1,4 +1,4 @@
-﻿using BlinForms.Framework.Elements;
+﻿using BlinForms.Framework.Controls;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
@@ -85,25 +85,7 @@ namespace BlinForms.Framework
             {
                 case RenderTreeFrameType.Element:
                     {
-                        // Elements represent Winforms native controls
-                        var element = CreateNativeControlForElement(frames, frameIndex);
-                        TargetControl = element;
-
-                        // Add the new nataive control to the parent's child controls (the parent adapter is our
-                        // container, so the parent adapter's control is our control's container.
-                        // TODO: What about siblingIndex?
-                        Parent.TargetControl.Controls.Add(TargetControl);
-
-                        //// Ignoring non-controls, such as Timer Component
-
-                        //if (element is Control elementControl)
-                        //{
-                        //    AddChildControl(siblingIndex, elementControl);
-                        //}
-                        //else
-                        //{
-                        //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
-                        //}
+                        InsertElement(siblingIndex, frames, frameIndex);
                         break;
                     }
                 case RenderTreeFrameType.Component:
@@ -138,29 +120,51 @@ namespace BlinForms.Framework
             }
         }
 
-        private Control CreateNativeControlForElement(RenderTreeFrame[] frames, int frameIndex)
+        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
         {
+            // Elements represent Winforms native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var nativeControl = KnownElements[elementName](Renderer);
 
-            foreach (var attribute in AttributeUtil.ElementAttributeFrames(frames, frameIndex))
+            var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
+            for (var attributeIndex = frameIndex + 1; attributeIndex < endIndexExcl; attributeIndex++)
             {
-                // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
-                var mapper = GetControlPropertyMapper(nativeControl);
-                mapper.SetControlProperty(attribute.AttributeEventHandlerId, attribute.AttributeName, attribute.AttributeValue, attribute.AttributeEventUpdatesAttributeName);
+                var candidateFrame = frames[attributeIndex];
+                if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
+                {
+                    // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
+                    var mapper = GetControlPropertyMapper(nativeControl);
+                    mapper.SetControlProperty(candidateFrame.AttributeEventHandlerId, candidateFrame.AttributeName, candidateFrame.AttributeValue, candidateFrame.AttributeEventUpdatesAttributeName);
+                }
+                else
+                {
+                    // TODO: Do recursive thing
+                    break;
+                }
             }
 
-            return nativeControl;
+            TargetControl = nativeControl;
+
+            // Add the new native control to the parent's child controls (the parent adapter is our
+            // container, so the parent adapter's control is our control's container.
+            AddChildControl(siblingIndex, TargetControl);
+
+            //// Ignoring non-controls, such as Timer Component
+
+            //if (element is Control elementControl)
+            //{
+            //    AddChildControl(siblingIndex, elementControl);
+            //}
+            //else
+            //{
+            //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
+            //}
         }
 
         private void AddChildAdapter(int siblingIndex, BlontrolAdapter childAdapter)
         {
             childAdapter.Parent = this;
-
-            // TODO: Maybe tag each adapter with the "expected" siblingIndex so that later we can use that to
-            // map which sibling is where during inserts, etc. Right now this is handled by having dummy adapters
-            // in the tree so that the index locations match between Blazor and the adapter tree.
 
             if (siblingIndex < Children.Count)
             {
@@ -172,10 +176,32 @@ namespace BlinForms.Framework
             }
         }
 
+        private void AddChildControl(int siblingIndex, Control childControl)
+        {
+            if (siblingIndex < Parent.TargetControl.Controls.Count)
+            {
+                // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
+                // and then re-order the collection to move the control to the correct index.
+                Parent.TargetControl.Controls.Add(childControl);
+                Parent.TargetControl.Controls.SetChildIndex(childControl, siblingIndex);
+            }
+            else
+            {
+                Parent.TargetControl.Controls.Add(childControl);
+            }
+        }
+
         private static IControlPropertyMapper GetControlPropertyMapper(Control control)
         {
             // TODO: Have control-specific ones, but also need a general one for custom controls? Or maybe not needed?
-            return new ReflectionControlPropertyMapper(control);
+            if (control is IBlazorNativeControl nativeControl)
+            {
+                return new NativeControlPropertyMapper(nativeControl);
+            }
+            else
+            {
+                return new ReflectionControlPropertyMapper(control);
+            }
         }
     }
 }
