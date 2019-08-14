@@ -1,23 +1,27 @@
 ﻿@using BlinForms.Framework.Controls
 @using System.Drawing
 
-<Button Top="50" Width="300" Text="@("Increment: " + count)" Height="20" OnClick="@IncrementCount" />
-
-<Panel Visible="true" BackColor="Color.Red" Top="300" Left="300" Width="300" Height="50">
+<Panel Visible="true" BackColor="Color.Red" Top="300" Left="300" Width="300" Height="100">
+    <Label Top="50" Left="10" Width="150" Height="23" BackColor="Color.Yellow" Text="This label is nested"></Label>
 </Panel>
 
-<Label Top="100" Width="200" Height="20" Text="@("I'm a label: " + labelCount)"></Label>
+
 @*<Timer OnTick="@OnTimerTick" />*@
 
-<Button Top="200" Width="400" Height="20" Text="@($"Show details... (visible={isDetailsVisible})")" OnClick="@ToggleDetailsVisible" />
+<Button Top="50" Width="300" Text="@("Increment: " + count)" Height="23" OnClick="@IncrementCount" />
+
+<Label Top="100" Width="200" Height="23" BackColor="Color.AliceBlue" Text="@("I'm a label: " + labelCount)"></Label>
+
+
+<Button Top="200" Width="400" Height="23" BackColor="Color.Orange" Text="@($"Show details... (visible={isDetailsVisible})")" OnClick="@ToggleDetailsVisible" />
 
 @if (isDetailsVisible)
 {
-    <Label Top="250" Width="200" Height="20" Text="Details visible.."></Label>
+    <Label Top="250" Width="200" Height="23" BackColor="Color.Cyan" Text="Details visible.."></Label>
 }
 else
 {
-    <Label Top="300" Width="200" Height="20" Text="Details NOT visible..."></Label>
+    <Label Top="300" Width="200" Height="23" BackColor="Color.Magenta" Text="Details NOT visible..."></Label>
 }
 
 @code {

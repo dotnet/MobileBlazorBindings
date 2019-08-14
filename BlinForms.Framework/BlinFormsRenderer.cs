@@ -54,7 +54,7 @@ namespace BlinForms.Framework
             foreach (var updatedComponent in renderBatch.UpdatedComponents.Array.Take(renderBatch.UpdatedComponents.Count))
             {
                 var adapter = _componentIdToAdapter[updatedComponent.ComponentId];
-                adapter.ApplyEdits(updatedComponent.Edits, renderBatch.ReferenceFrames);
+                adapter.ApplyEdits(updatedComponent.ComponentId, updatedComponent.Edits, renderBatch.ReferenceFrames, renderBatch);
             }
 
             return Task.CompletedTask;

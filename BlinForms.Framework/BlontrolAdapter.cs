@@ -1,4 +1,5 @@
 ﻿using BlinForms.Framework.Controls;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
@@ -37,14 +38,14 @@ namespace BlinForms.Framework
             return $"Blontrol: Name={Name ?? "<?>"}, Target={TargetControl?.GetType().Name ?? "<?>"}, #Children={Children.Count}";
         }
 
-        internal void ApplyEdits(ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames)
+        internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
         {
             foreach (var edit in edits)
             {
                 switch (edit.Type)
                 {
                     case RenderTreeEditType.PrependFrame:
-                        ApplyPrependFrame(edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
+                        ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
                         break;
                     case RenderTreeEditType.SetAttribute:
                         ApplySetAttribute(edit.SiblingIndex, ref referenceFrames.Array[edit.ReferenceFrameIndex]);
@@ -78,15 +79,15 @@ namespace BlinForms.Framework
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
 
-        private void ApplyPrependFrame(int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
+        private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
         {
             ref var frame = ref frames[frameIndex];
             switch (frame.FrameType)
             {
                 case RenderTreeFrameType.Element:
                     {
-                        InsertElement(siblingIndex, frames, frameIndex);
-                        break;
+                        InsertElement(siblingIndex, frames, frameIndex, componentId, batch);
+                        return 1;
                     }
                 case RenderTreeFrameType.Component:
                     {
@@ -94,7 +95,11 @@ namespace BlinForms.Framework
                         var childAdapter = Renderer.CreateAdapterForChildComponent(frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
                         AddChildAdapter(siblingIndex, childAdapter);
-                        break;
+                        return 1;
+                    }
+                case RenderTreeFrameType.Region:
+                    {
+                        return InsertFrameRange(batch, componentId, siblingIndex, frames, frameIndex + 1, frameIndex + frame.RegionSubtreeLength);
                     }
                 case RenderTreeFrameType.Markup:
                     {
@@ -103,7 +108,7 @@ namespace BlinForms.Framework
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
                         Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy markup, sib#={siblingIndex}" });
-                        break;
+                        return 1;
                     }
                 case RenderTreeFrameType.Text:
                     {
@@ -113,24 +118,31 @@ namespace BlinForms.Framework
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
                         Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy text, sib#={siblingIndex}" });
-                        break;
+                        return 1;
                     }
                 default:
                     throw new NotImplementedException($"Not supported frame type: {frame.FrameType}");
             }
         }
 
-        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
+        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
         {
             // Elements represent Winforms native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var nativeControl = KnownElements[elementName](Renderer);
 
+            TargetControl = nativeControl;
+
+            // Add the new native control to the parent's child controls (the parent adapter is our
+            // container, so the parent adapter's control is our control's container.
+            AddChildControl(siblingIndex, TargetControl);
+
+
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
-            for (var attributeIndex = frameIndex + 1; attributeIndex < endIndexExcl; attributeIndex++)
+            for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
             {
-                var candidateFrame = frames[attributeIndex];
+                var candidateFrame = frames[descendantIndex];
                 if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
                 {
                     // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
@@ -139,16 +151,13 @@ namespace BlinForms.Framework
                 }
                 else
                 {
-                    // TODO: Do recursive thing
+                    // As soon as we see a non-attribute child, all the subsequent child frames are
+                    // not attributes, so bail out and insert the remnants recursively
+                    InsertFrameRange(batch, componentId, childIndex: 0, frames, descendantIndex, endIndexExcl);
                     break;
                 }
             }
 
-            TargetControl = nativeControl;
-
-            // Add the new native control to the parent's child controls (the parent adapter is our
-            // container, so the parent adapter's control is our control's container.
-            AddChildControl(siblingIndex, TargetControl);
 
             //// Ignoring non-controls, such as Timer Component
 
@@ -160,6 +169,36 @@ namespace BlinForms.Framework
             //{
             //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
             //}
+        }
+
+        private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
+        {
+            var origChildIndex = childIndex;
+            for (var index = startIndex; index < endIndexExcl; index++)
+            {
+                ref var frame = ref batch.ReferenceFrames.Array[index];
+                var numChildrenInserted = ApplyPrependFrame(batch, componentId, childIndex, frames, index);
+                childIndex += numChildrenInserted;
+
+                // Skip over any descendants, since they are already dealt with recursively
+                index += CountDescendantFrames(frame);
+            }
+
+            return (childIndex - origChildIndex); // Total number of children inserted     
+        }
+
+        private int CountDescendantFrames(RenderTreeFrame frame)
+        {
+            return frame.FrameType switch
+            {
+                // The following frame types have a subtree length. Other frames may use that memory slot
+                // to mean something else, so we must not read it. We should consider having nominal subtypes
+                // of RenderTreeFramePointer that prevent access to non-applicable fields.
+                RenderTreeFrameType.Component => frame.ComponentSubtreeLength - 1,
+                RenderTreeFrameType.Element => frame.ElementSubtreeLength - 1,
+                RenderTreeFrameType.Region => frame.RegionSubtreeLength - 1,
+                _ => 0,
+            };
         }
 
         private void AddChildAdapter(int siblingIndex, BlontrolAdapter childAdapter)
