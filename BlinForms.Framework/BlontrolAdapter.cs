@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework
@@ -203,19 +204,20 @@ namespace BlinForms.Framework
         {
             childAdapter.Parent = this;
 
-            if (siblingIndex < Children.Count)
+            if (siblingIndex <= Children.Count)
             {
                 Children.Insert(siblingIndex, childAdapter);
             }
             else
             {
+                Debug.WriteLine($"WARNING: {nameof(AddChildAdapter)} called with {nameof(siblingIndex)}={siblingIndex}, but Children.Count={Children.Count}");
                 Children.Add(childAdapter);
             }
         }
 
         private void AddChildControl(int siblingIndex, Control childControl)
         {
-            if (siblingIndex < Parent.TargetControl.Controls.Count)
+            if (siblingIndex <= Parent.TargetControl.Controls.Count)
             {
                 // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
                 // and then re-order the collection to move the control to the correct index.
@@ -224,6 +226,7 @@ namespace BlinForms.Framework
             }
             else
             {
+                Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(siblingIndex)}={siblingIndex}, but Parent.TargetControl.Controls.Count={Parent.TargetControl.Controls.Count}");
                 Parent.TargetControl.Controls.Add(childControl);
             }
         }
