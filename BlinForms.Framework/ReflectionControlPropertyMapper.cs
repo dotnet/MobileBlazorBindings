@@ -1,5 +1,4 @@
-﻿using BlinForms.Framework.Controls;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework
@@ -15,13 +14,6 @@ namespace BlinForms.Framework
 
         public void SetControlProperty(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (_control is IBlazorNativeControl nativeControl)
-            {
-                // TODO: Does this need to return a 'bool' so we know if it actually set the property?
-                nativeControl.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                return;
-            }
-
             // TODO: Figure out how to wire up events, e.g. OnClick
             var propertyInfo = _control.GetType().GetProperty(attributeName);
             if (propertyInfo != null)
