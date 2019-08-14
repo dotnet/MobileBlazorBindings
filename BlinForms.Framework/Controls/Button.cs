@@ -21,8 +21,6 @@ namespace BlinForms.Framework.Controls
 
         class BlazorButton : System.Windows.Forms.Button, IBlazorNativeControl
         {
-            public ulong ClickEventHandlerId { get; set; }
-
             public BlazorButton(BlinFormsRenderer renderer)
             {
                 Click += (s, e) =>
@@ -33,6 +31,8 @@ namespace BlinForms.Framework.Controls
                     }
                 };
             }
+
+            public ulong ClickEventHandlerId { get; set; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

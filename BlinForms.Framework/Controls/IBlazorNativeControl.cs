@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
-
-namespace BlinForms.Framework.Controls
+﻿namespace BlinForms.Framework.Controls
 {
     internal interface IBlazorNativeControl
     {

@@ -19,10 +19,6 @@ namespace BlinForms.Framework.Controls
 
         class BlazorLabel : System.Windows.Forms.Label, IBlazorNativeControl
         {
-            public BlazorLabel()
-            {
-            }
-
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

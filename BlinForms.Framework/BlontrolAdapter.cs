@@ -26,7 +26,7 @@ namespace BlinForms.Framework
         // TODO: Is this the right concept? Can a component have multiple WinForms controls created?
         public Control TargetControl { get; set; }
 
-        public BlinFormsRenderer Renderer { get; private set; }
+        public BlinFormsRenderer Renderer { get; }
 
         /// <summary>
         /// Used for debugging purposes.
@@ -48,7 +48,7 @@ namespace BlinForms.Framework
                         ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
                         break;
                     case RenderTreeEditType.SetAttribute:
-                        ApplySetAttribute(edit.SiblingIndex, ref referenceFrames.Array[edit.ReferenceFrameIndex]);
+                        ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
                         break;
                     case RenderTreeEditType.RemoveFrame:
                         ApplyRemoveFrame(edit.SiblingIndex);
@@ -72,9 +72,8 @@ namespace BlinForms.Framework
             Children.RemoveAt(siblingIndex);
         }
 
-        private void ApplySetAttribute(int siblingIndex, ref RenderTreeFrame attributeFrame)
+        private void ApplySetAttribute(ref RenderTreeFrame attributeFrame)
         {
-            // TODO: What to do with siblingIndex here? So far always seems to be 0
             var mapper = GetControlPropertyMapper(TargetControl);
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
@@ -146,8 +145,7 @@ namespace BlinForms.Framework
                 if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
                 {
                     // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
-                    var mapper = GetControlPropertyMapper(nativeControl);
-                    mapper.SetControlProperty(candidateFrame.AttributeEventHandlerId, candidateFrame.AttributeName, candidateFrame.AttributeValue, candidateFrame.AttributeEventUpdatesAttributeName);
+                    ApplySetAttribute(ref candidateFrame);
                 }
                 else
                 {

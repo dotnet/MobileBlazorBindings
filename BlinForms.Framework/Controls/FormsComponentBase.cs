@@ -30,7 +30,9 @@ namespace BlinForms.Framework.Controls
             builder.CloseElement();
         }
 
-        protected abstract void RenderAttributes(RenderTreeBuilder builder);
+        protected virtual void RenderAttributes(RenderTreeBuilder builder)
+        {
+        }
 
         protected virtual void RenderContents(RenderTreeBuilder builder)
         {
