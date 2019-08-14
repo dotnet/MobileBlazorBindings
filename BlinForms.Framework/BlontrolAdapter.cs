@@ -106,7 +106,7 @@ namespace BlinForms.Framework
                         {
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
-                        Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy markup, sib#={siblingIndex}" });
+                        AddChildAdapter(siblingIndex, new BlontrolAdapter(Renderer) { Name = $"Dummy markup, sib#={siblingIndex}" });
                         return 1;
                     }
                 case RenderTreeFrameType.Text:
@@ -116,7 +116,7 @@ namespace BlinForms.Framework
                         {
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
-                        Children.Add(new BlontrolAdapter(Renderer) { Name = $"Dummy text, sib#={siblingIndex}" });
+                        AddChildAdapter(siblingIndex, new BlontrolAdapter(Renderer) { Name = $"Dummy text, sib#={siblingIndex}" });
                         return 1;
                     }
                 default:
