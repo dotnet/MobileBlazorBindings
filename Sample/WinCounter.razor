@@ -1,7 +1,7 @@
 ﻿@using BlinForms.Framework.Controls
 @using System.Drawing
 
-<Panel Visible="true" BackColor="Color.Red" Top="200" Left="300" Width="300" Height="200" Anchor="@(System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)">
+<Panel Visible="true" BackColor="Color.Red" Top="240" Left="300" Width="300" Height="200" Anchor="@(System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)">
     <Label Top="50" Left="10" Width="150" Height="23" BackColor="Color.Yellow" Text="This label is nested"></Label>
 
     <TextBox Top="75" Left="20" Height="100" Width="150" Text="Heeeeeeey" Multiline="true" ScrollBars="System.Windows.Forms.ScrollBars.Vertical"></TextBox>
@@ -10,7 +10,7 @@
 
 @*<Timer OnTick="@OnTimerTick" />*@
 
-<Button Top="50" Width="300" Text="@("Increment: " + count)" Height="23" OnClick="@IncrementCount" />
+<Button Top="50" Width="200" Text="@("Increment: " + count)" Height="23" OnClick="@IncrementCount" />
 
 <Label Top="100" Width="200" Height="23" BackColor="Color.AliceBlue" Text="@("I'm a label: " + labelCount)"></Label>
 
@@ -26,11 +26,43 @@ else
     <Label Top="300" Width="200" Height="23" Text="Details NOT visible..."></Label>
 }
 
+<SplitContainer Top="340" Left="15" Width="250" Height="100" BackColor="Color.Salmon" Orientation="System.Windows.Forms.Orientation.Horizontal">
+    <SplitterPanel1>
+        <Button Width="100" Height="23" BackColor="Color.Aqua" Text="@("Button: " + _splitterButtonValue)" OnClick="@OnSplitterButtonClick"></Button>
+    </SplitterPanel1>
+    <SplitterPanel2>
+        <Label Width="73" Height="23" BackColor="Color.Goldenrod" Text="@("Label: " + _splitterButtonValue)"></Label>
+    </SplitterPanel2>
+</SplitContainer>
+
 @code {
     int count = 0;
     int labelCount = 0;
 
     bool isDetailsVisible = true;
+
+    int _splitterButtonValue = 0;
+
+    void OnSplitterButtonClick()
+    {
+        _splitterButtonValue++;
+    }
+
+    System.Windows.Forms.ColumnHeader[] _columns = new System.Windows.Forms.ColumnHeader[]
+    {
+        new System.Windows.Forms.ColumnHeader()
+        {
+            Text = "Tag",
+            Width = 200,
+        },
+        new System.Windows.Forms.ColumnHeader()
+        {
+            Text = "Count",
+            Width = 80,
+            TextAlign = System.Windows.Forms.HorizontalAlignment.Right,
+        },
+    };
+
 
     void IncrementCount()
     {

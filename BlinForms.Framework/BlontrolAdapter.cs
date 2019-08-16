@@ -36,7 +36,7 @@ namespace BlinForms.Framework
 
         public override string ToString()
         {
-            return $"Blontrol: Name={Name ?? "<?>"}, Target={TargetControl?.GetType().Name ?? "<?>"}, #Children={Children.Count}";
+            return $"Bladapter: Name={Name ?? "<?>"}, Target={TargetControl?.GetType().Name ?? "<?>"}, #Children={Children.Count}";
         }
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
@@ -134,10 +134,23 @@ namespace BlinForms.Framework
 
             TargetControl = nativeControl;
 
-            // Add the new native control to the parent's child controls (the parent adapter is our
-            // container, so the parent adapter's control is our control's container.
-            AddChildControl(siblingIndex, TargetControl);
-
+            if (nativeControl is ICustomParentingBehavior customChildBehavior)
+            {
+                customChildBehavior.SetActualParentControl(Parent.TargetControl);
+            }
+            else
+            {
+                if (Parent.TargetControl is ICustomParentingBehavior customParentBehavior)
+                {
+                    AddChildControl(customParentBehavior.GetEffectiveParentControl(), siblingIndex, TargetControl);
+                }
+                else
+                {
+                    // Add the new native control to the parent's child controls (the parent adapter is our
+                    // container, so the parent adapter's control is our control's container.
+                    AddChildControl(Parent.TargetControl, siblingIndex, TargetControl);
+                }
+            }
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
             for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
@@ -215,19 +228,19 @@ namespace BlinForms.Framework
             }
         }
 
-        private void AddChildControl(int siblingIndex, Control childControl)
+        private static void AddChildControl(Control parentControl, int siblingIndex, Control childControl)
         {
-            if (siblingIndex <= Parent.TargetControl.Controls.Count)
+            if (siblingIndex <= parentControl.Controls.Count)
             {
                 // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
                 // and then re-order the collection to move the control to the correct index.
-                Parent.TargetControl.Controls.Add(childControl);
-                Parent.TargetControl.Controls.SetChildIndex(childControl, siblingIndex);
+                parentControl.Controls.Add(childControl);
+                parentControl.Controls.SetChildIndex(childControl, siblingIndex);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(siblingIndex)}={siblingIndex}, but Parent.TargetControl.Controls.Count={Parent.TargetControl.Controls.Count}");
-                Parent.TargetControl.Controls.Add(childControl);
+                Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(siblingIndex)}={siblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
+                parentControl.Controls.Add(childControl);
             }
         }
 
