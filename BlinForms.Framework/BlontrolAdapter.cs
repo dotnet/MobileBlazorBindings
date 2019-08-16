@@ -13,8 +13,8 @@ namespace BlinForms.Framework
     /// </summary>
     public class BlontrolAdapter
     {
-        internal static Dictionary<string, Func<BlinFormsRenderer, Control>> KnownElements { get; }
-            = new Dictionary<string, Func<BlinFormsRenderer, Control>>();
+        internal static Dictionary<string, IComponentControlFactory> KnownElements { get; }
+            = new Dictionary<string, IComponentControlFactory>();
 
         public BlontrolAdapter(BlinFormsRenderer renderer)
         {
@@ -130,7 +130,8 @@ namespace BlinForms.Framework
             // Elements represent Winforms native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var nativeControl = KnownElements[elementName](Renderer);
+            var controlFactory = KnownElements[elementName];
+            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext(Renderer, Parent?.TargetControl));
 
             TargetControl = nativeControl;
 

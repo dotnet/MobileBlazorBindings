@@ -7,7 +7,7 @@ namespace BlinForms.Framework.Controls
     {
         static Panel()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Panel).FullName, renderer => new BlazorPanel());
+            BlontrolAdapter.KnownElements.Add(typeof(Panel).FullName, new ComponentControlFactoryFunc((_, __) => new BlazorPanel()));
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }

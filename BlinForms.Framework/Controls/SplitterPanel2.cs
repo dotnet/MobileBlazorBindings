@@ -7,7 +7,7 @@ namespace BlinForms.Framework.Controls
     {
         static SplitterPanel2()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(SplitterPanel2).FullName, _ => new PlaceholderControl() { State = "Panel2", });
+            BlontrolAdapter.KnownElements.Add(typeof(SplitterPanel2).FullName, new ComponentControlFactoryFunc((_, __) => new PlaceholderControl() { State = "Panel2", }));
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }

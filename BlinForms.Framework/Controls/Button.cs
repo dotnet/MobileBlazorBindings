@@ -7,7 +7,7 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Button).FullName, renderer => new BlazorButton(renderer));
+            BlontrolAdapter.KnownElements.Add(typeof(Button).FullName, new ComponentControlFactoryFunc((renderer, _) => new BlazorButton(renderer)));
         }
 
         [Parameter] public string Text { get; set; }

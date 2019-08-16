@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(TextBox).FullName, renderer => new BlazorTextBox(renderer));
+            BlontrolAdapter.KnownElements.Add(typeof(TextBox).FullName, new ComponentControlFactoryFunc((renderer, _) => new BlazorTextBox(renderer)));
         }
 
         [Parameter] public string Text { get; set; }
