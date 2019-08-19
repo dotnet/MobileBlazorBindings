@@ -17,6 +17,8 @@ namespace BlinForms.Framework.Controls
         [Parameter] public bool? WordWrap { get; set; }
         [Parameter] public ScrollBars? ScrollBars { get; set; }
 
+        [Parameter] public EventCallback<string> TextChanged { get; set; }
+
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
             if (Text != null)
@@ -39,13 +41,24 @@ namespace BlinForms.Framework.Controls
             {
                 builder.AddAttribute(5, nameof(ScrollBars), (int)ScrollBars.Value);
             }
+
+            builder.AddAttribute(6, "ontextchanged", EventCallback.Factory.CreateBinder<string>(this, value => Text = value, Text));
         }
 
         class BlazorTextBox : System.Windows.Forms.TextBox, IBlazorNativeControl
         {
             public BlazorTextBox(BlinFormsRenderer renderer)
             {
+                TextChanged += (s, e) =>
+                {
+                    if (TextChangedEventHandlerId != default)
+                    {
+                        renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new UIChangeEventArgs() { Value = Text });
+                    }
+                };
             }
+
+            public ulong TextChangedEventHandlerId { get; set; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -65,6 +78,9 @@ namespace BlinForms.Framework.Controls
                         break;
                     case nameof(ScrollBars):
                         ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
+                        break;
+                    case "ontextchanged":
+                        TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

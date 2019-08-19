@@ -51,6 +51,9 @@ namespace BlinForms.Framework
                     case RenderTreeEditType.SetAttribute:
                         ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
                         break;
+                    case RenderTreeEditType.RemoveAttribute:
+                        // TODO: Probably need to implement this!
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                     case RenderTreeEditType.RemoveFrame:
                         ApplyRemoveFrame(edit.SiblingIndex);
                         break;
