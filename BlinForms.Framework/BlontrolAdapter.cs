@@ -135,22 +135,14 @@ namespace BlinForms.Framework
 
             TargetControl = nativeControl;
 
-            if (nativeControl is ICustomParentingBehavior customChildBehavior)
+            // TODO: Need a more reliable way to know whether the target control is already created, e.g. a return value
+            // from ControlFactory.CreateControl(). Right now the check assumes that if the target control is already parented,
+            // there is no need to parent it. Not an awful assumption, but looks odd.
+            if (TargetControl.Parent == null)
             {
-                customChildBehavior.SetActualParentControl(Parent.TargetControl);
-            }
-            else
-            {
-                if (Parent.TargetControl is ICustomParentingBehavior customParentBehavior)
-                {
-                    AddChildControl(customParentBehavior.GetEffectiveParentControl(), siblingIndex, TargetControl);
-                }
-                else
-                {
-                    // Add the new native control to the parent's child controls (the parent adapter is our
-                    // container, so the parent adapter's control is our control's container.
-                    AddChildControl(Parent.TargetControl, siblingIndex, TargetControl);
-                }
+                // Add the new native control to the parent's child controls (the parent adapter is our
+                // container, so the parent adapter's control is our control's container.
+                AddChildControl(Parent.TargetControl, siblingIndex, TargetControl);
             }
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
