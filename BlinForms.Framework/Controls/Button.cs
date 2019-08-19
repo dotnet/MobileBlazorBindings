@@ -15,7 +15,10 @@ namespace BlinForms.Framework.Controls
 
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
-            builder.AddAttribute(1, nameof(Text), Text);
+            if (Text != null)
+            {
+                builder.AddAttribute(1, nameof(Text), Text);
+            }
             builder.AddAttribute(2, "onclick", OnClick);
         }
 

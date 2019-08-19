@@ -12,11 +12,14 @@ namespace BlinForms.Framework.Controls
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
-        [Parameter] public Orientation Orientation { get; set; }
+        [Parameter] public Orientation? Orientation { get; set; }
 
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
-            builder.AddAttribute(1, nameof(Orientation), (int)Orientation);
+            if (Orientation != null)
+            {
+                builder.AddAttribute(1, nameof(Orientation), (int)Orientation.Value);
+            }
         }
 
         protected override void RenderContents(RenderTreeBuilder builder)
@@ -31,8 +34,7 @@ namespace BlinForms.Framework.Controls
                 switch (attributeName)
                 {
                     case nameof(Orientation):
-                        if ((attributeValue as string) != "0")
-                            Orientation = (Orientation)int.Parse((string)attributeValue);
+                        Orientation = (Orientation)int.Parse((string)attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

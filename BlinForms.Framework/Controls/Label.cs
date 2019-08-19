@@ -14,7 +14,10 @@ namespace BlinForms.Framework.Controls
 
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
-            builder.AddAttribute(1, nameof(Text), Text);
+            if (Text != null)
+            {
+                builder.AddAttribute(1, nameof(Text), Text);
+            }
         }
 
         class BlazorLabel : System.Windows.Forms.Label, IBlazorNativeControl

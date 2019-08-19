@@ -12,18 +12,33 @@ namespace BlinForms.Framework.Controls
         }
 
         [Parameter] public string Text { get; set; }
-        [Parameter] public bool Multiline { get; set; }
-        [Parameter] public bool ReadOnly { get; set; }
-        [Parameter] public bool WordWrap { get; set; }
-        [Parameter] public ScrollBars ScrollBars { get; set; }
+        [Parameter] public bool? Multiline { get; set; }
+        [Parameter] public bool? ReadOnly { get; set; }
+        [Parameter] public bool? WordWrap { get; set; }
+        [Parameter] public ScrollBars? ScrollBars { get; set; }
 
         protected override void RenderAttributes(RenderTreeBuilder builder)
         {
-            builder.AddAttribute(1, nameof(Text), Text);
-            builder.AddAttribute(2, nameof(Multiline), Multiline);
-            builder.AddAttribute(3, nameof(ReadOnly), ReadOnly);
-            builder.AddAttribute(4, nameof(WordWrap), WordWrap);
-            builder.AddAttribute(5, nameof(ScrollBars), (int)ScrollBars);
+            if (Text != null)
+            {
+                builder.AddAttribute(1, nameof(Text), Text);
+            }
+            if (Multiline != null)
+            {
+                builder.AddAttribute(2, nameof(Multiline), Multiline.Value);
+            }
+            if (ReadOnly != null)
+            {
+                builder.AddAttribute(3, nameof(ReadOnly), ReadOnly.Value);
+            }
+            if (WordWrap != null)
+            {
+                builder.AddAttribute(4, nameof(WordWrap), WordWrap.Value);
+            }
+            if (ScrollBars != null)
+            {
+                builder.AddAttribute(5, nameof(ScrollBars), (int)ScrollBars.Value);
+            }
         }
 
         class BlazorTextBox : System.Windows.Forms.TextBox, IBlazorNativeControl
@@ -49,8 +64,7 @@ namespace BlinForms.Framework.Controls
                         WordWrap = (bool)attributeValue;
                         break;
                     case nameof(ScrollBars):
-                        if ((attributeValue as string) != "0")
-                            ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
+                        ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
