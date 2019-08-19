@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sample
+namespace BlinFormsSample
 {
     static class Program
     {
