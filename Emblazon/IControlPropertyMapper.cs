@@ -1,4 +1,4 @@
-﻿namespace BlinForms.Framework
+﻿namespace Emblazon
 {
     internal interface IControlPropertyMapper
     {

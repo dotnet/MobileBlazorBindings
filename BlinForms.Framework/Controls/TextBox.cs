@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(TextBox).FullName, new ComponentControlFactoryFunc((renderer, _) => new BlazorTextBox(renderer)));
+            BlontrolAdapter.KnownElements.Add(typeof(TextBox).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((renderer, _) => new BlazorTextBox(renderer)));
         }
 
         [Parameter] public string Text { get; set; }
@@ -43,7 +44,7 @@ namespace BlinForms.Framework.Controls
 
         class BlazorTextBox : System.Windows.Forms.TextBox, IBlazorNativeControl
         {
-            public BlazorTextBox(BlinFormsRenderer renderer)
+            public BlazorTextBox(EmblazonRenderer<System.Windows.Forms.Control> renderer)
             {
             }
 

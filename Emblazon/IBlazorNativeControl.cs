@@ -1,6 +1,6 @@
-﻿namespace BlinForms.Framework.Controls
+﻿namespace Emblazon
 {
-    internal interface IBlazorNativeControl
+    public interface IBlazorNativeControl
     {
         void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
     }

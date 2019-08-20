@@ -1,6 +1,4 @@
-﻿using BlinForms.Framework.Controls;
-
-namespace BlinForms.Framework
+﻿namespace Emblazon
 {
     internal class NativeControlPropertyMapper : IControlPropertyMapper
     {

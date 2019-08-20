@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
@@ -7,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Button).FullName, new ComponentControlFactoryFunc((renderer, _) => new BlazorButton(renderer)));
+            BlontrolAdapter.KnownElements.Add(typeof(Button).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((renderer, _) => new BlazorButton(renderer)));
         }
 
         [Parameter] public string Text { get; set; }
@@ -24,7 +25,7 @@ namespace BlinForms.Framework.Controls
 
         class BlazorButton : System.Windows.Forms.Button, IBlazorNativeControl
         {
-            public BlazorButton(BlinFormsRenderer renderer)
+            public BlazorButton(EmblazonRenderer<System.Windows.Forms.Control> renderer)
             {
                 Click += (s, e) =>
                 {

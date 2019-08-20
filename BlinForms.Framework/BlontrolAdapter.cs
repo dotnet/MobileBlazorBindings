@@ -1,227 +1,34 @@
-﻿using BlinForms.Framework.Controls;
-using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.AspNetCore.Components.RenderTree;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows.Forms;
+using Emblazon;
 
 namespace BlinForms.Framework
 {
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live WinForms control tree.
     /// </summary>
-    public class BlontrolAdapter
+    public class BlontrolAdapter : EmblazonAdapter<Control>
     {
-        internal static Dictionary<string, IComponentControlFactory> KnownElements { get; }
-            = new Dictionary<string, IComponentControlFactory>();
-
-        public BlontrolAdapter(BlinFormsRenderer renderer)
+        public BlontrolAdapter()
         {
-            Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
 
-        public BlontrolAdapter Parent { get; set; }
-        public List<BlontrolAdapter> Children { get; } = new List<BlontrolAdapter>();
-
-        // TODO: Is this the right concept? Can a component have multiple WinForms controls created?
-        public Control TargetControl { get; set; }
-
-        public BlinFormsRenderer Renderer { get; }
-
-        /// <summary>
-        /// Used for debugging purposes.
-        /// </summary>
-        public string Name { get; set; }
-
-        public override string ToString()
+        protected override void RemoveChildControl(EmblazonAdapter<Control> child)
         {
-            return $"Bladapter: Name={Name ?? "<?>"}, Target={TargetControl?.GetType().Name ?? "<?>"}, #Children={Children.Count}";
+            TargetControl.Controls.Remove(child.TargetControl);
         }
 
-        internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
+        protected override EmblazonAdapter<Control> CreateAdapter()
         {
-            foreach (var edit in edits)
-            {
-                switch (edit.Type)
-                {
-                    case RenderTreeEditType.PrependFrame:
-                        ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
-                        break;
-                    case RenderTreeEditType.SetAttribute:
-                        ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
-                        break;
-                    case RenderTreeEditType.RemoveFrame:
-                        ApplyRemoveFrame(edit.SiblingIndex);
-                        break;
-                    default:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
-                }
-            }
+            return new BlontrolAdapter();
         }
 
-        private void ApplyRemoveFrame(int siblingIndex)
+        protected override bool IsChildControlParented(Control nativeChild)
         {
-            var childToRemove = Children[siblingIndex];
-
-            // If there's a target control for the child adapter, remove it from the live control tree.
-            // Not all adapters have target controls; Adapters for markup/text have no associated native control.
-            if (childToRemove.TargetControl != null)
-            {
-                TargetControl.Controls.Remove(childToRemove.TargetControl);
-            }
-            Children.RemoveAt(siblingIndex);
+            return nativeChild.Parent != null;
         }
 
-        private void ApplySetAttribute(ref RenderTreeFrame attributeFrame)
-        {
-            var mapper = GetControlPropertyMapper(TargetControl);
-            mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
-        }
-
-        private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
-        {
-            ref var frame = ref frames[frameIndex];
-            switch (frame.FrameType)
-            {
-                case RenderTreeFrameType.Element:
-                    {
-                        InsertElement(siblingIndex, frames, frameIndex, componentId, batch);
-                        return 1;
-                    }
-                case RenderTreeFrameType.Component:
-                    {
-                        // Components are represented by BlontrolAdapters
-                        var childAdapter = Renderer.CreateAdapterForChildComponent(frame.ComponentId);
-                        childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
-                        AddChildAdapter(siblingIndex, childAdapter);
-                        return 1;
-                    }
-                case RenderTreeFrameType.Region:
-                    {
-                        return InsertFrameRange(batch, componentId, siblingIndex, frames, frameIndex + 1, frameIndex + frame.RegionSubtreeLength);
-                    }
-                case RenderTreeFrameType.Markup:
-                    {
-                        if (!string.IsNullOrWhiteSpace(frame.MarkupContent))
-                        {
-                            throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
-                        }
-                        AddChildAdapter(siblingIndex, new BlontrolAdapter(Renderer) { Name = $"Dummy markup, sib#={siblingIndex}" });
-                        return 1;
-                    }
-                case RenderTreeFrameType.Text:
-                    {
-                        // TODO: Maybe support this for Labels for Text property, etc. ("DefaultProperty"?)
-                        if (!string.IsNullOrWhiteSpace(frame.TextContent))
-                        {
-                            throw new NotImplementedException("Nonempty text: " + frame.TextContent);
-                        }
-                        AddChildAdapter(siblingIndex, new BlontrolAdapter(Renderer) { Name = $"Dummy text, sib#={siblingIndex}" });
-                        return 1;
-                    }
-                default:
-                    throw new NotImplementedException($"Not supported frame type: {frame.FrameType}");
-            }
-        }
-
-        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
-        {
-            // Elements represent Winforms native controls
-            ref var frame = ref frames[frameIndex];
-            var elementName = frame.ElementName;
-            var controlFactory = KnownElements[elementName];
-            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext(Renderer, Parent?.TargetControl));
-
-            TargetControl = nativeControl;
-
-            // TODO: Need a more reliable way to know whether the target control is already created, e.g. a return value
-            // from ControlFactory.CreateControl(). Right now the check assumes that if the target control is already parented,
-            // there is no need to parent it. Not an awful assumption, but looks odd.
-            if (TargetControl.Parent == null)
-            {
-                // Add the new native control to the parent's child controls (the parent adapter is our
-                // container, so the parent adapter's control is our control's container.
-                AddChildControl(Parent.TargetControl, siblingIndex, TargetControl);
-            }
-
-            var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
-            for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
-            {
-                var candidateFrame = frames[descendantIndex];
-                if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
-                {
-                    // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
-                    ApplySetAttribute(ref candidateFrame);
-                }
-                else
-                {
-                    // As soon as we see a non-attribute child, all the subsequent child frames are
-                    // not attributes, so bail out and insert the remnants recursively
-                    InsertFrameRange(batch, componentId, childIndex: 0, frames, descendantIndex, endIndexExcl);
-                    break;
-                }
-            }
-
-
-            //// Ignoring non-controls, such as Timer Component
-
-            //if (element is Control elementControl)
-            //{
-            //    AddChildControl(siblingIndex, elementControl);
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
-            //}
-        }
-
-        private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
-        {
-            var origChildIndex = childIndex;
-            for (var index = startIndex; index < endIndexExcl; index++)
-            {
-                ref var frame = ref batch.ReferenceFrames.Array[index];
-                var numChildrenInserted = ApplyPrependFrame(batch, componentId, childIndex, frames, index);
-                childIndex += numChildrenInserted;
-
-                // Skip over any descendants, since they are already dealt with recursively
-                index += CountDescendantFrames(frame);
-            }
-
-            return (childIndex - origChildIndex); // Total number of children inserted     
-        }
-
-        private int CountDescendantFrames(RenderTreeFrame frame)
-        {
-            return frame.FrameType switch
-            {
-                // The following frame types have a subtree length. Other frames may use that memory slot
-                // to mean something else, so we must not read it. We should consider having nominal subtypes
-                // of RenderTreeFramePointer that prevent access to non-applicable fields.
-                RenderTreeFrameType.Component => frame.ComponentSubtreeLength - 1,
-                RenderTreeFrameType.Element => frame.ElementSubtreeLength - 1,
-                RenderTreeFrameType.Region => frame.RegionSubtreeLength - 1,
-                _ => 0,
-            };
-        }
-
-        private void AddChildAdapter(int siblingIndex, BlontrolAdapter childAdapter)
-        {
-            childAdapter.Parent = this;
-
-            if (siblingIndex <= Children.Count)
-            {
-                Children.Insert(siblingIndex, childAdapter);
-            }
-            else
-            {
-                Debug.WriteLine($"WARNING: {nameof(AddChildAdapter)} called with {nameof(siblingIndex)}={siblingIndex}, but Children.Count={Children.Count}");
-                Children.Add(childAdapter);
-            }
-        }
-
-        private static void AddChildControl(Control parentControl, int siblingIndex, Control childControl)
+        protected override void AddChildControl(Control parentControl, int siblingIndex, Control childControl)
         {
             if (siblingIndex <= parentControl.Controls.Count)
             {
@@ -234,19 +41,6 @@ namespace BlinForms.Framework
             {
                 Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(siblingIndex)}={siblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
                 parentControl.Controls.Add(childControl);
-            }
-        }
-
-        private static IControlPropertyMapper GetControlPropertyMapper(Control control)
-        {
-            // TODO: Have control-specific ones, but also need a general one for custom controls? Or maybe not needed?
-            if (control is IBlazorNativeControl nativeControl)
-            {
-                return new NativeControlPropertyMapper(nativeControl);
-            }
-            else
-            {
-                return new ReflectionControlPropertyMapper(control);
             }
         }
     }

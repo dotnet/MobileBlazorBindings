@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
@@ -7,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Label()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Label).FullName, new ComponentControlFactoryFunc((_, __) => new BlazorLabel()));
+            BlontrolAdapter.KnownElements.Add(typeof(Label).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((_, __) => new BlazorLabel()));
         }
 
         [Parameter] public string Text { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
@@ -7,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Panel()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Panel).FullName, new ComponentControlFactoryFunc((_, __) => new BlazorPanel()));
+            BlontrolAdapter.KnownElements.Add(typeof(Panel).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((_, __) => new BlazorPanel()));
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }

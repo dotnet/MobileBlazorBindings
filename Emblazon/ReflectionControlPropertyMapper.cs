@@ -1,43 +1,42 @@
 ﻿using System.Diagnostics;
-using System.Windows.Forms;
 
-namespace BlinForms.Framework
+namespace Emblazon
 {
     internal class ReflectionControlPropertyMapper : IControlPropertyMapper
     {
-        private readonly Control _control;
+        private readonly object _component;
 
-        public ReflectionControlPropertyMapper(Control control)
+        public ReflectionControlPropertyMapper(object component)
         {
-            _control = control;
+            _component = component;
         }
 
         public void SetControlProperty(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             // TODO: Figure out how to wire up events, e.g. OnClick
-            var propertyInfo = _control.GetType().GetProperty(attributeName);
+            var propertyInfo = _component.GetType().GetProperty(attributeName);
             if (propertyInfo != null)
             {
                 if (propertyInfo.PropertyType == typeof(string))
                 {
-                    propertyInfo.SetValue(_control, attributeValue);
+                    propertyInfo.SetValue(_component, attributeValue);
                 }
                 else if (propertyInfo.PropertyType == typeof(int))
                 {
-                    propertyInfo.SetValue(_control, int.Parse((string)attributeValue));
+                    propertyInfo.SetValue(_component, int.Parse((string)attributeValue));
                 }
                 else if (propertyInfo.PropertyType == typeof(bool))
                 {
-                    propertyInfo.SetValue(_control, attributeValue);
+                    propertyInfo.SetValue(_component, attributeValue);
                 }
                 else
                 {
-                    Debug.WriteLine($"Unknown property type '{propertyInfo.PropertyType}' for '{attributeName}' on '{_control.GetType().FullName}'.");
+                    Debug.WriteLine($"Unknown property type '{propertyInfo.PropertyType}' for '{attributeName}' on '{_component.GetType().FullName}'.");
                 }
             }
             else
             {
-                Debug.WriteLine($"Unknown property '{attributeName}' on '{_control.GetType().FullName}'. Maybe an event handler?");
+                Debug.WriteLine($"Unknown property '{attributeName}' on '{_component.GetType().FullName}'. Maybe an event handler?");
             }
         }
     }

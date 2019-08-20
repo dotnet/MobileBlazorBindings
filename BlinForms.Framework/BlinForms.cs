@@ -6,7 +6,7 @@ namespace BlinForms.Framework
 {
     public static class BlinForms
     {
-        public static void Run<T>() where T: IComponent
+        public static void Run<T>() where T : IComponent
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

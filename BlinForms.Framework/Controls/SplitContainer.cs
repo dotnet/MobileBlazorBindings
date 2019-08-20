@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System.Windows.Forms;
 
@@ -8,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static SplitContainer()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(SplitContainer).FullName, new ComponentControlFactoryFunc((_, __) => new BlazorSplitContainer()));
+            BlontrolAdapter.KnownElements.Add(typeof(SplitContainer).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((_, __) => new BlazorSplitContainer()));
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
