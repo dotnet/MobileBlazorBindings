@@ -18,7 +18,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlaxamarinSample.iOS", "Bla
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlaxamarinSample", "BlaxamarinSample\BlaxamarinSample\BlaxamarinSample.csproj", "{732D30E2-4E59-47E6-AF8A-35E2C5746D0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emblazon", "Emblazon\Emblazon.csproj", "{77F00237-2214-4B58-BF83-1D5CA6274545}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emblazon", "Emblazon\Emblazon.csproj", "{77F00237-2214-4B58-BF83-1D5CA6274545}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlinForms", "BlinForms", "{4D06362E-96E0-4359-BF69-9E3DC7570984}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blaxamarin", "Blaxamarin", "{A497EAAE-8B20-4749-B93F-68CC35FC7D80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +113,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D6C4DB25-814C-41A3-8BE2-23ABC929B369} = {4D06362E-96E0-4359-BF69-9E3DC7570984}
+		{8BF6C23D-C674-419D-BD01-D0BFC069E6D3} = {4D06362E-96E0-4359-BF69-9E3DC7570984}
+		{5E52B05E-5F6D-4BFB-9F58-651CDE373D25} = {A497EAAE-8B20-4749-B93F-68CC35FC7D80}
+		{E966A851-1BEB-4381-B275-6F0D532CF268} = {A497EAAE-8B20-4749-B93F-68CC35FC7D80}
+		{732D30E2-4E59-47E6-AF8A-35E2C5746D0D} = {A497EAAE-8B20-4749-B93F-68CC35FC7D80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A645A7FF-3F09-414D-A391-7E50C3597F05}
