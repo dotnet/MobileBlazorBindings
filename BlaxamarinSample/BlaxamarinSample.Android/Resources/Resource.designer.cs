@@ -2019,7 +2019,6 @@ namespace BlaxamarinSample.Droid
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense = global::BlaxamarinSample.Droid.Resource.Style.Widget_MaterialComponents_TextInputLayout_OutlinedBox_Dense;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_MaterialComponents_Toolbar = global::BlaxamarinSample.Droid.Resource.Style.Widget_MaterialComponents_Toolbar;
 			global::Xamarin.Forms.Platform.Android.Resource.Style.Widget_Support_CoordinatorLayout = global::BlaxamarinSample.Droid.Resource.Style.Widget_Support_CoordinatorLayout;
-			global::Xamarin.Forms.Platform.Android.Resource.Style.collectionViewStyle = global::BlaxamarinSample.Droid.Resource.Style.collectionViewStyle;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar = global::BlaxamarinSample.Droid.Resource.Styleable.ActionBar;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar_background = global::BlaxamarinSample.Droid.Resource.Styleable.ActionBar_background;
 			global::Xamarin.Forms.Platform.Android.Resource.Styleable.ActionBar_backgroundSplit = global::BlaxamarinSample.Droid.Resource.Styleable.ActionBar_backgroundSplit;
@@ -7546,9 +7545,6 @@ namespace BlaxamarinSample.Droid
 			
 			// aapt resource value: 0x7F0E00C5
 			public const int CardView_Light = 2131624133;
-			
-			// aapt resource value: 0x7F0E01F7
-			public const int collectionViewStyle = 2131624439;
 			
 			// aapt resource value: 0x7F0E00C6
 			public const int MainTheme = 2131624134;
