@@ -1,0 +1,13 @@
+﻿@using Blaxamarin.Framework.Elements
+
+<Button Text="@("Increment: " + count)" OnClick="@IncrementCount" />
+
+
+@code {
+    int count = 0;
+
+    void IncrementCount()
+    {
+        count++;
+    }
+}
