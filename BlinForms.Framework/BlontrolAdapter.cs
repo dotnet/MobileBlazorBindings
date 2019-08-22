@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using Emblazon;
 
@@ -7,7 +8,7 @@ namespace BlinForms.Framework
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live WinForms control tree.
     /// </summary>
-    public class BlontrolAdapter : EmblazonAdapter<Control>
+    public class BlontrolAdapter : EmblazonAdapter<Control>, IDisposable
     {
         public BlontrolAdapter()
         {
@@ -42,6 +43,11 @@ namespace BlinForms.Framework
                 Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(siblingIndex)}={siblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
                 parentControl.Controls.Add(childControl);
             }
+        }
+
+        void IDisposable.Dispose()
+        {
+            TargetControl.Dispose();
         }
     }
 }
