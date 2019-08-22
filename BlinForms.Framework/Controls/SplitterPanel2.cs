@@ -6,7 +6,8 @@ namespace BlinForms.Framework.Controls
     {
         static SplitterPanel2()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(SplitterPanel2).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((_, parentControl) => GetSplitterPanel(parentControl, panelNumber: 2)));
+            BlontrolAdapter.RegisterNativeControlComponent<SplitterPanel2>(
+                (_, parentControl) => GetSplitterPanel(parentControl, panelNumber: 2));
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Emblazon
 {
-    public class ComponentControlFactoryFunc<TNativeComponent> : IComponentControlFactory<TNativeComponent> where TNativeComponent : class
+    internal class ComponentControlFactory<TNativeComponent> where TNativeComponent : class
     {
         private readonly Func<EmblazonRenderer<TNativeComponent>, TNativeComponent, TNativeComponent> _callback;
 
-        public ComponentControlFactoryFunc(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent, TNativeComponent> callback)
+        public ComponentControlFactory(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent, TNativeComponent> callback)
         {
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }

@@ -1,6 +1,6 @@
 ﻿namespace Emblazon
 {
-    public class ComponentControlFactoryContext<TNativeComponent> where TNativeComponent : class
+    internal class ComponentControlFactoryContext<TNativeComponent> where TNativeComponent : class
     {
         public ComponentControlFactoryContext(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent parentControl)
         {
