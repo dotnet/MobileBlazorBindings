@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
 {
@@ -13,10 +12,7 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public RenderFragment ChildContent { get; set; }
 
-        protected override void RenderContents(RenderTreeBuilder builder)
-        {
-            builder.AddContent(1000, ChildContent);
-        }
+        protected override RenderFragment GetChildContent() => ChildContent;
 
         class BlazorPanel : System.Windows.Forms.Panel, IBlazorNativeControl
         {

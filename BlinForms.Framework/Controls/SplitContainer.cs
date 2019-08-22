@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -17,16 +16,15 @@ namespace BlinForms.Framework.Controls
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
+            base.RenderAttributes(builder);
+
             if (Orientation != null)
             {
                 builder.AddAttribute(nameof(Orientation), (int)Orientation.Value);
             }
         }
 
-        protected override void RenderContents(RenderTreeBuilder builder)
-        {
-            builder.AddContent(1000, ChildContent);
-        }
+        protected override RenderFragment GetChildContent() => ChildContent;
 
         class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IBlazorNativeControl
         {

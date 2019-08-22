@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.RenderTree;
 
-namespace BlinForms.Framework.Controls
+namespace Emblazon
 {
     // This wraps a RenderTreeBuilder in such a way that consumers
     // can only call the desired AddAttribute method, can't supply
