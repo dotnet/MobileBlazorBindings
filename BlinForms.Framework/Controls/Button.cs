@@ -14,13 +14,13 @@ namespace BlinForms.Framework.Controls
         [Parameter] public string Text { get; set; }
         [Parameter] public EventCallback OnClick { get; set; }
 
-        protected override void RenderAttributes(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
             if (Text != null)
             {
-                builder.AddAttribute(1, nameof(Text), Text);
+                builder.AddAttribute(nameof(Text), Text);
             }
-            builder.AddAttribute(2, "onclick", OnClick);
+            builder.AddAttribute("onclick", OnClick);
         }
 
         class BlazorButton : System.Windows.Forms.Button, IBlazorNativeControl
