@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
