@@ -1,19 +1,20 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.AttributeHelpers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Button : FormsComponentBase
+    public class Label : FormsComponentBase
     {
-        static Button()
+        static Label()
         {
-            BlelementAdapter.RegisterNativeControlComponent<Button>(
-                renderer => new BlazorButton(renderer));
+            BlelementAdapter.RegisterNativeControlComponent<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }
-        [Parameter] public EventCallback OnClick { get; set; }
+        [Parameter] public Color? TextColor { get; set; }
+        [Parameter] public double? FontSize { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -23,25 +24,18 @@ namespace Blaxamarin.Framework.Elements
             {
                 builder.AddAttribute(nameof(Text), Text);
             }
-
-            builder.AddAttribute("onclick", OnClick);
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), ColorAttributeHelper.ColorToString(TextColor.Value));
+            }
+            if (FontSize != null)
+            {
+                builder.AddAttribute(nameof(FontSize), DoubleAttributeHelper.DoubleToString(FontSize.Value));
+            }
         }
 
-        class BlazorButton : Xamarin.Forms.Button, IBlazorNativeControl
+        class BlazorLabel : Xamarin.Forms.Label, IBlazorNativeControl
         {
-            public BlazorButton(EmblazonRenderer<Element> renderer)
-            {
-                Clicked += (s, e) =>
-                {
-                    if (ClickEventHandlerId != default)
-                    {
-                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs()));
-                    }
-                };
-            }
-
-            public ulong ClickEventHandlerId { get; set; }
-
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
@@ -49,8 +43,11 @@ namespace Blaxamarin.Framework.Elements
                     case nameof(Text):
                         Text = (string)attributeValue;
                         break;
-                    case "onclick":
-                        ClickEventHandlerId = attributeEventHandlerId;
+                    case nameof(TextColor):
+                        TextColor = ColorAttributeHelper.StringToColor((string)attributeValue);
+                        break;
+                    case nameof(FontSize):
+                        FontSize = DoubleAttributeHelper.StringToDouble((string)attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

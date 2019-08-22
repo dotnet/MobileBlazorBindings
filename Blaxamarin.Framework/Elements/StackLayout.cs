@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
@@ -11,6 +12,17 @@ namespace Blaxamarin.Framework.Elements
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public StackOrientation? Orientation { get; set; }
+
+        protected override void RenderAttributes(AttributesBuilder builder)
+        {
+            base.RenderAttributes(builder);
+
+            if (Orientation != null)
+            {
+                builder.AddAttribute(nameof(Orientation), (int)Orientation.Value);
+            }
+        }
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
@@ -20,6 +32,9 @@ namespace Blaxamarin.Framework.Elements
             {
                 switch (attributeName)
                 {
+                    case nameof(Orientation):
+                        Orientation = (StackOrientation)int.Parse((string)attributeValue);
+                        break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;

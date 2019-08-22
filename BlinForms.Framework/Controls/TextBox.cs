@@ -8,8 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            BlontrolAdapter.RegisterNativeControlComponent<TextBox>(
-                renderer => new BlazorTextBox(renderer));
+            BlontrolAdapter.RegisterNativeControlComponent<TextBox, BlazorTextBox>();
         }
 
         [Parameter] public string Text { get; set; }
@@ -46,7 +45,7 @@ namespace BlinForms.Framework.Controls
 
         class BlazorTextBox : System.Windows.Forms.TextBox, IBlazorNativeControl
         {
-            public BlazorTextBox(EmblazonRenderer<System.Windows.Forms.Control> renderer)
+            public BlazorTextBox()
             {
             }
 
