@@ -45,6 +45,17 @@ namespace Emblazon
                 adapter.ApplyEdits(updatedComponent.ComponentId, updatedComponent.Edits, renderBatch.ReferenceFrames, renderBatch);
             }
 
+            var numDisposedComponents = renderBatch.DisposedComponentIDs.Count;
+            for (var i = 0; i < numDisposedComponents; i++)
+            {
+                var disposedComponentId = renderBatch.DisposedComponentIDs.Array[i];
+                if (_componentIdToAdapter.TryGetValue(disposedComponentId, out var adapter))
+                {
+                    _componentIdToAdapter.Remove(disposedComponentId);
+                    (adapter as IDisposable)?.Dispose();
+                }
+            }
+
             return Task.CompletedTask;
         }
 
