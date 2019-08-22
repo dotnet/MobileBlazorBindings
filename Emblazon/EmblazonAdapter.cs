@@ -7,7 +7,7 @@ using System.Diagnostics;
 namespace Emblazon
 {
     /// <summary>
-    /// Represents a "shadow" item that Blazor uses to map changes into the live WinForms control tree.
+    /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
     public abstract class EmblazonAdapter<TNativeComponent> where TNativeComponent : class
     {
@@ -36,7 +36,7 @@ namespace Emblazon
         public EmblazonAdapter<TNativeComponent> Parent { get; set; }
         public List<EmblazonAdapter<TNativeComponent>> Children { get; } = new List<EmblazonAdapter<TNativeComponent>>();
 
-        // TODO: Is this the right concept? Can a component have multiple WinForms controls created?
+        // TODO: Is this the right concept? Can a component have multiple native controls created?
         public TNativeComponent TargetControl { get; set; }
 
         public EmblazonRenderer<TNativeComponent> Renderer { get; private set; }
@@ -156,7 +156,7 @@ namespace Emblazon
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
         {
-            // Elements represent Winforms native controls
+            // Elements represent native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var controlFactory = KnownElements[elementName];
