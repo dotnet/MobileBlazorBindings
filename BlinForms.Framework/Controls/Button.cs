@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace BlinForms.Framework.Controls
 {
@@ -8,7 +7,8 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Button).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((renderer, _) => new BlazorButton(renderer)));
+            BlontrolAdapter.RegisterNativeControlComponent<Button>(
+                renderer => new BlazorButton(renderer));
         }
 
         [Parameter] public string Text { get; set; }

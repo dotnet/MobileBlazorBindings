@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Label()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(Label).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((_, __) => new BlazorLabel()));
+            BlontrolAdapter.RegisterNativeControlComponent<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }

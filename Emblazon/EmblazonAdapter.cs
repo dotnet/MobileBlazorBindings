@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Emblazon
 {
@@ -11,9 +12,23 @@ namespace Emblazon
     /// </summary>
     public abstract class EmblazonAdapter<TNativeComponent> where TNativeComponent : class
     {
-        // TODO: This used to be internal, but now it's public so that BlinForms components can register themselves. How should this work?
-        public static Dictionary<string, IComponentControlFactory<TNativeComponent>> KnownElements { get; }
-            = new Dictionary<string, IComponentControlFactory<TNativeComponent>>();
+        private static Dictionary<string, ComponentControlFactory<TNativeComponent>> KnownElements { get; }
+            = new Dictionary<string, ComponentControlFactory<TNativeComponent>>();
+
+        public static void RegisterNativeControlComponent<TComponent>(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent, TNativeComponent> factory) where TComponent: NativeControlComponentBase
+        {
+            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<TNativeComponent>(factory));
+        }
+
+        public static void RegisterNativeControlComponent<TComponent>(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent> factory) where TComponent : NativeControlComponentBase
+        {
+            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<TNativeComponent>((renderer, _) => factory(renderer)));
+        }
+
+        public static void RegisterNativeControlComponent<TComponent, TControl>() where TComponent : NativeControlComponentBase where TControl : TNativeComponent, new()
+        {
+            RegisterNativeControlComponent<TComponent>((_, __) => new TControl());
+        }
 
         public EmblazonAdapter()
         {

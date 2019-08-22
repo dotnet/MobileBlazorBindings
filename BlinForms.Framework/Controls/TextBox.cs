@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -9,7 +8,8 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            BlontrolAdapter.KnownElements.Add(typeof(TextBox).FullName, new ComponentControlFactoryFunc<System.Windows.Forms.Control>((renderer, _) => new BlazorTextBox(renderer)));
+            BlontrolAdapter.RegisterNativeControlComponent<TextBox>(
+                renderer => new BlazorTextBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }

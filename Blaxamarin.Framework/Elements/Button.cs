@@ -9,19 +9,23 @@ namespace Blaxamarin.Framework.Elements
     {
         static Button()
         {
-            BlelementAdapter.KnownElements.Add(typeof(Button).FullName, new ComponentControlFactoryFunc<Element>((renderer, _) => new BlazorButton(renderer)));
+            BlelementAdapter.RegisterNativeControlComponent<Button>(
+                renderer => new BlazorButton(renderer));
         }
 
         [Parameter] public string Text { get; set; }
         [Parameter] public EventCallback OnClick { get; set; }
 
-        protected override void RenderAttributes(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
+            base.RenderAttributes(builder);
+
             if (Text != null)
             {
-                builder.AddAttribute(1, nameof(Text), Text);
+                builder.AddAttribute(nameof(Text), Text);
             }
-            builder.AddAttribute(2, "onclick", OnClick);
+
+            builder.AddAttribute("onclick", OnClick);
         }
 
         class BlazorButton : Xamarin.Forms.Button, IBlazorNativeControl
