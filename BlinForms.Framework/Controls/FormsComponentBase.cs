@@ -24,7 +24,7 @@ namespace BlinForms.Framework.Controls
         {
             builder.OpenElement(0, GetType().FullName);
 
-            RenderAttributes(builder);
+            RenderAttributes(new AttributesBuilder(builder));
 
             if (Top != null)
             {
@@ -64,11 +64,7 @@ namespace BlinForms.Framework.Controls
             builder.CloseElement();
         }
 
-        /// <summary>
-        /// Rendered attributes should use sequence values 1-99.
-        /// </summary>
-        /// <param name="builder"></param>
-        protected virtual void RenderAttributes(RenderTreeBuilder builder)
+        protected virtual void RenderAttributes(AttributesBuilder builder)
         {
         }
 

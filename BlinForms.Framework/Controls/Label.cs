@@ -13,11 +13,11 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public string Text { get; set; }
 
-        protected override void RenderAttributes(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
             if (Text != null)
             {
-                builder.AddAttribute(1, nameof(Text), Text);
+                builder.AddAttribute(nameof(Text), Text);
             }
         }
 

@@ -15,11 +15,11 @@ namespace BlinForms.Framework.Controls
         [Parameter] public RenderFragment ChildContent { get; set; }
         [Parameter] public Orientation? Orientation { get; set; }
 
-        protected override void RenderAttributes(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
             if (Orientation != null)
             {
-                builder.AddAttribute(1, nameof(Orientation), (int)Orientation.Value);
+                builder.AddAttribute(nameof(Orientation), (int)Orientation.Value);
             }
         }
 

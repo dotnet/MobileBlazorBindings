@@ -18,27 +18,27 @@ namespace BlinForms.Framework.Controls
         [Parameter] public bool? WordWrap { get; set; }
         [Parameter] public ScrollBars? ScrollBars { get; set; }
 
-        protected override void RenderAttributes(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
             if (Text != null)
             {
-                builder.AddAttribute(1, nameof(Text), Text);
+                builder.AddAttribute(nameof(Text), Text);
             }
             if (Multiline != null)
             {
-                builder.AddAttribute(2, nameof(Multiline), Multiline.Value);
+                builder.AddAttribute(nameof(Multiline), Multiline.Value);
             }
             if (ReadOnly != null)
             {
-                builder.AddAttribute(3, nameof(ReadOnly), ReadOnly.Value);
+                builder.AddAttribute(nameof(ReadOnly), ReadOnly.Value);
             }
             if (WordWrap != null)
             {
-                builder.AddAttribute(4, nameof(WordWrap), WordWrap.Value);
+                builder.AddAttribute(nameof(WordWrap), WordWrap.Value);
             }
             if (ScrollBars != null)
             {
-                builder.AddAttribute(5, nameof(ScrollBars), (int)ScrollBars.Value);
+                builder.AddAttribute(nameof(ScrollBars), (int)ScrollBars.Value);
             }
         }
 
