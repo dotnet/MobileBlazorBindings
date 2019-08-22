@@ -1,7 +1,5 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
-using Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
@@ -9,22 +7,15 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            BlelementAdapter.KnownElements.Add(typeof(StackLayout).FullName, new ComponentControlFactoryFunc<Element>((_, __) => new BlazorStackLayout()));
+            BlelementAdapter.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
 
-        protected override void RenderContents(RenderTreeBuilder builder)
-        {
-            builder.AddContent(1000, ChildContent);
-        }
+        protected override RenderFragment GetChildContent() => ChildContent;
 
         class BlazorStackLayout : Xamarin.Forms.StackLayout, IBlazorNativeControl
         {
-            public BlazorStackLayout()
-            {
-            }
-
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
@@ -35,6 +26,5 @@ namespace Blaxamarin.Framework.Elements
                 }
             }
         }
-
     }
 }
