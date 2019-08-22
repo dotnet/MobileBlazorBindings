@@ -11,7 +11,7 @@ namespace BlinForms.Framework
         {
         }
 
-        public Form RootForm { get; private set; } = new RootForm();
+        public Form RootForm { get; } = new RootForm();
 
         protected override void InitializeRootAdapter(EmblazonAdapter<Control> adapter)
         {
