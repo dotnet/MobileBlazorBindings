@@ -1,6 +1,4 @@
 ﻿using Emblazon;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using Xamarin.Forms;
 
