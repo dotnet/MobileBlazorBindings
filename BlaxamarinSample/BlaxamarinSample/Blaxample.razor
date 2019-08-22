@@ -1,7 +1,12 @@
 ﻿@using Blaxamarin.Framework.Elements
 
-<Button Text="@("Increment: " + count)" OnClick="@IncrementCount" />
-
+    <StackLayout>
+        <Button Text="@("Increment by 1: " + count)" OnClick="@IncrementCount" />
+        <Button Text="@("Increment by 8: " + count2)" OnClick="@IncrementCount2" />
+        <Button Text="333"></Button>
+        <Button Text="444"></Button>
+        <Button Text="555"></Button>
+    </StackLayout>
 
 @code {
     int count = 0;
@@ -9,5 +14,12 @@
     void IncrementCount()
     {
         count++;
+    }
+
+    int count2 = 0;
+
+    void IncrementCount2()
+    {
+        count2 += 8;
     }
 }

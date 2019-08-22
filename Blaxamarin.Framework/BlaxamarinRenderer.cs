@@ -7,13 +7,12 @@ namespace Blaxamarin.Framework
 {
     public class BlaxamarinRenderer : EmblazonRenderer<Element>
     {
-        public BlaxamarinRenderer(Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider, Application app)
+        public BlaxamarinRenderer(Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider)
             : base(serviceProvider)
         {
-            App = app;
         }
 
-        public Application App { get; }
+        public ContentPage ContentPage { get; } = new ContentPage();
 
         protected override void InitializeRootAdapter(EmblazonAdapter<Element> adapter)
         {
@@ -27,9 +26,9 @@ namespace Blaxamarin.Framework
             //    Dock = DockStyle.Fill,
             //};
 
-            adapter.TargetControl = App;
+            adapter.TargetControl = new ContentView();
 
-            //RootForm.Controls.Add(adapter.TargetControl);
+            ContentPage.Content = adapter.TargetControl as View;
         }
 
         protected override void HandleException(Exception exception)

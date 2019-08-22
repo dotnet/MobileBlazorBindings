@@ -1,8 +1,5 @@
-﻿using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms;
 using BlaxamarinSample.Services;
-using BlaxamarinSample.Views;
 
 namespace BlaxamarinSample
 {
@@ -15,7 +12,7 @@ namespace BlaxamarinSample
 
             DependencyService.Register<MockDataStore>();
 
-            Blaxamarin.Framework.Blaxamarin.Run<Blaxample>(this);
+            MainPage = Blaxamarin.Framework.Blaxamarin.Run<Blaxample>();
         }
 
         protected override void OnStart()
