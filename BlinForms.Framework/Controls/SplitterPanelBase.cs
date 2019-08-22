@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Windows.Forms;
 
@@ -24,9 +23,6 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public RenderFragment ChildContent { get; set; }
 
-        protected override void RenderContents(RenderTreeBuilder builder)
-        {
-            builder.AddContent(1000, ChildContent);
-        }
+        protected override RenderFragment GetChildContent() => ChildContent;
     }
 }

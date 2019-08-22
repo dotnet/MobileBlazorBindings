@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
 {
-    public abstract class FormsComponentBase : ComponentBase
+    public abstract class FormsComponentBase : NativeControlComponentBase
     {
         [Parameter] public int? Top { get; set; }
         [Parameter] public int? Left { get; set; }
@@ -20,60 +21,40 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public AnchorStyles? Anchor { get; set; }
 
-        protected override void BuildRenderTree(RenderTreeBuilder builder)
+        protected override void RenderAttributes(AttributesBuilder builder)
         {
-            builder.OpenElement(0, GetType().FullName);
-
-            RenderAttributes(new AttributesBuilder(builder));
-
             if (Top != null)
             {
-                builder.AddAttribute(100, nameof(Top), Top.Value);
+                builder.AddAttribute(nameof(Top), Top.Value);
             }
             if (Left != null)
             {
-                builder.AddAttribute(101, nameof(Left), Left.Value);
+                builder.AddAttribute(nameof(Left), Left.Value);
             }
             if (Width != null)
             {
-                builder.AddAttribute(102, nameof(Width), Width.Value);
+                builder.AddAttribute(nameof(Width), Width.Value);
             }
             if (Height != null)
             {
-                builder.AddAttribute(103, nameof(Height), Height.Value);
+                builder.AddAttribute(nameof(Height), Height.Value);
             }
             if (Visible != null)
             {
-                builder.AddAttribute(104, nameof(Visible), Visible.Value);
+                builder.AddAttribute(nameof(Visible), Visible.Value);
             }
             if (BackColor != null)
             {
-                builder.AddAttribute(105, nameof(BackColor), BackColor.Value.ToArgb());
+                builder.AddAttribute(nameof(BackColor), BackColor.Value.ToArgb());
             }
             if (TabIndex != null)
             {
-                builder.AddAttribute(106, nameof(TabIndex), TabIndex.Value);
+                builder.AddAttribute(nameof(TabIndex), TabIndex.Value);
             }
             if (Anchor != null)
             {
-                builder.AddAttribute(107, nameof(Anchor), (int)Anchor.Value);
+                builder.AddAttribute(nameof(Anchor), (int)Anchor.Value);
             }
-
-            RenderContents(builder);
-
-            builder.CloseElement();
-        }
-
-        protected virtual void RenderAttributes(AttributesBuilder builder)
-        {
-        }
-
-        /// <summary>
-        /// Rendered contents should use sequence values 1000+.
-        /// </summary>
-        /// <param name="builder"></param>
-        protected virtual void RenderContents(RenderTreeBuilder builder)
-        {
         }
 
         public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)

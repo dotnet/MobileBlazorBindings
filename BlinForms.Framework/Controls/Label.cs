@@ -15,6 +15,8 @@ namespace BlinForms.Framework.Controls
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
+            base.RenderAttributes(builder);
+
             if (Text != null)
             {
                 builder.AddAttribute(nameof(Text), Text);
