@@ -56,6 +56,12 @@ namespace Emblazon
                 }
             }
 
+            if (renderBatch.DisposedEventHandlerIDs.Count != 0)
+            {
+                // TODO: Support this
+                throw new NotSupportedException("Disposing event handlers is not yet supported.");
+            }
+
             return Task.CompletedTask;
         }
 
