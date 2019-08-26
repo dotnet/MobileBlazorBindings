@@ -25,7 +25,7 @@ namespace Emblazon
         {
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
-            var adapter = CreateAdapter();
+            var adapter = CreateRootAdapter();
             adapter.Name = "Root BlontrolAdapter";
             adapter.SetRenderer(this);
 
@@ -65,14 +65,16 @@ namespace Emblazon
             return Task.CompletedTask;
         }
 
-        internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(int componentId)
+        internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(TNativeComponent physicalParent, int componentId)
         {
-            var result = CreateAdapter();
+            var result = CreateAdapter(physicalParent);
             result.SetRenderer(this);
             _componentIdToAdapter[componentId] = result;
             return result;
         }
 
-        protected abstract EmblazonAdapter<TNativeComponent> CreateAdapter();
+        protected abstract EmblazonAdapter<TNativeComponent> CreateRootAdapter();
+
+        protected abstract EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent);
     }
 }

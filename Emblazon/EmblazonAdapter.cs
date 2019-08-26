@@ -9,7 +9,7 @@ namespace Emblazon
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
-    public abstract class EmblazonAdapter<TNativeComponent> where TNativeComponent : class
+    public abstract class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
     {
         private static Dictionary<string, ComponentControlFactory<TNativeComponent>> KnownElements { get; }
             = new Dictionary<string, ComponentControlFactory<TNativeComponent>>();
@@ -29,15 +29,16 @@ namespace Emblazon
             RegisterNativeControlComponent<TComponent>((_, __) => new TControl());
         }
 
-        public EmblazonAdapter()
+        public EmblazonAdapter(TNativeComponent closestPhysicalParent)
         {
+            _closestPhysicalParent = closestPhysicalParent;
         }
 
         public EmblazonAdapter<TNativeComponent> Parent { get; set; }
         public List<EmblazonAdapter<TNativeComponent>> Children { get; } = new List<EmblazonAdapter<TNativeComponent>>();
 
-        // TODO: Is this the right concept? Can a component have multiple native controls created?
-        public TNativeComponent TargetControl { get; set; }
+        private readonly TNativeComponent _closestPhysicalParent;
+        private TNativeComponent _possibleTargetControl;
 
         public EmblazonRenderer<TNativeComponent> Renderer { get; private set; }
 
@@ -53,7 +54,7 @@ namespace Emblazon
 
         public override string ToString()
         {
-            return $"EmblazonAdapter: Name={Name ?? "<?>"}, Target={TargetControl?.GetType().Name ?? "<?>"}, #Children={Children.Count}";
+            return $"EmblazonAdapter: Name={Name ?? "<?>"}, Target={_possibleTargetControl?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
         }
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
@@ -80,21 +81,38 @@ namespace Emblazon
         private void ApplyRemoveFrame(int siblingIndex)
         {
             var childToRemove = Children[siblingIndex];
-
-            // If there's a target control for the child adapter, remove it from the live control tree.
-            // Not all adapters have target controls; Adapters for markup/text have no associated native control.
-            if (childToRemove.TargetControl != null)
-            {
-                RemoveChildControl(childToRemove);
-            }
             Children.RemoveAt(siblingIndex);
+            childToRemove.RemoveSelfAndDescendants();
         }
 
-        protected abstract void RemoveChildControl(EmblazonAdapter<TNativeComponent> child);
+        private void RemoveSelfAndDescendants()
+        {
+            if (_possibleTargetControl != null)
+            {
+                // This adapter represents a physical control, so by removing it, we implicitly
+                // remove all descendants.
+                RemovePhysicalControl(_possibleTargetControl);
+            }
+            else
+            {
+                // This adapter is just a container for other adapters
+                foreach (var child in Children)
+                {
+                    child.RemoveSelfAndDescendants();
+                }
+            }
+        }
+
+        public abstract void RemovePhysicalControl(TNativeComponent control);
 
         private void ApplySetAttribute(ref RenderTreeFrame attributeFrame)
         {
-            var mapper = GetControlPropertyMapper(TargetControl);
+            if (_possibleTargetControl == null)
+            {
+                throw new InvalidOperationException($"Trying to apply attribute {attributeFrame.AttributeName} to an adapter that isn't for an element");
+            }
+
+            var mapper = GetControlPropertyMapper(_possibleTargetControl);
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
 
@@ -111,7 +129,7 @@ namespace Emblazon
                 case RenderTreeFrameType.Component:
                     {
                         // Components are represented by BlontrolAdapters
-                        var childAdapter = Renderer.CreateAdapterForChildComponent(frame.ComponentId);
+                        var childAdapter = Renderer.CreateAdapterForChildComponent(_possibleTargetControl ?? _closestPhysicalParent, frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
@@ -126,7 +144,7 @@ namespace Emblazon
                         {
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
-                        var childAdapter = CreateAdapter();
+                        var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy markup, sib#={siblingIndex}";
                         childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
@@ -139,7 +157,7 @@ namespace Emblazon
                         {
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
-                        var childAdapter = CreateAdapter();
+                        var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy text, sib#={siblingIndex}";
                         childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
@@ -150,9 +168,7 @@ namespace Emblazon
             }
         }
 
-        protected abstract EmblazonAdapter<TNativeComponent> CreateAdapter();
-
-        protected abstract bool IsChildControlParented(TNativeComponent nativeChild);
+        protected abstract EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent);
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
         {
@@ -160,19 +176,30 @@ namespace Emblazon
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var controlFactory = KnownElements[elementName];
-            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TNativeComponent>(Renderer, Parent?.TargetControl));
+            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TNativeComponent>(Renderer, _closestPhysicalParent));
 
-            TargetControl = nativeControl;
-
-            // TODO: Need a more reliable way to know whether the target control is already created, e.g. a return value
-            // from ControlFactory.CreateControl(). Right now the check assumes that if the target control is already parented,
-            // there is no need to parent it. Not an awful assumption, but looks odd.
-            if (!IsChildControlParented(TargetControl))
+            if (siblingIndex != 0)
             {
-                // Add the new native control to the parent's child controls (the parent adapter is our
-                // container, so the parent adapter's control is our control's container.
-                AddChildControl(Parent.TargetControl, siblingIndex, TargetControl);
+                // With the current design, we should be able to ignore sibling indices for elements,
+                // so bail out if that's not the case
+                throw new NotSupportedException($"Currently we assume all adapter controls render exactly zero or one elements. Found an element with sibling index {siblingIndex}");
             }
+
+            // For the location in the physical control tree, find the last preceding-sibling adapter that has
+            // a physical descendant (if any). If there is one, we physically insert after that one. If not,
+            // we'll insert as the first child of the closest physical parent.
+            if (!IsParented(nativeControl))
+            {
+                if (Parent.TryFindPhysicalChildIndexBefore(this, out var precedingSiblingPhysicalIndex))
+                {
+                    AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
+                }
+                else
+                {
+                    AddPhysicalControl(_closestPhysicalParent, nativeControl, 0);
+                }
+            }
+            _possibleTargetControl = nativeControl;
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
             for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
@@ -203,6 +230,77 @@ namespace Emblazon
             //{
             //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
             //}
+        }
+
+        protected abstract bool IsParented(TNativeComponent nativeControl);
+        public abstract void AddPhysicalControl(TNativeComponent parent, TNativeComponent child, int physicalSiblingIndex);
+
+        private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TNativeComponent> child, out int resultIndex)
+        {
+            if (!TryGetPhysicalIndexOfLastDescendant(out _))
+            {
+                if (Parent == null)
+                {
+                    // We're at the root
+                    resultIndex = 0;
+                    return false;
+                }
+                else
+                {
+                    // No physical controls exist in this subtree, so step upwards
+                    return Parent.TryFindPhysicalChildIndexBefore(this, out resultIndex);
+                }
+            }
+
+            var suppliedChildIndex = Children.IndexOf(child);
+            if (suppliedChildIndex < 0)
+            {
+                throw new ArgumentException("She says I am the one, but the kid is not my son");
+            }
+
+            for (var candidateAdapterIndex = suppliedChildIndex - 1; candidateAdapterIndex >= 0; candidateAdapterIndex--)
+            {
+                var candidateAdapter = Children[candidateAdapterIndex];
+                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(out resultIndex))
+                {
+                    return true;
+                }
+            }
+
+            resultIndex = 0;
+            return false;
+        }
+
+        private bool TryGetPhysicalIndexOfLastDescendant(out int resultIndex)
+        {
+            var lastPhysicalDescendant = GetLastPhysicalDescendant();
+            if (lastPhysicalDescendant == null)
+            {
+                resultIndex = 0;
+                return false;
+            }
+            else
+            {
+                resultIndex = GetPhysicalSiblingIndex(lastPhysicalDescendant);
+                return true;
+            }
+        }
+
+        public abstract int GetPhysicalSiblingIndex(TNativeComponent nativeComponent);
+
+        private TNativeComponent GetLastPhysicalDescendant()
+        {
+            for (var i = Children.Count - 1; i >= 0; i--)
+            {
+                var child = Children[i];
+                var physicalDescendant = child.GetLastPhysicalDescendant();
+                if (physicalDescendant != null)
+                {
+                    return physicalDescendant;
+                }
+            }
+
+            return _possibleTargetControl;
         }
 
         private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
@@ -252,8 +350,6 @@ namespace Emblazon
             }
         }
 
-        protected abstract void AddChildControl(TNativeComponent parentControl, int siblingIndex, TNativeComponent childControl);
-
         private static IControlPropertyMapper GetControlPropertyMapper(TNativeComponent control)
         {
             // TODO: Have control-specific ones, but also need a general one for custom controls? Or maybe not needed?
@@ -264,6 +360,14 @@ namespace Emblazon
             else
             {
                 return new ReflectionControlPropertyMapper(control);
+            }
+        }
+
+        public void Dispose()
+        {
+            if (_possibleTargetControl is IDisposable disposableTargetControl)
+            {
+                disposableTargetControl.Dispose();
             }
         }
     }
