@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
-using System.Linq;
 using Emblazon;
 
 namespace BlinForms.Framework
@@ -9,83 +8,53 @@ namespace BlinForms.Framework
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live WinForms control tree.
     /// </summary>
-    public class BlontrolAdapter : EmblazonAdapter<Control>, IDisposable
+    public class BlontrolAdapter : EmblazonAdapter<Control>
     {
-        public BlontrolAdapter()
+        // Notice how all the methods here could be static (none of them operate on any members
+        // of BlontrolAdapter). This suggests that EmblazonAdapter should instead be a private
+        // implementation detail of Emblazon, not something subclassed for each UI tech. Instead,
+        // each UI tech should provide a singleton-like implementation of some interface that
+        // contains these methods. That service only needs to know how to update the physical tree
+        // given parent/child/index params and doesn't need any concept of adapters.
+
+        public BlontrolAdapter(Control physicalParent) : base(physicalParent)
         {
         }
 
-        protected override void RemoveChildControl(EmblazonAdapter<Control> child)
+        public override void RemovePhysicalControl(Control control)
         {
-            TargetControl.Controls.Remove(child.TargetControl);
+            control.Parent.Controls.Remove(control);
         }
 
-        protected override EmblazonAdapter<Control> CreateAdapter()
+        protected override EmblazonAdapter<Control> CreateAdapter(Control physicalParent)
         {
-            return new BlontrolAdapter();
+            return new BlontrolAdapter(physicalParent);
         }
 
-        protected override bool IsChildControlParented(Control nativeChild)
+        public override void AddPhysicalControl(Control parentControl, Control childControl, int siblingIndex)
         {
-            return nativeChild.Parent != null;
-        }
-
-        protected override void AddChildControl(Control parentControl, int siblingIndex, Control childControl)
-        {
-            var indexOfAdapterInParentContainer = Parent.Children.IndexOf(this);
-
-            // Calculate the actual desired sibling index based on the current adapter tree and mapping it
-            // to the native control tree.
-            int actualSiblingIndex;
-
-            if (indexOfAdapterInParentContainer == 0)
-            {
-                // If this adapter is the first in its container, the child control should be the first control in its container
-                actualSiblingIndex = 0;
-            }
-            else
-            {
-                // If this adapter has previous siblings, find out the nearest previous sibling that has a target control
-                // and find the index of that target control in its container. The new control being added here needs to come
-                // immediately after that target control.
-
-                var previousSiblingAdapterWithTargetControlInParentContainer =
-                    Parent.Children
-                    .Take(indexOfAdapterInParentContainer)
-                    .Reverse()
-                    .FirstOrDefault(adapter => adapter.TargetControl != null);
-
-                if (previousSiblingAdapterWithTargetControlInParentContainer != null)
-                {
-                    var indexOfPreviousSiblingTargetControlInParentContainer =
-                    parentControl.Controls.IndexOf(previousSiblingAdapterWithTargetControlInParentContainer.TargetControl);
-
-                    actualSiblingIndex = indexOfPreviousSiblingTargetControlInParentContainer + 1;
-                }
-                else
-                {
-                    // TODO: Need to determine what gets into this state, and what the sibling index should be
-                    actualSiblingIndex = 0;
-                }
-            }
-
-            if (actualSiblingIndex <= parentControl.Controls.Count)
+            if (siblingIndex <= parentControl.Controls.Count)
             {
                 // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
                 // and then re-order the collection to move the control to the correct index.
                 parentControl.Controls.Add(childControl);
-                parentControl.Controls.SetChildIndex(childControl, actualSiblingIndex);
+                parentControl.Controls.SetChildIndex(childControl, siblingIndex);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(actualSiblingIndex)}={actualSiblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
+                Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(siblingIndex)}={siblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
                 parentControl.Controls.Add(childControl);
             }
         }
 
-        void IDisposable.Dispose()
+        public override int GetPhysicalSiblingIndex(Control control)
         {
-            TargetControl.Dispose();
+            return control.Parent.Controls.GetChildIndex(control);
+        }
+
+        protected override bool IsParented(Control nativeControl)
+        {
+            return nativeControl.Parent != null;
         }
     }
 }

@@ -15,15 +15,7 @@ namespace BlinForms.Framework
 
         protected override void InitializeRootAdapter(EmblazonAdapter<Control> adapter)
         {
-            // TODO: Might actually want to keep this dummy control so that Blinforms can be an island in a form. But, need
-            // to figure out its default size etc. Perhaps top-level Razor class implements ITopLevel{FormSettings} interface
-            // to control 'container Form' options?
-            adapter.TargetControl = new Control()
-            {
-                Dock = DockStyle.Fill,
-            };
-
-            RootForm.Controls.Add(adapter.TargetControl);
+            // TODO: Remove this API?
         }
 
         protected override void HandleException(Exception exception)
@@ -31,9 +23,14 @@ namespace BlinForms.Framework
             MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override EmblazonAdapter<Control> CreateAdapter()
+        protected override EmblazonAdapter<Control> CreateRootAdapter()
         {
-            return new BlontrolAdapter();
+            return CreateAdapter(RootForm);
+        }
+
+        protected override EmblazonAdapter<Control> CreateAdapter(Control physicalParent)
+        {
+            return new BlontrolAdapter(physicalParent);
         }
     }
 }
