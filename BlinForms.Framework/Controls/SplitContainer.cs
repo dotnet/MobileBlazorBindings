@@ -13,7 +13,8 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public RenderFragment ChildContent { get; set; }
         [Parameter] public Orientation? Orientation { get; set; }
-
+        [Parameter] public int? SplitterDistance { get; set; }
+        
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
@@ -21,6 +22,10 @@ namespace BlinForms.Framework.Controls
             if (Orientation != null)
             {
                 builder.AddAttribute(nameof(Orientation), (int)Orientation.Value);
+            }
+            if (SplitterDistance != null)
+            {
+                builder.AddAttribute(nameof(SplitterDistance), SplitterDistance.Value);
             }
         }
 
@@ -34,6 +39,9 @@ namespace BlinForms.Framework.Controls
                 {
                     case nameof(Orientation):
                         Orientation = (Orientation)int.Parse((string)attributeValue);
+                        break;
+                    case nameof(SplitterDistance):
+                        SplitterDistance = int.Parse((string)attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

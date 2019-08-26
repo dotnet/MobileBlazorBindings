@@ -19,6 +19,7 @@ namespace BlinForms.Framework.Controls
         [Parameter] public Color? BackColor { get; set; }
 
         [Parameter] public AnchorStyles? Anchor { get; set; }
+        [Parameter] public DockStyle? Dock { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -54,6 +55,10 @@ namespace BlinForms.Framework.Controls
             {
                 builder.AddAttribute(nameof(Anchor), (int)Anchor.Value);
             }
+            if (Dock != null)
+            {
+                builder.AddAttribute(nameof(Dock), (int)Dock.Value);
+            }
         }
 
         public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
@@ -83,6 +88,9 @@ namespace BlinForms.Framework.Controls
                     break;
                 case nameof(Anchor):
                     control.Anchor = (AnchorStyles)int.Parse((string)attributeValue);
+                    break;
+                case nameof(Dock):
+                    control.Dock = (DockStyle)int.Parse((string)attributeValue);
                     break;
                 default:
                     throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");
