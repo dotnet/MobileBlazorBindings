@@ -73,7 +73,7 @@ namespace Emblazon
             {
                 // This adapter represents a physical control, so by removing it, we implicitly
                 // remove all descendants.
-                RemovePhysicalControl(_possibleTargetControl);
+                Renderer.NativeControlManager.RemovePhysicalControl(_possibleTargetControl);
             }
             else
             {
@@ -84,8 +84,6 @@ namespace Emblazon
                 }
             }
         }
-
-        public abstract void RemovePhysicalControl(TNativeComponent control);
 
         private void ApplySetAttribute(ref RenderTreeFrame attributeFrame)
         {
@@ -170,15 +168,15 @@ namespace Emblazon
             // For the location in the physical control tree, find the last preceding-sibling adapter that has
             // a physical descendant (if any). If there is one, we physically insert after that one. If not,
             // we'll insert as the first child of the closest physical parent.
-            if (!IsParented(nativeControl))
+            if (!Renderer.NativeControlManager.IsParented(nativeControl))
             {
                 if (Parent.TryFindPhysicalChildIndexBefore(this, out var precedingSiblingPhysicalIndex))
                 {
-                    AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
+                    Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
                 }
                 else
                 {
-                    AddPhysicalControl(_closestPhysicalParent, nativeControl, 0);
+                    Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, 0);
                 }
             }
             _possibleTargetControl = nativeControl;
@@ -213,9 +211,6 @@ namespace Emblazon
             //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
             //}
         }
-
-        protected abstract bool IsParented(TNativeComponent nativeControl);
-        public abstract void AddPhysicalControl(TNativeComponent parent, TNativeComponent child, int physicalSiblingIndex);
 
         private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TNativeComponent> child, out int resultIndex)
         {
@@ -263,12 +258,10 @@ namespace Emblazon
             }
             else
             {
-                resultIndex = GetPhysicalSiblingIndex(lastPhysicalDescendant);
+                resultIndex = Renderer.NativeControlManager.GetPhysicalSiblingIndex(lastPhysicalDescendant);
                 return true;
             }
         }
-
-        public abstract int GetPhysicalSiblingIndex(TNativeComponent nativeComponent);
 
         private TNativeComponent GetLastPhysicalDescendant()
         {

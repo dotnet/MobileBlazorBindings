@@ -11,15 +11,29 @@ namespace Emblazon
     public abstract class EmblazonRenderer<TNativeComponent> : Renderer where TNativeComponent : class
     {
         private readonly Dictionary<int, EmblazonAdapter<TNativeComponent>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TNativeComponent>>();
+        private NativeControlManager<TNativeComponent> _nativeControlManager;
 
         public EmblazonRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider, new LoggerFactory())
         {
         }
 
+        protected abstract NativeControlManager<TNativeComponent> CreateNativeControlManager();
+
+        internal NativeControlManager<TNativeComponent> NativeControlManager
+        {
+            get
+            {
+                if (_nativeControlManager == null)
+                {
+                    _nativeControlManager = CreateNativeControlManager();
+                }
+                return _nativeControlManager;
+            }
+        }
+
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
-
 
         public Task AddComponent<T>() where T : IComponent
         {

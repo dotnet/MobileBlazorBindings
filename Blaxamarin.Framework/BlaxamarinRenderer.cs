@@ -34,5 +34,10 @@ namespace Blaxamarin.Framework
         {
             return new BlelementAdapter(physicalParent);
         }
+
+        protected override NativeControlManager<Element> CreateNativeControlManager()
+        {
+            return new BlaxamarinNativeControlManager();
+        }
     }
 }

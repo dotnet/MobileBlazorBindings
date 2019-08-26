@@ -27,5 +27,10 @@ namespace BlinForms.Framework
         {
             return new BlontrolAdapter(physicalParent);
         }
+
+        protected override NativeControlManager<Control> CreateNativeControlManager()
+        {
+            return new BlinFormsNativeControlManager();
+        }
     }
 }
