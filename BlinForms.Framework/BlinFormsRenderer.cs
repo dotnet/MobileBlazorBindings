@@ -13,11 +13,6 @@ namespace BlinForms.Framework
 
         public Form RootForm { get; } = new RootForm();
 
-        protected override void InitializeRootAdapter(EmblazonAdapter<Control> adapter)
-        {
-            // TODO: Remove this API?
-        }
-
         protected override void HandleException(Exception exception)
         {
             MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

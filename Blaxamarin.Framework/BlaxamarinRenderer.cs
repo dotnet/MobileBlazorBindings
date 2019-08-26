@@ -14,20 +14,6 @@ namespace Blaxamarin.Framework
 
         public ContentPage ContentPage { get; } = new ContentPage();
 
-        protected override void InitializeRootAdapter(EmblazonAdapter<Element> adapter)
-        {
-            // TODO: Need to figure out a proper story for what the root adapter should be. Is it the Application? A ContentPage? A View? Etc.
-
-            // TODO: Might actually want to keep this dummy control so that Blinforms can be an island in a form. But, need
-            // to figure out its default size etc. Perhaps top-level Razor class implements ITopLevel{FormSettings} interface
-            // to control 'container Form' options?
-            //adapter.TargetControl = new Element()
-            //{
-            //    Dock = DockStyle.Fill,
-            //};
-
-        }
-
         protected override void HandleException(Exception exception)
         {
             Debug.Fail($"{nameof(HandleException)} called with '{exception.GetType().Name}': '{exception.Message}'");

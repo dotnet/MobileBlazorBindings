@@ -29,13 +29,9 @@ namespace Emblazon
             adapter.Name = "RootAdapter";
             adapter.SetRenderer(this);
 
-            InitializeRootAdapter(adapter);
-
             _componentIdToAdapter[componentId] = adapter;
             return RenderRootComponentAsync(componentId);
         }
-
-        protected abstract void InitializeRootAdapter(EmblazonAdapter<TNativeComponent> adapter);
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {
