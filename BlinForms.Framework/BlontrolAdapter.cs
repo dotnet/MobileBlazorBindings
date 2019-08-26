@@ -1,7 +1,6 @@
-﻿using System;
+﻿using Emblazon;
 using System.Diagnostics;
 using System.Windows.Forms;
-using Emblazon;
 
 namespace BlinForms.Framework
 {
@@ -31,18 +30,18 @@ namespace BlinForms.Framework
             return new BlontrolAdapter(physicalParent);
         }
 
-        public override void AddPhysicalControl(Control parentControl, Control childControl, int siblingIndex)
+        public override void AddPhysicalControl(Control parentControl, Control childControl, int physicalSiblingIndex)
         {
-            if (siblingIndex <= parentControl.Controls.Count)
+            if (physicalSiblingIndex <= parentControl.Controls.Count)
             {
                 // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
                 // and then re-order the collection to move the control to the correct index.
                 parentControl.Controls.Add(childControl);
-                parentControl.Controls.SetChildIndex(childControl, siblingIndex);
+                parentControl.Controls.SetChildIndex(childControl, physicalSiblingIndex);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(siblingIndex)}={siblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
+                Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentControl.Controls.Count={parentControl.Controls.Count}");
                 parentControl.Controls.Add(childControl);
             }
         }

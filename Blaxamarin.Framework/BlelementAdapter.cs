@@ -10,89 +10,54 @@ namespace Blaxamarin.Framework
     /// </summary>
     public class BlelementAdapter : EmblazonAdapter<Element>
     {
-        public BlelementAdapter()
+        public BlelementAdapter(Element physicalParent) : base(physicalParent)
         {
         }
 
-        protected override void RemoveChildControl(EmblazonAdapter<Element> child)
+        protected override EmblazonAdapter<Element> CreateAdapter(Element physicalParent)
         {
-            var targetAsLayout = TargetControl as Layout<View>;
-            var childTargetAsView = child.TargetControl as View;
-
-            targetAsLayout.Children.Remove(childTargetAsView);
+            return new BlelementAdapter(physicalParent);
         }
 
-        protected override EmblazonAdapter<Element> CreateAdapter()
+        public override void RemovePhysicalControl(Element control)
         {
-            return new BlelementAdapter();
+            // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
+            var physicalParent = control.Parent;
+            var physicalParentAsLayout = physicalParent as Layout<View>;
+            var childTargetAsView = control as View;
+
+            physicalParentAsLayout.Children.Remove(childTargetAsView);
         }
 
-        protected override bool IsChildControlParented(Element nativeChild)
+        protected override bool IsParented(Element nativeControl)
         {
-            return nativeChild.Parent != null;
+            return nativeControl.Parent != null;
         }
 
-        protected override void AddChildControl(Element parentControl, int siblingIndex, Element childControl)
+        public override void AddPhysicalControl(Element parent, Element child, int physicalSiblingIndex)
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
-            switch (parentControl)
+            switch (parent)
             {
                 case Layout<View> parentAsLayout:
                     {
-                        var childAsView = childControl as View;
+                        var childAsView = child as View;
 
-                        var indexOfAdapterInParentContainer = Parent.Children.IndexOf(this);
-
-                        // Calculate the actual desired sibling index based on the current adapter tree and mapping it
-                        // to the native control tree.
-                        int actualSiblingIndex;
-
-                        if (indexOfAdapterInParentContainer == 0)
+                        if (physicalSiblingIndex <= parentAsLayout.Children.Count)
                         {
-                            // If this adapter is the first in its container, the child control should be the first control in its container
-                            actualSiblingIndex = 0;
+                            parentAsLayout.Children.Insert(physicalSiblingIndex, childAsView);
                         }
                         else
                         {
-                            // If this adapter has previous siblings, find out the nearest previous sibling that has a target control
-                            // and find the index of that target control in its container. The new control being added here needs to come
-                            // immediately after that target control.
-
-                            var previousSiblingAdapterWithTargetControlInParentContainer =
-                                Parent.Children
-                                .Take(indexOfAdapterInParentContainer)
-                                .Reverse()
-                                .FirstOrDefault(adapter => adapter.TargetControl != null);
-
-                            if (previousSiblingAdapterWithTargetControlInParentContainer != null)
-                            {
-                                var indexOfPreviousSiblingTargetControlInParentContainer =
-                                    parentAsLayout.Children.IndexOf(previousSiblingAdapterWithTargetControlInParentContainer.TargetControl as View);
-
-                                actualSiblingIndex = indexOfPreviousSiblingTargetControlInParentContainer + 1;
-                            }
-                            else
-                            {
-                                // TODO: Need to determine what gets into this state, and what the sibling index should be
-                                actualSiblingIndex = 0;
-                            }
-                        }
-
-                        if (actualSiblingIndex <= parentAsLayout.Children.Count)
-                        {
-                            parentAsLayout.Children.Insert(actualSiblingIndex, childAsView);
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"WARNING: {nameof(AddChildControl)} called with {nameof(actualSiblingIndex)}={actualSiblingIndex}, but parentAsLayout.Children.Count={parentAsLayout.Children.Count}");
+                            Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsLayout.Children.Count={parentAsLayout.Children.Count}");
                             parentAsLayout.Children.Add(childAsView);
                         }
                     }
                     break;
                 case ContentView parentAsContentView:
                     {
-                        var childAsView = childControl as View;
+                        var childAsView = child as View;
                         parentAsContentView.Content = childAsView;
                     }
                     break;
@@ -100,11 +65,11 @@ namespace Blaxamarin.Framework
                     {
                         if (parentAsApp.MainPage != null)
                         {
-                            Debug.Fail($"Application already has MainPage set; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childControl.GetType().FullName}");
+                            Debug.Fail($"Application already has MainPage set; cannot set {parentAsApp.GetType().FullName}'s MainPage to {child.GetType().FullName}");
                         }
                         else
                         {
-                            if (childControl is Page childControlAsPage)
+                            if (child is Page childControlAsPage)
                             {
                                 parentAsApp.MainPage = childControlAsPage;
                             }
@@ -113,7 +78,7 @@ namespace Blaxamarin.Framework
                                 // TODO: Do we need a BlelementAdapter representing the dummy ContentPage? Or should the Razor page be a ContentPage somehow?
                                 var dummyView = new ContentPage
                                 {
-                                    Content = childControl as View
+                                    Content = child as View
                                 };
                                 parentAsApp.MainPage = dummyView;
                                 //Debug.Fail($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childControl.GetType().FullName}");
@@ -122,8 +87,40 @@ namespace Blaxamarin.Framework
                     }
                     break;
                 default:
-                    Debug.Fail($"Don't know how to handle parent element type {parentControl.GetType().FullName} in order to add child {childControl.GetType().FullName}");
+                    Debug.Fail($"Don't know how to handle parent element type {parent.GetType().FullName} in order to add child {child.GetType().FullName}");
                     break;
+            }
+        }
+
+        public override int GetPhysicalSiblingIndex(Element nativeComponent)
+        {
+            // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
+
+            switch (nativeComponent.Parent)
+            {
+                case Layout<View> parentAsLayout:
+                    {
+                        var childAsView = nativeComponent as View;
+
+                        return parentAsLayout.Children.IndexOf(childAsView);
+                    }
+                case ContentView _:
+                    {
+                        // A ContentView can have only 1 child, so its index is always 0. Not that anyone
+                        // should typically need the sibling index here, because this component can't
+                        // ever *have* any siblings...
+                        return 0;
+                    }
+                case Application _:
+                    {
+                        // An Application can have only 1 child (its MainPage), so its index is always 0. Not that anyone
+                        // should typically need the sibling index here, because this component can't
+                        // ever *have* any siblings...
+                        return 0;
+                    }
+                default:
+                    Debug.Fail($"Don't know how to handle parent element type {nativeComponent.Parent.GetType().FullName} in order to get index of sibling {nativeComponent.GetType().FullName}");
+                    return -1;
             }
         }
     }

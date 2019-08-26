@@ -26,9 +26,6 @@ namespace Blaxamarin.Framework
             //    Dock = DockStyle.Fill,
             //};
 
-            adapter.TargetControl = new ContentView();
-
-            ContentPage.Content = adapter.TargetControl as View;
         }
 
         protected override void HandleException(Exception exception)
@@ -39,9 +36,17 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override EmblazonAdapter<Element> CreateAdapter()
+        protected override EmblazonAdapter<Element> CreateRootAdapter()
         {
-            return new BlelementAdapter();
+            var rootContent = new ContentView();
+            ContentPage.Content = rootContent;
+
+            return CreateAdapter(rootContent);
+        }
+
+        protected override EmblazonAdapter<Element> CreateAdapter(Element physicalParent)
+        {
+            return new BlelementAdapter(physicalParent);
         }
     }
 }

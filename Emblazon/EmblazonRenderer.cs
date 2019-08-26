@@ -26,7 +26,7 @@ namespace Emblazon
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
             var adapter = CreateRootAdapter();
-            adapter.Name = "Root BlontrolAdapter";
+            adapter.Name = "RootAdapter";
             adapter.SetRenderer(this);
 
             InitializeRootAdapter(adapter);
