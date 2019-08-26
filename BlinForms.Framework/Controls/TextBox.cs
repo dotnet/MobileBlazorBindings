@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            BlontrolAdapter.RegisterNativeControlComponent<TextBox, BlazorTextBox>();
+            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<TextBox, BlazorTextBox>();
         }
 
         [Parameter] public string Text { get; set; }

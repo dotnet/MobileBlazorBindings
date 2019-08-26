@@ -11,24 +11,6 @@ namespace Emblazon
     /// </summary>
     public abstract class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
     {
-        private static Dictionary<string, ComponentControlFactory<TNativeComponent>> KnownElements { get; }
-            = new Dictionary<string, ComponentControlFactory<TNativeComponent>>();
-
-        public static void RegisterNativeControlComponent<TComponent>(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent, TNativeComponent> factory) where TComponent: NativeControlComponentBase
-        {
-            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<TNativeComponent>(factory));
-        }
-
-        public static void RegisterNativeControlComponent<TComponent>(Func<EmblazonRenderer<TNativeComponent>, TNativeComponent> factory) where TComponent : NativeControlComponentBase
-        {
-            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<TNativeComponent>((renderer, _) => factory(renderer)));
-        }
-
-        public static void RegisterNativeControlComponent<TComponent, TControl>() where TComponent : NativeControlComponentBase where TControl : TNativeComponent, new()
-        {
-            RegisterNativeControlComponent<TComponent>((_, __) => new TControl());
-        }
-
         public EmblazonAdapter(TNativeComponent closestPhysicalParent)
         {
             _closestPhysicalParent = closestPhysicalParent;
@@ -175,7 +157,7 @@ namespace Emblazon
             // Elements represent native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var controlFactory = KnownElements[elementName];
+            var controlFactory = NativeControlRegistry<TNativeComponent>.KnownElements[elementName];
             var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TNativeComponent>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)

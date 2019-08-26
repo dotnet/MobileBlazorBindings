@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            BlelementAdapter.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
+            NativeControlRegistry<Element>.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }

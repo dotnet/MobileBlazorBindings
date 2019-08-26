@@ -6,7 +6,7 @@ namespace BlinForms.Framework.Controls
     {
         static SplitterPanel2()
         {
-            BlontrolAdapter.RegisterNativeControlComponent<SplitterPanel2>(
+            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<SplitterPanel2>(
                 (_, parentControl) => GetSplitterPanel(parentControl, panelNumber: 2));
         }
     }

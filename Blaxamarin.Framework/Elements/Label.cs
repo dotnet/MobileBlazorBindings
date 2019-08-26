@@ -9,7 +9,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Label()
         {
-            BlelementAdapter.RegisterNativeControlComponent<Label, BlazorLabel>();
+            NativeControlRegistry<Element>.RegisterNativeControlComponent<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }

@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Button()
         {
-            BlelementAdapter.RegisterNativeControlComponent<Button>(
+            NativeControlRegistry<Element>.RegisterNativeControlComponent<Button>(
                 renderer => new BlazorButton(renderer));
         }
 

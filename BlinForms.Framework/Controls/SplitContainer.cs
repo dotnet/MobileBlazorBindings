@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static SplitContainer()
         {
-            BlontrolAdapter.RegisterNativeControlComponent<SplitContainer, BlazorSplitContainer>();
+            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<SplitContainer, BlazorSplitContainer>();
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
