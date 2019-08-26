@@ -9,7 +9,7 @@ namespace Emblazon
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
-    public abstract class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
+    internal sealed class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
     {
         public EmblazonAdapter(TNativeComponent closestPhysicalParent)
         {
@@ -148,7 +148,10 @@ namespace Emblazon
             }
         }
 
-        protected abstract EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent);
+        private EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent)
+        {
+            return new EmblazonAdapter<TNativeComponent>(physicalParent);
+        }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
         {

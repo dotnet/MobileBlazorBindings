@@ -18,14 +18,9 @@ namespace BlinForms.Framework
             MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override EmblazonAdapter<Control> CreateRootAdapter()
+        protected override Control CreateRootControl()
         {
-            return CreateAdapter(RootForm);
-        }
-
-        protected override EmblazonAdapter<Control> CreateAdapter(Control physicalParent)
-        {
-            return new BlontrolAdapter(physicalParent);
+            return RootForm;
         }
 
         protected override NativeControlManager<Control> CreateNativeControlManager()

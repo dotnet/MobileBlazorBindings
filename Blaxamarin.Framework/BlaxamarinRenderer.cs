@@ -22,17 +22,12 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override EmblazonAdapter<Element> CreateRootAdapter()
+        protected override Element CreateRootControl()
         {
             var rootContent = new ContentView();
             ContentPage.Content = rootContent;
 
-            return CreateAdapter(rootContent);
-        }
-
-        protected override EmblazonAdapter<Element> CreateAdapter(Element physicalParent)
-        {
-            return new BlelementAdapter(physicalParent);
+            return rootContent;
         }
 
         protected override NativeControlManager<Element> CreateNativeControlManager()
