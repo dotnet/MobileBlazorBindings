@@ -48,14 +48,28 @@ namespace Emblazon
                     case RenderTreeEditType.PrependFrame:
                         ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
                         break;
-                    case RenderTreeEditType.SetAttribute:
-                        ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
-                        break;
                     case RenderTreeEditType.RemoveFrame:
                         ApplyRemoveFrame(edit.SiblingIndex);
                         break;
-                    default:
+                    case RenderTreeEditType.SetAttribute:
+                        ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
+                        break;
+                    case RenderTreeEditType.RemoveAttribute:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.UpdateText:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.StepIn:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.StepOut:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.UpdateMarkup:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.PermutationListEntry:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    case RenderTreeEditType.PermutationListEnd:
+                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                    default:
+                        throw new NotImplementedException($"Invalid edit type: {edit.Type}");
                 }
             }
         }
