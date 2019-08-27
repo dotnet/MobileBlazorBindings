@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{71E357C7-8DF1-447D-A0CA-084BA3F2AF83}"
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlinFormsSample", "BlinFormsSample\BlinFormsSample.csproj", "{8BF6C23D-C674-419D-BD01-D0BFC069E6D3}"
@@ -24,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlinForms", "BlinForms", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blaxamarin", "Blaxamarin", "{A497EAAE-8B20-4749-B93F-68CC35FC7D80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaxamarin.Framework", "Blaxamarin.Framework\Blaxamarin.Framework.csproj", "{219BFD0D-A7F3-43CD-BACA-9A741CDFD8B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blaxamarin.Framework", "Blaxamarin.Framework\Blaxamarin.Framework.csproj", "{219BFD0D-A7F3-43CD-BACA-9A741CDFD8B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
