@@ -72,10 +72,12 @@ namespace BlinForms.Framework.Controls
                         renderer.DispatchEventAsync(CheckStateChangedEventHandlerId, null, new UIChangeEventArgs { Value = CheckState });
                     }
                 };
+                Renderer = renderer;
             }
 
             public ulong CheckedChangedEventHandlerId { get; set; }
             public ulong CheckStateChangedEventHandlerId { get; set; }
+            public EmblazonRenderer<Control> Renderer { get; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -94,9 +96,11 @@ namespace BlinForms.Framework.Controls
                         ThreeState = (bool)attributeValue;
                         break;
                     case "oncheckedchanged":
+                        Renderer.RegisterEvent(attributeEventHandlerId, () => CheckedChangedEventHandlerId = 0);
                         CheckedChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     case "oncheckstatechanged":
+                        Renderer.RegisterEvent(attributeEventHandlerId, () => CheckStateChangedEventHandlerId = 0);
                         CheckStateChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

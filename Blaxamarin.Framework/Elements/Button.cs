@@ -38,9 +38,11 @@ namespace Blaxamarin.Framework.Elements
                         renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs()));
                     }
                 };
+                Renderer = renderer;
             }
 
             public ulong ClickEventHandlerId { get; set; }
+            public EmblazonRenderer<Element> Renderer { get; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -50,6 +52,7 @@ namespace Blaxamarin.Framework.Elements
                         Text = (string)attributeValue;
                         break;
                     case "onclick":
+                        Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
                         ClickEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

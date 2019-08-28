@@ -64,9 +64,11 @@ namespace BlinForms.Framework.Controls
                         renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new UIChangeEventArgs { Value = Text });
                     }
                 };
+                Renderer = renderer;
             }
 
             public ulong TextChangedEventHandlerId { get; set; }
+            public EmblazonRenderer<Control> Renderer { get; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -88,6 +90,7 @@ namespace BlinForms.Framework.Controls
                         ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
                         break;
                     case "ontextchanged":
+                        Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);
                         TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

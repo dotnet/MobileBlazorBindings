@@ -37,9 +37,11 @@ namespace BlinForms.Framework.Controls
                         renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs());
                     }
                 };
+                Renderer = renderer;
             }
 
             public ulong ClickEventHandlerId { get; set; }
+            public EmblazonRenderer<System.Windows.Forms.Control> Renderer { get; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -49,6 +51,7 @@ namespace BlinForms.Framework.Controls
                         Text = (string)attributeValue;
                         break;
                     case "onclick":
+                        Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
                         ClickEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

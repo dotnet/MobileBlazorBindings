@@ -12,6 +12,8 @@ namespace Emblazon
     {
         private readonly Dictionary<int, EmblazonAdapter<TNativeComponent>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TNativeComponent>>();
         private NativeControlManager<TNativeComponent> _nativeControlManager;
+        private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
+
 
         public EmblazonRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider, new LoggerFactory())
@@ -67,13 +69,38 @@ namespace Emblazon
                 }
             }
 
-            if (renderBatch.DisposedEventHandlerIDs.Count != 0)
+            var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
+            if (numDisposeEventHandlers != 0)
             {
-                // TODO: Support this
-                throw new NotSupportedException("Disposing event handlers is not yet supported.");
+                for (int i = 0; i < numDisposeEventHandlers; i++)
+                {
+                    DisposeEvent(renderBatch.DisposedEventHandlerIDs.Array[i]);
+                }
             }
 
             return Task.CompletedTask;
+        }
+
+        public void RegisterEvent(ulong eventHandlerId, Action unregisterCallback)
+        {
+            if (eventHandlerId == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(eventHandlerId), "Event handler ID must not be 0.");
+            }
+            if (unregisterCallback == null)
+            {
+                throw new ArgumentNullException(nameof(unregisterCallback));
+            }
+            _eventRegistrations.Add(eventHandlerId, unregisterCallback);
+        }
+
+        private void DisposeEvent(ulong eventHandlerId)
+        {
+            if (!_eventRegistrations.TryGetValue(eventHandlerId, out var unregisterCallback))
+            {
+                throw new InvalidOperationException($"Attempting to dispose unknown event handler id '{eventHandlerId}'.");
+            }
+            unregisterCallback();
         }
 
         internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(TNativeComponent physicalParent, int componentId)
