@@ -61,36 +61,50 @@ namespace BlinForms.Framework.Controls
             }
         }
 
+        protected static bool GetBool(object value)
+        {
+            return (value == null)
+                ? false
+                : (bool)value;
+        }
+
+        protected static int GetInt(object value)
+        {
+            return (value == null)
+                ? 0
+                : int.Parse((string)value);
+        }
+
         public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
                 case nameof(Top):
-                    control.Top = int.Parse((string)attributeValue);
+                    control.Top = GetInt(attributeValue);
                     break;
                 case nameof(Left):
-                    control.Left = int.Parse((string)attributeValue);
+                    control.Left = GetInt(attributeValue);
                     break;
                 case nameof(Width):
-                    control.Width = int.Parse((string)attributeValue);
+                    control.Width = GetInt(attributeValue);
                     break;
                 case nameof(Height):
-                    control.Height = int.Parse((string)attributeValue);
+                    control.Height = GetInt(attributeValue);
                     break;
                 case nameof(Visible):
-                    control.Visible = (bool)attributeValue;
+                    control.Visible = GetBool(attributeValue);
                     break;
                 case nameof(BackColor):
-                    control.BackColor = Color.FromArgb(argb: int.Parse((string)attributeValue));
+                    control.BackColor = Color.FromArgb(argb: GetInt(attributeValue));
                     break;
                 case nameof(TabIndex):
-                    control.TabIndex = int.Parse((string)attributeValue);
+                    control.TabIndex = GetInt(attributeValue);
                     break;
                 case nameof(Anchor):
-                    control.Anchor = (AnchorStyles)int.Parse((string)attributeValue);
+                    control.Anchor = (AnchorStyles)GetInt(attributeValue);
                     break;
                 case nameof(Dock):
-                    control.Dock = (DockStyle)int.Parse((string)attributeValue);
+                    control.Dock = (DockStyle)GetInt(attributeValue);
                     break;
                 default:
                     throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");

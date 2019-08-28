@@ -78,16 +78,16 @@ namespace BlinForms.Framework.Controls
                         Text = (string)attributeValue;
                         break;
                     case nameof(Multiline):
-                        Multiline = (bool)attributeValue;
+                        Multiline = GetBool(attributeValue);
                         break;
                     case nameof(ReadOnly):
-                        ReadOnly = (bool)attributeValue;
+                        ReadOnly = GetBool(attributeValue);
                         break;
                     case nameof(WordWrap):
-                        WordWrap = (bool)attributeValue;
+                        WordWrap = GetBool(attributeValue);
                         break;
                     case nameof(ScrollBars):
-                        ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
+                        ScrollBars = (ScrollBars)GetInt(attributeValue);
                         break;
                     case "ontextchanged":
                         Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);

@@ -41,6 +41,12 @@ namespace Emblazon
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
         {
+            if (edits.Count == 0)
+            {
+                // TODO: Without this check there's a NullRef in ArrayBuilderSegment? Possibly a Blazor bug?
+                return;
+            }
+
             foreach (var edit in edits)
             {
                 switch (edit.Type)
@@ -55,7 +61,8 @@ namespace Emblazon
                         ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
                         break;
                     case RenderTreeEditType.RemoveAttribute:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                        ApplyRemoveAttribute(edit.SiblingIndex, edit.RemovedAttributeName);
+                        break;
                     case RenderTreeEditType.UpdateText:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                     case RenderTreeEditType.StepIn:
@@ -108,6 +115,17 @@ namespace Emblazon
 
             var mapper = GetControlPropertyMapper(_possibleTargetControl);
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
+        }
+
+        private void ApplyRemoveAttribute(int siblingIndex, string removedAttributeName)// ref RenderTreeFrame attributeFrame)
+        {
+            if (_possibleTargetControl == null)
+            {
+                throw new InvalidOperationException($"Trying to remove attribute {removedAttributeName} to an adapter that isn't for an element");
+            }
+
+            var mapper = GetControlPropertyMapper(_possibleTargetControl);
+            mapper.SetControlProperty(0, removedAttributeName, null, null);
         }
 
         private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex)

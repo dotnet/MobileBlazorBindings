@@ -38,10 +38,10 @@ namespace BlinForms.Framework.Controls
                 switch (attributeName)
                 {
                     case nameof(Orientation):
-                        Orientation = (Orientation)int.Parse((string)attributeValue);
+                        Orientation = (Orientation)GetInt(attributeValue);
                         break;
                     case nameof(SplitterDistance):
-                        SplitterDistance = int.Parse((string)attributeValue);
+                        SplitterDistance = GetInt(attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

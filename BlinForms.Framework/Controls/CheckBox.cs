@@ -87,13 +87,13 @@ namespace BlinForms.Framework.Controls
                         Text = (string)attributeValue;
                         break;
                     case nameof(Checked):
-                        Checked = (bool)attributeValue;
+                        Checked = GetBool(attributeValue);
                         break;
                     case nameof(CheckState):
-                        CheckState = (CheckState)int.Parse((string)attributeValue);
+                        CheckState = (CheckState)GetInt(attributeValue);
                         break;
                     case nameof(ThreeState):
-                        ThreeState = (bool)attributeValue;
+                        ThreeState = GetBool(attributeValue);
                         break;
                     case "oncheckedchanged":
                         Renderer.RegisterEvent(attributeEventHandlerId, () => CheckedChangedEventHandlerId = 0);
