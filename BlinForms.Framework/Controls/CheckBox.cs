@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -8,16 +9,15 @@ namespace BlinForms.Framework.Controls
     {
         static CheckBox()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<CheckBox>(
-                renderer => new BlazorCheckBox(renderer));
+            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<CheckBox>(renderer => new BlazorCheckBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }
         [Parameter] public bool? Checked { get; set; }
         [Parameter] public CheckState? CheckState { get; set; }
         [Parameter] public bool? ThreeState { get; set; }
-        [Parameter] public EventCallback OnCheckedChanged { get; set; }
-        [Parameter] public EventCallback OnCheckStateChanged { get; set; }
+        [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
+        [Parameter] public EventCallback<CheckState> CheckStateChanged { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -40,8 +40,18 @@ namespace BlinForms.Framework.Controls
                 builder.AddAttribute(nameof(ThreeState), ThreeState.Value);
             }
 
-            builder.AddAttribute("oncheckedchanged", OnCheckedChanged);
-            builder.AddAttribute("oncheckstatechanged", OnCheckStateChanged);
+            builder.AddAttribute("oncheckedchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleCheckedChanged));
+            builder.AddAttribute("oncheckstatechanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleCheckStateChanged));
+        }
+
+        private Task HandleCheckedChanged(UIChangeEventArgs evt)
+        {
+            return CheckedChanged.InvokeAsync((bool)evt.Value);
+        }
+
+        private Task HandleCheckStateChanged(UIChangeEventArgs evt)
+        {
+            return CheckStateChanged.InvokeAsync((CheckState)evt.Value);
         }
 
         class BlazorCheckBox : System.Windows.Forms.CheckBox, IBlazorNativeControl
@@ -52,14 +62,14 @@ namespace BlinForms.Framework.Controls
                 {
                     if (CheckedChangedEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(CheckedChangedEventHandlerId, null, new UIEventArgs());
+                        renderer.DispatchEventAsync(CheckedChangedEventHandlerId, null, new UIChangeEventArgs { Value = Checked });
                     }
                 };
                 CheckStateChanged += (s, e) =>
                 {
                     if (CheckStateChangedEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(CheckStateChangedEventHandlerId, null, new UIEventArgs());
+                        renderer.DispatchEventAsync(CheckStateChangedEventHandlerId, null, new UIChangeEventArgs { Value = CheckState });
                     }
                 };
             }

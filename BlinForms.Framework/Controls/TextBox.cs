@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -8,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<TextBox, BlazorTextBox>();
+            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<TextBox>(renderer => new BlazorTextBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -16,6 +17,8 @@ namespace BlinForms.Framework.Controls
         [Parameter] public bool? ReadOnly { get; set; }
         [Parameter] public bool? WordWrap { get; set; }
         [Parameter] public ScrollBars? ScrollBars { get; set; }
+
+        [Parameter] public EventCallback<string> TextChanged { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -41,13 +44,29 @@ namespace BlinForms.Framework.Controls
             {
                 builder.AddAttribute(nameof(ScrollBars), (int)ScrollBars.Value);
             }
+
+            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleTextChanged));
+        }
+
+        private Task HandleTextChanged(UIChangeEventArgs evt)
+        {
+            return TextChanged.InvokeAsync((string)evt.Value);
         }
 
         class BlazorTextBox : System.Windows.Forms.TextBox, IBlazorNativeControl
         {
-            public BlazorTextBox()
+            public BlazorTextBox(EmblazonRenderer<System.Windows.Forms.Control> renderer)
             {
+                TextChanged += (s, e) =>
+                {
+                    if (TextChangedEventHandlerId != default)
+                    {
+                        renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new UIChangeEventArgs { Value = Text });
+                    }
+                };
             }
+
+            public ulong TextChangedEventHandlerId { get; set; }
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
@@ -67,6 +86,9 @@ namespace BlinForms.Framework.Controls
                         break;
                     case nameof(ScrollBars):
                         ScrollBars = (ScrollBars)int.Parse((string)attributeValue);
+                        break;
+                    case "ontextchanged":
+                        TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
