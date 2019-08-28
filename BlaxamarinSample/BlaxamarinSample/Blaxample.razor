@@ -1,7 +1,6 @@
-﻿@using Blaxamarin.Framework.Elements
-@using Xamarin.Forms
-
-<StackLayout>
+﻿<StackLayout>
+    <Entry @bind-Text="inputText" Placeholder="What to do now?" />
+    <Label Text="@inputText" FontSize="20.3" TextColor="Color.Purple"></Label>
     <Button Text="@("Increment by 1: " + count)" OnClick="@IncrementCount" />
     <Label Text="Big label" FontSize="16.789" TextColor="Color.CornflowerBlue"></Label>
     <Button Text="@("Increment by 8: " + count2)" OnClick="@IncrementCount2" />
@@ -15,6 +14,8 @@
 </StackLayout>
 
 @code {
+    string inputText;
+
     int count = 0;
 
     void IncrementCount()
