@@ -32,7 +32,7 @@ namespace BlinForms.Framework.Controls
                 switch (attributeName)
                 {
                     case nameof(AutoScroll):
-                        AutoScroll = GetBool(attributeValue);
+                        AutoScroll = AttributeHelper.GetBool(attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

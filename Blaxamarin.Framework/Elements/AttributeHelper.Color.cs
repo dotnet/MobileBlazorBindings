@@ -1,13 +1,13 @@
 ﻿using System;
 using Xamarin.Forms;
 
-namespace Blaxamarin.Framework.Elements.AttributeHelpers
+namespace Blaxamarin.Framework.Elements
 {
-    /// <summary>
-    /// Helper methods for components that need to serialize or deserialize <see cref="Xamarin.Forms.Color" /> objects.
-    /// </summary>
-    public static class ColorAttributeHelper
+    public static partial class AttributeHelper
     {
+        /// <summary>
+        /// Helper method to serialize <see cref="Xamarin.Forms.Color" /> objects.
+        /// </summary>
         public static string ColorToString(Color color)
         {
             var red = (uint)(color.R * 255);
@@ -17,6 +17,9 @@ namespace Blaxamarin.Framework.Elements.AttributeHelpers
             return $"{alpha:X2}{red:X2}{green:X2}{blue:X2}";
         }
 
+        /// <summary>
+        /// Helper method to deserialize <see cref="Xamarin.Forms.Color" /> objects.
+        /// </summary>
         public static Color StringToColor(string colorString)
         {
             if (colorString?.Length != 8)

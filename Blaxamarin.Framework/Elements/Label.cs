@@ -1,5 +1,4 @@
-﻿using Blaxamarin.Framework.Elements.AttributeHelpers;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Xamarin.Forms;
 
@@ -26,11 +25,11 @@ namespace Blaxamarin.Framework.Elements
             }
             if (TextColor != null)
             {
-                builder.AddAttribute(nameof(TextColor), ColorAttributeHelper.ColorToString(TextColor.Value));
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
             if (FontSize != null)
             {
-                builder.AddAttribute(nameof(FontSize), DoubleAttributeHelper.DoubleToString(FontSize.Value));
+                builder.AddAttribute(nameof(FontSize), AttributeHelper.DoubleToString(FontSize.Value));
             }
         }
 
@@ -44,10 +43,10 @@ namespace Blaxamarin.Framework.Elements
                         Text = (string)attributeValue;
                         break;
                     case nameof(TextColor):
-                        TextColor = ColorAttributeHelper.StringToColor((string)attributeValue);
+                        TextColor = AttributeHelper.StringToColor((string)attributeValue);
                         break;
                     case nameof(FontSize):
-                        FontSize = DoubleAttributeHelper.StringToDouble((string)attributeValue);
+                        FontSize = AttributeHelper.StringToDouble((string)attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
