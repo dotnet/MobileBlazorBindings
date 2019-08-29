@@ -14,6 +14,10 @@ namespace Blaxamarin.Framework.Elements
         [Parameter] public string Text { get; set; }
         [Parameter] public Color? TextColor { get; set; }
         [Parameter] public double? FontSize { get; set; }
+        [Parameter] public TextAlignment? HorizontalTextAlignment { get; set; }
+        [Parameter] public TextAlignment? VerticalTextAlignment { get; set; }
+        [Parameter] public FontAttributes? FontAttributes { get; set; }
+        [Parameter] public TextDecorations? TextDecorations { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -31,6 +35,22 @@ namespace Blaxamarin.Framework.Elements
             {
                 builder.AddAttribute(nameof(FontSize), AttributeHelper.DoubleToString(FontSize.Value));
             }
+            if (HorizontalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment.Value);
+            }
+            if (VerticalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
+            }
+            if (FontAttributes != null)
+            {
+                builder.AddAttribute(nameof(FontAttributes), (int)FontAttributes.Value);
+            }
+            if (TextDecorations != null)
+            {
+                builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
+            }
         }
 
         class BlazorLabel : Xamarin.Forms.Label, IBlazorNativeControl
@@ -47,6 +67,18 @@ namespace Blaxamarin.Framework.Elements
                         break;
                     case nameof(FontSize):
                         FontSize = AttributeHelper.StringToDouble((string)attributeValue);
+                        break;
+                    case nameof(HorizontalTextAlignment):
+                        HorizontalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
+                        break;
+                    case nameof(VerticalTextAlignment):
+                        VerticalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
+                        break;
+                    case nameof(FontAttributes):
+                        FontAttributes = (FontAttributes)AttributeHelper.GetInt(attributeValue);
+                        break;
+                    case nameof(TextDecorations):
+                        TextDecorations = (TextDecorations)AttributeHelper.GetInt(attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
