@@ -66,9 +66,15 @@ namespace Emblazon
                     case RenderTreeEditType.UpdateText:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                     case RenderTreeEditType.StepIn:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                        {
+                            // TODO: Need to implement this. For now it seems safe to ignore.
+                            break;
+                        }
                     case RenderTreeEditType.StepOut:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                        {
+                            // TODO: Need to implement this. For now it seems safe to ignore.
+                            break;
+                        }
                     case RenderTreeEditType.UpdateMarkup:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                     case RenderTreeEditType.PermutationListEntry:
