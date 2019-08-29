@@ -33,7 +33,7 @@ namespace Blaxamarin.Framework.Elements
                 switch (attributeName)
                 {
                     case nameof(Orientation):
-                        Orientation = (StackOrientation)int.Parse((string)attributeValue);
+                        Orientation = (StackOrientation)AttributeHelper.GetInt(attributeValue);
                         break;
                     default:
                         FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
