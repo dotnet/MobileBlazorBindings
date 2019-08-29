@@ -17,6 +17,7 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public bool? Visible { get; set; }
         [Parameter] public Color? BackColor { get; set; }
+        [Parameter] public Font Font { get; set; }
 
         [Parameter] public AnchorStyles? Anchor { get; set; }
         [Parameter] public DockStyle? Dock { get; set; }
@@ -59,6 +60,10 @@ namespace BlinForms.Framework.Controls
             {
                 builder.AddAttribute(nameof(Dock), (int)Dock.Value);
             }
+            if (Font != null)
+            {
+                builder.AddAttribute(nameof(Font), new FontConverter().ConvertToInvariantString(Font));
+            }
         }
 
         public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
@@ -91,6 +96,9 @@ namespace BlinForms.Framework.Controls
                     break;
                 case nameof(Dock):
                     control.Dock = (DockStyle)AttributeHelper.GetInt(attributeValue);
+                    break;
+                case nameof(Font):
+                    control.Font = (Font)new FontConverter().ConvertFromInvariantString((string)attributeValue);
                     break;
                 default:
                     throw new NotImplementedException($"FormsComponentBase doesn't recognize attribute '{attributeName}'");
