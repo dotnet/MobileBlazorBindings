@@ -1,6 +1,6 @@
 ﻿<StackLayout Orientation="StackOrientation.Horizontal">
-    <Switch @bind-IsToggled="Item.IsDone"></Switch>
-    <Label Text="@Item.Text"></Label>
+    <Switch @bind-IsToggled="Item.IsDone" />
+    <Label Text="@Item.Text" TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)" />
 </StackLayout>
 
 @code
