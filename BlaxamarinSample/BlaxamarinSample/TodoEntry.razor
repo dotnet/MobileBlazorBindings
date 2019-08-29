@@ -1,0 +1,10 @@
+﻿<StackLayout Orientation="StackOrientation.Horizontal">
+    <Switch @bind-IsToggled="Item.IsDone"></Switch>
+    <Label Text="@Item.Text"></Label>
+</StackLayout>
+
+@code
+{
+    [Parameter] public TodoItem Item { get; set; }
+    [Parameter] public int Top { get; set; }
+}

@@ -12,7 +12,7 @@ namespace BlaxamarinSample
 
             DependencyService.Register<MockDataStore>();
 
-            MainPage = Blaxamarin.Framework.Blaxamarin.Run<Blaxample>();
+            MainPage = Blaxamarin.Framework.Blaxamarin.Run<TodoApp>();
         }
 
         protected override void OnStart()
