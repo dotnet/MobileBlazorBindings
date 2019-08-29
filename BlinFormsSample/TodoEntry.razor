@@ -1,0 +1,9 @@
+﻿<Panel Left="8" Width="275" Height="40" Top="@Top" BackColor="@Color.LightBlue">
+    <CheckBox Left="8" Top="8" Text="Done?" Width="60" @bind-Checked="Item.IsDone"></CheckBox>
+    <Label Left="88" Top="8" Width="180" Text="@Item.Text"></Label>
+</Panel>
+
+@code {
+    [Parameter] public TodoItem Item { get; set; }
+    [Parameter] public int Top { get; set; }
+}

@@ -1,0 +1,13 @@
+﻿<Panel Width="200" Height="100" BackColor="SystemColors.Info">
+    <Button Width="40" Text="+1" OnClick="@HandleClick" />
+    <Label Left="50" Width="200" Text="@("You have pressed " + clickCount + " times")" />
+</Panel>
+
+@code {
+    int clickCount = 0;
+
+    void HandleClick()
+    {
+        clickCount++;
+    }
+}

@@ -7,7 +7,7 @@ namespace BlinFormsSample
         [STAThread]
         static void Main()
         {
-            BlinForms.Framework.BlinForms.Run<WinCounter>();
+            BlinForms.Framework.BlinForms.Run<TodoApp>();
         }
     }
 }
