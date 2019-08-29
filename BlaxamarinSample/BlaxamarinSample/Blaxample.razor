@@ -1,6 +1,10 @@
 ﻿<StackLayout>
     <Entry @bind-Text="inputText" Placeholder="What to do now?" />
     <Label Text="@inputText" FontSize="20.3" TextColor="Color.Purple"></Label>
+    <StackLayout Orientation="StackOrientation.Horizontal">
+        <Switch @bind-IsToggled="isDone" />
+        <Button Text="@("IsDone? " + isDone)" OnClick="@ToggleIsDone"></Button>
+    </StackLayout>
     <Button Text="@("Increment by 1: " + count)" OnClick="@IncrementCount" />
     <Label Text="Big label" FontSize="16.789" TextColor="Color.CornflowerBlue"></Label>
     <Button Text="@("Increment by 8: " + count2)" OnClick="@IncrementCount2" />
@@ -16,7 +20,14 @@
 @code {
     string inputText;
 
+    bool isDone;
+
     int count = 0;
+
+    void ToggleIsDone()
+    {
+        isDone = !isDone;
+    }
 
     void IncrementCount()
     {
