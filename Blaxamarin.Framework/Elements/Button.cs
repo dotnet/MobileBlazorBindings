@@ -9,8 +9,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static Button()
         {
-            NativeControlRegistry<Element>.RegisterNativeControlComponent<Button>(
-                renderer => new BlazorButton(renderer));
+            NativeControlRegistry<Element>
+                .RegisterNativeControlComponent<Button>(renderer => new BlazorButton(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -28,7 +28,7 @@ namespace Blaxamarin.Framework.Elements
             builder.AddAttribute("onclick", OnClick);
         }
 
-        class BlazorButton : Xamarin.Forms.Button, IBlazorNativeControl
+        class BlazorButton : Xamarin.Forms.Button, IBlazorNativeControl<Xamarin.Forms.Button>
         {
             public BlazorButton(EmblazonRenderer<Element> renderer)
             {
@@ -44,6 +44,7 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong ClickEventHandlerId { get; set; }
             public EmblazonRenderer<Element> Renderer { get; }
+            public Xamarin.Forms.Button NativeControl => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

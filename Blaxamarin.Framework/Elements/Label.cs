@@ -53,8 +53,10 @@ namespace Blaxamarin.Framework.Elements
             }
         }
 
-        class BlazorLabel : Xamarin.Forms.Label, IBlazorNativeControl
+        class BlazorLabel : Xamarin.Forms.Label, IBlazorNativeControl<Xamarin.Forms.Label>
         {
+            public Xamarin.Forms.Label NativeControl => this;
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
