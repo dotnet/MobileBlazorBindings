@@ -1,8 +1,8 @@
 ﻿namespace Emblazon
 {
-    public interface IBlazorNativeControl<out T>
+    public interface INativeControlHandler
     {
         void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
-        T NativeControl { get; }
+        object NativeControl { get; }
     }
 }

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Emblazon
 {
-    public abstract class EmblazonRenderer<TNativeComponent> : Renderer where TNativeComponent : class
+    public abstract class EmblazonRenderer<TComponentHandler> : Renderer where TComponentHandler : class, INativeControlHandler
     {
-        private readonly Dictionary<int, EmblazonAdapter<TNativeComponent>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TNativeComponent>>();
-        private NativeControlManager<TNativeComponent> _nativeControlManager;
+        private readonly Dictionary<int, EmblazonAdapter<TComponentHandler>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TComponentHandler>>();
+        private NativeControlManager<TComponentHandler> _nativeControlManager;
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
@@ -20,19 +20,9 @@ namespace Emblazon
         {
         }
 
-        protected abstract NativeControlManager<TNativeComponent> CreateNativeControlManager();
+        protected abstract NativeControlManager<TComponentHandler> CreateNativeControlManager();
 
-        internal NativeControlManager<TNativeComponent> NativeControlManager
-        {
-            get
-            {
-                if (_nativeControlManager == null)
-                {
-                    _nativeControlManager = CreateNativeControlManager();
-                }
-                return _nativeControlManager;
-            }
-        }
+        internal NativeControlManager<TComponentHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
 
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
@@ -42,7 +32,7 @@ namespace Emblazon
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
             var rootControl = CreateRootControl();
-            var rootAdapter = new EmblazonAdapter<TNativeComponent>(rootControl);
+            var rootAdapter = new EmblazonAdapter<TComponentHandler>(rootControl);
             rootAdapter.Name = "RootAdapter";
             rootAdapter.SetRenderer(this);
 
@@ -103,14 +93,14 @@ namespace Emblazon
             unregisterCallback();
         }
 
-        internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(TNativeComponent physicalParent, int componentId)
+        internal EmblazonAdapter<TComponentHandler> CreateAdapterForChildComponent(TComponentHandler physicalParent, int componentId)
         {
-            var result = new EmblazonAdapter<TNativeComponent>(physicalParent);
+            var result = new EmblazonAdapter<TComponentHandler>(physicalParent);
             result.SetRenderer(this);
             _componentIdToAdapter[componentId] = result;
             return result;
         }
 
-        protected abstract TNativeComponent CreateRootControl();
+        protected abstract TComponentHandler CreateRootControl();
     }
 }

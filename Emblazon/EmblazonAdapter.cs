@@ -9,22 +9,22 @@ namespace Emblazon
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
-    internal sealed class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
+    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, INativeControlHandler
     {
-        public EmblazonAdapter(TNativeComponent closestPhysicalParent)
+        public EmblazonAdapter(TComponentHandler closestPhysicalParent)
         {
             _closestPhysicalParent = closestPhysicalParent;
         }
 
-        public EmblazonAdapter<TNativeComponent> Parent { get; set; }
-        public List<EmblazonAdapter<TNativeComponent>> Children { get; } = new List<EmblazonAdapter<TNativeComponent>>();
+        public EmblazonAdapter<TComponentHandler> Parent { get; set; }
+        public List<EmblazonAdapter<TComponentHandler>> Children { get; } = new List<EmblazonAdapter<TComponentHandler>>();
 
-        private readonly TNativeComponent _closestPhysicalParent;
-        private TNativeComponent _possibleTargetControl;
+        private readonly TComponentHandler _closestPhysicalParent;
+        private TComponentHandler _possibleTargetControl;
 
-        public EmblazonRenderer<TNativeComponent> Renderer { get; private set; }
+        public EmblazonRenderer<TComponentHandler> Renderer { get; private set; }
 
-        internal void SetRenderer(EmblazonRenderer<TNativeComponent> renderer)
+        internal void SetRenderer(EmblazonRenderer<TComponentHandler> renderer)
         { 
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
@@ -186,9 +186,9 @@ namespace Emblazon
             }
         }
 
-        private EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent)
+        private EmblazonAdapter<TComponentHandler> CreateAdapter(TComponentHandler physicalParent)
         {
-            return new EmblazonAdapter<TNativeComponent>(physicalParent);
+            return new EmblazonAdapter<TComponentHandler>(physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -196,8 +196,8 @@ namespace Emblazon
             // Elements represent native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var controlFactory = NativeControlRegistry<TNativeComponent>.KnownElements[elementName];
-            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TNativeComponent>(Renderer, _closestPhysicalParent));
+            var controlFactory = NativeControlRegistry<TComponentHandler>.KnownElements[elementName];
+            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
@@ -253,7 +253,7 @@ namespace Emblazon
             //}
         }
 
-        private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TNativeComponent> child, out int resultIndex)
+        private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TComponentHandler> child, out int resultIndex)
         {
             if (!TryGetPhysicalIndexOfLastDescendant(out _))
             {
@@ -304,7 +304,7 @@ namespace Emblazon
             }
         }
 
-        private TNativeComponent GetLastPhysicalDescendant()
+        private TComponentHandler GetLastPhysicalDescendant()
         {
             for (var i = Children.Count - 1; i >= 0; i--)
             {
@@ -351,7 +351,7 @@ namespace Emblazon
             };
         }
 
-        private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TNativeComponent> childAdapter)
+        private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TComponentHandler> childAdapter)
         {
             childAdapter.Parent = this;
 
@@ -366,10 +366,10 @@ namespace Emblazon
             }
         }
 
-        private static IControlPropertyMapper GetControlPropertyMapper(TNativeComponent control)
+        private static IControlPropertyMapper GetControlPropertyMapper(TComponentHandler control)
         {
             // TODO: Have control-specific ones, but also need a general one for custom controls? Or maybe not needed?
-            if (control is IBlazorNativeControl nativeControl)
+            if (control is INativeControlHandler nativeControl)
             {
                 return new NativeControlPropertyMapper(nativeControl);
             }

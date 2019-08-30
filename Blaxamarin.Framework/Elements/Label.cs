@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Label()
         {
-            NativeControlRegistry<Element>.RegisterNativeControlComponent<Label, BlazorLabel>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }
@@ -53,9 +53,10 @@ namespace Blaxamarin.Framework.Elements
             }
         }
 
-        class BlazorLabel : Xamarin.Forms.Label, IBlazorNativeControl<Xamarin.Forms.Label>
+        class BlazorLabel : Xamarin.Forms.Label, IFormsControlHandler
         {
-            public Xamarin.Forms.Label NativeControl => this;
+            public object NativeControl => this;
+            public Element Element => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

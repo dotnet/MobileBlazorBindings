@@ -2,12 +2,12 @@
 {
     internal class NativeControlPropertyMapper : IControlPropertyMapper
     {
-        public NativeControlPropertyMapper(IBlazorNativeControl nativeControl)
+        public NativeControlPropertyMapper(INativeControlHandler nativeControl)
         {
             NativeControl = nativeControl;
         }
 
-        public IBlazorNativeControl NativeControl { get; }
+        public INativeControlHandler NativeControl { get; }
 
         public void SetControlProperty(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
