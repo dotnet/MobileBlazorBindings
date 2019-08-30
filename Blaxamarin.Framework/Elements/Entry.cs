@@ -39,7 +39,7 @@ namespace Blaxamarin.Framework.Elements
             return TextChanged.InvokeAsync((string)evt.Value);
         }
 
-        class BlazorEntry : Xamarin.Forms.Entry, IBlazorNativeControl
+        class BlazorEntry : Xamarin.Forms.Entry, IBlazorNativeControl<Xamarin.Forms.Entry>
         {
             public BlazorEntry(EmblazonRenderer<Element> renderer)
             {
@@ -55,6 +55,7 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong TextChangedEventHandlerId { get; set; }
             public EmblazonRenderer<Element> Renderer { get; }
+            public Xamarin.Forms.Entry NativeControl => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

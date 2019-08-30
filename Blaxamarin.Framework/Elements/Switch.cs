@@ -34,7 +34,7 @@ namespace Blaxamarin.Framework.Elements
             return IsToggledChanged.InvokeAsync((bool)evt.Value);
         }
 
-        class BlazorSwitch : Xamarin.Forms.Switch, IBlazorNativeControl
+        class BlazorSwitch : Xamarin.Forms.Switch, IBlazorNativeControl<Xamarin.Forms.Switch>
         {
             public BlazorSwitch(EmblazonRenderer<Element> renderer)
             {
@@ -50,6 +50,7 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong IsToggledChangedEventHandlerId { get; set; }
             public EmblazonRenderer<Element> Renderer { get; }
+            public Xamarin.Forms.Switch NativeControl => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
