@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 namespace Emblazon
 {
-    public static class NativeControlRegistry<TNativeComponent> where TNativeComponent : class
+    public static class NativeControlRegistry<TNativeControlHandler> where TNativeControlHandler: class, INativeControlHandler
     {
-        internal static Dictionary<string, ComponentControlFactory<IBlazorNativeControl<TNativeComponent>>> KnownElements { get; }
-            = new Dictionary<string, ComponentControlFactory<IBlazorNativeControl<TNativeComponent>>>();
+        internal static Dictionary<string, ComponentHandlerFactory<TNativeControlHandler>> KnownElements { get; }
+            = new Dictionary<string, ComponentHandlerFactory<TNativeControlHandler>>();
 
         public static void RegisterNativeControlComponent<TComponent>(
-            Func<EmblazonRenderer<IBlazorNativeControl<TNativeComponent>>, IBlazorNativeControl<TNativeComponent>, IBlazorNativeControl<TNativeComponent>> factory) where TComponent : NativeControlComponentBase
+            Func<EmblazonRenderer<TNativeControlHandler>, TNativeControlHandler, TNativeControlHandler> factory) where TComponent : NativeControlComponentBase
         {
-            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<IBlazorNativeControl<TNativeComponent>>(factory));
+            KnownElements.Add(typeof(TComponent).FullName, new ComponentHandlerFactory<TNativeControlHandler>(factory));
         }
 
         public static void RegisterNativeControlComponent<TComponent>(
-            Func<EmblazonRenderer<IBlazorNativeControl<TNativeComponent>>, IBlazorNativeControl<TNativeComponent>> factory) where TComponent : NativeControlComponentBase
+            Func<EmblazonRenderer<TNativeControlHandler>, TNativeControlHandler> factory) where TComponent : NativeControlComponentBase
         {
-            KnownElements.Add(typeof(TComponent).FullName, new ComponentControlFactory<IBlazorNativeControl<TNativeComponent>>((renderer, _) => factory(renderer)));
+            KnownElements.Add(typeof(TComponent).FullName, new ComponentHandlerFactory<TNativeControlHandler>((renderer, _) => factory(renderer)));
         }
 
-        public static void RegisterNativeControlComponent<TComponent, TControl>() where TComponent : NativeControlComponentBase where TControl : TNativeComponent, IBlazorNativeControl<TNativeComponent>, new()
+        public static void RegisterNativeControlComponent<TComponent, TControlHandler>() where TComponent : NativeControlComponentBase where TControlHandler : class, INativeControlHandler, new()
         {
-            RegisterNativeControlComponent<TComponent>((_, __) => new TControl());
+            RegisterNativeControlComponent<TComponent>((_, __) => new TControlHandler() as TNativeControlHandler);
         }
     }
 }

@@ -6,13 +6,13 @@
     /// parent/child relationships, so each must implement this given the constraints
     /// and requirements of their systems.
     /// </summary>
-    /// <typeparam name="TNativeComponent"></typeparam>
-    public abstract class NativeControlManager<TNativeComponent> where TNativeComponent : class
+    /// <typeparam name="TComponentHandler"></typeparam>
+    public abstract class NativeControlManager<TComponentHandler> where TComponentHandler : INativeControlHandler
     {
-        public abstract bool IsParented(TNativeComponent nativeControl);
-        public abstract void AddPhysicalControl(TNativeComponent parent, TNativeComponent child, int physicalSiblingIndex);
-        public abstract int GetPhysicalSiblingIndex(TNativeComponent nativeComponent);
-        public abstract void RemovePhysicalControl(TNativeComponent control);
-        public abstract bool IsParentOfChild(TNativeComponent parentControl, TNativeComponent childControl);
+        public abstract bool IsParented(TComponentHandler handler);
+        public abstract void AddPhysicalControl(TComponentHandler parentHandler, TComponentHandler childHandler, int physicalSiblingIndex);
+        public abstract int GetPhysicalSiblingIndex(TComponentHandler handler);
+        public abstract void RemovePhysicalControl(TComponentHandler handler);
+        public abstract bool IsParentOfChild(TComponentHandler parentHandler, TComponentHandler childHandler);
     }
 }

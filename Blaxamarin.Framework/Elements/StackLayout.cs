@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            NativeControlRegistry<Element>.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
@@ -26,10 +26,11 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        class BlazorStackLayout : Xamarin.Forms.StackLayout, IBlazorNativeControl<Xamarin.Forms.StackLayout>
+        class BlazorStackLayout : Xamarin.Forms.StackLayout, IFormsControlHandler
         {
-            public Xamarin.Forms.StackLayout NativeControl => this;
-
+            public object NativeControl => this;
+            public Element Element => this;
+            
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

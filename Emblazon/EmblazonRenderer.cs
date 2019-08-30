@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Emblazon
 {
-    public abstract class EmblazonRenderer<TNativeComponent> : Renderer where TNativeComponent : class
+    public abstract class EmblazonRenderer<TComponentHandler> : Renderer where TComponentHandler : class, INativeControlHandler
     {
-        private readonly Dictionary<int, EmblazonAdapter<TNativeComponent>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TNativeComponent>>();
-        private NativeControlManager<TNativeComponent> _nativeControlManager;
+        private readonly Dictionary<int, EmblazonAdapter<TComponentHandler>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TComponentHandler>>();
+        private NativeControlManager<TComponentHandler> _nativeControlManager;
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
@@ -20,19 +20,9 @@ namespace Emblazon
         {
         }
 
-        protected abstract NativeControlManager<TNativeComponent> CreateNativeControlManager();
+        protected abstract NativeControlManager<TComponentHandler> CreateNativeControlManager();
 
-        internal NativeControlManager<TNativeComponent> NativeControlManager
-        {
-            get
-            {
-                if (_nativeControlManager == null)
-                {
-                    _nativeControlManager = CreateNativeControlManager();
-                }
-                return _nativeControlManager;
-            }
-        }
+        internal NativeControlManager<TComponentHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
 
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
@@ -104,13 +94,13 @@ namespace Emblazon
             unregisterCallback();
         }
 
-        internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(TNativeComponent physicalParent, int componentId)
+        internal EmblazonAdapter<TComponentHandler> CreateAdapterForChildComponent(TComponentHandler physicalParent, int componentId)
         {
             var result = new EmblazonAdapter<TNativeComponent>(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
         }
 
-        protected abstract TNativeComponent CreateRootControl();
+        protected abstract TComponentHandler CreateRootControl();
     }
 }

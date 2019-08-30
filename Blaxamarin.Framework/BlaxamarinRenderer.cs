@@ -5,7 +5,7 @@ using Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
-    public class BlaxamarinRenderer : EmblazonRenderer<Element>
+    public class BlaxamarinRenderer : EmblazonRenderer<IFormsControlHandler>
     {
         public BlaxamarinRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider)
@@ -22,15 +22,14 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override Element CreateRootControl()
+        protected override IFormsControlHandler CreateRootControl()
         {
-            var rootContent = new ContentView();
-            ContentPage.Content = rootContent;
-
+            var rootContent = new Elements.ContentView.BlazorContentView();
+            ContentPage.Content = (View)rootContent.Element;
             return rootContent;
         }
 
-        protected override NativeControlManager<Element> CreateNativeControlManager()
+        protected override NativeControlManager<IFormsControlHandler> CreateNativeControlManager()
         {
             return new BlaxamarinNativeControlManager();
         }
