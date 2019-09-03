@@ -42,9 +42,8 @@ namespace Emblazon
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
             var rootControl = CreateRootControl();
-            var rootAdapter = new EmblazonAdapter<TNativeComponent>(rootControl);
+            var rootAdapter = new EmblazonAdapter<TNativeComponent>(this, rootControl);
             rootAdapter.Name = "RootAdapter";
-            rootAdapter.SetRenderer(this);
 
             _componentIdToAdapter[componentId] = rootAdapter;
             return RenderRootComponentAsync(componentId);
@@ -105,8 +104,7 @@ namespace Emblazon
 
         internal EmblazonAdapter<TNativeComponent> CreateAdapterForChildComponent(TNativeComponent physicalParent, int componentId)
         {
-            var result = new EmblazonAdapter<TNativeComponent>(physicalParent);
-            result.SetRenderer(this);
+            var result = new EmblazonAdapter<TNativeComponent>(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
         }

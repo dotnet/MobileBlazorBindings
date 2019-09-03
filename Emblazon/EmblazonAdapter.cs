@@ -11,8 +11,9 @@ namespace Emblazon
     /// </summary>
     internal sealed class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
     {
-        public EmblazonAdapter(TNativeComponent closestPhysicalParent)
+        public EmblazonAdapter(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent closestPhysicalParent)
         {
+            Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
         }
 
@@ -23,11 +24,6 @@ namespace Emblazon
         private TNativeComponent _possibleTargetControl;
 
         public EmblazonRenderer<TNativeComponent> Renderer { get; private set; }
-
-        internal void SetRenderer(EmblazonRenderer<TNativeComponent> renderer)
-        { 
-            Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
-        }
 
         /// <summary>
         /// Used for debugging purposes.
@@ -164,7 +160,6 @@ namespace Emblazon
                         }
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy markup, sib#={siblingIndex}";
-                        childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -177,7 +172,6 @@ namespace Emblazon
                         }
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy text, sib#={siblingIndex}";
-                        childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -188,7 +182,7 @@ namespace Emblazon
 
         private EmblazonAdapter<TNativeComponent> CreateAdapter(TNativeComponent physicalParent)
         {
-            return new EmblazonAdapter<TNativeComponent>(physicalParent);
+            return new EmblazonAdapter<TNativeComponent>(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
