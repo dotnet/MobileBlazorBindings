@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System;
 using Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
@@ -35,7 +36,7 @@ namespace Blaxamarin.Framework.Elements
                 {
                     if (ClickEventHandlerId != default)
                     {
-                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs()));
+                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, new EventArgs()));
                     }
                 };
                 Renderer = renderer;

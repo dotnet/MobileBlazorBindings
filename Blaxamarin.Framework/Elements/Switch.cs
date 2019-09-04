@@ -26,10 +26,10 @@ namespace Blaxamarin.Framework.Elements
                 builder.AddAttribute(nameof(IsToggled), IsToggled.Value);
             }
 
-            builder.AddAttribute("onistoggledchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleIsToggledChanged));
+            builder.AddAttribute("onistoggledchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleIsToggledChanged));
         }
 
-        private Task HandleIsToggledChanged(UIChangeEventArgs evt)
+        private Task HandleIsToggledChanged(ChangeEventArgs evt)
         {
             return IsToggledChanged.InvokeAsync((bool)evt.Value);
         }
@@ -42,7 +42,7 @@ namespace Blaxamarin.Framework.Elements
                 {
                     if (IsToggledChangedEventHandlerId != default)
                     {
-                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(IsToggledChangedEventHandlerId, null, new UIChangeEventArgs { Value = IsToggled }));
+                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(IsToggledChangedEventHandlerId, null, new ChangeEventArgs { Value = IsToggled }));
                     }
                 };
                 Renderer = renderer;

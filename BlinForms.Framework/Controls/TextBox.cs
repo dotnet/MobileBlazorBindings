@@ -45,10 +45,10 @@ namespace BlinForms.Framework.Controls
                 builder.AddAttribute(nameof(ScrollBars), (int)ScrollBars.Value);
             }
 
-            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleTextChanged));
+            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleTextChanged));
         }
 
-        private Task HandleTextChanged(UIChangeEventArgs evt)
+        private Task HandleTextChanged(ChangeEventArgs evt)
         {
             return TextChanged.InvokeAsync((string)evt.Value);
         }
@@ -61,7 +61,7 @@ namespace BlinForms.Framework.Controls
                 {
                     if (TextChangedEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new UIChangeEventArgs { Value = Text });
+                        renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new ChangeEventArgs { Value = Text });
                     }
                 };
                 Renderer = renderer;
