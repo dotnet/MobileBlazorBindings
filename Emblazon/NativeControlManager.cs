@@ -13,5 +13,6 @@
         public abstract void AddPhysicalControl(TNativeComponent parent, TNativeComponent child, int physicalSiblingIndex);
         public abstract int GetPhysicalSiblingIndex(TNativeComponent nativeComponent);
         public abstract void RemovePhysicalControl(TNativeComponent control);
+        public abstract bool IsParentOfChild(TNativeComponent parentControl, TNativeComponent childControl);
     }
 }

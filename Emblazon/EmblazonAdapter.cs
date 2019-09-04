@@ -222,7 +222,7 @@ namespace Emblazon
             // we'll insert as the first child of the closest physical parent.
             if (!Renderer.NativeControlManager.IsParented(nativeControl))
             {
-                if (Parent.TryFindPhysicalChildIndexBefore(this, out var precedingSiblingPhysicalIndex))
+                if (Parent.TryFindPhysicalChildIndexBefore(_closestPhysicalParent, this, out var precedingSiblingPhysicalIndex))
                 {
                     Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
                 }
@@ -264,9 +264,9 @@ namespace Emblazon
             //}
         }
 
-        private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TNativeComponent> child, out int resultIndex)
+        private bool TryFindPhysicalChildIndexBefore(TNativeComponent nativeParentOfInterest, EmblazonAdapter<TNativeComponent> child, out int resultIndex)
         {
-            if (!TryGetPhysicalIndexOfLastDescendant(out _))
+            if (!TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out _))
             {
                 if (Parent == null)
                 {
@@ -277,7 +277,7 @@ namespace Emblazon
                 else
                 {
                     // No physical controls exist in this subtree, so step upwards
-                    return Parent.TryFindPhysicalChildIndexBefore(this, out resultIndex);
+                    return Parent.TryFindPhysicalChildIndexBefore(nativeParentOfInterest, this, out resultIndex);
                 }
             }
 
@@ -290,7 +290,7 @@ namespace Emblazon
             for (var candidateAdapterIndex = suppliedChildIndex - 1; candidateAdapterIndex >= 0; candidateAdapterIndex--)
             {
                 var candidateAdapter = Children[candidateAdapterIndex];
-                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(out resultIndex))
+                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out resultIndex))
                 {
                     return true;
                 }
@@ -300,9 +300,9 @@ namespace Emblazon
             return false;
         }
 
-        private bool TryGetPhysicalIndexOfLastDescendant(out int resultIndex)
+        private bool TryGetPhysicalIndexOfLastDescendant(TNativeComponent nativeParentOfInterest, out int resultIndex)
         {
-            var lastPhysicalDescendant = GetLastPhysicalDescendant();
+            var lastPhysicalDescendant = GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
             if (lastPhysicalDescendant == null)
             {
                 resultIndex = 0;
@@ -315,19 +315,34 @@ namespace Emblazon
             }
         }
 
-        private TNativeComponent GetLastPhysicalDescendant()
+        private TNativeComponent GetLastPhysicalDescendantWithParentOfInterest(TNativeComponent nativeParentOfInterest)
         {
+            if (_possibleTargetControl != null)
+            {
+                // TODO: Is it true that if the first condition above is true, that the second condition below must always be true, and so it is not necessary? (Probably? Let's see what the Debug.Fail() statement says.)
+                if (Renderer.NativeControlManager.IsParentOfChild(nativeParentOfInterest, _possibleTargetControl))
+                {
+                    // If this adapter has a target control, then this is the droid we're looking for. It can't be
+                    // any children of this target control because they can't be children of this control's parent.
+                    return _possibleTargetControl;
+                }
+                else
+                {
+                    Debug.Fail($"Expected that the first item found ({DebugName}) with a target control ({_possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the native parent of interest ({nativeParentOfInterest.GetType().FullName}), but it wasn't, so the search continues...");
+                }
+            }
+
             for (var i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children[i];
-                var physicalDescendant = child.GetLastPhysicalDescendant();
+                var physicalDescendant = child.GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
                 if (physicalDescendant != null)
                 {
                     return physicalDescendant;
                 }
             }
 
-            return _possibleTargetControl;
+            return null;
         }
 
         private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
