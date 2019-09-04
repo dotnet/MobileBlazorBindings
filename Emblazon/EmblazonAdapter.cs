@@ -361,7 +361,7 @@ namespace Emblazon
             return (childIndex - origChildIndex); // Total number of children inserted     
         }
 
-        private int CountDescendantFrames(RenderTreeFrame frame)
+        private static int CountDescendantFrames(RenderTreeFrame frame)
         {
             switch (frame.FrameType)
             {
