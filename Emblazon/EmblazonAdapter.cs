@@ -15,10 +15,11 @@ namespace Emblazon
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent closestPhysicalParent)
+        public EmblazonAdapter(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent closestPhysicalParent, TNativeComponent knownTargetControl = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
+            _possibleTargetControl = knownTargetControl;
 
             // Assign unique counter value. This *should* all be done on one thread, but just in case, make it thread-safe.
             _debugInstanceCounterValue = Interlocked.Increment(ref DebugInstanceCounter);
