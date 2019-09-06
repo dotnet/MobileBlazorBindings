@@ -223,14 +223,8 @@ namespace Emblazon
             // we'll insert as the first child of the closest physical parent.
             if (!Renderer.NativeControlManager.IsParented(nativeControl))
             {
-                if (Parent.TryFindPhysicalChildIndexBefore(_closestPhysicalParent, this, out var precedingSiblingPhysicalIndex))
-                {
-                    Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
-                }
-                else
-                {
-                    Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, 0);
-                }
+                var elementIndex = GetIndexForElement();
+                Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, elementIndex);
             }
             _possibleTargetControl = nativeControl;
 
@@ -265,78 +259,99 @@ namespace Emblazon
             //}
         }
 
-        private bool TryFindPhysicalChildIndexBefore(TNativeComponent nativeParentOfInterest, EmblazonAdapter<TNativeComponent> child, out int resultIndex)
+        /// <summary>
+        /// Finds the sibling index to insert this adapter's element into. It walks up Parent adapters to find 
+        /// an earlier sibling that has a native control, and uses that native control's physical index to determine
+        /// the location of the new element.
+        /// <code>
+        /// * Adapter0
+        /// * Adapter1
+        /// * Adapter2
+        /// * Adapter3 (native)
+        ///     * Adapter3.0 (searchOrder=2)
+        ///         * Adapter3.0.0 (searchOrder=3)
+        ///         * Adapter3.0.1 (native)  (searchOrder=4) <-- This is the nearest earlier sibling that has a physical control)
+        ///         * Adapter3.0.2
+        ///     * Adapter3.1 (searchOrder=1)
+        ///         * Adapter3.1.0 (searchOrder=0)
+        ///         * Adapter3.1.1 (native) <-- Current adapter
+        ///         * Adapter3.1.2
+        ///     * Adapter3.2
+        /// * Adapter4
+        /// </code>
+        /// </summary>
+        /// <returns>The index at which the native control (element) should be inserted into within the parent. It returns -1 as a failure mode.</returns>
+        private int GetIndexForElement()
         {
-            if (!TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out _))
+            var childAdapter = this;
+            var parentAdapter = Parent;
+            while (parentAdapter != null)
             {
-                if (Parent == null)
+                // Walk previous siblings of this level and deep-scan them for native controls
+                var matchedEarlierSibling = GetEarlierSiblingMatch(parentAdapter, childAdapter);
+                if (matchedEarlierSibling != null)
                 {
-                    // We're at the root
-                    resultIndex = 0;
-                    return false;
+                    if (!Renderer.NativeControlManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._possibleTargetControl))
+                    {
+                        Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target control ({matchedEarlierSibling._possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
+                    }
+
+                    // If a native control was found somewhere within this sibling, the index for the new element
+                    // will be 1 greater than its native index.
+                    return Renderer.NativeControlManager.GetPhysicalSiblingIndex(matchedEarlierSibling._possibleTargetControl) + 1;
                 }
-                else
+
+                // If this level has a native control and all its relevant children have been scanned, then there's
+                // no previous sibling, so the new element to be added will be its earliest child (index=0). (There
+                // might be *later* siblings, but they are not relevant to this search.)
+                if (parentAdapter._possibleTargetControl != null)
                 {
-                    // No physical controls exist in this subtree, so step upwards
-                    return Parent.TryFindPhysicalChildIndexBefore(nativeParentOfInterest, this, out resultIndex);
+                    Debug.Assert(parentAdapter._possibleTargetControl == _closestPhysicalParent, $"Expected that nearest parent ({parentAdapter.DebugName}) with native control ({parentAdapter._possibleTargetControl.GetType().FullName}) would have the closest physical parent ({_closestPhysicalParent.GetType().FullName}).");
+                    return 0;
                 }
-            }
 
-            var suppliedChildIndex = Children.IndexOf(child);
-            if (suppliedChildIndex < 0)
-            {
-                throw new ArgumentException("She says I am the one, but the kid is not my son");
+                // If we haven't found a previous sibling with a native control or reached a native container, keep
+                // walking up the parent tree...
+                childAdapter = parentAdapter;
+                parentAdapter = parentAdapter.Parent;
             }
-
-            for (var candidateAdapterIndex = suppliedChildIndex - 1; candidateAdapterIndex >= 0; candidateAdapterIndex--)
-            {
-                var candidateAdapter = Children[candidateAdapterIndex];
-                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out resultIndex))
-                {
-                    return true;
-                }
-            }
-
-            resultIndex = 0;
-            return false;
+            Debug.Fail($"Expected to find a parent with a native control but found none.");
+            return -1;
         }
 
-        private bool TryGetPhysicalIndexOfLastDescendant(TNativeComponent nativeParentOfInterest, out int resultIndex)
+        private EmblazonAdapter<TNativeComponent> GetEarlierSiblingMatch(EmblazonAdapter<TNativeComponent> parentAdapter, EmblazonAdapter<TNativeComponent> childAdapter)
         {
-            var lastPhysicalDescendant = GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
-            if (lastPhysicalDescendant == null)
+            var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
+
+            for (int i = indexOfParentsChildAdapter - 1; i >= 0; i--)
             {
-                resultIndex = 0;
-                return false;
+                var sibling = parentAdapter.Children[i];
+
+                // Deep scan this sibling adapter to find its latest and highest native control
+                var siblingWithNativeControl = sibling.GetLastDescendantWithPhysicalControl();
+                if (siblingWithNativeControl != null)
+                {
+                    return siblingWithNativeControl;
+                }
             }
-            else
-            {
-                resultIndex = Renderer.NativeControlManager.GetPhysicalSiblingIndex(lastPhysicalDescendant);
-                return true;
-            }
+
+            // No preceding sibling has any native controls
+            return null;
         }
 
-        private TNativeComponent GetLastPhysicalDescendantWithParentOfInterest(TNativeComponent nativeParentOfInterest)
+        private EmblazonAdapter<TNativeComponent> GetLastDescendantWithPhysicalControl()
         {
             if (_possibleTargetControl != null)
             {
-                // TODO: Is it true that if the first condition above is true, that the second condition below must always be true, and so it is not necessary? (Probably? Let's see what the Debug.Fail() statement says.)
-                if (Renderer.NativeControlManager.IsParentOfChild(nativeParentOfInterest, _possibleTargetControl))
-                {
-                    // If this adapter has a target control, then this is the droid we're looking for. It can't be
-                    // any children of this target control because they can't be children of this control's parent.
-                    return _possibleTargetControl;
-                }
-                else
-                {
-                    Debug.Fail($"Expected that the first item found ({DebugName}) with a target control ({_possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the native parent of interest ({nativeParentOfInterest.GetType().FullName}), but it wasn't, so the search continues...");
-                }
+                // If this adapter has a target control, then this is the droid we're looking for. It can't be
+                // any children of this target control because they can't be children of this control's parent.
+                return this;
             }
 
             for (var i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children[i];
-                var physicalDescendant = child.GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
+                var physicalDescendant = child.GetLastDescendantWithPhysicalControl();
                 if (physicalDescendant != null)
                 {
                     return physicalDescendant;
