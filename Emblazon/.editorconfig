@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# BL0006: Do not use RenderTree types
+dotnet_diagnostic.BL0006.severity = none

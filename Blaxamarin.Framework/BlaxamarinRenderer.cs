@@ -7,7 +7,7 @@ namespace Blaxamarin.Framework
 {
     public class BlaxamarinRenderer : EmblazonRenderer<IFormsControlHandler>
     {
-        public BlaxamarinRenderer(Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider)
+        public BlaxamarinRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }

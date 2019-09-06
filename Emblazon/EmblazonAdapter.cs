@@ -3,17 +3,42 @@ using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Emblazon
 {
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
+<<<<<<< HEAD
     internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, INativeControlHandler
     {
         public EmblazonAdapter(TComponentHandler closestPhysicalParent)
+=======
+    [DebuggerDisplay("{DebugName}")]
+    internal sealed class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
+    {
+        private static volatile int DebugInstanceCounter;
+
+        public EmblazonAdapter(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent closestPhysicalParent, TNativeComponent knownTargetControl = null)
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         {
+            Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
+            _possibleTargetControl = knownTargetControl;
+
+            // Assign unique counter value. This *should* all be done on one thread, but just in case, make it thread-safe.
+            _debugInstanceCounterValue = Interlocked.Increment(ref DebugInstanceCounter);
+        }
+
+        private readonly int _debugInstanceCounterValue;
+
+        public string DebugName
+        {
+            get
+            {
+                return $"[#{_debugInstanceCounterValue}] {Name}";
+            }
         }
 
         public EmblazonAdapter<TComponentHandler> Parent { get; set; }
@@ -24,11 +49,14 @@ namespace Emblazon
 
         public EmblazonRenderer<TComponentHandler> Renderer { get; private set; }
 
+<<<<<<< HEAD
         internal void SetRenderer(EmblazonRenderer<TComponentHandler> renderer)
         { 
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
 
+=======
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         /// <summary>
         /// Used for debugging purposes.
         /// </summary>
@@ -164,7 +192,6 @@ namespace Emblazon
                         }
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy markup, sib#={siblingIndex}";
-                        childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -177,7 +204,6 @@ namespace Emblazon
                         }
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
                         childAdapter.Name = $"Dummy text, sib#={siblingIndex}";
-                        childAdapter.SetRenderer(Renderer);
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -188,7 +214,11 @@ namespace Emblazon
 
         private EmblazonAdapter<TComponentHandler> CreateAdapter(TComponentHandler physicalParent)
         {
+<<<<<<< HEAD
             return new EmblazonAdapter<TComponentHandler>(physicalParent);
+=======
+            return new EmblazonAdapter<TNativeComponent>(Renderer, physicalParent);
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -211,7 +241,7 @@ namespace Emblazon
             // we'll insert as the first child of the closest physical parent.
             if (!Renderer.NativeControlManager.IsParented(nativeControl))
             {
-                if (Parent.TryFindPhysicalChildIndexBefore(this, out var precedingSiblingPhysicalIndex))
+                if (Parent.TryFindPhysicalChildIndexBefore(_closestPhysicalParent, this, out var precedingSiblingPhysicalIndex))
                 {
                     Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, precedingSiblingPhysicalIndex + 1);
                 }
@@ -253,9 +283,13 @@ namespace Emblazon
             //}
         }
 
+<<<<<<< HEAD
         private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TComponentHandler> child, out int resultIndex)
+=======
+        private bool TryFindPhysicalChildIndexBefore(TNativeComponent nativeParentOfInterest, EmblazonAdapter<TNativeComponent> child, out int resultIndex)
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         {
-            if (!TryGetPhysicalIndexOfLastDescendant(out _))
+            if (!TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out _))
             {
                 if (Parent == null)
                 {
@@ -266,7 +300,7 @@ namespace Emblazon
                 else
                 {
                     // No physical controls exist in this subtree, so step upwards
-                    return Parent.TryFindPhysicalChildIndexBefore(this, out resultIndex);
+                    return Parent.TryFindPhysicalChildIndexBefore(nativeParentOfInterest, this, out resultIndex);
                 }
             }
 
@@ -279,7 +313,7 @@ namespace Emblazon
             for (var candidateAdapterIndex = suppliedChildIndex - 1; candidateAdapterIndex >= 0; candidateAdapterIndex--)
             {
                 var candidateAdapter = Children[candidateAdapterIndex];
-                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(out resultIndex))
+                if (candidateAdapter.TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out resultIndex))
                 {
                     return true;
                 }
@@ -289,9 +323,9 @@ namespace Emblazon
             return false;
         }
 
-        private bool TryGetPhysicalIndexOfLastDescendant(out int resultIndex)
+        private bool TryGetPhysicalIndexOfLastDescendant(TNativeComponent nativeParentOfInterest, out int resultIndex)
         {
-            var lastPhysicalDescendant = GetLastPhysicalDescendant();
+            var lastPhysicalDescendant = GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
             if (lastPhysicalDescendant == null)
             {
                 resultIndex = 0;
@@ -304,19 +338,38 @@ namespace Emblazon
             }
         }
 
+<<<<<<< HEAD
         private TComponentHandler GetLastPhysicalDescendant()
+=======
+        private TNativeComponent GetLastPhysicalDescendantWithParentOfInterest(TNativeComponent nativeParentOfInterest)
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         {
+            if (_possibleTargetControl != null)
+            {
+                // TODO: Is it true that if the first condition above is true, that the second condition below must always be true, and so it is not necessary? (Probably? Let's see what the Debug.Fail() statement says.)
+                if (Renderer.NativeControlManager.IsParentOfChild(nativeParentOfInterest, _possibleTargetControl))
+                {
+                    // If this adapter has a target control, then this is the droid we're looking for. It can't be
+                    // any children of this target control because they can't be children of this control's parent.
+                    return _possibleTargetControl;
+                }
+                else
+                {
+                    Debug.Fail($"Expected that the first item found ({DebugName}) with a target control ({_possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the native parent of interest ({nativeParentOfInterest.GetType().FullName}), but it wasn't, so the search continues...");
+                }
+            }
+
             for (var i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children[i];
-                var physicalDescendant = child.GetLastPhysicalDescendant();
+                var physicalDescendant = child.GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
                 if (physicalDescendant != null)
                 {
                     return physicalDescendant;
                 }
             }
 
-            return _possibleTargetControl;
+            return null;
         }
 
         private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
@@ -335,7 +388,7 @@ namespace Emblazon
             return (childIndex - origChildIndex); // Total number of children inserted     
         }
 
-        private int CountDescendantFrames(RenderTreeFrame frame)
+        private static int CountDescendantFrames(RenderTreeFrame frame)
         {
             switch (frame.FrameType)
             {

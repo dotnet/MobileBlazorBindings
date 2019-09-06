@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 
 namespace Emblazon
 {
@@ -23,7 +24,7 @@ namespace Emblazon
                 }
                 else if (propertyInfo.PropertyType == typeof(int))
                 {
-                    propertyInfo.SetValue(_component, int.Parse((string)attributeValue));
+                    propertyInfo.SetValue(_component, int.Parse((string)attributeValue, CultureInfo.InvariantCulture));
                 }
                 else if (propertyInfo.PropertyType == typeof(bool))
                 {

@@ -31,10 +31,10 @@ namespace Blaxamarin.Framework.Elements
                 builder.AddAttribute(nameof(Placeholder), Placeholder);
             }
 
-            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleTextChanged));
+            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleTextChanged));
         }
 
-        private Task HandleTextChanged(UIChangeEventArgs evt)
+        private Task HandleTextChanged(ChangeEventArgs evt)
         {
             return TextChanged.InvokeAsync((string)evt.Value);
         }
@@ -47,7 +47,7 @@ namespace Blaxamarin.Framework.Elements
                 {
                     if (TextChangedEventHandlerId != default)
                     {
-                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new UIChangeEventArgs { Value = Text }));
+                        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new ChangeEventArgs { Value = Text }));
                     }
                 };
                 Renderer = renderer;

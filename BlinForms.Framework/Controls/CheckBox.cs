@@ -40,16 +40,16 @@ namespace BlinForms.Framework.Controls
                 builder.AddAttribute(nameof(ThreeState), ThreeState.Value);
             }
 
-            builder.AddAttribute("oncheckedchanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleCheckedChanged));
-            builder.AddAttribute("oncheckstatechanged", EventCallback.Factory.Create<UIChangeEventArgs>(this, HandleCheckStateChanged));
+            builder.AddAttribute("oncheckedchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleCheckedChanged));
+            builder.AddAttribute("oncheckstatechanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleCheckStateChanged));
         }
 
-        private Task HandleCheckedChanged(UIChangeEventArgs evt)
+        private Task HandleCheckedChanged(ChangeEventArgs evt)
         {
             return CheckedChanged.InvokeAsync((bool)evt.Value);
         }
 
-        private Task HandleCheckStateChanged(UIChangeEventArgs evt)
+        private Task HandleCheckStateChanged(ChangeEventArgs evt)
         {
             return CheckStateChanged.InvokeAsync((CheckState)evt.Value);
         }
@@ -62,14 +62,14 @@ namespace BlinForms.Framework.Controls
                 {
                     if (CheckedChangedEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(CheckedChangedEventHandlerId, null, new UIChangeEventArgs { Value = Checked });
+                        renderer.DispatchEventAsync(CheckedChangedEventHandlerId, null, new ChangeEventArgs { Value = Checked });
                     }
                 };
                 CheckStateChanged += (s, e) =>
                 {
                     if (CheckStateChangedEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(CheckStateChangedEventHandlerId, null, new UIChangeEventArgs { Value = CheckState });
+                        renderer.DispatchEventAsync(CheckStateChangedEventHandlerId, null, new ChangeEventArgs { Value = CheckState });
                     }
                 };
                 Renderer = renderer;

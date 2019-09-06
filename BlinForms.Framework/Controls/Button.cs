@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System;
 
 namespace BlinForms.Framework.Controls
 {
@@ -34,7 +35,7 @@ namespace BlinForms.Framework.Controls
                 {
                     if (ClickEventHandlerId != default)
                     {
-                        renderer.DispatchEventAsync(ClickEventHandlerId, null, new UIEventArgs());
+                        renderer.DispatchEventAsync(ClickEventHandlerId, null, new EventArgs());
                     }
                 };
                 Renderer = renderer;

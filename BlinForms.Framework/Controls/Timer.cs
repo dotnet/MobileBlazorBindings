@@ -28,7 +28,7 @@ namespace BlinForms.Framework.Controls
     //            {
     //                if (TickEventHandlerId != default)
     //                {
-    //                    renderer.DispatchEventAsync(TickEventHandlerId, null, new UIEventArgs());
+    //                    renderer.DispatchEventAsync(TickEventHandlerId, null, new EventArgs());
     //                }
     //            };
     //            Enabled = true;

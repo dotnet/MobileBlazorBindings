@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -32,9 +32,16 @@ namespace Emblazon
             var component = InstantiateComponent(typeof(T));
             var componentId = AssignRootComponentId(component);
             var rootControl = CreateRootControl();
+<<<<<<< HEAD
             var rootAdapter = new EmblazonAdapter<TComponentHandler>(rootControl);
             rootAdapter.Name = "RootAdapter";
             rootAdapter.SetRenderer(this);
+=======
+            var rootAdapter = new EmblazonAdapter<TNativeComponent>(this, closestPhysicalParent: rootControl, knownTargetControl: rootControl)
+            {
+                Name = "RootAdapter"
+            };
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
 
             _componentIdToAdapter[componentId] = rootAdapter;
             return RenderRootComponentAsync(componentId);
@@ -95,8 +102,12 @@ namespace Emblazon
 
         internal EmblazonAdapter<TComponentHandler> CreateAdapterForChildComponent(TComponentHandler physicalParent, int componentId)
         {
+<<<<<<< HEAD
             var result = new EmblazonAdapter<TComponentHandler>(physicalParent);
             result.SetRenderer(this);
+=======
+            var result = new EmblazonAdapter<TNativeComponent>(this, physicalParent);
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
             _componentIdToAdapter[componentId] = result;
             return result;
         }

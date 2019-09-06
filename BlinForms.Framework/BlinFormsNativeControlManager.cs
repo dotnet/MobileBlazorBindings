@@ -36,5 +36,10 @@ namespace BlinForms.Framework
         {
             return nativeControl.Parent != null;
         }
+
+        public override bool IsParentOfChild(Control parentControl, Control childControl)
+        {
+            return parentControl.Contains(childControl);
+        }
     }
 }

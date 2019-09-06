@@ -110,6 +110,7 @@ namespace Blaxamarin.Framework
             }
         }
 
+<<<<<<< HEAD
         public override void RemovePhysicalControl(IFormsControlHandler handler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
@@ -119,6 +120,29 @@ namespace Blaxamarin.Framework
             {
                 var childTargetAsView = control as View;
                 physicalParentAsLayout.Children.Remove(childTargetAsView);
+=======
+        public override bool IsParentOfChild(Element parentControl, Element childControl)
+        {
+            // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
+
+            switch (parentControl)
+            {
+                case Layout<View> parentAsLayout:
+                    {
+                        return childControl is View childAsView && parentAsLayout.Children.Contains(childAsView);
+                    }
+                case ContentView parenetAsContentView:
+                    {
+                        return childControl is View childAsView && parenetAsContentView.Content == childAsView;
+                    }
+                case Application parentAsApp:
+                    {
+                        return childControl is Page childAsPage && parentAsApp.MainPage == childAsPage;
+                    }
+                default:
+                    Debug.Fail($"Don't know how to handle parent element type {parentControl.GetType().FullName} in order to get child status of {childControl.GetType().FullName}");
+                    return false;
+>>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
             }
         }
     }
