@@ -10,18 +10,12 @@ namespace Emblazon
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
-<<<<<<< HEAD
-    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, INativeControlHandler
-    {
-        public EmblazonAdapter(TComponentHandler closestPhysicalParent)
-=======
     [DebuggerDisplay("{DebugName}")]
-    internal sealed class EmblazonAdapter<TNativeComponent> : IDisposable where TNativeComponent : class
+    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, INativeControlHandler
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer<TNativeComponent> renderer, TNativeComponent closestPhysicalParent, TNativeComponent knownTargetControl = null)
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
+        public EmblazonAdapter(EmblazonRenderer<TComponentHandler> renderer, TComponentHandler closestPhysicalParent, TComponentHandler knownTargetControl = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
@@ -49,14 +43,11 @@ namespace Emblazon
 
         public EmblazonRenderer<TComponentHandler> Renderer { get; private set; }
 
-<<<<<<< HEAD
         internal void SetRenderer(EmblazonRenderer<TComponentHandler> renderer)
         { 
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
 
-=======
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
         /// <summary>
         /// Used for debugging purposes.
         /// </summary>
@@ -214,11 +205,7 @@ namespace Emblazon
 
         private EmblazonAdapter<TComponentHandler> CreateAdapter(TComponentHandler physicalParent)
         {
-<<<<<<< HEAD
-            return new EmblazonAdapter<TComponentHandler>(physicalParent);
-=======
-            return new EmblazonAdapter<TNativeComponent>(Renderer, physicalParent);
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
+            return new EmblazonAdapter<TComponentHandler>(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -283,11 +270,7 @@ namespace Emblazon
             //}
         }
 
-<<<<<<< HEAD
-        private bool TryFindPhysicalChildIndexBefore(EmblazonAdapter<TComponentHandler> child, out int resultIndex)
-=======
-        private bool TryFindPhysicalChildIndexBefore(TNativeComponent nativeParentOfInterest, EmblazonAdapter<TNativeComponent> child, out int resultIndex)
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
+        private bool TryFindPhysicalChildIndexBefore(TComponentHandler nativeParentOfInterest, EmblazonAdapter<TComponentHandler> child, out int resultIndex)
         {
             if (!TryGetPhysicalIndexOfLastDescendant(nativeParentOfInterest, out _))
             {
@@ -323,7 +306,7 @@ namespace Emblazon
             return false;
         }
 
-        private bool TryGetPhysicalIndexOfLastDescendant(TNativeComponent nativeParentOfInterest, out int resultIndex)
+        private bool TryGetPhysicalIndexOfLastDescendant(TComponentHandler nativeParentOfInterest, out int resultIndex)
         {
             var lastPhysicalDescendant = GetLastPhysicalDescendantWithParentOfInterest(nativeParentOfInterest);
             if (lastPhysicalDescendant == null)
@@ -338,11 +321,7 @@ namespace Emblazon
             }
         }
 
-<<<<<<< HEAD
-        private TComponentHandler GetLastPhysicalDescendant()
-=======
-        private TNativeComponent GetLastPhysicalDescendantWithParentOfInterest(TNativeComponent nativeParentOfInterest)
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
+        private TComponentHandler GetLastPhysicalDescendantWithParentOfInterest(TComponentHandler nativeParentOfInterest)
         {
             if (_possibleTargetControl != null)
             {
@@ -352,10 +331,6 @@ namespace Emblazon
                     // If this adapter has a target control, then this is the droid we're looking for. It can't be
                     // any children of this target control because they can't be children of this control's parent.
                     return _possibleTargetControl;
-                }
-                else
-                {
-                    Debug.Fail($"Expected that the first item found ({DebugName}) with a target control ({_possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the native parent of interest ({nativeParentOfInterest.GetType().FullName}), but it wasn't, so the search continues...");
                 }
             }
 

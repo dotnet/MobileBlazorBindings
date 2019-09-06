@@ -9,17 +9,10 @@
     /// <typeparam name="TComponentHandler"></typeparam>
     public abstract class NativeControlManager<TComponentHandler> where TComponentHandler : INativeControlHandler
     {
-<<<<<<< HEAD
-        public abstract bool IsParented(TComponentHandler handler);
-        public abstract void AddPhysicalControl(TComponentHandler parentHandler, TComponentHandler childHandler, int physicalSiblingIndex);
-        public abstract int GetPhysicalSiblingIndex(TComponentHandler handler);
-        public abstract void RemovePhysicalControl(TComponentHandler handler);
-=======
-        public abstract bool IsParented(TNativeComponent nativeControl);
-        public abstract void AddPhysicalControl(TNativeComponent parent, TNativeComponent child, int physicalSiblingIndex);
-        public abstract int GetPhysicalSiblingIndex(TNativeComponent nativeComponent);
-        public abstract void RemovePhysicalControl(TNativeComponent control);
-        public abstract bool IsParentOfChild(TNativeComponent parentControl, TNativeComponent childControl);
->>>>>>> abd3d233d47af015f86ca491d516b9604c8d9953
+        public abstract bool IsParented(TComponentHandler nativeControl);
+        public abstract void AddPhysicalControl(TComponentHandler parent, TComponentHandler child, int physicalSiblingIndex);
+        public abstract int GetPhysicalSiblingIndex(TComponentHandler nativeComponent);
+        public abstract void RemovePhysicalControl(TComponentHandler control);
+        public abstract bool IsParentOfChild(TComponentHandler parentControl, TComponentHandler childControl);
     }
 }
