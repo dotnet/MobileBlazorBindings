@@ -15,7 +15,7 @@ namespace Emblazon
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(TComponentHandler closestPhysicalParent)
+        public EmblazonAdapter(EmblazonRenderer<TComponentHandler> renderer, TComponentHandler closestPhysicalParent, TComponentHandler knownTargetControl = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
@@ -200,7 +200,7 @@ namespace Emblazon
 
         private EmblazonAdapter<TComponentHandler> CreateAdapter(TComponentHandler physicalParent)
         {
-            return new EmblazonAdapter<TNativeComponent>(Renderer, physicalParent);
+            return new EmblazonAdapter<TComponentHandler>(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
