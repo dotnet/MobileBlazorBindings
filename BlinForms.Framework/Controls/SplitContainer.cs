@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static SplitContainer()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<SplitContainer, BlazorSplitContainer>();
+            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<SplitContainer, BlazorSplitContainer>();
         }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
@@ -31,8 +31,11 @@ namespace BlinForms.Framework.Controls
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IBlazorNativeControl
+        class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IWindowsFormsControlHandler
         {
+            public Control Control => this;
+            public object NativeControl => this;
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

@@ -4,26 +4,26 @@ using System.Windows.Forms;
 
 namespace BlinForms.Framework
 {
-    public class BlinFormsRenderer : EmblazonRenderer<Control>
+    public class BlinFormsRenderer : EmblazonRenderer<IWindowsFormsControlHandler>
     {
         public BlinFormsRenderer(IServiceProvider serviceProvider)
             : base(serviceProvider)
         {
         }
 
-        public Form RootForm { get; } = new RootForm();
+        public RootForm RootForm { get; } = new RootForm();
 
         protected override void HandleException(Exception exception)
         {
             MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override Control CreateRootControl()
+        protected override IWindowsFormsControlHandler CreateRootControl()
         {
             return RootForm;
         }
 
-        protected override NativeControlManager<Control> CreateNativeControlManager()
+        protected override NativeControlManager<IWindowsFormsControlHandler> CreateNativeControlManager()
         {
             return new BlinFormsNativeControlManager();
         }

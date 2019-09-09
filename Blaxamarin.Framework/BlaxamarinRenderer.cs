@@ -24,7 +24,7 @@ namespace Blaxamarin.Framework
 
         protected override IFormsControlHandler CreateRootControl()
         {
-            var rootContent = new Elements.ContentView.BlazorContentView();
+            var rootContent = new BlazorContentViewWrapper();
             ContentPage.Content = (View)rootContent.Element;
             return rootContent;
         }

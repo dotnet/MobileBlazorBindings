@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static CheckBox()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<CheckBox>(renderer => new BlazorCheckBox(renderer));
+            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<CheckBox>(renderer => new BlazorCheckBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -54,9 +54,9 @@ namespace BlinForms.Framework.Controls
             return CheckStateChanged.InvokeAsync((CheckState)evt.Value);
         }
 
-        class BlazorCheckBox : System.Windows.Forms.CheckBox, IBlazorNativeControl
+        class BlazorCheckBox : System.Windows.Forms.CheckBox, IWindowsFormsControlHandler
         {
-            public BlazorCheckBox(EmblazonRenderer<System.Windows.Forms.Control> renderer)
+            public BlazorCheckBox(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
             {
                 CheckedChanged += (s, e) =>
                 {
@@ -77,7 +77,10 @@ namespace BlinForms.Framework.Controls
 
             public ulong CheckedChangedEventHandlerId { get; set; }
             public ulong CheckStateChangedEventHandlerId { get; set; }
-            public EmblazonRenderer<Control> Renderer { get; }
+            public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
+
+            public Control Control => this;
+            public object NativeControl => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
