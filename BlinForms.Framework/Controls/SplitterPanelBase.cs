@@ -6,7 +6,7 @@ namespace BlinForms.Framework.Controls
 {
     public abstract class SplitterPanelBase : FormsComponentBase
     {
-        private protected static Control GetSplitterPanel(Control parentControl, int panelNumber)
+        private protected static IWindowsFormsControlHandler GetSplitterPanel(Control parentControl, int panelNumber)
         {
             if (!(parentControl is System.Windows.Forms.SplitContainer splitContainer))
             {
@@ -15,8 +15,8 @@ namespace BlinForms.Framework.Controls
             }
             return panelNumber switch
             {
-                1 => splitContainer.Panel1,
-                2 => splitContainer.Panel2,
+                1 => new BlazorSplitterPanelWrapper(splitContainer.Panel1),
+                2 => new BlazorSplitterPanelWrapper(splitContainer.Panel2),
                 _ => throw new InvalidOperationException($"Invalid SplitContainer panel number: {panelNumber}. The only valid values are '1' and '2'."),
             };
         }
@@ -24,5 +24,24 @@ namespace BlinForms.Framework.Controls
         [Parameter] public RenderFragment ChildContent { get; set; }
 
         protected override RenderFragment GetChildContent() => ChildContent;
+
+        private sealed class BlazorSplitterPanelWrapper : IWindowsFormsControlHandler
+        {
+            public BlazorSplitterPanelWrapper(SplitterPanel splitterPanel)
+            {
+                SplitterPanel = splitterPanel;
+            }
+
+            public Control Control => SplitterPanel;
+
+            public object NativeControl => SplitterPanel;
+
+            public SplitterPanel SplitterPanel { get; }
+
+            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+            {
+                FormsComponentBase.ApplyAttribute(SplitterPanel, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+            }
+        }
     }
 }

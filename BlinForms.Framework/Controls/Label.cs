@@ -1,4 +1,5 @@
-﻿using Emblazon;
+﻿using System.Windows.Forms;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 
 namespace BlinForms.Framework.Controls
@@ -7,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Label()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<Label, BlazorLabel>();
+            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }
@@ -22,8 +23,11 @@ namespace BlinForms.Framework.Controls
             }
         }
 
-        class BlazorLabel : System.Windows.Forms.Label, IBlazorNativeControl
+        class BlazorLabel : System.Windows.Forms.Label, IWindowsFormsControlHandler
         {
+            public Control Control => this;
+            public object NativeControl => this;
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

@@ -1,6 +1,7 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
 {
@@ -8,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<Button>(
+            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<Button>(
                 renderer => new BlazorButton(renderer));
         }
 
@@ -27,9 +28,9 @@ namespace BlinForms.Framework.Controls
             builder.AddAttribute("onclick", OnClick);
         }
 
-        class BlazorButton : System.Windows.Forms.Button, IBlazorNativeControl
+        class BlazorButton : System.Windows.Forms.Button, IWindowsFormsControlHandler
         {
-            public BlazorButton(EmblazonRenderer<System.Windows.Forms.Control> renderer)
+            public BlazorButton(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
             {
                 Click += (s, e) =>
                 {
@@ -42,7 +43,10 @@ namespace BlinForms.Framework.Controls
             }
 
             public ulong ClickEventHandlerId { get; set; }
-            public EmblazonRenderer<System.Windows.Forms.Control> Renderer { get; }
+            public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
+
+            public Control Control => this;
+            public object NativeControl => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

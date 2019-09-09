@@ -1,4 +1,5 @@
-﻿using Emblazon;
+﻿using System.Windows.Forms;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 
 namespace BlinForms.Framework.Controls
@@ -7,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Panel()
         {
-            NativeControlRegistry<System.Windows.Forms.Control>.RegisterNativeControlComponent<Panel, BlazorPanel>();
+            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<Panel, BlazorPanel>();
         }
 
         [Parameter] public bool? AutoScroll { get; set; }
@@ -25,8 +26,11 @@ namespace BlinForms.Framework.Controls
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        class BlazorPanel : System.Windows.Forms.Panel, IBlazorNativeControl
+        class BlazorPanel : System.Windows.Forms.Panel, IWindowsFormsControlHandler
         {
+            public Control Control => this;
+            public object NativeControl => this;
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
