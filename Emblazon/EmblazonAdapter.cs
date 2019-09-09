@@ -319,7 +319,7 @@ namespace Emblazon
             return -1;
         }
 
-        private EmblazonAdapter<TNativeComponent> GetEarlierSiblingMatch(EmblazonAdapter<TNativeComponent> parentAdapter, EmblazonAdapter<TNativeComponent> childAdapter)
+        private EmblazonAdapter<TComponentHandler> GetEarlierSiblingMatch(EmblazonAdapter<TComponentHandler> parentAdapter, EmblazonAdapter<TComponentHandler> childAdapter)
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 
@@ -339,7 +339,7 @@ namespace Emblazon
             return null;
         }
 
-        private EmblazonAdapter<TNativeComponent> GetLastDescendantWithPhysicalControl()
+        private EmblazonAdapter<TComponentHandler> GetLastDescendantWithPhysicalControl()
         {
             if (_possibleTargetControl != null)
             {
