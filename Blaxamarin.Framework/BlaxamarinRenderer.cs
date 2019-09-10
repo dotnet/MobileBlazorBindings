@@ -1,4 +1,5 @@
 ﻿using Emblazon;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using Xamarin.Forms;
@@ -7,8 +8,8 @@ namespace Blaxamarin.Framework
 {
     public class BlaxamarinRenderer : EmblazonRenderer<IFormsControlHandler>
     {
-        public BlaxamarinRenderer(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        public BlaxamarinRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+            : base(serviceProvider, loggerFactory)
         {
         }
 

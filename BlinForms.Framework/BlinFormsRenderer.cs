@@ -1,4 +1,5 @@
 ﻿using Emblazon;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
@@ -6,8 +7,8 @@ namespace BlinForms.Framework
 {
     public class BlinFormsRenderer : EmblazonRenderer<IWindowsFormsControlHandler>
     {
-        public BlinFormsRenderer(IServiceProvider serviceProvider)
-            : base(serviceProvider)
+        public BlinFormsRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+            : base(serviceProvider, loggerFactory)
         {
         }
 

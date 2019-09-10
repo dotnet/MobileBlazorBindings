@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Xamarin.Forms;
 
 namespace Blaxamarin.Framework
@@ -11,7 +12,7 @@ namespace Blaxamarin.Framework
             var serviceCollection = new ServiceCollection();
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
-            var renderer = new BlaxamarinRenderer(serviceProvider);
+            var renderer = new BlaxamarinRenderer(serviceProvider, new LoggerFactory());
             var result = renderer.Dispatcher.InvokeAsync(async () =>
             {
                 await renderer.AddComponent<T>();

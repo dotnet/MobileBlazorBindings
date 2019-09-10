@@ -15,8 +15,8 @@ namespace Emblazon
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
-        public EmblazonRenderer(IServiceProvider serviceProvider)
-            : base(serviceProvider, new LoggerFactory())
+        public EmblazonRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+            : base(serviceProvider, loggerFactory)
         {
         }
 
@@ -27,9 +27,14 @@ namespace Emblazon
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
 
-        public Task AddComponent<T>() where T : IComponent
+        public async Task AddComponent<TComponent>() where TComponent : IComponent
         {
-            var component = InstantiateComponent(typeof(T));
+            await AddComponent(typeof(TComponent));
+        }
+
+        public async Task AddComponent(Type componentType)
+        {
+            var component = InstantiateComponent(componentType);
             var componentId = AssignRootComponentId(component);
             var rootControl = CreateRootControl();
 
@@ -39,7 +44,7 @@ namespace Emblazon
             };
 
             _componentIdToAdapter[componentId] = rootAdapter;
-            return RenderRootComponentAsync(componentId);
+            await RenderRootComponentAsync(componentId);
         }
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
