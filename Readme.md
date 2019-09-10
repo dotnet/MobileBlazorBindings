@@ -10,8 +10,8 @@ Emblazon enables using Blazor to target native UI renderers (as opposed to web r
 Emblazon and its related projects require:
 
 1. [Visual Studio 2019 Preview](https://visualstudio.microsoft.com/vs/preview/)
-  * For Blaxamarin, the Xamarin workload must be enabled in Visual Studio
-  * For BlinForms, you must run on Windows (that's the `in` of BlinForms!)
+   * For Blaxamarin, the Xamarin workload must be enabled in Visual Studio
+   * For BlinForms, you must run on Windows (that's the `in` of BlinForms!)
 2. [.NET Core 3.0 Preview SDK](https://dotnet.microsoft.com/download/dotnet-core/3.0)
 
 
