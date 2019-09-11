@@ -16,7 +16,6 @@ namespace BlaxamarinSample
             DependencyService.Register<MockDataStore>();
 
             var host = Host.CreateDefaultBuilder()
-                //.AddBlinForms()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services
