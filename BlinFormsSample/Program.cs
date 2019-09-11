@@ -17,6 +17,7 @@ namespace BlinFormsSample
                 {
                     // Register app-specific services
                     services.AddSingleton<AppState>();
+                    services.AddSingleton<IBlinFormsStartup, TodoAppStartup>();
 
                     // Configure main form to load at startup
                     services.AddBlinFormsMainForm<TodoApp>();

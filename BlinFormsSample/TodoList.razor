@@ -1,4 +1,6 @@
-﻿<Panel Left="8" Top="8" Width="325" Height="60" BackColor="SystemColors.ControlLight">
+﻿@inject AppState AppState
+
+<Panel Left="8" Top="8" Width="325" Height="60" BackColor="SystemColors.ControlLight">
     @* Input area *@
     <Label Left="8" Top="8" Width="180" Text="What's to be done?" />
     <TextBox Left="8" Top="32" Width="230" @bind-Text="newText" />
@@ -7,25 +9,19 @@
 
 <Panel Left="8" AutoScroll="true" Width="325" Height="300" Top="80" BackColor="SystemColors.ControlLight">
     @* List of todos *@
-    @for (int i = 0; i < items.Count; i++)
+    @for (int i = 0; i < AppState.Items.Count; i++)
     {
-        <TodoEntry Item="@items[i]" Top="@(i * 50 + 8)" />
+        <TodoEntry Item="@AppState.Items[i]" Top="@(i * 50 + 8)" />
     }
 </Panel>
 
 @code
 {
     string newText;
-    List<TodoItem> items = new List<TodoItem>()
-    {
-        new TodoItem{Text="111"},
-        new TodoItem{Text="222"},
-        new TodoItem{Text="333"},
-    };
 
     void AddItem()
     {
-        items.Add(new TodoItem { Text = newText });
+        AppState.Items.Add(new TodoItem { Text = newText });
         newText = null;
     }
 }
