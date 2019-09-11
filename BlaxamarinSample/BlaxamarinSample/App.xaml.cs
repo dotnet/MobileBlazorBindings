@@ -1,5 +1,8 @@
 ﻿using Xamarin.Forms;
 using BlaxamarinSample.Services;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Blaxamarin.Framework;
 
 namespace BlaxamarinSample
 {
@@ -12,7 +15,16 @@ namespace BlaxamarinSample
 
             DependencyService.Register<MockDataStore>();
 
-            MainPage = Blaxamarin.Framework.Blaxamarin.Run<TodoApp>();
+            var host = Host.CreateDefaultBuilder()
+                //.AddBlinForms()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    // Register app-specific services
+                    services.AddSingleton<AppState>();
+                })
+                .Build();
+
+            MainPage = host.Services.GetComponentContentPage<TodoApp>();
         }
 
         protected override void OnStart()
