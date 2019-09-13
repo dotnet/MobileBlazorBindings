@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
@@ -11,7 +12,9 @@ namespace BlinForms.Framework.Controls
             NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<SplitContainer, BlazorSplitContainer>();
         }
 
-        [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public RenderFragment Panel1 { get; set; }
+        [Parameter] public RenderFragment Panel2 { get; set; }
+
         [Parameter] public Orientation? Orientation { get; set; }
         [Parameter] public int? SplitterDistance { get; set; }
         
@@ -29,7 +32,18 @@ namespace BlinForms.Framework.Controls
             }
         }
 
-        protected override RenderFragment GetChildContent() => ChildContent;
+        protected override RenderFragment GetChildContent() => RenderChildContent;
+
+        private void RenderChildContent(RenderTreeBuilder builder)
+        {
+            builder.OpenComponent<SplitterPanel1>(0);
+            builder.AddAttribute(1, nameof(SplitterPanel1.ChildContent), Panel1);
+            builder.CloseComponent();
+
+            builder.OpenComponent<SplitterPanel2>(2);
+            builder.AddAttribute(3, nameof(SplitterPanel2.ChildContent), Panel2);
+            builder.CloseComponent();
+        }
 
         class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IWindowsFormsControlHandler
         {

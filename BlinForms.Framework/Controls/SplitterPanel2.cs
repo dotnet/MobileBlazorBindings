@@ -2,7 +2,7 @@
 
 namespace BlinForms.Framework.Controls
 {
-    public class SplitterPanel2 : SplitterPanelBase
+    internal class SplitterPanel2 : SplitterPanelBase
     {
         static SplitterPanel2()
         {
