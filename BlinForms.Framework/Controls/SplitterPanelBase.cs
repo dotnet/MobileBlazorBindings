@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
 {
-    public abstract class SplitterPanelBase : FormsComponentBase
+    internal abstract class SplitterPanelBase : FormsComponentBase
     {
         private protected static IWindowsFormsControlHandler GetSplitterPanel(Control parentControl, int panelNumber)
         {
