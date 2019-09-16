@@ -44,6 +44,12 @@ namespace Blaxamarin.Framework
                         parentAsContentView.Content = childAsView;
                     }
                     break;
+                case ContentPage parentAsContentPage:
+                    {
+                        var childAsView = child as View;
+                        parentAsContentPage.Content = childAsView;
+                    }
+                    break;
                 case Application parentAsApp:
                     {
                         if (parentAsApp.MainPage != null)
@@ -66,6 +72,22 @@ namespace Blaxamarin.Framework
                                 parentAsApp.MainPage = dummyView;
                                 //Debug.Fail($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childControl.GetType().FullName}");
                             }
+                        }
+                    }
+                    break;
+                case MasterDetailPage masterDetailPage:
+                    { 
+                        if (child is Elements.MasterDetailMasterPage.MasterPageWrapper masterPage)
+                        {
+                            masterDetailPage.Master = masterPage;
+                        }
+                        else if (child is Elements.MasterDetailDetailPage.DetailPageWrapper detailPage)
+                        {
+                            masterDetailPage.Detail = detailPage;
+                        }
+                        else
+                        {
+                            Debug.Fail($"Unknown child type {child.GetType().FullName} being added to parent element type {parent.GetType().FullName}.");
                         }
                     }
                     break;
