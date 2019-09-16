@@ -23,7 +23,7 @@ namespace BlaxamarinSample
                 })
                 .Build();
 
-            MainPage = host.Services.GetComponentContentPage<TodoApp>();
+            host.Services.AddComponent<TodoApp>(parent: this);
         }
 
         protected override void OnStart()

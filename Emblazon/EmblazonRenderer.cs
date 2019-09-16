@@ -27,18 +27,29 @@ namespace Emblazon
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
 
-        public async Task AddComponent<TComponent>() where TComponent : IComponent
+        /// <summary>
+        /// Creates a component of type <typeparamref name="TComponent"/> and adds it as a child of <paramref name="parent"/>.
+        /// </summary>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public async Task AddComponent<TComponent>(TComponentHandler parent) where TComponent : IComponent
         {
-            await AddComponent(typeof(TComponent));
+            await AddComponent(typeof(TComponent), parent);
         }
 
-        public async Task AddComponent(Type componentType)
+        /// <summary>
+        /// Creates a component of type <paramref name="componentType"/> and adds it as a child of <paramref name="parent"/>.
+        /// </summary>
+        /// <param name="componentType"></param>
+        /// <param name="parent"></param>
+        /// <returns></returns>
+        public async Task AddComponent(Type componentType, TComponentHandler parent)
         {
             var component = InstantiateComponent(componentType);
             var componentId = AssignRootComponentId(component);
-            var rootControl = CreateRootControl();
 
-            var rootAdapter = new EmblazonAdapter<TComponentHandler>(this, closestPhysicalParent: rootControl, knownTargetControl: rootControl)
+            var rootAdapter = new EmblazonAdapter<TComponentHandler>(this, closestPhysicalParent: parent, knownTargetControl: parent)
             {
                 Name = "RootAdapter"
             };
@@ -106,7 +117,5 @@ namespace Emblazon
             _componentIdToAdapter[componentId] = result;
             return result;
         }
-
-        protected abstract TComponentHandler CreateRootControl();
     }
 }

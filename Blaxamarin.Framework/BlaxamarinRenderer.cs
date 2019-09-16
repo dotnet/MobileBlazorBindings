@@ -23,13 +23,6 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override IFormsControlHandler CreateRootControl()
-        {
-            var rootContent = new BlazorContentViewWrapper();
-            ContentPage.Content = (View)rootContent.Element;
-            return rootContent;
-        }
-
         protected override NativeControlManager<IFormsControlHandler> CreateNativeControlManager()
         {
             return new BlaxamarinNativeControlManager();

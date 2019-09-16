@@ -13,7 +13,7 @@ namespace BlinForms.Framework
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddBlinFormsMainForm<TComponent>(this IServiceCollection services)
+        public static IServiceCollection AddRootFormContent<TComponent>(this IServiceCollection services)
             where TComponent : class, IComponent
         {
             if (services is null)
@@ -21,7 +21,7 @@ namespace BlinForms.Framework
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddSingleton<IBlinFormsMainFormType, BlinFormsMainFormType<TComponent>>();
+            services.AddSingleton<IBlinFormsRootFormContent, BlinFormsRootFormContent<TComponent>>();
 
             return services;
         }

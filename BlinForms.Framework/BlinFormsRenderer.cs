@@ -12,16 +12,9 @@ namespace BlinForms.Framework
         {
         }
 
-        public RootForm RootForm { get; } = new RootForm();
-
         protected override void HandleException(Exception exception)
         {
             MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        protected override IWindowsFormsControlHandler CreateRootControl()
-        {
-            return RootForm;
         }
 
         protected override NativeControlManager<IWindowsFormsControlHandler> CreateNativeControlManager()

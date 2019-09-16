@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blaxamarin.Framework.Elements;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,16 +9,40 @@ namespace Blaxamarin.Framework
 {
     public static class BlaxamarinServiceProviderExtensions
     {
-        public static ContentPage GetComponentContentPage<TComponent>(this IServiceProvider services) where TComponent : IComponent
+        /// <summary>
+        /// Creates a component of type <typeparamref name="TComponent"/> and adds it as a child of <paramref name="parent"/>.
+        /// </summary>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <param name="services"></param>
+        /// <param name="parent"></param>
+        public static void AddComponent<TComponent>(this IServiceProvider services, Element parent) where TComponent : IComponent
         {
-            var renderer = new BlaxamarinRenderer(services, services.GetRequiredService<ILoggerFactory>());
-            var result = renderer.Dispatcher.InvokeAsync(async () =>
+            if (parent is null)
             {
-                await renderer.AddComponent<TComponent>();
+                throw new ArgumentNullException(nameof(parent));
+            }
 
-                return renderer.ContentPage;
+            var renderer = new BlaxamarinRenderer(services, services.GetRequiredService<ILoggerFactory>());
+            renderer.Dispatcher.InvokeAsync(async () =>
+            {
+                await renderer.AddComponent<TComponent>(new ElementWrapper(parent));
             });
-            return result.GetAwaiter().GetResult();
+        }
+
+        private sealed class ElementWrapper : IFormsControlHandler
+        {
+            public ElementWrapper(Element element)
+            {
+                Element = element ?? throw new ArgumentNullException(nameof(element));
+            }
+
+            public Element Element { get; }
+            public object NativeControl => Element;
+
+            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+            {
+                FormsComponentBase.ApplyAttribute(Element, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+            }
         }
     }
 }
