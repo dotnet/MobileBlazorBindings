@@ -64,13 +64,7 @@ namespace Blaxamarin.Framework
                             }
                             else
                             {
-                                // TODO: Do we need a BlelementAdapter representing the dummy ContentPage? Or should the Razor page be a ContentPage somehow?
-                                var dummyView = new ContentPage
-                                {
-                                    Content = child as View
-                                };
-                                parentAsApp.MainPage = dummyView;
-                                //Debug.Fail($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childControl.GetType().FullName}");
+                                Debug.Fail($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {child.GetType().FullName}");
                             }
                         }
                     }
