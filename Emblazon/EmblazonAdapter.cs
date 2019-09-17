@@ -137,7 +137,11 @@ namespace Emblazon
             mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter; might be used later
+#pragma warning disable CA1801 // Parameter is never used; will likely be used in the future
         private void ApplyRemoveAttribute(int siblingIndex, string removedAttributeName)// ref RenderTreeFrame attributeFrame)
+#pragma warning restore CA1801 // Parameter is never used
+#pragma warning restore IDE0060 // Remove unused parameter
         {
             if (_possibleTargetControl == null)
             {
@@ -145,7 +149,11 @@ namespace Emblazon
             }
 
             var mapper = GetControlPropertyMapper(_possibleTargetControl);
-            mapper.SetControlProperty(0, removedAttributeName, null, null);
+            mapper.SetControlProperty(
+                attributeEventHandlerId: 0,
+                attributeName: removedAttributeName,
+                attributeValue: null,
+                attributeEventUpdatesAttributeName: null);
         }
 
         private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
