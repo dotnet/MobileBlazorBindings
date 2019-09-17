@@ -9,7 +9,7 @@ namespace BlinFormsSample
     internal static class Program
     {
         [STAThread]
-        static async Task Main()
+        private static async Task Main()
         {
             await Host.CreateDefaultBuilder()
                 .AddBlinForms()

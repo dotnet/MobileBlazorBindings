@@ -31,7 +31,7 @@ namespace BlaxamarinSample.Views
             await Navigation.PopModalAsync();
         }
 
-        async void Cancel_Clicked(object sender, EventArgs e)
+        private async void Cancel_Clicked(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
