@@ -27,13 +27,7 @@ namespace Emblazon
 
         private readonly int _debugInstanceCounterValue;
 
-        public string DebugName
-        {
-            get
-            {
-                return $"[#{_debugInstanceCounterValue}] {Name}";
-            }
-        }
+        public string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
 
         public EmblazonAdapter<TComponentHandler> Parent { get; set; }
         public List<EmblazonAdapter<TComponentHandler>> Children { get; } = new List<EmblazonAdapter<TComponentHandler>>();
@@ -335,7 +329,7 @@ namespace Emblazon
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 
-            for (int i = indexOfParentsChildAdapter - 1; i >= 0; i--)
+            for (var i = indexOfParentsChildAdapter - 1; i >= 0; i--)
             {
                 var sibling = parentAdapter.Children[i];
 

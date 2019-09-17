@@ -1,11 +1,8 @@
-﻿using System;
+﻿using BlaxamarinSample.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using BlaxamarinSample.Models;
 
 namespace BlaxamarinSample.Views
 {
@@ -14,7 +11,7 @@ namespace BlaxamarinSample.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : MasterDetailPage
     {
-        Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
+        private readonly Dictionary<int, NavigationPage> MenuPages = new Dictionary<int, NavigationPage>();
         public MainPage()
         {
             InitializeComponent();
@@ -46,7 +43,9 @@ namespace BlaxamarinSample.Views
                 Detail = newPage;
 
                 if (Device.RuntimePlatform == Device.Android)
+                {
                     await Task.Delay(100);
+                }
 
                 IsPresented = false;
             }

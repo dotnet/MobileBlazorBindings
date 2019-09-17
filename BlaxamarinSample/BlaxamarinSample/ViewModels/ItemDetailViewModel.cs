@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using BlaxamarinSample.Models;
 
 namespace BlaxamarinSample.ViewModels

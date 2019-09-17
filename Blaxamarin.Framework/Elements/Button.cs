@@ -28,7 +28,7 @@ namespace Blaxamarin.Framework.Elements
             builder.AddAttribute("onclick", OnClick);
         }
 
-        class BlazorButton : Xamarin.Forms.Button, IFormsControlHandler
+        private class BlazorButton : Xamarin.Forms.Button, IFormsControlHandler
         {
             public BlazorButton(EmblazonRenderer<IFormsControlHandler> renderer)
             {

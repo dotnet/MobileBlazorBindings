@@ -17,7 +17,7 @@ namespace BlinForms.Framework.Controls
 
         [Parameter] public Orientation? Orientation { get; set; }
         [Parameter] public int? SplitterDistance { get; set; }
-        
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
@@ -45,7 +45,7 @@ namespace BlinForms.Framework.Controls
             builder.CloseComponent();
         }
 
-        class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IWindowsFormsControlHandler
+        private class BlazorSplitContainer : System.Windows.Forms.SplitContainer, IWindowsFormsControlHandler
         {
             public Control Control => this;
             public object NativeControl => this;

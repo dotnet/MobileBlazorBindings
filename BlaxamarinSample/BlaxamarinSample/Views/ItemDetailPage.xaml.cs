@@ -1,10 +1,7 @@
-﻿using System;
+﻿using BlaxamarinSample.Models;
+using BlaxamarinSample.ViewModels;
 using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-using BlaxamarinSample.Models;
-using BlaxamarinSample.ViewModels;
 
 namespace BlaxamarinSample.Views
 {
@@ -13,7 +10,7 @@ namespace BlaxamarinSample.Views
     [DesignTimeVisible(false)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;
+        private readonly ItemDetailViewModel viewModel;
 
         public ItemDetailPage(ItemDetailViewModel viewModel)
         {

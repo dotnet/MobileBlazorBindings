@@ -34,12 +34,9 @@ namespace Blaxamarin.Framework.Elements
             builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleTextChanged));
         }
 
-        private Task HandleTextChanged(ChangeEventArgs evt)
-        {
-            return TextChanged.InvokeAsync((string)evt.Value);
-        }
+        private Task HandleTextChanged(ChangeEventArgs evt) => TextChanged.InvokeAsync((string)evt.Value);
 
-        class BlazorEntry : Xamarin.Forms.Entry, IFormsControlHandler
+        private class BlazorEntry : Xamarin.Forms.Entry, IFormsControlHandler
         {
             public BlazorEntry(EmblazonRenderer<IFormsControlHandler> renderer)
             {
@@ -57,7 +54,7 @@ namespace Blaxamarin.Framework.Elements
             public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
             public object NativeControl => this;
             public Element Element => this;
-            
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

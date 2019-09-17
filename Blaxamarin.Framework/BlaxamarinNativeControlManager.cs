@@ -6,21 +6,18 @@ namespace Blaxamarin.Framework
 {
     internal class BlaxamarinNativeControlManager : NativeControlManager<IFormsControlHandler>
     {
-        public override bool IsParented(IFormsControlHandler handler)
-        {
-            return handler.Element.Parent != null;
-        }
+        public override bool IsParented(IFormsControlHandler handler) => handler.Element.Parent != null;
 
         public override void AddPhysicalControl(
-            IFormsControlHandler parentHandler, 
-            IFormsControlHandler childHandler, 
+            IFormsControlHandler parentHandler,
+            IFormsControlHandler childHandler,
             int physicalSiblingIndex)
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
             var parent = parentHandler.Element;
             var child = childHandler.Element;
-            
+
             switch (parent)
             {
                 case Layout<View> parentAsLayout:
@@ -70,7 +67,7 @@ namespace Blaxamarin.Framework
                     }
                     break;
                 case MasterDetailPage masterDetailPage:
-                    { 
+                    {
                         if (child is Elements.MasterDetailMasterPage.MasterPageWrapper masterPage)
                         {
                             masterDetailPage.Master = masterPage;
@@ -97,29 +94,29 @@ namespace Blaxamarin.Framework
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
             var nativeComponent = handler.Element;
-            
+
             switch (nativeComponent.Parent)
             {
                 case Layout<View> parentAsLayout:
-                {
-                    var childAsView = nativeComponent as View;
+                    {
+                        var childAsView = nativeComponent as View;
 
-                    return parentAsLayout.Children.IndexOf(childAsView);
-                }
+                        return parentAsLayout.Children.IndexOf(childAsView);
+                    }
                 case ContentView _:
-                {
-                    // A ContentView can have only 1 child, so its index is always 0. Not that anyone
-                    // should typically need the sibling index here, because this component can't
-                    // ever *have* any siblings...
-                    return 0;
-                }
+                    {
+                        // A ContentView can have only 1 child, so its index is always 0. Not that anyone
+                        // should typically need the sibling index here, because this component can't
+                        // ever *have* any siblings...
+                        return 0;
+                    }
                 case Application _:
-                {
-                    // An Application can have only 1 child (its MainPage), so its index is always 0. Not that anyone
-                    // should typically need the sibling index here, because this component can't
-                    // ever *have* any siblings...
-                    return 0;
-                }
+                    {
+                        // An Application can have only 1 child (its MainPage), so its index is always 0. Not that anyone
+                        // should typically need the sibling index here, because this component can't
+                        // ever *have* any siblings...
+                        return 0;
+                    }
                 default:
                     Debug.Fail($"Don't know how to handle parent element type {nativeComponent.Parent.GetType().FullName} in order to get index of sibling {nativeComponent.GetType().FullName}");
                     return -1;

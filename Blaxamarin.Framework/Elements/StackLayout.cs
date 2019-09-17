@@ -28,11 +28,11 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        class BlazorStackLayout : Xamarin.Forms.StackLayout, IFormsControlHandler
+        private class BlazorStackLayout : Xamarin.Forms.StackLayout, IFormsControlHandler
         {
             public object NativeControl => this;
             public Element Element => this;
-            
+
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)

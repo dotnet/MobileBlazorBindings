@@ -1,12 +1,10 @@
-﻿using System;
+﻿using BlaxamarinSample.Models;
+using BlaxamarinSample.Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
 using Xamarin.Forms;
-
-using BlaxamarinSample.Models;
-using BlaxamarinSample.Services;
 
 namespace BlaxamarinSample.ViewModels
 {
@@ -14,18 +12,18 @@ namespace BlaxamarinSample.ViewModels
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
 
-        bool isBusy = false;
+        private bool isBusy = false;
         public bool IsBusy
         {
-            get { return isBusy; }
-            set { SetProperty(ref isBusy, value); }
+            get => isBusy;
+            set => SetProperty(ref isBusy, value);
         }
 
-        string title = string.Empty;
+        private string title = string.Empty;
         public string Title
         {
-            get { return title; }
-            set { SetProperty(ref title, value); }
+            get => title;
+            set => SetProperty(ref title, value);
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
@@ -33,7 +31,9 @@ namespace BlaxamarinSample.ViewModels
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
+            {
                 return false;
+            }
 
             backingStore = value;
             onChanged?.Invoke();
@@ -47,7 +47,9 @@ namespace BlaxamarinSample.ViewModels
         {
             var changed = PropertyChanged;
             if (changed == null)
+            {
                 return;
+            }
 
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

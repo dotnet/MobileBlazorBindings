@@ -80,7 +80,7 @@ namespace Emblazon
             var numDisposeEventHandlers = renderBatch.DisposedEventHandlerIDs.Count;
             if (numDisposeEventHandlers != 0)
             {
-                for (int i = 0; i < numDisposeEventHandlers; i++)
+                for (var i = 0; i < numDisposeEventHandlers; i++)
                 {
                     DisposeEvent(renderBatch.DisposedEventHandlerIDs.Array[i]);
                 }

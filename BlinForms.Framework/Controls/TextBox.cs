@@ -53,7 +53,7 @@ namespace BlinForms.Framework.Controls
             return TextChanged.InvokeAsync((string)evt.Value);
         }
 
-        class BlazorTextBox : System.Windows.Forms.TextBox, IWindowsFormsControlHandler
+        private class BlazorTextBox : System.Windows.Forms.TextBox, IWindowsFormsControlHandler
         {
             public BlazorTextBox(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
             {

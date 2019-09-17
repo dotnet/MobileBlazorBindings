@@ -46,7 +46,7 @@ namespace Blaxamarin.Framework.Elements
             builder.CloseComponent();
         }
 
-        class BlazorMasterDetailPage : Xamarin.Forms.MasterDetailPage, IFormsControlHandler
+        private class BlazorMasterDetailPage : Xamarin.Forms.MasterDetailPage, IFormsControlHandler
         {
             public BlazorMasterDetailPage(EmblazonRenderer<IFormsControlHandler> renderer)
             {

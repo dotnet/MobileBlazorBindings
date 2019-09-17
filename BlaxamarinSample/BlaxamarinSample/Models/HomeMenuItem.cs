@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace BlaxamarinSample.Models
+﻿namespace BlaxamarinSample.Models
 {
     public enum MenuItemType
     {

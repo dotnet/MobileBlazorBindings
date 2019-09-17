@@ -1,9 +1,7 @@
 ﻿using BlaxamarinSample.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace BlaxamarinSample.Views
 {
@@ -12,8 +10,9 @@ namespace BlaxamarinSample.Views
     [DesignTimeVisible(false)]
     public partial class MenuPage : ContentPage
     {
-        MainPage RootPage { get => Application.Current.MainPage as MainPage; }
-        List<HomeMenuItem> menuItems;
+        private MainPage RootPage => Application.Current.MainPage as MainPage;
+
+        private readonly List<HomeMenuItem> menuItems;
         public MenuPage()
         {
             InitializeComponent();
@@ -30,7 +29,9 @@ namespace BlaxamarinSample.Views
             ListViewMenu.ItemSelected += async (sender, e) =>
             {
                 if (e.SelectedItem == null)
+                {
                     return;
+                }
 
                 var id = (int)((HomeMenuItem)e.SelectedItem).Id;
                 await RootPage.NavigateFromMenu(id);

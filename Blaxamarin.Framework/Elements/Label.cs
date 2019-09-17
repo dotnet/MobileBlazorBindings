@@ -53,7 +53,7 @@ namespace Blaxamarin.Framework.Elements
             }
         }
 
-        class BlazorLabel : Xamarin.Forms.Label, IFormsControlHandler
+        private class BlazorLabel : Xamarin.Forms.Label, IFormsControlHandler
         {
             public object NativeControl => this;
             public Element Element => this;

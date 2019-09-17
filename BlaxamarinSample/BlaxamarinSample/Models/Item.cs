@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BlaxamarinSample.Models
+﻿namespace BlaxamarinSample.Models
 {
     public class Item
     {

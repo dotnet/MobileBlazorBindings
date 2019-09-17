@@ -57,7 +57,7 @@ namespace BlinForms.Framework
                 rootForm.FormClosed += OnRootFormFormClosed;
 
                 await renderer.AddComponent(_blinFormsMainForm.RootFormContentType, new ControlWrapper(rootForm));
-                               
+
                 Application.Run(rootForm);
             });
         }

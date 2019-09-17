@@ -1,14 +1,14 @@
-﻿using System;
+﻿using BlaxamarinSample.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlaxamarinSample.Models;
 
 namespace BlaxamarinSample.Services
 {
     public class MockDataStore : IDataStore<Item>
     {
-        readonly List<Item> items;
+        private readonly List<Item> items;
 
         public MockDataStore()
         {

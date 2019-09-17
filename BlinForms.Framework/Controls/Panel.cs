@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
 {
@@ -28,7 +28,7 @@ namespace BlinForms.Framework.Controls
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        class BlazorPanel : System.Windows.Forms.Panel, IWindowsFormsControlHandler
+        private class BlazorPanel : System.Windows.Forms.Panel, IWindowsFormsControlHandler
         {
             public Control Control => this;
             public object NativeControl => this;

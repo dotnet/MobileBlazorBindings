@@ -1,6 +1,6 @@
-﻿using System.Windows.Forms;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls
 {
@@ -23,7 +23,7 @@ namespace BlinForms.Framework.Controls
             }
         }
 
-        class BlazorLabel : System.Windows.Forms.Label, IWindowsFormsControlHandler
+        private class BlazorLabel : System.Windows.Forms.Label, IWindowsFormsControlHandler
         {
             public Control Control => this;
             public object NativeControl => this;

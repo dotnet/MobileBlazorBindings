@@ -1,12 +1,12 @@
 ﻿using BlinForms.Framework;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 
 namespace BlinFormsSample
 {
-    static class Program
+    internal static class Program
     {
         [STAThread]
         static async Task Main()

@@ -28,7 +28,7 @@ namespace BlinForms.Framework.Controls
             builder.AddAttribute("onclick", OnClick);
         }
 
-        class BlazorButton : System.Windows.Forms.Button, IWindowsFormsControlHandler
+        private class BlazorButton : System.Windows.Forms.Button, IWindowsFormsControlHandler
         {
             public BlazorButton(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
             {

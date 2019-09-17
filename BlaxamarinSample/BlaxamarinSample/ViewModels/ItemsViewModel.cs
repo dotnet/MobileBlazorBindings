@@ -1,12 +1,10 @@
-﻿using System;
+﻿using BlaxamarinSample.Models;
+using BlaxamarinSample.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
-using BlaxamarinSample.Models;
-using BlaxamarinSample.Views;
 
 namespace BlaxamarinSample.ViewModels
 {
@@ -29,10 +27,12 @@ namespace BlaxamarinSample.ViewModels
             });
         }
 
-        async Task ExecuteLoadItemsCommand()
+        private async Task ExecuteLoadItemsCommand()
         {
             if (IsBusy)
+            {
                 return;
+            }
 
             IsBusy = true;
 

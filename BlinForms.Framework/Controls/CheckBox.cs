@@ -54,7 +54,7 @@ namespace BlinForms.Framework.Controls
             return CheckStateChanged.InvokeAsync((CheckState)evt.Value);
         }
 
-        class BlazorCheckBox : System.Windows.Forms.CheckBox, IWindowsFormsControlHandler
+        private class BlazorCheckBox : System.Windows.Forms.CheckBox, IWindowsFormsControlHandler
         {
             public BlazorCheckBox(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
             {

@@ -1,8 +1,8 @@
-﻿using Xamarin.Forms;
+﻿using Blaxamarin.Framework;
 using BlaxamarinSample.Services;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Blaxamarin.Framework;
+using Microsoft.Extensions.Hosting;
+using Xamarin.Forms;
 
 namespace BlaxamarinSample
 {
