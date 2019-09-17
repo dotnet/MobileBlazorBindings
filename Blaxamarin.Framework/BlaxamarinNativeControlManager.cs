@@ -47,6 +47,12 @@ namespace Blaxamarin.Framework
                         parentAsContentPage.Content = childAsView;
                     }
                     break;
+                case ScrollView parentAsScrollView:
+                    {
+                        var childAsView = child as View;
+                        parentAsScrollView.Content = childAsView;
+                    }
+                    break;
                 case Application parentAsApp:
                     {
                         if (parentAsApp.MainPage != null)

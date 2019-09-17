@@ -7,13 +7,15 @@
         <Button Text="Add" OnClick="@AddItem" />
     </StackLayout>
 
-    <StackLayout>
-        @* List of todos *@
-        @foreach (var item in AppState.Items)
-        {
-            <TodoEntry Item="@item" />
-        }
-    </StackLayout>
+    <ScrollView>
+        <StackLayout>
+            @* List of todos *@
+            @foreach (var item in AppState.Items)
+            {
+                <TodoEntry Item="@item" />
+            }
+        </StackLayout>
+    </ScrollView>
 </StackLayout>
 
 @code
