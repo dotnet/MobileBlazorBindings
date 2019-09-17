@@ -14,7 +14,7 @@ namespace BlinForms.Framework
 
         protected override void HandleException(Exception exception)
         {
-            MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(exception?.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         protected override NativeControlManager<IWindowsFormsControlHandler> CreateNativeControlManager()

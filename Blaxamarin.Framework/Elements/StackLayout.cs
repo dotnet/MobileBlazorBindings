@@ -11,7 +11,9 @@ namespace Blaxamarin.Framework.Elements
             NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
         }
 
+#pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
+#pragma warning restore CA1721 // Property names should not match get methods
         [Parameter] public StackOrientation? Orientation { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)

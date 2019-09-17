@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Emblazon
 {
+#pragma warning disable CA1000 // Do not declare static members on generic types
     public static class NativeControlRegistry<TNativeControlHandler> where TNativeControlHandler: class, INativeControlHandler
     {
         internal static Dictionary<string, ComponentHandlerFactory<TNativeControlHandler>> KnownElements { get; }
@@ -25,4 +26,5 @@ namespace Emblazon
             RegisterNativeControlComponent<TComponent>((_, __) => new TControlHandler() as TNativeControlHandler);
         }
     }
+#pragma warning restore CA1000 // Do not declare static members on generic types
 }

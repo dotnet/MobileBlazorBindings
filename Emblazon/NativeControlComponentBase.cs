@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using System;
 
 namespace Emblazon
 {
@@ -7,6 +8,11 @@ namespace Emblazon
     {
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
+            if (builder is null)
+            {
+                throw new ArgumentNullException(nameof(builder));
+            }
+
             builder.OpenElement(0, GetType().FullName);
             RenderAttributes(new AttributesBuilder(builder));
 
@@ -23,9 +29,6 @@ namespace Emblazon
         {
         }
 
-        protected virtual RenderFragment GetChildContent()
-        {
-            return null;
-        }
+        protected virtual RenderFragment GetChildContent() => null;
     }
 }

@@ -17,7 +17,7 @@ namespace BlinForms.Framework.Controls
             {
                 1 => new BlazorSplitterPanelWrapper(splitContainer.Panel1),
                 2 => new BlazorSplitterPanelWrapper(splitContainer.Panel2),
-                _ => throw new InvalidOperationException($"Invalid SplitContainer panel number: {panelNumber}. The only valid values are '1' and '2'."),
+                _ => null
             };
         }
 

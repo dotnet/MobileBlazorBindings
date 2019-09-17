@@ -66,8 +66,17 @@ namespace BlinForms.Framework.Controls
             }
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter; will likely be used in the future
+#pragma warning disable CA1801 // Parameter is never used; will likely be used in the future
         public static void ApplyAttribute(Control control, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+#pragma warning restore CA1801 // Parameter is never used
+#pragma warning restore IDE0060 // Remove unused parameter
         {
+            if (control is null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
+
             switch (attributeName)
             {
                 case nameof(Top):

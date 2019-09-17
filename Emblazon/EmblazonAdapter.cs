@@ -176,7 +176,9 @@ namespace Emblazon
                         {
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
+#pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
+#pragma warning restore CA2000 // Dispose objects before losing scope
                         childAdapter.Name = $"Dummy markup, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
@@ -188,7 +190,9 @@ namespace Emblazon
                         {
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
+#pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
+#pragma warning restore CA2000 // Dispose objects before losing scope
                         childAdapter.Name = $"Dummy text, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
@@ -319,7 +323,7 @@ namespace Emblazon
             return -1;
         }
 
-        private EmblazonAdapter<TComponentHandler> GetEarlierSiblingMatch(EmblazonAdapter<TComponentHandler> parentAdapter, EmblazonAdapter<TComponentHandler> childAdapter)
+        private static EmblazonAdapter<TComponentHandler> GetEarlierSiblingMatch(EmblazonAdapter<TComponentHandler> parentAdapter, EmblazonAdapter<TComponentHandler> childAdapter)
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 

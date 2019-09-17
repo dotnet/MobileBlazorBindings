@@ -12,7 +12,9 @@ namespace BlinForms.Framework.Controls
         }
 
         [Parameter] public bool? AutoScroll { get; set; }
+#pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
+#pragma warning restore CA1721 // Property names should not match get methods
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
