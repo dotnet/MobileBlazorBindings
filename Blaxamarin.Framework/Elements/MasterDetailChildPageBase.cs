@@ -22,7 +22,7 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        internal abstract class BlazorPageWrapper : ContentPage, IFormsControlHandler
+        internal abstract class BlazorPageWrapper : Xamarin.Forms.ContentPage, IFormsControlHandler
         {
             public BlazorPageWrapper()
             {

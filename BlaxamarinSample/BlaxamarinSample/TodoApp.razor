@@ -1,52 +1,11 @@
-﻿<MasterDetailPage MasterTitle="My Master Title">
-    <Master>
-        <StackLayout Orientation="StackOrientation.Vertical">
-            <Label Text="Choose an amazing app" FontAttributes="FontAttributes.Bold" FontSize="20" HorizontalTextAlignment="TextAlignment.Center" />
-            <Button Text="Todo App" OnClick="@ShowTodoApp" />
-            <Button Text="Counter App" OnClick="@ShowCounterApp" />
+﻿<TabbedPage>
+    <ContentPage Title="Todo">
+        <StackLayout>
+            <Label FontSize="20" TextColor="Color.Crimson" Text="Todo Items" HorizontalTextAlignment="TextAlignment.Center" />
+            <TodoList />
         </StackLayout>
-    </Master>
-    <Detail>
-        @{
-            switch (_currentPage)
-            {
-                case DetailPage.Todo:
-                    {
-                        <StackLayout>
-                            <Label FontSize="20" TextColor="Color.Crimson" Text="Todo Items" HorizontalTextAlignment="TextAlignment.Center" />
-                            <TodoList />
-                        </StackLayout>
-                    }
-                    break;
-                case DetailPage.Counter:
-                    {
-                        <StackLayout>
-                            <Counter />
-                        </StackLayout>
-                    }
-                    break;
-            }
-        }
-    </Detail>
-</MasterDetailPage>
-
-@code
-{
-    enum DetailPage
-    {
-        Todo,
-        Counter,
-    }
-
-    DetailPage _currentPage = DetailPage.Todo;
-
-    void ShowTodoApp()
-    {
-        _currentPage = DetailPage.Todo;
-    }
-
-    void ShowCounterApp()
-    {
-        _currentPage = DetailPage.Counter;
-    }
-}
+    </ContentPage>
+    <ContentPage Title="Counter">
+        <Counter />
+    </ContentPage>
+</TabbedPage>

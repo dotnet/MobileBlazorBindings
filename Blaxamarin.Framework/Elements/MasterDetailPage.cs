@@ -59,8 +59,8 @@ namespace Blaxamarin.Framework.Elements
 
                 // The Master page must have its Title set:
                 // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
-                Master = new Page() { Title = "Title" };
-                Detail = new Page();
+                Master = new Xamarin.Forms.Page() { Title = "Title" };
+                Detail = new Xamarin.Forms.Page();
             }
 
             public EmblazonRenderer<IFormsControlHandler> Renderer { get; }

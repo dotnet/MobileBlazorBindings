@@ -47,6 +47,21 @@ namespace Blaxamarin.Framework
                         parentAsContentPage.Content = childAsView;
                     }
                     break;
+                case TabbedPage parentAsTabbedPage:
+                    {
+                        var childAsPage = child as Page;
+
+                        if (physicalSiblingIndex <= parentAsTabbedPage.Children.Count)
+                        {
+                            parentAsTabbedPage.Children.Insert(physicalSiblingIndex, childAsPage);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsTabbedPage.Children.Count={parentAsTabbedPage.Children.Count}");
+                            parentAsTabbedPage.Children.Add(childAsPage);
+                        }
+                    }
+                    break;
                 case ScrollView parentAsScrollView:
                     {
                         var childAsView = child as View;
@@ -106,21 +121,31 @@ namespace Blaxamarin.Framework
                 case Layout<View> parentAsLayout:
                     {
                         var childAsView = nativeComponent as View;
-
                         return parentAsLayout.Children.IndexOf(childAsView);
                     }
                 case ContentView _:
                     {
-                        // A ContentView can have only 1 child, so its index is always 0. Not that anyone
-                        // should typically need the sibling index here, because this component can't
-                        // ever *have* any siblings...
+                        // A ContentView can have only 1 child, so the child's index is always 0.
+                        return 0;
+                    }
+                case ContentPage _:
+                    {
+                        // A ContentPage can have only 1 child, so the child's index is always 0.
+                        return 0;
+                    }
+                case TabbedPage tabbedPage:
+                    {
+                        var childAsPage = nativeComponent as Page;
+                        return tabbedPage.Children.IndexOf(childAsPage);
+                    }
+                case ScrollView _:
+                    {
+                        // A ScrollView can have only 1 child, so the child's index is always 0.
                         return 0;
                     }
                 case Application _:
                     {
-                        // An Application can have only 1 child (its MainPage), so its index is always 0. Not that anyone
-                        // should typically need the sibling index here, because this component can't
-                        // ever *have* any siblings...
+                        // An Application can have only 1 child (its MainPage), so the child's index is always 0.
                         return 0;
                     }
                 default:
