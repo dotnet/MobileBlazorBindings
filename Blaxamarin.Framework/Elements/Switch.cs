@@ -1,16 +1,16 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Switch : FormsComponentBase
+    public class Switch : Element
     {
         static Switch()
         {
             NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Switch>(
-                renderer => new BlazorSwitch(renderer));
+                renderer => new SwitchHandler(renderer));
         }
 
         [Parameter] public bool? IsToggled { get; set; }
@@ -34,11 +34,11 @@ namespace Blaxamarin.Framework.Elements
             return IsToggledChanged.InvokeAsync((bool)evt.Value);
         }
 
-        private class BlazorSwitch : Xamarin.Forms.Switch, IFormsControlHandler
+        private class SwitchHandler : IFormsControlHandler
         {
-            public BlazorSwitch(EmblazonRenderer<IFormsControlHandler> renderer)
+            public SwitchHandler(EmblazonRenderer<IFormsControlHandler> renderer)
             {
-                Toggled += (s, e) =>
+                SwitchControl.Toggled += (s, e) =>
                 {
                     if (IsToggledChangedEventHandlerId != default)
                     {
@@ -50,22 +50,23 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong IsToggledChangedEventHandlerId { get; set; }
             public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.Switch SwitchControl { get; set; } = new XF.Switch();
+            public object NativeControl => SwitchControl;
+            public XF.Element ElementControl => SwitchControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(IsToggled):
-                        IsToggled = AttributeHelper.GetBool(attributeValue);
+                        SwitchControl.IsToggled = AttributeHelper.GetBool(attributeValue);
                         break;
                     case "onistoggledchanged":
                         Renderer.RegisterEvent(attributeEventHandlerId, () => IsToggledChangedEventHandlerId = 0);
                         IsToggledChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(SwitchControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

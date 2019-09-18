@@ -1,20 +1,20 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class StackLayout : FormsComponentBase
+    public class StackLayout : Element
     {
         static StackLayout()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<StackLayout, BlazorStackLayout>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<StackLayout, StackLayoutHandler>();
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
-        [Parameter] public StackOrientation? Orientation { get; set; }
+        [Parameter] public XF.StackOrientation? Orientation { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -28,20 +28,21 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        private class BlazorStackLayout : Xamarin.Forms.StackLayout, IFormsControlHandler
+        private class StackLayoutHandler : IFormsControlHandler
         {
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.StackLayout StackLayoutControl { get; set; } = new XF.StackLayout();
+            public object NativeControl => StackLayoutControl;
+            public XF.Element ElementControl => StackLayoutControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(Orientation):
-                        Orientation = (StackOrientation)AttributeHelper.GetInt(attributeValue);
+                        StackLayoutControl.Orientation = (XF.StackOrientation)AttributeHelper.GetInt(attributeValue);
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(StackLayoutControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

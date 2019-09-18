@@ -6,16 +6,16 @@ namespace Blaxamarin.Framework.Elements
     {
         static MasterDetailMasterPage()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<MasterDetailMasterPage, MasterPageWrapper>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<MasterDetailMasterPage, MasterPageHandler>();
         }
 
-        internal sealed class MasterPageWrapper : BlazorPageWrapper
+        protected sealed class MasterPageHandler : ContentPageHandler
         {
-            public MasterPageWrapper()
+            public MasterPageHandler()
             {
                 // The Master page must have its Title set:
                 // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
-                Title = "Title";
+                ContentPageControl.Title = "Title";
             }
         }
     }

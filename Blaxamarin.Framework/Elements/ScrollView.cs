@@ -1,22 +1,22 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class ScrollView : FormsComponentBase
+    public class ScrollView : Element
     {
         static ScrollView()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<ScrollView, BlazorScrollView>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<ScrollView, ScrollViewHandler>();
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
-        [Parameter] public ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
-        [Parameter] public ScrollOrientation? Orientation { get; set; }
-        [Parameter] public ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
+        [Parameter] public XF.ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
+        [Parameter] public XF.ScrollOrientation? Orientation { get; set; }
+        [Parameter] public XF.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -38,26 +38,27 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        private class BlazorScrollView : Xamarin.Forms.ScrollView, IFormsControlHandler
+        private class ScrollViewHandler : IFormsControlHandler
         {
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.ScrollView ScrollViewControl { get; set; } = new XF.ScrollView();
+            public object NativeControl => ScrollViewControl;
+            public XF.Element ElementControl => ScrollViewControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(HorizontalScrollBarVisibility):
-                        HorizontalScrollBarVisibility = (ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                        ScrollViewControl.HorizontalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
                         break;
                     case nameof(Orientation):
-                        Orientation = (ScrollOrientation)AttributeHelper.GetInt(attributeValue);
+                        ScrollViewControl.Orientation = (XF.ScrollOrientation)AttributeHelper.GetInt(attributeValue);
                         break;
                     case nameof(VerticalScrollBarVisibility):
-                        VerticalScrollBarVisibility = (ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                        ScrollViewControl.VerticalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(ScrollViewControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

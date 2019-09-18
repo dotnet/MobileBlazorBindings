@@ -1,10 +1,10 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    internal abstract class MasterDetailChildPageBase : FormsComponentBase
+    internal abstract class MasterDetailChildPageBase : Element
     {
         [Parameter] public string Title { get; set; }
         [Parameter] public RenderFragment ChildContent { get; set; }
@@ -22,24 +22,21 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        internal abstract class BlazorPageWrapper : Xamarin.Forms.ContentPage, IFormsControlHandler
+        protected abstract class ContentPageHandler : IFormsControlHandler
         {
-            public BlazorPageWrapper()
-            {
-            }
-
-            public Element Element => this;
-            public object NativeControl => this;
+            public XF.ContentPage ContentPageControl { get; set; } = new XF.ContentPage();
+            public XF.Element ElementControl => ContentPageControl;
+            public object NativeControl => ContentPageControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(Title):
-                        Title = (string)attributeValue;
+                        ContentPageControl.Title = (string)attributeValue;
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(ContentPageControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

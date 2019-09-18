@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
@@ -15,7 +15,7 @@ namespace Blaxamarin.Framework
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="services"></param>
         /// <param name="parent"></param>
-        public static void AddComponent<TComponent>(this IServiceProvider services, Element parent) where TComponent : IComponent
+        public static void AddComponent<TComponent>(this IServiceProvider services, XF.Element parent) where TComponent : IComponent
         {
             if (parent is null)
             {
@@ -31,17 +31,17 @@ namespace Blaxamarin.Framework
 
         private sealed class ElementWrapper : IFormsControlHandler
         {
-            public ElementWrapper(Element element)
+            public ElementWrapper(Xamarin.Forms.Element element)
             {
-                Element = element ?? throw new ArgumentNullException(nameof(element));
+                ElementControl = element ?? throw new ArgumentNullException(nameof(element));
             }
 
-            public Element Element { get; }
-            public object NativeControl => Element;
+            public XF.Element ElementControl { get; }
+            public object NativeControl => ElementControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                FormsComponentBase.ApplyAttribute(Element, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                Element.ApplyAttribute(ElementControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
             }
         }
     }

@@ -1,16 +1,16 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Entry : FormsComponentBase
+    public class Entry : Element
     {
         static Entry()
         {
             NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Entry>(
-                renderer => new BlazorEntry(renderer));
+                renderer => new EntryHandler(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -39,11 +39,11 @@ namespace Blaxamarin.Framework.Elements
             return TextChanged.InvokeAsync((string)evt.Value);
         }
 
-        private class BlazorEntry : Xamarin.Forms.Entry, IFormsControlHandler
+        private class EntryHandler : IFormsControlHandler
         {
-            public BlazorEntry(EmblazonRenderer<IFormsControlHandler> renderer)
+            public EntryHandler(EmblazonRenderer<IFormsControlHandler> renderer)
             {
-                TextChanged += (s, e) =>
+                EntryControl.TextChanged += (s, e) =>
                 {
                     if (TextChangedEventHandlerId != default)
                     {
@@ -55,25 +55,26 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong TextChangedEventHandlerId { get; set; }
             public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.Entry EntryControl { get; set; } = new XF.Entry();
+            public object NativeControl => EntryControl;
+            public XF.Element ElementControl => EntryControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(Text):
-                        Text = (string)attributeValue;
+                        EntryControl.Text = (string)attributeValue;
                         break;
                     case nameof(Placeholder):
-                        Placeholder = (string)attributeValue;
+                        EntryControl.Placeholder = (string)attributeValue;
                         break;
                     case "ontextchanged":
                         Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);
                         TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(EntryControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

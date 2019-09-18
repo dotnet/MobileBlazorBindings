@@ -6,9 +6,9 @@ namespace Blaxamarin.Framework.Elements
     {
         static MasterDetailDetailPage()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<MasterDetailDetailPage, DetailPageWrapper>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<MasterDetailDetailPage, DetailPageHandler>();
         }
 
-        internal sealed class DetailPageWrapper : BlazorPageWrapper { }
+        protected sealed class DetailPageHandler : ContentPageHandler { }
     }
 }

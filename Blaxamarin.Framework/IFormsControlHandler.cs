@@ -1,10 +1,10 @@
 using Emblazon;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
     public interface IFormsControlHandler : INativeControlHandler
     {
-        Element Element { get; }
+        XF.Element ElementControl { get; }
     }
 }

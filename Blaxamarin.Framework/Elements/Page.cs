@@ -1,21 +1,21 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Page : FormsComponentBase
+    public class Page : Element
     {
         static Page()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Page, BlazorPage>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Page, PageHandler>();
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
-        [Parameter] public ImageSource IconImageSource { get; set; }
+        [Parameter] public XF.ImageSource IconImageSource { get; set; }
         [Parameter] public string Title { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -26,7 +26,7 @@ namespace Blaxamarin.Framework.Elements
             {
                 switch (IconImageSource)
                 {
-                    case FileImageSource fileImageSource:
+                    case XF.FileImageSource fileImageSource:
                         {
                             builder.AddAttribute(nameof(IconImageSource) + "_AsFile", fileImageSource.File);
                         }
@@ -53,25 +53,26 @@ namespace Blaxamarin.Framework.Elements
             switch (attributeName)
             {
                 case nameof(IconImageSource) + "_AsFile":
-                    page.IconImageSource = new FileImageSource { File = (string)attributeValue };
+                    page.IconImageSource = new XF.FileImageSource { File = (string)attributeValue };
                     break;
                 case nameof(Title):
                     page.Title = (string)attributeValue;
                     break;
                 default:
-                    FormsComponentBase.ApplyAttribute(page, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                    Element.ApplyAttribute(page, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
 
-        private class BlazorPage : Xamarin.Forms.Page, IFormsControlHandler
+        private class PageHandler : IFormsControlHandler
         {
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.Page PageControl { get; set; } = new XF.Page();
+            public object NativeControl => PageControl;
+            public XF.Element ElementControl => PageControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                Page.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                Page.ApplyAttribute(PageControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
             }
         }
     }

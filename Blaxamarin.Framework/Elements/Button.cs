@@ -1,16 +1,16 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Button : FormsComponentBase
+    public class Button : Element
     {
         static Button()
         {
             NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<Button>(renderer => new BlazorButton(renderer));
+                .RegisterNativeControlComponent<Button>(renderer => new ButtonHandler(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -28,11 +28,33 @@ namespace Blaxamarin.Framework.Elements
             builder.AddAttribute("onclick", OnClick);
         }
 
-        private class BlazorButton : Xamarin.Forms.Button, IFormsControlHandler
+        protected static void ApplyAttribute(ButtonHandler buttonHandler, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            public BlazorButton(EmblazonRenderer<IFormsControlHandler> renderer)
+            if (buttonHandler is null)
             {
-                Clicked += (s, e) =>
+                throw new ArgumentNullException(nameof(buttonHandler));
+            }
+
+            switch (attributeName)
+            {
+                case nameof(Text):
+                    buttonHandler.ButtonControl.Text = (string)attributeValue;
+                    break;
+                case "onclick":
+                    buttonHandler.Renderer.RegisterEvent(attributeEventHandlerId, () => buttonHandler.ClickEventHandlerId = 0);
+                    buttonHandler.ClickEventHandlerId = attributeEventHandlerId;
+                    break;
+                default:
+                    ApplyAttribute((XF.Element)buttonHandler.ButtonControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                    break;
+            }
+        }
+
+        protected class ButtonHandler : IFormsControlHandler
+        {
+            public ButtonHandler(EmblazonRenderer<IFormsControlHandler> renderer)
+            {
+                ButtonControl.Clicked += (s, e) =>
                 {
                     if (ClickEventHandlerId != default)
                     {
@@ -44,24 +66,13 @@ namespace Blaxamarin.Framework.Elements
 
             public ulong ClickEventHandlerId { get; set; }
             public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.Button ButtonControl { get; } = new XF.Button();
+            public object NativeControl => ButtonControl;
+            public XF.Element ElementControl => ButtonControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                switch (attributeName)
-                {
-                    case nameof(Text):
-                        Text = (string)attributeValue;
-                        break;
-                    case "onclick":
-                        Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
-                        ClickEventHandlerId = attributeEventHandlerId;
-                        break;
-                    default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                        break;
-                }
+                Button.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
             }
         }
     }

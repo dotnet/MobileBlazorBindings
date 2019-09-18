@@ -1,6 +1,6 @@
 ﻿using Emblazon;
 using System;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static TabbedPage()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<TabbedPage, BlazorTabbedPage>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<TabbedPage, TabbedPageHandler>();
         }
 
         protected static void ApplyAttribute(Xamarin.Forms.TabbedPage tabbedPage, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
@@ -21,19 +21,20 @@ namespace Blaxamarin.Framework.Elements
             switch (attributeName)
             {
                 default:
-                    ApplyAttribute((Xamarin.Forms.Page)tabbedPage, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                    ApplyAttribute((XF.Page)tabbedPage, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
 
-        private class BlazorTabbedPage : Xamarin.Forms.TabbedPage, IFormsControlHandler
+        private class TabbedPageHandler : IFormsControlHandler
         {
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.TabbedPage TabbedPageControl { get; set; } = new XF.TabbedPage();
+            public object NativeControl => TabbedPageControl;
+            public XF.Element ElementControl => TabbedPageControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
-                TabbedPage.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                TabbedPage.ApplyAttribute(TabbedPageControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
             }
         }
     }

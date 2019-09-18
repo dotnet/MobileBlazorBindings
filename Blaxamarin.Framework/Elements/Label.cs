@@ -1,23 +1,23 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Label : FormsComponentBase
+    public class Label : Element
     {
         static Label()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Label, BlazorLabel>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Label, LabelHandler>();
         }
 
         [Parameter] public string Text { get; set; }
-        [Parameter] public Color? TextColor { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public double? FontSize { get; set; }
-        [Parameter] public TextAlignment? HorizontalTextAlignment { get; set; }
-        [Parameter] public TextAlignment? VerticalTextAlignment { get; set; }
-        [Parameter] public FontAttributes? FontAttributes { get; set; }
-        [Parameter] public TextDecorations? TextDecorations { get; set; }
+        [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
+        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -53,38 +53,39 @@ namespace Blaxamarin.Framework.Elements
             }
         }
 
-        private class BlazorLabel : Xamarin.Forms.Label, IFormsControlHandler
+        private class LabelHandler : IFormsControlHandler
         {
-            public object NativeControl => this;
-            public Element Element => this;
+            public XF.Label LabelControl { get; set; } = new XF.Label();
+            public object NativeControl => LabelControl;
+            public XF.Element ElementControl => LabelControl;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {
                 switch (attributeName)
                 {
                     case nameof(Text):
-                        Text = (string)attributeValue;
+                        LabelControl.Text = (string)attributeValue;
                         break;
                     case nameof(TextColor):
-                        TextColor = AttributeHelper.StringToColor((string)attributeValue);
+                        LabelControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                         break;
                     case nameof(FontSize):
-                        FontSize = AttributeHelper.StringToDouble((string)attributeValue);
+                        LabelControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue);
                         break;
                     case nameof(HorizontalTextAlignment):
-                        HorizontalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
+                        LabelControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                         break;
                     case nameof(VerticalTextAlignment):
-                        VerticalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
+                        LabelControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                         break;
                     case nameof(FontAttributes):
-                        FontAttributes = (FontAttributes)AttributeHelper.GetInt(attributeValue);
+                        LabelControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue);
                         break;
                     case nameof(TextDecorations):
-                        TextDecorations = (TextDecorations)AttributeHelper.GetInt(attributeValue);
+                        LabelControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue);
                         break;
                     default:
-                        FormsComponentBase.ApplyAttribute(this, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                        Element.ApplyAttribute(LabelControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                         break;
                 }
             }

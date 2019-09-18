@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework
 {
     internal class BlaxamarinNativeControlManager : NativeControlManager<IFormsControlHandler>
     {
-        public override bool IsParented(IFormsControlHandler handler) => handler.Element.Parent != null;
+        public override bool IsParented(IFormsControlHandler handler) => handler.ElementControl.Parent != null;
 
         public override void AddPhysicalControl(
             IFormsControlHandler parentHandler,
@@ -15,8 +15,8 @@ namespace Blaxamarin.Framework
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
-            var parent = parentHandler.Element;
-            var child = childHandler.Element;
+            var parent = parentHandler.ElementControl;
+            var child = childHandler.ElementControl;
 
             switch (parent)
             {
@@ -89,11 +89,11 @@ namespace Blaxamarin.Framework
                     break;
                 case MasterDetailPage masterDetailPage:
                     {
-                        if (child is Elements.MasterDetailMasterPage.MasterPageWrapper masterPage)
+                        if (child is Elements.MasterDetailMasterPage.MasterPageHandler masterPage)
                         {
                             masterDetailPage.Master = masterPage;
                         }
-                        else if (child is Elements.MasterDetailDetailPage.DetailPageWrapper detailPage)
+                        else if (child is Elements.MasterDetailDetailPage.DetailPageHandler detailPage)
                         {
                             masterDetailPage.Detail = detailPage;
                         }
@@ -114,7 +114,7 @@ namespace Blaxamarin.Framework
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
-            var nativeComponent = handler.Element;
+            var nativeComponent = handler.ElementControl;
 
             switch (nativeComponent.Parent)
             {
@@ -157,7 +157,7 @@ namespace Blaxamarin.Framework
         public override void RemovePhysicalControl(IFormsControlHandler handler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
-            var control = handler.Element;
+            var control = handler.ElementControl;
             var physicalParent = control.Parent;
             if (physicalParent is Layout<View> physicalParentAsLayout)
             {
@@ -168,7 +168,7 @@ namespace Blaxamarin.Framework
 
         public override bool IsParentOfChild(IFormsControlHandler parentControl, IFormsControlHandler childControl)
         {
-            return childControl.Element.Parent == parentControl.Element;
+            return childControl.ElementControl.Parent == parentControl.ElementControl;
         }
     }
 }
