@@ -143,26 +143,7 @@ namespace Blaxamarin.Framework
 
         public override bool IsParentOfChild(IFormsControlHandler parentControl, IFormsControlHandler childControl)
         {
-            // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
-
-            switch (parentControl.Element)
-            {
-                case Layout<View> parentAsLayout:
-                    {
-                        return childControl.Element is View childAsView && parentAsLayout.Children.Contains(childAsView);
-                    }
-                case ContentView parenetAsContentView:
-                    {
-                        return childControl.Element is View childAsView && parenetAsContentView.Content == childAsView;
-                    }
-                case Application parentAsApp:
-                    {
-                        return childControl.Element is Page childAsPage && parentAsApp.MainPage == childAsPage;
-                    }
-                default:
-                    Debug.Fail($"Don't know how to handle parent element type {parentControl.GetType().FullName} in order to get child status of {childControl.GetType().FullName}");
-                    return false;
-            }
+            return childControl.Element.Parent == parentControl.Element;
         }
     }
 }
