@@ -1,14 +1,16 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Label : Element
+    public class Label : View
     {
         static Label()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Label, LabelHandler>();
+            NativeControlRegistry<IFormsControlHandler>
+                .RegisterNativeControlComponent<Label>(renderer => new LabelHandler(renderer, new XF.Label()));
         }
 
         [Parameter] public string Text { get; set; }
@@ -50,44 +52,6 @@ namespace Blaxamarin.Framework.Elements
             if (TextDecorations != null)
             {
                 builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
-            }
-        }
-
-        private class LabelHandler : IFormsControlHandler
-        {
-            public XF.Label LabelControl { get; set; } = new XF.Label();
-            public object NativeControl => LabelControl;
-            public XF.Element ElementControl => LabelControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                switch (attributeName)
-                {
-                    case nameof(Text):
-                        LabelControl.Text = (string)attributeValue;
-                        break;
-                    case nameof(TextColor):
-                        LabelControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
-                        break;
-                    case nameof(FontSize):
-                        LabelControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue);
-                        break;
-                    case nameof(HorizontalTextAlignment):
-                        LabelControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    case nameof(VerticalTextAlignment):
-                        LabelControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    case nameof(FontAttributes):
-                        LabelControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    case nameof(TextDecorations):
-                        LabelControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    default:
-                        Element.ApplyAttribute(LabelControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                        break;
-                }
             }
         }
     }

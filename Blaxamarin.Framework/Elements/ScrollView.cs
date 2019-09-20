@@ -1,14 +1,16 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class ScrollView : Element
+    public class ScrollView : Layout
     {
         static ScrollView()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<ScrollView, ScrollViewHandler>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<ScrollView>(
+                renderer => new ScrollViewHandler(renderer, new XF.ScrollView()));
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
@@ -38,30 +40,5 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        private class ScrollViewHandler : IFormsControlHandler
-        {
-            public XF.ScrollView ScrollViewControl { get; set; } = new XF.ScrollView();
-            public object NativeControl => ScrollViewControl;
-            public XF.Element ElementControl => ScrollViewControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                switch (attributeName)
-                {
-                    case nameof(HorizontalScrollBarVisibility):
-                        ScrollViewControl.HorizontalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    case nameof(Orientation):
-                        ScrollViewControl.Orientation = (XF.ScrollOrientation)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    case nameof(VerticalScrollBarVisibility):
-                        ScrollViewControl.VerticalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    default:
-                        Element.ApplyAttribute(ScrollViewControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                        break;
-                }
-            }
-        }
     }
 }

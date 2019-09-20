@@ -1,4 +1,5 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
@@ -8,7 +9,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<StackLayout, StackLayoutHandler>();
+            NativeControlRegistry<IFormsControlHandler>
+                .RegisterNativeControlComponent<StackLayout>(renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
@@ -28,24 +30,5 @@ namespace Blaxamarin.Framework.Elements
 
         protected override RenderFragment GetChildContent() => ChildContent;
 
-        private class StackLayoutHandler : IFormsControlHandler
-        {
-            public XF.StackLayout StackLayoutControl { get; set; } = new XF.StackLayout();
-            public object NativeControl => StackLayoutControl;
-            public XF.Element ElementControl => StackLayoutControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                switch (attributeName)
-                {
-                    case nameof(Orientation):
-                        StackLayoutControl.Orientation = (XF.StackOrientation)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    default:
-                        Element.ApplyAttribute(StackLayoutControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                        break;
-                }
-            }
-        }
     }
 }

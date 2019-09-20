@@ -89,13 +89,13 @@ namespace Blaxamarin.Framework
                     break;
                 case MasterDetailPage masterDetailPage:
                     {
-                        if (child is Elements.MasterDetailMasterPage.MasterPageHandler masterPage)
+                        if (childHandler is Elements.Handlers.MasterPageHandler masterPage)
                         {
-                            masterDetailPage.Master = masterPage;
+                            masterDetailPage.Master = masterPage.PageControl;
                         }
-                        else if (child is Elements.MasterDetailDetailPage.DetailPageHandler detailPage)
+                        else if (childHandler is Elements.Handlers.DetailPageHandler detailPage)
                         {
-                            masterDetailPage.Detail = detailPage;
+                            masterDetailPage.Detail = detailPage.PageControl;
                         }
                         else
                         {

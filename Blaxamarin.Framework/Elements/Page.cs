@@ -1,15 +1,17 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using System;
 using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class Page : Element
+    public class Page : VisualElement
     {
         static Page()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Page, PageHandler>();
+            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Page>(
+                renderer => new PageHandler(renderer, new XF.Page()));
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
@@ -42,38 +44,5 @@ namespace Blaxamarin.Framework.Elements
         }
 
         protected override RenderFragment GetChildContent() => ChildContent;
-
-        protected static void ApplyAttribute(Xamarin.Forms.Page page, ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-        {
-            if (page is null)
-            {
-                throw new ArgumentNullException(nameof(page));
-            }
-
-            switch (attributeName)
-            {
-                case nameof(IconImageSource) + "_AsFile":
-                    page.IconImageSource = new XF.FileImageSource { File = (string)attributeValue };
-                    break;
-                case nameof(Title):
-                    page.Title = (string)attributeValue;
-                    break;
-                default:
-                    Element.ApplyAttribute(page, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                    break;
-            }
-        }
-
-        private class PageHandler : IFormsControlHandler
-        {
-            public XF.Page PageControl { get; set; } = new XF.Page();
-            public object NativeControl => PageControl;
-            public XF.Element ElementControl => PageControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                Page.ApplyAttribute(PageControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-            }
-        }
     }
 }

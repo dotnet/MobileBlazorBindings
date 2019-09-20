@@ -1,22 +1,15 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
+using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    internal class MasterDetailMasterPage : MasterDetailChildPageBase
+    internal class MasterDetailMasterPage : ContentPage
     {
         static MasterDetailMasterPage()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<MasterDetailMasterPage, MasterPageHandler>();
-        }
-
-        protected sealed class MasterPageHandler : ContentPageHandler
-        {
-            public MasterPageHandler()
-            {
-                // The Master page must have its Title set:
-                // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
-                ContentPageControl.Title = "Title";
-            }
+            NativeControlRegistry<IFormsControlHandler>
+                .RegisterNativeControlComponent<MasterDetailMasterPage>(renderer => new MasterPageHandler(renderer, new XF.ContentPage()));
         }
     }
 }

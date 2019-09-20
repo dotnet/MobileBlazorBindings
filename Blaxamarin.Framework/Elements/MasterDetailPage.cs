@@ -1,16 +1,17 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class MasterDetailPage : Element
+    public class MasterDetailPage : Page
     {
         static MasterDetailPage()
         {
             NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer));
+                .RegisterNativeControlComponent<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
         }
 
         [Parameter] public string MasterTitle { get; set; }
@@ -44,42 +45,6 @@ namespace Blaxamarin.Framework.Elements
             builder.OpenComponent<MasterDetailDetailPage>(1);
             builder.AddAttribute(0, nameof(MasterDetailDetailPage.ChildContent), Detail);
             builder.CloseComponent();
-        }
-
-        private class MasterDetailPageHandler : IFormsControlHandler
-        {
-            public MasterDetailPageHandler(EmblazonRenderer<IFormsControlHandler> renderer)
-            {
-                Renderer = renderer;
-
-                // Set dummy Master and Detail because this element cannot be parented unless both are set.
-                // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L199
-                // In Blazor, parents are created before children, whereas this doesn't appear to be the case in
-                // Xamarin.Forms. Once the Blazor children get created, they will overwrite these dummy elements.
-
-                // The Master page must have its Title set:
-                // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
-                MasterDetailPageControl.Master = new XF.Page() { Title = "Title" };
-                MasterDetailPageControl.Detail = new XF.Page();
-            }
-
-            public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
-            public XF.MasterDetailPage MasterDetailPageControl { get; set; } = new XF.MasterDetailPage();
-            public object NativeControl => MasterDetailPageControl;
-            public XF.Element ElementControl => MasterDetailPageControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                switch (attributeName)
-                {
-                    case nameof(MasterBehavior):
-                        MasterDetailPageControl.MasterBehavior = (XF.MasterBehavior)AttributeHelper.GetInt(attributeValue);
-                        break;
-                    default:
-                        Element.ApplyAttribute(MasterDetailPageControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                        break;
-                }
-            }
         }
     }
 }

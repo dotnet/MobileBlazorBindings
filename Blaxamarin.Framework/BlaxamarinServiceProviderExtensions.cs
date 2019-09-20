@@ -1,4 +1,4 @@
-﻿using Blaxamarin.Framework.Elements;
+﻿using Blaxamarin.Framework.Elements.Handlers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,24 +25,8 @@ namespace Blaxamarin.Framework
             var renderer = new BlaxamarinRenderer(services, services.GetRequiredService<ILoggerFactory>());
             renderer.Dispatcher.InvokeAsync(async () =>
             {
-                await renderer.AddComponent<TComponent>(new ElementWrapper(parent));
+                await renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent));
             });
-        }
-
-        private sealed class ElementWrapper : IFormsControlHandler
-        {
-            public ElementWrapper(Xamarin.Forms.Element element)
-            {
-                ElementControl = element ?? throw new ArgumentNullException(nameof(element));
-            }
-
-            public XF.Element ElementControl { get; }
-            public object NativeControl => ElementControl;
-
-            public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-            {
-                Element.ApplyAttribute(ElementControl, attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-            }
         }
     }
 }
