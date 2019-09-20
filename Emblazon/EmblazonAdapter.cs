@@ -68,7 +68,8 @@ namespace Emblazon
                         ApplySetAttribute(ref referenceFrames.Array[edit.ReferenceFrameIndex]);
                         break;
                     case RenderTreeEditType.RemoveAttribute:
-                        ApplyRemoveAttribute(edit.SiblingIndex, edit.RemovedAttributeName);
+                        // TODO: See whether siblingIndex is needed here
+                        ApplyRemoveAttribute(edit.RemovedAttributeName);
                         break;
                     case RenderTreeEditType.UpdateText:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
@@ -126,23 +127,21 @@ namespace Emblazon
                 throw new InvalidOperationException($"Trying to apply attribute {attributeFrame.AttributeName} to an adapter that isn't for an element");
             }
 
-            var mapper = GetControlPropertyMapper(_possibleTargetControl);
-            mapper.SetControlProperty(attributeFrame.AttributeEventHandlerId, attributeFrame.AttributeName, attributeFrame.AttributeValue, attributeFrame.AttributeEventUpdatesAttributeName);
+            _possibleTargetControl.ApplyAttribute(
+                attributeFrame.AttributeEventHandlerId,
+                attributeFrame.AttributeName,
+                attributeFrame.AttributeValue,
+                attributeFrame.AttributeEventUpdatesAttributeName);
         }
 
-#pragma warning disable IDE0060 // Remove unused parameter; might be used later
-#pragma warning disable CA1801 // Parameter is never used; will likely be used in the future
-        private void ApplyRemoveAttribute(int siblingIndex, string removedAttributeName)// ref RenderTreeFrame attributeFrame)
-#pragma warning restore CA1801 // Parameter is never used
-#pragma warning restore IDE0060 // Remove unused parameter
+        private void ApplyRemoveAttribute(string removedAttributeName)
         {
             if (_possibleTargetControl == null)
             {
                 throw new InvalidOperationException($"Trying to remove attribute {removedAttributeName} to an adapter that isn't for an element");
             }
 
-            var mapper = GetControlPropertyMapper(_possibleTargetControl);
-            mapper.SetControlProperty(
+            _possibleTargetControl.ApplyAttribute(
                 attributeEventHandlerId: 0,
                 attributeName: removedAttributeName,
                 attributeValue: null,
@@ -239,7 +238,6 @@ namespace Emblazon
                 var candidateFrame = frames[descendantIndex];
                 if (candidateFrame.FrameType == RenderTreeFrameType.Attribute)
                 {
-                    // TODO: Do smarter property setting...? Not calling <NativeControl>.ApplyAttribute(...) right now. Should it?
                     ApplySetAttribute(ref candidateFrame);
                 }
                 else
@@ -410,19 +408,6 @@ namespace Emblazon
             {
                 Debug.WriteLine($"WARNING: {nameof(AddChildAdapter)} called with {nameof(siblingIndex)}={siblingIndex}, but Children.Count={Children.Count}");
                 Children.Add(childAdapter);
-            }
-        }
-
-        private static IControlPropertyMapper GetControlPropertyMapper(TComponentHandler control)
-        {
-            // TODO: Have control-specific ones, but also need a general one for custom controls? Or maybe not needed?
-            if (control is INativeControlHandler nativeControl)
-            {
-                return new NativeControlPropertyMapper(nativeControl);
-            }
-            else
-            {
-                return new ReflectionControlPropertyMapper(control);
             }
         }
 
