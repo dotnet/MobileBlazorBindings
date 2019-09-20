@@ -26,20 +26,20 @@ namespace Emblazon
 
         private readonly int _debugInstanceCounterValue;
 
-        public string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
+        private string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
 
-        public EmblazonAdapter<TComponentHandler> Parent { get; set; }
+        public EmblazonAdapter<TComponentHandler> Parent { get; private set; }
         public List<EmblazonAdapter<TComponentHandler>> Children { get; } = new List<EmblazonAdapter<TComponentHandler>>();
 
         private readonly TComponentHandler _closestPhysicalParent;
         private TComponentHandler _possibleTargetControl;
 
-        public EmblazonRenderer<TComponentHandler> Renderer { get; private set; }
+        public EmblazonRenderer<TComponentHandler> Renderer { get; }
 
         /// <summary>
         /// Used for debugging purposes.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; internal set; }
 
         public override string ToString()
         {
@@ -179,7 +179,7 @@ namespace Emblazon
 #pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                        childAdapter.Name = $"Dummy markup, sib#={siblingIndex}";
+                        childAdapter.Name = $"Markup, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -193,7 +193,7 @@ namespace Emblazon
 #pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
                         var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                        childAdapter.Name = $"Dummy text, sib#={siblingIndex}";
+                        childAdapter.Name = $"Text, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
