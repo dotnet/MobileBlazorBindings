@@ -18,29 +18,13 @@ namespace Blaxamarin.Framework.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.View.HorizontalOptions):
-                    // TODO: Create helper for this
-                    var horizontalOptionsStringParts = ((string)attributeValue).Split(',');
-                    ViewControl.HorizontalOptions =
-                        new XF.LayoutOptions(
-                            (XF.LayoutAlignment)AttributeHelper.GetInt(horizontalOptionsStringParts[0]),
-                            bool.Parse(horizontalOptionsStringParts[1]));
+                    ViewControl.HorizontalOptions = AttributeHelper.StringToLayoutOptions(attributeValue);
                     break;
                 case nameof(XF.View.Margin):
-                    // TODO: Create helper for this
-                    var marginStringParts = ((string)attributeValue).Split(',');
-                    ViewControl.Margin = new XF.Thickness(
-                        left: AttributeHelper.StringToDouble(marginStringParts[0]),
-                        top: AttributeHelper.StringToDouble(marginStringParts[1]),
-                        right: AttributeHelper.StringToDouble(marginStringParts[2]),
-                        bottom: AttributeHelper.StringToDouble(marginStringParts[3]));
+                    ViewControl.Margin = AttributeHelper.StringToThickness(attributeValue);
                     break;
                 case nameof(XF.View.VerticalOptions):
-                    // TODO: Create helper for this
-                    var verticalOptionsStringParts = ((string)attributeValue).Split(',');
-                    ViewControl.VerticalOptions =
-                        new XF.LayoutOptions(
-                            (XF.LayoutAlignment)AttributeHelper.GetInt(verticalOptionsStringParts[0]),
-                            bool.Parse(verticalOptionsStringParts[1]));
+                    ViewControl.VerticalOptions = AttributeHelper.StringToLayoutOptions(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

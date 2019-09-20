@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements
     public static partial class AttributeHelper
     {
         /// <summary>
-        /// Helper method to serialize <see cref="Xamarin.Forms.Color" /> objects.
+        /// Helper method to serialize <see cref="Color" /> objects.
         /// </summary>
         public static string ColorToString(Color color)
         {
@@ -18,7 +18,7 @@ namespace Blaxamarin.Framework.Elements
         }
 
         /// <summary>
-        /// Helper method to deserialize <see cref="Xamarin.Forms.Color" /> objects.
+        /// Helper method to deserialize <see cref="Color" /> objects.
         /// </summary>
         public static Color StringToColor(string colorString)
         {
@@ -37,6 +37,7 @@ namespace Blaxamarin.Framework.Elements
                 b: (int)(ToHex(hex[6]) << 4 | ToHex(hex[7])),
                 a: (int)(ToHex(hex[0]) << 4 | ToHex(hex[1])));
         }
+
         private static uint ToHex(char c)
         {
             ushort x = c;
