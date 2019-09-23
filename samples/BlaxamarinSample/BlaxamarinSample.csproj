@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Blaxamarin.Framework\Blaxamarin.Framework.csproj" />
+    <ProjectReference Include="..\..\src\Blaxamarin.Framework\Blaxamarin.Framework.csproj" />
   </ItemGroup>
 </Project>

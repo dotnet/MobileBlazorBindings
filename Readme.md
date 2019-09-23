@@ -18,8 +18,8 @@ Emblazon and its related projects require:
 ## Project structure
 
 There are 3 main areas:
-1. [Emblazon](Emblazon) - Base framework for Blazor rendering to native UI frameworks.
-2. [BlinForms](BlinForms.Framework) - Blazor rendering to WinForms.
-   - Check out the [BlinForms sample app](BlinFormsSample).
-3. [Blaxamarin](Blaxamarin.Framework) - Blazor rendering to Xamarin.Forms.
-   - Check out the [Blaxamarin sample app](BlaxamarinSample).
+1. [Emblazon](src/Emblazon) - Base framework for Blazor rendering to native UI frameworks.
+2. [BlinForms](src/BlinForms.Framework) - Blazor rendering to WinForms.
+   - Check out the [BlinForms sample app](samples/BlinFormsSample).
+3. [Blaxamarin](src/Blaxamarin.Framework) - Blazor rendering to Xamarin.Forms.
+   - Check out the [Blaxamarin sample app](samples/BlaxamarinSample).

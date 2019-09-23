@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlinForms.Framework\BlinForms.Framework.csproj" />
+    <ProjectReference Include="..\..\src\BlinForms.Framework\BlinForms.Framework.csproj" />
   </ItemGroup>
 
 </Project>
