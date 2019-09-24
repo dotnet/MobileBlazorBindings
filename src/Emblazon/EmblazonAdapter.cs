@@ -382,18 +382,17 @@ namespace Emblazon
 
         private static int CountDescendantFrames(RenderTreeFrame frame)
         {
-            switch (frame.FrameType)
+            return frame.FrameType switch
             {
                 // The following frame types have a subtree length. Other frames may use that memory slot
                 // to mean something else, so we must not read it. We should consider having nominal subtypes
                 // of RenderTreeFramePointer that prevent access to non-applicable fields.
-                case RenderTreeFrameType.Component:
-                    return frame.ComponentSubtreeLength - 1;
-                case RenderTreeFrameType.Element: return frame.ElementSubtreeLength - 1;
-                case RenderTreeFrameType.Region: return frame.RegionSubtreeLength - 1;
-                default:
-                    return 0;
+                RenderTreeFrameType.Component => frame.ComponentSubtreeLength - 1,
+                RenderTreeFrameType.Element => frame.ElementSubtreeLength - 1,
+                RenderTreeFrameType.Region => frame.RegionSubtreeLength - 1,
+                _ => 0,
             };
+            ;
         }
 
         private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TComponentHandler> childAdapter)
