@@ -1,12 +1,38 @@
 steps:
 
-- script: msbuild /t:build /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
-  displayName: msbuild /t:build
-  workingDirectory: .
+- task: MSBuild@1
+  inputs:
+    msbuildArguments: /t:build /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
+    restoreNugetPackages: false
+    logFileVerbosity: 'minimal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
+    configuration: $(BuildConfiguration)
+    #solution: '**/*.sln' 
+    #msbuildLocationMethod: 'version' # Optional. Options: version, location
+    #msbuildVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 4.0
+    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
+    #msbuildLocation: # Optional
+    #platform: # Optional
+    #clean: false # Optional
+    #maximumCpuCount: false # Optional
+    #logProjectEvents: false # Optional
+    #createLogFile: false # Optional
 
-- script: msbuild /t:pack /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/pack.binlog"
-  displayName: msbuild /t:pack
-  workingDirectory: .
+- task: MSBuild@1
+  inputs:
+    msbuildArguments: /t:pack
+    #solution: '**/*.sln' 
+    #msbuildLocationMethod: 'version' # Optional. Options: version, location
+    #msbuildVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 4.0
+    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
+    #msbuildLocation: # Optional
+    #platform: # Optional
+    #configuration: # Optional
+    #clean: false # Optional
+    #maximumCpuCount: false # Optional
+    #restoreNugetPackages: false # Optional
+    #logProjectEvents: false # Optional
+    #createLogFile: false # Optional
+    #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic- script: msbuild /t:pack /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/pack.binlog"
 
 #- task: DotNetCoreCLI@2
 #  displayName: dotnet test -f net472
