@@ -1,37 +1,37 @@
 steps:
 
-- script: dotnet build --no-restore -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
-  displayName: dotnet build
-  workingDirectory: src
+- script: msbuild /t:build /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
+  displayName: msbuild /t:build
+  workingDirectory: .
 
-- script: dotnet pack --no-build -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/pack.binlog"
-  displayName: dotnet pack
-  workingDirectory: src
+- script: msbuild /t:pack /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/pack.binlog"
+  displayName: msbuild /t:pack
+  workingDirectory: .
 
-- task: DotNetCoreCLI@2
-  displayName: dotnet test -f net472
-  inputs:
-    command: test
-    arguments: --no-build -c $(BuildConfiguration) -f net472 --filter "TestCategory!=FailsInCloudTest" -v n
-    testRunTitle: net472-$(Agent.JobName)
-    workingDirectory: src
-  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
+#- task: DotNetCoreCLI@2
+#  displayName: dotnet test -f net472
+#  inputs:
+#    command: test
+#    arguments: --no-build -c $(BuildConfiguration) -f net472 --filter "TestCategory!=FailsInCloudTest" -v n
+#    testRunTitle: net472-$(Agent.JobName)
+#    workingDirectory: .
+#  condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
 
-- task: DotNetCoreCLI@2
-  displayName: dotnet test -f netcoreapp2.1
-  inputs:
-    command: test
-    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.1 --filter "TestCategory!=FailsInCloudTest" -v n
-    testRunTitle: netcoreapp2.1-$(Agent.JobName)
-    workingDirectory: src
+#- task: DotNetCoreCLI@2
+#  displayName: dotnet test -f netcoreapp2.1
+#  inputs:
+#    command: test
+#    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.1 --filter "TestCategory!=FailsInCloudTest" -v n
+#    testRunTitle: netcoreapp2.1-$(Agent.JobName)
+#    workingDirectory: .
 
-- task: DotNetCoreCLI@2
-  displayName: dotnet test -f netcoreapp3.0
-  inputs:
-    command: test
-    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.2 --filter "TestCategory!=FailsInCloudTest" -v n
-    testRunTitle: netcoreapp3.0-$(Agent.JobName)
-    workingDirectory: src
+#- task: DotNetCoreCLI@2
+#  displayName: dotnet test -f netcoreapp3.0
+#  inputs:
+#    command: test
+#    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.2 --filter "TestCategory!=FailsInCloudTest" -v n
+#    testRunTitle: netcoreapp3.0-$(Agent.JobName)
+#    workingDirectory: .
 
 - task: PowerShell@2
   inputs:
