@@ -12,7 +12,7 @@ steps:
   displayName: dotnet test -f net472
   inputs:
     command: test
-    arguments: --no-build -c $(BuildConfiguration) -f net472 --filter "TestCategory!=FailsInCloudTest" -v n /p:CollectCoverage=true
+    arguments: --no-build -c $(BuildConfiguration) -f net472 --filter "TestCategory!=FailsInCloudTest" -v n
     testRunTitle: net472-$(Agent.JobName)
     workingDirectory: src
   condition: and(succeeded(), eq(variables['Agent.OS'], 'Windows_NT'))
@@ -21,7 +21,7 @@ steps:
   displayName: dotnet test -f netcoreapp2.1
   inputs:
     command: test
-    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.1 --filter "TestCategory!=FailsInCloudTest" -v n /p:CollectCoverage=true
+    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.1 --filter "TestCategory!=FailsInCloudTest" -v n
     testRunTitle: netcoreapp2.1-$(Agent.JobName)
     workingDirectory: src
 
@@ -29,7 +29,7 @@ steps:
   displayName: dotnet test -f netcoreapp3.0
   inputs:
     command: test
-    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.2 --filter "TestCategory!=FailsInCloudTest" -v n /p:CollectCoverage=true
+    arguments: --no-build -c $(BuildConfiguration) -f netcoreapp2.2 --filter "TestCategory!=FailsInCloudTest" -v n
     testRunTitle: netcoreapp3.0-$(Agent.JobName)
     workingDirectory: src
 
@@ -55,9 +55,3 @@ steps:
     SymbolServerType: TeamServices
   displayName: Publish symbols to symbol server
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
-
-- bash: bash <(curl -s https://codecov.io/bash)
-  displayName: Publish code coverage results to codecov.io
-  condition: ne(variables['codecov_token'], '')
-  timeoutInMinutes: 3
-  continueOnError: true
