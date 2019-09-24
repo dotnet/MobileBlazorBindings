@@ -7,7 +7,6 @@ namespace BlaxamarinSample
 {
     public partial class App : Application
     {
-
         public App()
         {
             var host = Host.CreateDefaultBuilder()

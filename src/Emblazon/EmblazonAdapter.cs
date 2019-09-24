@@ -273,11 +273,11 @@ namespace Emblazon
         /// * Adapter3 (native)
         ///     * Adapter3.0 (searchOrder=2)
         ///         * Adapter3.0.0 (searchOrder=3)
-        ///         * Adapter3.0.1 (native)  (searchOrder=4) <-- This is the nearest earlier sibling that has a physical control)
+        ///         * Adapter3.0.1 (native)  (searchOrder=4) &lt;-- This is the nearest earlier sibling that has a physical control)
         ///         * Adapter3.0.2
         ///     * Adapter3.1 (searchOrder=1)
         ///         * Adapter3.1.0 (searchOrder=0)
-        ///         * Adapter3.1.1 (native) <-- Current adapter
+        ///         * Adapter3.1.1 (native) &lt;-- Current adapter
         ///         * Adapter3.1.2
         ///     * Adapter3.2
         /// * Adapter4
