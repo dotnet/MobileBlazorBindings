@@ -46,7 +46,7 @@ try {
 
     if (!$NoRestore) {
         Write-Host "Restoring NuGet packages" -ForegroundColor $HeaderColor
-        dotnet restore src
+        dotnet restore
         if ($lastexitcode -ne 0) {
             throw "Failure while restoring packages."
         }
