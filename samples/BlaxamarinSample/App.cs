@@ -1,5 +1,4 @@
 ﻿using Blaxamarin.Framework;
-using BlaxamarinSample.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xamarin.Forms;
@@ -11,10 +10,6 @@ namespace BlaxamarinSample
 
         public App()
         {
-            InitializeComponent();
-
-            DependencyService.Register<MockDataStore>();
-
             var host = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
