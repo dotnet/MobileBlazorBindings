@@ -14,31 +14,30 @@ jobs:
 
   - template: dotnet.yml
 
-- job: Linux
-  pool:
-    vmImage: Ubuntu 16.04
-  steps:
-  - checkout: self
-    clean: true
-  - template: install-dependencies.yml
-  - template: dotnet.yml
-
-- job: macOS
-  pool:
-    vmImage: macOS 10.13
-  steps:
-  - checkout: self
-    clean: true
-  - template: install-dependencies.yml
-  - template: dotnet.yml
+#- job: Linux
+#  pool:
+#    vmImage: Ubuntu 16.04
+#  steps:
+#  - checkout: self
+#    clean: true
+#  - template: install-dependencies.yml
+#  - template: dotnet.yml
+#
+#- job: macOS
+#  pool:
+#    vmImage: macOS 10.13
+#  steps:
+#  - checkout: self
+#    clean: true
+#  - template: install-dependencies.yml
+#  - template: dotnet.yml
 
 - job: WrapUp
   dependsOn:
   - Windows
-  - Linux
-  - macOS
-  pool:
-    vmImage: Ubuntu 16.04
+ # - Linux
+ # - macOS
+  pool: ${{ parameters.windowsPool }}
   condition: succeededOrFailed()
   steps:
   - checkout: self
