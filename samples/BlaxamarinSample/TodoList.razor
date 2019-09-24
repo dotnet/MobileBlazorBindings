@@ -3,7 +3,7 @@
 <StackLayout>
     <StackLayout Orientation="StackOrientation.Horizontal">
         @* Input area *@
-        <Entry @bind-Text="newText" Placeholder="What's to be done?" />
+        <Entry @bind-Text="newText" Placeholder="What's to be done?" OnCompleted="@AddItem" />
         <Button Text="Add" OnClick="@AddItem" />
     </StackLayout>
 
