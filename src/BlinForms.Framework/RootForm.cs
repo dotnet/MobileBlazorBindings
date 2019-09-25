@@ -10,7 +10,7 @@ namespace BlinForms.Framework
         }
 
         public Control Control => this;
-        public object NativeControl => this;
+        public object TargetElement => this;
 
         // TODO: Need to think about whether this method is needed. There's no component for this element, so when
         // would this get called?

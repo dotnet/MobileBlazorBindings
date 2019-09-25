@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace BlinForms.Framework
 {
-    public interface IWindowsFormsControlHandler : IElementHandlerWithControl
+    public interface IWindowsFormsControlHandler : IElementHandler
     {
         Control Control { get; }
     }

@@ -33,7 +33,7 @@ namespace BlinForms.Framework.Controls
 
             public Control Control => SplitterPanel;
 
-            public object NativeControl => SplitterPanel;
+            public object TargetElement => SplitterPanel;
 
             public SplitterPanel SplitterPanel { get; }
 

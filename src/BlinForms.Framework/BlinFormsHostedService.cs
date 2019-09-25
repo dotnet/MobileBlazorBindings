@@ -81,7 +81,7 @@ namespace BlinForms.Framework
             }
 
             public Control Control { get; }
-            public object NativeControl => Control;
+            public object TargetElement => Control;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

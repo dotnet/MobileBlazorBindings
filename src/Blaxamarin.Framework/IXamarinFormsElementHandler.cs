@@ -3,7 +3,7 @@ using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
-    public interface IXamarinFormsElementHandler : IElementHandlerWithControl
+    public interface IXamarinFormsElementHandler : IElementHandler
     {
         XF.Element ElementControl { get; }
     }

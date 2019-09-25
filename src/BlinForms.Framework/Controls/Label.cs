@@ -26,7 +26,7 @@ namespace BlinForms.Framework.Controls
         private class BlazorLabel : System.Windows.Forms.Label, IWindowsFormsControlHandler
         {
             public Control Control => this;
-            public object NativeControl => this;
+            public object TargetElement => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

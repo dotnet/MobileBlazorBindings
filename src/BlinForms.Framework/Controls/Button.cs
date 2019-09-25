@@ -46,7 +46,7 @@ namespace BlinForms.Framework.Controls
             public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
 
             public Control Control => this;
-            public object NativeControl => this;
+            public object TargetElement => this;
 
             public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
             {

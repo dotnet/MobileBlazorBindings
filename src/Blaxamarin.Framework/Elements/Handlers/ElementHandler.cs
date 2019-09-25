@@ -14,7 +14,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 
         public EmblazonRenderer<IXamarinFormsElementHandler> Renderer { get; }
         public XF.Element ElementControl { get; }
-        public object NativeControl => ElementControl;
+        public object TargetElement => ElementControl;
 
         public virtual void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
