@@ -11,7 +11,7 @@ namespace Emblazon
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }
 
-        public TElementHandler CreateControl(ElementHandlerFactoryContext<TElementHandler> context)
+        public TElementHandler CreateElementHandler(ElementHandlerFactoryContext<TElementHandler> context)
         {
             return _callback(context.Renderer, context.ParentHandler);
         }

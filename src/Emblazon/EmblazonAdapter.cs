@@ -213,7 +213,7 @@ namespace Emblazon
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var controlFactory = ElementHandlerRegistry<TElementHandler>.ElementHandlers[elementName];
-            var nativeControlHandler = controlFactory.CreateControl(new ElementHandlerFactoryContext<TElementHandler>(Renderer, _closestPhysicalParent));
+            var nativeControlHandler = controlFactory.CreateElementHandler(new ElementHandlerFactoryContext<TElementHandler>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
