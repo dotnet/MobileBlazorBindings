@@ -10,11 +10,11 @@ namespace Emblazon
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
     [DebuggerDisplay("{DebugName}")]
-    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, IElementHandler
+    internal sealed class EmblazonAdapter<TElementHandler> : IDisposable where TElementHandler : class, IElementHandler
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer<TComponentHandler> renderer, TComponentHandler closestPhysicalParent, TComponentHandler knownTargetControl = null)
+        public EmblazonAdapter(EmblazonRenderer<TElementHandler> renderer, TElementHandler closestPhysicalParent, TElementHandler knownTargetControl = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
@@ -28,13 +28,13 @@ namespace Emblazon
 
         private string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
 
-        public EmblazonAdapter<TComponentHandler> Parent { get; private set; }
-        public List<EmblazonAdapter<TComponentHandler>> Children { get; } = new List<EmblazonAdapter<TComponentHandler>>();
+        public EmblazonAdapter<TElementHandler> Parent { get; private set; }
+        public List<EmblazonAdapter<TElementHandler>> Children { get; } = new List<EmblazonAdapter<TElementHandler>>();
 
-        private readonly TComponentHandler _closestPhysicalParent;
-        private TComponentHandler _possibleTargetControl;
+        private readonly TElementHandler _closestPhysicalParent;
+        private TElementHandler _possibleTargetControl;
 
-        public EmblazonRenderer<TComponentHandler> Renderer { get; }
+        public EmblazonRenderer<TElementHandler> Renderer { get; }
 
         /// <summary>
         /// Used for debugging purposes.
@@ -202,9 +202,9 @@ namespace Emblazon
             }
         }
 
-        private EmblazonAdapter<TComponentHandler> CreateAdapter(TComponentHandler physicalParent)
+        private EmblazonAdapter<TElementHandler> CreateAdapter(TElementHandler physicalParent)
         {
-            return new EmblazonAdapter<TComponentHandler>(Renderer, physicalParent);
+            return new EmblazonAdapter<TElementHandler>(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -212,8 +212,8 @@ namespace Emblazon
             // Elements represent native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var controlFactory = ElementHandlerRegistry<TComponentHandler>.ElementHandlers[elementName];
-            var nativeControlHandler = controlFactory.CreateControl(new ElementHandlerFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
+            var controlFactory = ElementHandlerRegistry<TElementHandler>.ElementHandlers[elementName];
+            var nativeControlHandler = controlFactory.CreateControl(new ElementHandlerFactoryContext<TElementHandler>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
@@ -322,7 +322,7 @@ namespace Emblazon
             return -1;
         }
 
-        private static EmblazonAdapter<TComponentHandler> GetEarlierSiblingMatch(EmblazonAdapter<TComponentHandler> parentAdapter, EmblazonAdapter<TComponentHandler> childAdapter)
+        private static EmblazonAdapter<TElementHandler> GetEarlierSiblingMatch(EmblazonAdapter<TElementHandler> parentAdapter, EmblazonAdapter<TElementHandler> childAdapter)
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 
@@ -342,7 +342,7 @@ namespace Emblazon
             return null;
         }
 
-        private EmblazonAdapter<TComponentHandler> GetLastDescendantWithPhysicalControl()
+        private EmblazonAdapter<TElementHandler> GetLastDescendantWithPhysicalControl()
         {
             if (_possibleTargetControl != null)
             {
@@ -395,7 +395,7 @@ namespace Emblazon
             ;
         }
 
-        private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TComponentHandler> childAdapter)
+        private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TElementHandler> childAdapter)
         {
             childAdapter.Parent = this;
 
