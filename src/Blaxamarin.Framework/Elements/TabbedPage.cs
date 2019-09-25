@@ -8,8 +8,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static TabbedPage()
         {
-            NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<TabbedPage>(renderer => new TabbedPageHandler(renderer, new XF.TabbedPage()));
+            ElementHandlerRegistry<IXamarinFormsElementHandler>
+                .RegisterElementHandler<TabbedPage>(renderer => new TabbedPageHandler(renderer, new XF.TabbedPage()));
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class VisualElementHandler : NavigableElementHandler
     {
-        public VisualElementHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
+        public VisualElementHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
         {
             VisualElementControl = visualElementControl ?? throw new ArgumentNullException(nameof(visualElementControl));
             VisualElementControl.Focused += (s, e) =>

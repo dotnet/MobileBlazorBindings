@@ -10,7 +10,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Entry()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Entry>(
+            ElementHandlerRegistry<IXamarinFormsElementHandler>.RegisterElementHandler<Entry>(
                 renderer => new EntryHandler(renderer, new XF.Entry()));
         }
 

@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static CheckBox()
         {
-            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<CheckBox>(renderer => new BlazorCheckBox(renderer));
+            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<CheckBox>(renderer => new BlazorCheckBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }

@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class EntryHandler : InputViewHandler
     {
-        public EntryHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Entry entryControl) : base(renderer, entryControl)
+        public EntryHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Entry entryControl) : base(renderer, entryControl)
         {
             EntryControl = entryControl ?? throw new System.ArgumentNullException(nameof(entryControl));
             EntryControl.Completed += (s, e) =>

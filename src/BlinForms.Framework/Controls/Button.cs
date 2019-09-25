@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<Button>(
+            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<Button>(
                 renderer => new BlazorButton(renderer));
         }
 

@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
-    public class BlaxamarinRenderer : EmblazonRenderer<IFormsControlHandler>
+    public class BlaxamarinRenderer : EmblazonRenderer<IXamarinFormsElementHandler>
     {
         public BlaxamarinRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
@@ -23,9 +23,9 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override NativeControlManager<IFormsControlHandler> CreateNativeControlManager()
+        protected override ElementManager<IXamarinFormsElementHandler> CreateNativeControlManager()
         {
-            return new BlaxamarinNativeControlManager();
+            return new BlaxamarinElementManager();
         }
     }
 }

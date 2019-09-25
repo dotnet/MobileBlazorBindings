@@ -10,7 +10,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Switch()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Switch>(
+            ElementHandlerRegistry<IXamarinFormsElementHandler>.RegisterElementHandler<Switch>(
                 renderer => new SwitchHandler(renderer, new XF.Switch()));
         }
 

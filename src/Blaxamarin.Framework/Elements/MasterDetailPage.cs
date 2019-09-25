@@ -10,8 +10,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static MasterDetailPage()
         {
-            NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
+            ElementHandlerRegistry<IXamarinFormsElementHandler>
+                .RegisterElementHandler<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
         }
 
         [Parameter] public string MasterTitle { get; set; }

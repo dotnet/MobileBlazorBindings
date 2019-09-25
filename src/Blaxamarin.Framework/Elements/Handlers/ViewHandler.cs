@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class ViewHandler : VisualElementHandler
     {
-        public ViewHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.View viewControl) : base(renderer, viewControl)
+        public ViewHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.View viewControl) : base(renderer, viewControl)
         {
             ViewControl = viewControl ?? throw new ArgumentNullException(nameof(viewControl));
         }

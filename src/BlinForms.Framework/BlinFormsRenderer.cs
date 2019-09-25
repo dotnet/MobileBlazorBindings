@@ -17,9 +17,9 @@ namespace BlinForms.Framework
             MessageBox.Show(exception?.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override NativeControlManager<IWindowsFormsControlHandler> CreateNativeControlManager()
+        protected override ElementManager<IWindowsFormsControlHandler> CreateNativeControlManager()
         {
-            return new BlinFormsNativeControlManager();
+            return new BlinFormsElementManager();
         }
     }
 }

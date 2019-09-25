@@ -10,7 +10,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Page()
         {
-            NativeControlRegistry<IFormsControlHandler>.RegisterNativeControlComponent<Page>(
+            ElementHandlerRegistry<IXamarinFormsElementHandler>.RegisterElementHandler<Page>(
                 renderer => new PageHandler(renderer, new XF.Page()));
         }
 

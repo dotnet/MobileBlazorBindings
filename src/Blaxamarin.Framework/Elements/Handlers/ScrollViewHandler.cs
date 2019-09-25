@@ -5,7 +5,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class ScrollViewHandler : LayoutHandler
     {
-        public ScrollViewHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
+        public ScrollViewHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
         {
             ScrollViewControl = scrollViewControl ?? throw new System.ArgumentNullException(nameof(scrollViewControl));
         }

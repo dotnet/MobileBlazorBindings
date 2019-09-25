@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Emblazon
 {
-    public abstract class EmblazonRenderer<TComponentHandler> : Renderer where TComponentHandler : class, INativeControlHandler
+    public abstract class EmblazonRenderer<TComponentHandler> : Renderer where TComponentHandler : class, IElementHandler
     {
         private readonly Dictionary<int, EmblazonAdapter<TComponentHandler>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TComponentHandler>>();
-        private NativeControlManager<TComponentHandler> _nativeControlManager;
+        private ElementManager<TComponentHandler> _nativeControlManager;
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
@@ -20,9 +20,9 @@ namespace Emblazon
         {
         }
 
-        protected abstract NativeControlManager<TComponentHandler> CreateNativeControlManager();
+        protected abstract ElementManager<TComponentHandler> CreateNativeControlManager();
 
-        internal NativeControlManager<TComponentHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
+        internal ElementManager<TComponentHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
 
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();

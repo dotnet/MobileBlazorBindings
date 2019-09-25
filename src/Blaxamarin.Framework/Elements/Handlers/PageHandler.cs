@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class PageHandler : VisualElementHandler
     {
-        public PageHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Page pageControl) : base(renderer, pageControl)
+        public PageHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Page pageControl) : base(renderer, pageControl)
         {
             PageControl = pageControl ?? throw new ArgumentNullException(nameof(pageControl));
         }

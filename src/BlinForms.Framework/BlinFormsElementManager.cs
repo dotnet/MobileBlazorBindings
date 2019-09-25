@@ -3,14 +3,14 @@ using System.Diagnostics;
 
 namespace BlinForms.Framework
 {
-    internal class BlinFormsNativeControlManager : NativeControlManager<IWindowsFormsControlHandler>
+    internal class BlinFormsElementManager : ElementManager<IWindowsFormsControlHandler>
     {
-        public override void RemovePhysicalControl(IWindowsFormsControlHandler control)
+        public override void RemoveElement(IWindowsFormsControlHandler control)
         {
             control.Control.Parent.Controls.Remove(control.Control);
         }
 
-        public override void AddPhysicalControl(IWindowsFormsControlHandler parentControl, IWindowsFormsControlHandler childControl, int physicalSiblingIndex)
+        public override void AddChildElement(IWindowsFormsControlHandler parentControl, IWindowsFormsControlHandler childControl, int physicalSiblingIndex)
         {
             if (physicalSiblingIndex <= parentControl.Control.Controls.Count)
             {
@@ -21,7 +21,7 @@ namespace BlinForms.Framework
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentControl.Controls.Count={parentControl.Control.Controls.Count}");
+                Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentControl.Controls.Count={parentControl.Control.Controls.Count}");
                 parentControl.Control.Controls.Add(childControl.Control);
             }
         }

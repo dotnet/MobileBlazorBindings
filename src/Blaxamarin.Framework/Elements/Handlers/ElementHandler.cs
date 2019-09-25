@@ -4,15 +4,15 @@ using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements.Handlers
 {
-    public class ElementHandler : IFormsControlHandler
+    public class ElementHandler : IXamarinFormsElementHandler
     {
-        public ElementHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Element elementControl)
+        public ElementHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Element elementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
 
-        public EmblazonRenderer<IFormsControlHandler> Renderer { get; }
+        public EmblazonRenderer<IXamarinFormsElementHandler> Renderer { get; }
         public XF.Element ElementControl { get; }
         public object NativeControl => ElementControl;
 

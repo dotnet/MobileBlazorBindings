@@ -5,7 +5,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class InputViewHandler : ViewHandler
     {
-        public InputViewHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.InputView inputViewControl) : base(renderer, inputViewControl)
+        public InputViewHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.InputView inputViewControl) : base(renderer, inputViewControl)
         {
             InputViewControl = inputViewControl ?? throw new System.ArgumentNullException(nameof(inputViewControl));
         }

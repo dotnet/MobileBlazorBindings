@@ -4,13 +4,13 @@ using Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
-    internal class BlaxamarinNativeControlManager : NativeControlManager<IFormsControlHandler>
+    internal class BlaxamarinElementManager : ElementManager<IXamarinFormsElementHandler>
     {
-        public override bool IsParented(IFormsControlHandler handler) => handler.ElementControl.Parent != null;
+        public override bool IsParented(IXamarinFormsElementHandler handler) => handler.ElementControl.Parent != null;
 
-        public override void AddPhysicalControl(
-            IFormsControlHandler parentHandler,
-            IFormsControlHandler childHandler,
+        public override void AddChildElement(
+            IXamarinFormsElementHandler parentHandler,
+            IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
@@ -30,7 +30,7 @@ namespace Blaxamarin.Framework
                         }
                         else
                         {
-                            Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsLayout.Children.Count={parentAsLayout.Children.Count}");
+                            Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsLayout.Children.Count={parentAsLayout.Children.Count}");
                             parentAsLayout.Children.Add(childAsView);
                         }
                     }
@@ -57,7 +57,7 @@ namespace Blaxamarin.Framework
                         }
                         else
                         {
-                            Debug.WriteLine($"WARNING: {nameof(AddPhysicalControl)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsTabbedPage.Children.Count={parentAsTabbedPage.Children.Count}");
+                            Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsTabbedPage.Children.Count={parentAsTabbedPage.Children.Count}");
                             parentAsTabbedPage.Children.Add(childAsPage);
                         }
                     }
@@ -110,7 +110,7 @@ namespace Blaxamarin.Framework
         }
 
         public override int GetPhysicalSiblingIndex(
-            IFormsControlHandler handler)
+            IXamarinFormsElementHandler handler)
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
@@ -154,7 +154,7 @@ namespace Blaxamarin.Framework
             }
         }
 
-        public override void RemovePhysicalControl(IFormsControlHandler handler)
+        public override void RemoveElement(IXamarinFormsElementHandler handler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
             var control = handler.ElementControl;
@@ -166,7 +166,7 @@ namespace Blaxamarin.Framework
             }
         }
 
-        public override bool IsParentOfChild(IFormsControlHandler parentControl, IFormsControlHandler childControl)
+        public override bool IsParentOfChild(IXamarinFormsElementHandler parentControl, IXamarinFormsElementHandler childControl)
         {
             return childControl.ElementControl.Parent == parentControl.ElementControl;
         }

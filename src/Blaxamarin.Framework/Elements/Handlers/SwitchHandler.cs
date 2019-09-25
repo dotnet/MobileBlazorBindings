@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class SwitchHandler : ViewHandler
     {
-        public SwitchHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Switch switchControl) : base(renderer, switchControl)
+        public SwitchHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Switch switchControl) : base(renderer, switchControl)
         {
             SwitchControl = switchControl ?? throw new System.ArgumentNullException(nameof(switchControl));
             SwitchControl.Toggled += (s, e) =>

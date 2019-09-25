@@ -9,8 +9,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<StackLayout>(renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
+            ElementHandlerRegistry<IXamarinFormsElementHandler>
+                .RegisterElementHandler<StackLayout>(renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods

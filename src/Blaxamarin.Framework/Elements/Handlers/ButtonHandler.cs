@@ -6,7 +6,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class ButtonHandler : ViewHandler
     {
-        public ButtonHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Button buttonControl) : base(renderer, buttonControl)
+        public ButtonHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Button buttonControl) : base(renderer, buttonControl)
         {
             ButtonControl = buttonControl ?? throw new ArgumentNullException(nameof(buttonControl));
             ButtonControl.Clicked += (s, e) =>

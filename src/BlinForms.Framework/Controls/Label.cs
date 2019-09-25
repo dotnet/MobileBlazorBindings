@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Label()
         {
-            NativeControlRegistry<IWindowsFormsControlHandler>.RegisterNativeControlComponent<Label, BlazorLabel>();
+            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<Label, BlazorLabel>();
         }
 
         [Parameter] public string Text { get; set; }

@@ -10,7 +10,7 @@ namespace Emblazon
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
     [DebuggerDisplay("{DebugName}")]
-    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, INativeControlHandler
+    internal sealed class EmblazonAdapter<TComponentHandler> : IDisposable where TComponentHandler : class, IElementHandler
     {
         private static volatile int DebugInstanceCounter;
 
@@ -108,7 +108,7 @@ namespace Emblazon
             {
                 // This adapter represents a physical control, so by removing it, we implicitly
                 // remove all descendants.
-                Renderer.NativeControlManager.RemovePhysicalControl(_possibleTargetControl);
+                Renderer.NativeControlManager.RemoveElement(_possibleTargetControl);
             }
             else
             {
@@ -212,8 +212,8 @@ namespace Emblazon
             // Elements represent native controls
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var controlFactory = NativeControlRegistry<TComponentHandler>.KnownElements[elementName];
-            var nativeControlHandler = controlFactory.CreateControl(new ComponentControlFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
+            var controlFactory = ElementHandlerRegistry<TComponentHandler>.ElementHandlers[elementName];
+            var nativeControlHandler = controlFactory.CreateControl(new ElementHandlerFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
@@ -228,7 +228,7 @@ namespace Emblazon
             if (!Renderer.NativeControlManager.IsParented(nativeControlHandler))
             {
                 var elementIndex = GetIndexForElement();
-                Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControlHandler, elementIndex);
+                Renderer.NativeControlManager.AddChildElement(_closestPhysicalParent, nativeControlHandler, elementIndex);
             }
             _possibleTargetControl = nativeControlHandler;
 

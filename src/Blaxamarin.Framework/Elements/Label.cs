@@ -9,8 +9,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static Label()
         {
-            NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<Label>(renderer => new LabelHandler(renderer, new XF.Label()));
+            ElementHandlerRegistry<IXamarinFormsElementHandler>
+                .RegisterElementHandler<Label>(renderer => new LabelHandler(renderer, new XF.Label()));
         }
 
         [Parameter] public string Text { get; set; }

@@ -9,8 +9,8 @@ namespace Blaxamarin.Framework.Elements
     {
         static Button()
         {
-            NativeControlRegistry<IFormsControlHandler>
-                .RegisterNativeControlComponent<Button>(renderer => new ButtonHandler(renderer, new XF.Button()));
+            ElementHandlerRegistry<IXamarinFormsElementHandler>
+                .RegisterElementHandler<Button>(renderer => new ButtonHandler(renderer, new XF.Button()));
         }
 
         [Parameter] public string Text { get; set; }

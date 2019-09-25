@@ -5,7 +5,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class LabelHandler : ViewHandler
     {
-        public LabelHandler(EmblazonRenderer<IFormsControlHandler> renderer, XF.Label labelControl) : base(renderer, labelControl)
+        public LabelHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Label labelControl) : base(renderer, labelControl)
         {
             LabelControl = labelControl ?? throw new System.ArgumentNullException(nameof(labelControl));
         }
