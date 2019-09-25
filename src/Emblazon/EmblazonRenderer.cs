@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Emblazon
 {
-    public abstract class EmblazonRenderer<TComponentHandler> : Renderer where TComponentHandler : class, IElementHandler
+    public abstract class EmblazonRenderer<TElementHandler> : Renderer where TElementHandler : class, IElementHandler
     {
-        private readonly Dictionary<int, EmblazonAdapter<TComponentHandler>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TComponentHandler>>();
-        private ElementManager<TComponentHandler> _nativeControlManager;
+        private readonly Dictionary<int, EmblazonAdapter<TElementHandler>> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter<TElementHandler>>();
+        private ElementManager<TElementHandler> _nativeControlManager;
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
@@ -20,9 +20,9 @@ namespace Emblazon
         {
         }
 
-        protected abstract ElementManager<TComponentHandler> CreateNativeControlManager();
+        protected abstract ElementManager<TElementHandler> CreateNativeControlManager();
 
-        internal ElementManager<TComponentHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
+        internal ElementManager<TElementHandler> NativeControlManager => _nativeControlManager ?? (_nativeControlManager = CreateNativeControlManager());
 
         public override Dispatcher Dispatcher { get; }
              = Dispatcher.CreateDefault();
@@ -33,7 +33,7 @@ namespace Emblazon
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public async Task AddComponent<TComponent>(TComponentHandler parent) where TComponent : IComponent
+        public async Task AddComponent<TComponent>(TElementHandler parent) where TComponent : IComponent
         {
             await AddComponent(typeof(TComponent), parent);
         }
@@ -44,12 +44,12 @@ namespace Emblazon
         /// <param name="componentType"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public async Task AddComponent(Type componentType, TComponentHandler parent)
+        public async Task AddComponent(Type componentType, TElementHandler parent)
         {
             var component = InstantiateComponent(componentType);
             var componentId = AssignRootComponentId(component);
 
-            var rootAdapter = new EmblazonAdapter<TComponentHandler>(this, closestPhysicalParent: parent, knownTargetControl: parent)
+            var rootAdapter = new EmblazonAdapter<TElementHandler>(this, closestPhysicalParent: parent, knownTargetControl: parent)
             {
                 Name = "RootAdapter"
             };
@@ -111,9 +111,9 @@ namespace Emblazon
             unregisterCallback();
         }
 
-        internal EmblazonAdapter<TComponentHandler> CreateAdapterForChildComponent(TComponentHandler physicalParent, int componentId)
+        internal EmblazonAdapter<TElementHandler> CreateAdapterForChildComponent(TElementHandler physicalParent, int componentId)
         {
-            var result = new EmblazonAdapter<TComponentHandler>(this, physicalParent);
+            var result = new EmblazonAdapter<TElementHandler>(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
         }
