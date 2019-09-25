@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using Xamarin.Forms;
 
 namespace Blaxamarin.Framework
 {
@@ -12,8 +11,6 @@ namespace Blaxamarin.Framework
             : base(serviceProvider, loggerFactory)
         {
         }
-
-        public ContentPage ContentPage { get; } = new ContentPage();
 
         protected override void HandleException(Exception exception)
         {
