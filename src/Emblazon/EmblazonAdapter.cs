@@ -213,7 +213,7 @@ namespace Emblazon
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var controlFactory = NativeControlRegistry<TComponentHandler>.KnownElements[elementName];
-            var nativeControl = controlFactory.CreateControl(new ComponentControlFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
+            var nativeControlHandler = controlFactory.CreateControl(new ComponentControlFactoryContext<TComponentHandler>(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
@@ -225,12 +225,12 @@ namespace Emblazon
             // For the location in the physical control tree, find the last preceding-sibling adapter that has
             // a physical descendant (if any). If there is one, we physically insert after that one. If not,
             // we'll insert as the first child of the closest physical parent.
-            if (!Renderer.NativeControlManager.IsParented(nativeControl))
+            if (!Renderer.NativeControlManager.IsParented(nativeControlHandler))
             {
                 var elementIndex = GetIndexForElement();
-                Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControl, elementIndex);
+                Renderer.NativeControlManager.AddPhysicalControl(_closestPhysicalParent, nativeControlHandler, elementIndex);
             }
-            _possibleTargetControl = nativeControl;
+            _possibleTargetControl = nativeControlHandler;
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
             for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
