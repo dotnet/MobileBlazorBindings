@@ -222,6 +222,10 @@ namespace Emblazon
                 throw new NotSupportedException($"Currently we assume all adapter elements render exactly zero or one elements. Found an element with sibling index {siblingIndex}");
             }
 
+            // TODO: Consider in the future calling a new API to check if the elementHandler represents a native UI component:
+            // if (Renderer.ElementManager.IsNativeElement(elementHandler)) { add to UI tree }
+            // else { do something with non-native element, e.g. notify parent to handle it }
+
             // For the location in the physical UI tree, find the last preceding-sibling adapter that has
             // a physical descendant (if any). If there is one, we physically insert after that one. If not,
             // we'll insert as the first child of the closest physical parent.
