@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Blaxamarin.Framework
 {
-    public class BlaxamarinRenderer : EmblazonRenderer<IXamarinFormsElementHandler>
+    public class BlaxamarinRenderer : EmblazonRenderer
     {
         public BlaxamarinRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
@@ -20,7 +20,7 @@ namespace Blaxamarin.Framework
             //MessageBox.Show(exception.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override ElementManager<IXamarinFormsElementHandler> CreateNativeControlManager()
+        protected override ElementManager CreateNativeControlManager()
         {
             return new BlaxamarinElementManager();
         }

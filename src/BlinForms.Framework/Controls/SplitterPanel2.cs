@@ -8,8 +8,8 @@ namespace BlinForms.Framework.Controls
     {
         static SplitterPanel2()
         {
-            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<SplitterPanel2>(
-                (_, parentControl) => GetSplitterPanel(parentControl.Control, panelNumber: 2));
+            ElementHandlerRegistry.RegisterElementHandler<SplitterPanel2>(
+                (_, parentControl) => GetSplitterPanel(((IWindowsFormsControlHandler)parentControl).Control, panelNumber: 2));
         }
     }
 }

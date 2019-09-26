@@ -5,40 +5,40 @@ namespace BlinForms.Framework
 {
     internal class BlinFormsElementManager : ElementManager<IWindowsFormsControlHandler>
     {
-        public override void RemoveElement(IWindowsFormsControlHandler control)
+        protected override void RemoveElement(IWindowsFormsControlHandler handler)
         {
-            control.Control.Parent.Controls.Remove(control.Control);
+            handler.Control.Parent.Controls.Remove(handler.Control);
         }
 
-        public override void AddChildElement(IWindowsFormsControlHandler parentControl, IWindowsFormsControlHandler childControl, int physicalSiblingIndex)
+        protected override void AddChildElement(IWindowsFormsControlHandler parentHandler, IWindowsFormsControlHandler childHandler, int physicalSiblingIndex)
         {
-            if (physicalSiblingIndex <= parentControl.Control.Controls.Count)
+            if (physicalSiblingIndex <= parentHandler.Control.Controls.Count)
             {
                 // WinForms ControlCollection doesn't support Insert(), so add the new child at the end,
                 // and then re-order the collection to move the control to the correct index.
-                parentControl.Control.Controls.Add(childControl.Control);
-                parentControl.Control.Controls.SetChildIndex(childControl.Control, physicalSiblingIndex);
+                parentHandler.Control.Controls.Add(childHandler.Control);
+                parentHandler.Control.Controls.SetChildIndex(childHandler.Control, physicalSiblingIndex);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentControl.Controls.Count={parentControl.Control.Controls.Count}");
-                parentControl.Control.Controls.Add(childControl.Control);
+                Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentControl.Controls.Count={parentHandler.Control.Controls.Count}");
+                parentHandler.Control.Controls.Add(childHandler.Control);
             }
         }
 
-        public override int GetPhysicalSiblingIndex(IWindowsFormsControlHandler control)
+        protected override int GetPhysicalSiblingIndex(IWindowsFormsControlHandler handler)
         {
-            return control.Control.Parent.Controls.GetChildIndex(control.Control);
+            return handler.Control.Parent.Controls.GetChildIndex(handler.Control);
         }
 
-        public override bool IsParented(IWindowsFormsControlHandler nativeControl)
+        protected override bool IsParented(IWindowsFormsControlHandler handler)
         {
-            return nativeControl.Control.Parent != null;
+            return handler.Control.Parent != null;
         }
 
-        public override bool IsParentOfChild(IWindowsFormsControlHandler parentControl, IWindowsFormsControlHandler childControl)
+        protected override bool IsParentOfChild(IWindowsFormsControlHandler parentHandler, IWindowsFormsControlHandler childHandler)
         {
-            return parentControl.Control.Contains(childControl.Control);
+            return parentHandler.Control.Contains(childHandler.Control);
         }
     }
 }

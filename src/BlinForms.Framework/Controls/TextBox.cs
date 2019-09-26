@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static TextBox()
         {
-            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<TextBox>(renderer => new BlazorTextBox(renderer));
+            ElementHandlerRegistry.RegisterElementHandler<TextBox>(renderer => new BlazorTextBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -55,7 +55,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorTextBox : System.Windows.Forms.TextBox, IWindowsFormsControlHandler
         {
-            public BlazorTextBox(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
+            public BlazorTextBox(EmblazonRenderer renderer)
             {
                 TextChanged += (s, e) =>
                 {
@@ -68,7 +68,7 @@ namespace BlinForms.Framework.Controls
             }
 
             public ulong TextChangedEventHandlerId { get; set; }
-            public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
+            public EmblazonRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

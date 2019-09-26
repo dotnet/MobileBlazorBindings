@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace BlinForms.Framework
 {
-    public class BlinFormsRenderer : EmblazonRenderer<IWindowsFormsControlHandler>
+    public class BlinFormsRenderer : EmblazonRenderer
     {
         public BlinFormsRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
@@ -17,7 +17,7 @@ namespace BlinForms.Framework
             MessageBox.Show(exception?.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected override ElementManager<IWindowsFormsControlHandler> CreateNativeControlManager()
+        protected override ElementManager CreateNativeControlManager()
         {
             return new BlinFormsElementManager();
         }

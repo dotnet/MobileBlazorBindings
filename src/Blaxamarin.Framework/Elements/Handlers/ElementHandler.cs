@@ -6,13 +6,13 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class ElementHandler : IXamarinFormsElementHandler
     {
-        public ElementHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Element elementControl)
+        public ElementHandler(EmblazonRenderer renderer, XF.Element elementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
 
-        public EmblazonRenderer<IXamarinFormsElementHandler> Renderer { get; }
+        public EmblazonRenderer Renderer { get; }
         public XF.Element ElementControl { get; }
         public object TargetElement => ElementControl;
 

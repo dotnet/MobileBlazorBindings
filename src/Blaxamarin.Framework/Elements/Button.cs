@@ -9,7 +9,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Button()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>
+            ElementHandlerRegistry
                 .RegisterElementHandler<Button>(renderer => new ButtonHandler(renderer, new XF.Button()));
         }
 

@@ -8,7 +8,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static ContentPage()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>
+            ElementHandlerRegistry
                .RegisterElementHandler<ContentPage>(renderer => new ContentPageHandler(renderer, new XF.ContentPage()));
         }
     }

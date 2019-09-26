@@ -9,7 +9,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static StackLayout()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>
+            ElementHandlerRegistry
                 .RegisterElementHandler<StackLayout>(renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
         }
 

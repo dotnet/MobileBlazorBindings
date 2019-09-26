@@ -9,7 +9,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static ScrollView()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>.RegisterElementHandler<ScrollView>(
+            ElementHandlerRegistry.RegisterElementHandler<ScrollView>(
                 renderer => new ScrollViewHandler(renderer, new XF.ScrollView()));
         }
 

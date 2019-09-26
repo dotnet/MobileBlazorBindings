@@ -6,13 +6,12 @@
     /// parent/child relationships, so each must implement this given the constraints
     /// and requirements of their systems.
     /// </summary>
-    /// <typeparam name="TElementHandler"></typeparam>
-    public abstract class ElementManager<TElementHandler> where TElementHandler : IElementHandler
+    public abstract class ElementManager
     {
-        public abstract bool IsParented(TElementHandler handler);
-        public abstract void AddChildElement(TElementHandler parentHandler, TElementHandler childHandler, int physicalSiblingIndex);
-        public abstract int GetPhysicalSiblingIndex(TElementHandler handler);
-        public abstract void RemoveElement(TElementHandler handler);
-        public abstract bool IsParentOfChild(TElementHandler parentHandler, TElementHandler childHandler);
+        public abstract void AddChildElement(IElementHandler parentHandler, IElementHandler childHandler, int physicalSiblingIndex);
+        public abstract int GetPhysicalSiblingIndex(IElementHandler handler);
+        public abstract bool IsParented(IElementHandler handler);
+        public abstract bool IsParentOfChild(IElementHandler parentHandler, IElementHandler childHandler);
+        public abstract void RemoveElement(IElementHandler handler);
     }
 }

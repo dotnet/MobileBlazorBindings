@@ -6,9 +6,12 @@ namespace Blaxamarin.Framework
 {
     internal class BlaxamarinElementManager : ElementManager<IXamarinFormsElementHandler>
     {
-        public override bool IsParented(IXamarinFormsElementHandler handler) => handler.ElementControl.Parent != null;
+        protected override bool IsParented(IXamarinFormsElementHandler handler)
+        {
+            return handler.ElementControl.Parent != null;
+        }
 
-        public override void AddChildElement(
+        protected override void AddChildElement(
             IXamarinFormsElementHandler parentHandler,
             IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
@@ -109,11 +112,10 @@ namespace Blaxamarin.Framework
             }
         }
 
-        public override int GetPhysicalSiblingIndex(
+        protected override int GetPhysicalSiblingIndex(
             IXamarinFormsElementHandler handler)
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
-
             var nativeComponent = handler.ElementControl;
 
             switch (nativeComponent.Parent)
@@ -154,9 +156,10 @@ namespace Blaxamarin.Framework
             }
         }
 
-        public override void RemoveElement(IXamarinFormsElementHandler handler)
+        protected override void RemoveElement(IXamarinFormsElementHandler handler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
+           
             var control = handler.ElementControl;
             var physicalParent = control.Parent;
             if (physicalParent is Layout<View> physicalParentAsLayout)
@@ -166,9 +169,9 @@ namespace Blaxamarin.Framework
             }
         }
 
-        public override bool IsParentOfChild(IXamarinFormsElementHandler parentControl, IXamarinFormsElementHandler childControl)
+        protected override bool IsParentOfChild(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
         {
-            return childControl.ElementControl.Parent == parentControl.ElementControl;
+            return childHandler.ElementControl.Parent == parentHandler.ElementControl;
         }
     }
 }

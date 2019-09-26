@@ -10,11 +10,11 @@ namespace Emblazon
     /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
     /// </summary>
     [DebuggerDisplay("{DebugName}")]
-    internal sealed class EmblazonAdapter<TElementHandler> : IDisposable where TElementHandler : class, IElementHandler
+    internal sealed class EmblazonAdapter : IDisposable
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer<TElementHandler> renderer, TElementHandler closestPhysicalParent, TElementHandler knownTargetControl = null)
+        public EmblazonAdapter(EmblazonRenderer renderer, IElementHandler closestPhysicalParent, IElementHandler knownTargetControl = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
@@ -28,13 +28,13 @@ namespace Emblazon
 
         private string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
 
-        public EmblazonAdapter<TElementHandler> Parent { get; private set; }
-        public List<EmblazonAdapter<TElementHandler>> Children { get; } = new List<EmblazonAdapter<TElementHandler>>();
+        public EmblazonAdapter Parent { get; private set; }
+        public List<EmblazonAdapter> Children { get; } = new List<EmblazonAdapter>();
 
-        private readonly TElementHandler _closestPhysicalParent;
-        private TElementHandler _possibleTargetControl;
+        private readonly IElementHandler _closestPhysicalParent;
+        private IElementHandler _possibleTargetControl;
 
-        public EmblazonRenderer<TElementHandler> Renderer { get; }
+        public EmblazonRenderer Renderer { get; }
 
         /// <summary>
         /// Used for debugging purposes.
@@ -108,7 +108,7 @@ namespace Emblazon
             {
                 // This adapter represents a physical control, so by removing it, we implicitly
                 // remove all descendants.
-                Renderer.NativeControlManager.RemoveElement(_possibleTargetControl);
+                Renderer.ElementManager.RemoveElement(_possibleTargetControl);
             }
             else
             {
@@ -202,9 +202,9 @@ namespace Emblazon
             }
         }
 
-        private EmblazonAdapter<TElementHandler> CreateAdapter(TElementHandler physicalParent)
+        private EmblazonAdapter CreateAdapter(IElementHandler physicalParent)
         {
-            return new EmblazonAdapter<TElementHandler>(Renderer, physicalParent);
+            return new EmblazonAdapter(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -294,14 +294,14 @@ namespace Emblazon
                 var matchedEarlierSibling = GetEarlierSiblingMatch(parentAdapter, childAdapter);
                 if (matchedEarlierSibling != null)
                 {
-                    if (!Renderer.NativeControlManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._possibleTargetControl))
+                    if (!Renderer.ElementManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._possibleTargetControl))
                     {
                         Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target control ({matchedEarlierSibling._possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
                     }
 
                     // If a native control was found somewhere within this sibling, the index for the new element
                     // will be 1 greater than its native index.
-                    return Renderer.NativeControlManager.GetPhysicalSiblingIndex(matchedEarlierSibling._possibleTargetControl) + 1;
+                    return Renderer.ElementManager.GetPhysicalSiblingIndex(matchedEarlierSibling._possibleTargetControl) + 1;
                 }
 
                 // If this level has a native control and all its relevant children have been scanned, then there's
@@ -322,7 +322,7 @@ namespace Emblazon
             return -1;
         }
 
-        private static EmblazonAdapter<TElementHandler> GetEarlierSiblingMatch(EmblazonAdapter<TElementHandler> parentAdapter, EmblazonAdapter<TElementHandler> childAdapter)
+        private static EmblazonAdapter GetEarlierSiblingMatch(EmblazonAdapter parentAdapter, EmblazonAdapter childAdapter)
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 
@@ -342,7 +342,7 @@ namespace Emblazon
             return null;
         }
 
-        private EmblazonAdapter<TElementHandler> GetLastDescendantWithPhysicalControl()
+        private EmblazonAdapter GetLastDescendantWithPhysicalControl()
         {
             if (_possibleTargetControl != null)
             {
@@ -395,7 +395,7 @@ namespace Emblazon
             ;
         }
 
-        private void AddChildAdapter(int siblingIndex, EmblazonAdapter<TElementHandler> childAdapter)
+        private void AddChildAdapter(int siblingIndex, EmblazonAdapter childAdapter)
         {
             childAdapter.Parent = this;
 

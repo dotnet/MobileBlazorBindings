@@ -4,7 +4,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public sealed class DetailPageHandler : ContentPageHandler
     {
-        public DetailPageHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.ContentPage masterDetailPageControl) : base(renderer, masterDetailPageControl)
+        public DetailPageHandler(EmblazonRenderer renderer, XF.ContentPage masterDetailPageControl) : base(renderer, masterDetailPageControl)
         {
             MasterDetailPageControl = masterDetailPageControl ?? throw new System.ArgumentNullException(nameof(masterDetailPageControl));
         }

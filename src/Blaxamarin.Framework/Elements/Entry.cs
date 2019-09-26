@@ -10,7 +10,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Entry()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>.RegisterElementHandler<Entry>(
+            ElementHandlerRegistry.RegisterElementHandler<Entry>(
                 renderer => new EntryHandler(renderer, new XF.Entry()));
         }
 

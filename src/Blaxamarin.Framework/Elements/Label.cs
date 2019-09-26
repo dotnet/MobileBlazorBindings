@@ -9,7 +9,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static Label()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>
+            ElementHandlerRegistry
                 .RegisterElementHandler<Label>(renderer => new LabelHandler(renderer, new XF.Label()));
         }
 

@@ -2,16 +2,16 @@
 
 namespace Emblazon
 {
-    internal class ElementHandlerFactoryContext<TElementHandler> where TElementHandler : class, IElementHandler
+    internal class ElementHandlerFactoryContext
     {
-        public ElementHandlerFactoryContext(EmblazonRenderer<TElementHandler> renderer, TElementHandler parentHandler)
+        public ElementHandlerFactoryContext(EmblazonRenderer renderer, IElementHandler parentHandler)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ParentHandler = parentHandler;
         }
 
-        public TElementHandler ParentHandler { get; }
+        public IElementHandler ParentHandler { get; }
 
-        public EmblazonRenderer<TElementHandler> Renderer { get; }
+        public EmblazonRenderer Renderer { get; }
     }
 }

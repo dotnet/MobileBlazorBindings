@@ -10,7 +10,7 @@ namespace Blaxamarin.Framework.Elements
     {
         static MasterDetailPage()
         {
-            ElementHandlerRegistry<IXamarinFormsElementHandler>
+            ElementHandlerRegistry
                 .RegisterElementHandler<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
         }
 

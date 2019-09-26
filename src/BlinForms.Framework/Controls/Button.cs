@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static Button()
         {
-            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<Button>(
+            ElementHandlerRegistry.RegisterElementHandler<Button>(
                 renderer => new BlazorButton(renderer));
         }
 
@@ -30,7 +30,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorButton : System.Windows.Forms.Button, IWindowsFormsControlHandler
         {
-            public BlazorButton(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
+            public BlazorButton(EmblazonRenderer renderer)
             {
                 Click += (s, e) =>
                 {
@@ -43,7 +43,7 @@ namespace BlinForms.Framework.Controls
             }
 
             public ulong ClickEventHandlerId { get; set; }
-            public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
+            public EmblazonRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

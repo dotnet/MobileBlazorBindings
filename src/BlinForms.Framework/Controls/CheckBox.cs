@@ -9,7 +9,7 @@ namespace BlinForms.Framework.Controls
     {
         static CheckBox()
         {
-            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<CheckBox>(renderer => new BlazorCheckBox(renderer));
+            ElementHandlerRegistry.RegisterElementHandler<CheckBox>(renderer => new BlazorCheckBox(renderer));
         }
 
         [Parameter] public string Text { get; set; }
@@ -56,7 +56,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorCheckBox : System.Windows.Forms.CheckBox, IWindowsFormsControlHandler
         {
-            public BlazorCheckBox(EmblazonRenderer<IWindowsFormsControlHandler> renderer)
+            public BlazorCheckBox(EmblazonRenderer renderer)
             {
                 CheckedChanged += (s, e) =>
                 {
@@ -77,7 +77,7 @@ namespace BlinForms.Framework.Controls
 
             public ulong CheckedChangedEventHandlerId { get; set; }
             public ulong CheckStateChangedEventHandlerId { get; set; }
-            public EmblazonRenderer<IWindowsFormsControlHandler> Renderer { get; }
+            public EmblazonRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

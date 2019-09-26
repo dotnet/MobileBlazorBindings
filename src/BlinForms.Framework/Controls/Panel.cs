@@ -8,7 +8,7 @@ namespace BlinForms.Framework.Controls
     {
         static Panel()
         {
-            ElementHandlerRegistry<IWindowsFormsControlHandler>.RegisterElementHandler<Panel, BlazorPanel>();
+            ElementHandlerRegistry.RegisterElementHandler<Panel, BlazorPanel>();
         }
 
         [Parameter] public bool? AutoScroll { get; set; }

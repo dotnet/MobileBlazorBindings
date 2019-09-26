@@ -5,7 +5,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class StackLayoutHandler : LayoutHandler
     {
-        public StackLayoutHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.StackLayout stackLayoutControl) : base(renderer, stackLayoutControl)
+        public StackLayoutHandler(EmblazonRenderer renderer, XF.StackLayout stackLayoutControl) : base(renderer, stackLayoutControl)
         {
             StackLayoutControl = stackLayoutControl ?? throw new System.ArgumentNullException(nameof(stackLayoutControl));
         }

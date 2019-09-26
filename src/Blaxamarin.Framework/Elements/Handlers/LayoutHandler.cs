@@ -5,7 +5,7 @@ namespace Blaxamarin.Framework.Elements.Handlers
 {
     public class LayoutHandler : ViewHandler
     {
-        public LayoutHandler(EmblazonRenderer<IXamarinFormsElementHandler> renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
+        public LayoutHandler(EmblazonRenderer renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
         {
             LayoutControl = layoutControl ?? throw new System.ArgumentNullException(nameof(layoutControl));
         }
