@@ -55,7 +55,7 @@ namespace Emblazon
             var component = InstantiateComponent(componentType);
             var componentId = AssignRootComponentId(component);
 
-            var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetControl: parent)
+            var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
             {
                 Name = "RootAdapter"
             };

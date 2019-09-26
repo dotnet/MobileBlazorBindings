@@ -7,18 +7,18 @@ using System.Threading;
 namespace Emblazon
 {
     /// <summary>
-    /// Represents a "shadow" item that Blazor uses to map changes into the live native control tree.
+    /// Represents a "shadow" item that Blazor uses to map changes into the live native UI tree.
     /// </summary>
     [DebuggerDisplay("{DebugName}")]
     internal sealed class EmblazonAdapter : IDisposable
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer renderer, IElementHandler closestPhysicalParent, IElementHandler knownTargetControl = null)
+        public EmblazonAdapter(EmblazonRenderer renderer, IElementHandler closestPhysicalParent, IElementHandler knownTargetElement = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
-            _possibleTargetControl = knownTargetControl;
+            _targetElement = knownTargetElement;
 
             // Assign unique counter value. This *should* all be done on one thread, but just in case, make it thread-safe.
             _debugInstanceCounterValue = Interlocked.Increment(ref DebugInstanceCounter);
@@ -32,7 +32,7 @@ namespace Emblazon
         public List<EmblazonAdapter> Children { get; } = new List<EmblazonAdapter>();
 
         private readonly IElementHandler _closestPhysicalParent;
-        private IElementHandler _possibleTargetControl;
+        private IElementHandler _targetElement;
 
         public EmblazonRenderer Renderer { get; }
 
@@ -43,7 +43,7 @@ namespace Emblazon
 
         public override string ToString()
         {
-            return $"EmblazonAdapter: Name={Name ?? "<?>"}, Target={_possibleTargetControl?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
+            return $"EmblazonAdapter: Name={Name ?? "<?>"}, Target={_targetElement?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
         }
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
@@ -104,11 +104,11 @@ namespace Emblazon
 
         private void RemoveSelfAndDescendants()
         {
-            if (_possibleTargetControl != null)
+            if (_targetElement != null)
             {
-                // This adapter represents a physical control, so by removing it, we implicitly
+                // This adapter represents a physical element, so by removing it, we implicitly
                 // remove all descendants.
-                Renderer.ElementManager.RemoveElement(_possibleTargetControl);
+                Renderer.ElementManager.RemoveElement(_targetElement);
             }
             else
             {
@@ -122,12 +122,12 @@ namespace Emblazon
 
         private void ApplySetAttribute(ref RenderTreeFrame attributeFrame)
         {
-            if (_possibleTargetControl == null)
+            if (_targetElement == null)
             {
                 throw new InvalidOperationException($"Trying to apply attribute {attributeFrame.AttributeName} to an adapter that isn't for an element");
             }
 
-            _possibleTargetControl.ApplyAttribute(
+            _targetElement.ApplyAttribute(
                 attributeFrame.AttributeEventHandlerId,
                 attributeFrame.AttributeName,
                 attributeFrame.AttributeValue,
@@ -136,12 +136,12 @@ namespace Emblazon
 
         private void ApplyRemoveAttribute(string removedAttributeName)
         {
-            if (_possibleTargetControl == null)
+            if (_targetElement == null)
             {
                 throw new InvalidOperationException($"Trying to remove attribute {removedAttributeName} to an adapter that isn't for an element");
             }
 
-            _possibleTargetControl.ApplyAttribute(
+            _targetElement.ApplyAttribute(
                 attributeEventHandlerId: 0,
                 attributeName: removedAttributeName,
                 attributeValue: null,
@@ -161,7 +161,7 @@ namespace Emblazon
                 case RenderTreeFrameType.Component:
                     {
                         // Components are represented by BlontrolAdapters
-                        var childAdapter = Renderer.CreateAdapterForChildComponent(_possibleTargetControl ?? _closestPhysicalParent, frame.ComponentId);
+                        var childAdapter = Renderer.CreateAdapterForChildComponent(_targetElement ?? _closestPhysicalParent, frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
@@ -177,7 +177,7 @@ namespace Emblazon
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
 #pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
-                        var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
+                        var childAdapter = CreateAdapter(_targetElement ?? _closestPhysicalParent);
 #pragma warning restore CA2000 // Dispose objects before losing scope
                         childAdapter.Name = $"Markup, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
@@ -191,7 +191,7 @@ namespace Emblazon
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }
 #pragma warning disable CA2000 // Dispose objects before losing scope; adapters are disposed when they are removed from the adapter tree
-                        var childAdapter = CreateAdapter(_possibleTargetControl ?? _closestPhysicalParent);
+                        var childAdapter = CreateAdapter(_targetElement ?? _closestPhysicalParent);
 #pragma warning restore CA2000 // Dispose objects before losing scope
                         childAdapter.Name = $"Text, sib#={siblingIndex}";
                         AddChildAdapter(siblingIndex, childAdapter);
@@ -209,28 +209,28 @@ namespace Emblazon
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
         {
-            // Elements represent native controls
+            // Elements represent native elements
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
-            var controlFactory = ElementHandlerRegistry<TElementHandler>.ElementHandlers[elementName];
-            var nativeControlHandler = controlFactory.CreateElementHandler(new ElementHandlerFactoryContext<TElementHandler>(Renderer, _closestPhysicalParent));
+            var elementHandlerFactory = ElementHandlerRegistry.ElementHandlers[elementName];
+            var elementHandler = elementHandlerFactory.CreateElementHandler(new ElementHandlerFactoryContext(Renderer, _closestPhysicalParent));
 
             if (siblingIndex != 0)
             {
                 // With the current design, we should be able to ignore sibling indices for elements,
                 // so bail out if that's not the case
-                throw new NotSupportedException($"Currently we assume all adapter controls render exactly zero or one elements. Found an element with sibling index {siblingIndex}");
+                throw new NotSupportedException($"Currently we assume all adapter elements render exactly zero or one elements. Found an element with sibling index {siblingIndex}");
             }
 
-            // For the location in the physical control tree, find the last preceding-sibling adapter that has
+            // For the location in the physical UI tree, find the last preceding-sibling adapter that has
             // a physical descendant (if any). If there is one, we physically insert after that one. If not,
             // we'll insert as the first child of the closest physical parent.
-            if (!Renderer.NativeControlManager.IsParented(nativeControlHandler))
+            if (!Renderer.ElementManager.IsParented(elementHandler))
             {
                 var elementIndex = GetIndexForElement();
-                Renderer.NativeControlManager.AddChildElement(_closestPhysicalParent, nativeControlHandler, elementIndex);
+                Renderer.ElementManager.AddChildElement(_closestPhysicalParent, elementHandler, elementIndex);
             }
-            _possibleTargetControl = nativeControlHandler;
+            _targetElement = elementHandler;
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
             for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
@@ -250,7 +250,7 @@ namespace Emblazon
             }
 
 
-            //// Ignoring non-controls, such as Timer Component
+            //// Ignoring non-UI elements, such as Timer Component
 
             //if (element is Control elementControl)
             //{
@@ -264,7 +264,7 @@ namespace Emblazon
 
         /// <summary>
         /// Finds the sibling index to insert this adapter's element into. It walks up Parent adapters to find 
-        /// an earlier sibling that has a native control, and uses that native control's physical index to determine
+        /// an earlier sibling that has a native element, and uses that native element's physical index to determine
         /// the location of the new element.
         /// <code>
         /// * Adapter0
@@ -273,7 +273,7 @@ namespace Emblazon
         /// * Adapter3 (native)
         ///     * Adapter3.0 (searchOrder=2)
         ///         * Adapter3.0.0 (searchOrder=3)
-        ///         * Adapter3.0.1 (native)  (searchOrder=4) &lt;-- This is the nearest earlier sibling that has a physical control)
+        ///         * Adapter3.0.1 (native)  (searchOrder=4) &lt;-- This is the nearest earlier sibling that has a physical element)
         ///         * Adapter3.0.2
         ///     * Adapter3.1 (searchOrder=1)
         ///         * Adapter3.1.0 (searchOrder=0)
@@ -283,42 +283,42 @@ namespace Emblazon
         /// * Adapter4
         /// </code>
         /// </summary>
-        /// <returns>The index at which the native control (element) should be inserted into within the parent. It returns -1 as a failure mode.</returns>
+        /// <returns>The index at which the native element should be inserted into within the parent. It returns -1 as a failure mode.</returns>
         private int GetIndexForElement()
         {
             var childAdapter = this;
             var parentAdapter = Parent;
             while (parentAdapter != null)
             {
-                // Walk previous siblings of this level and deep-scan them for native controls
+                // Walk previous siblings of this level and deep-scan them for native elements
                 var matchedEarlierSibling = GetEarlierSiblingMatch(parentAdapter, childAdapter);
                 if (matchedEarlierSibling != null)
                 {
-                    if (!Renderer.ElementManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._possibleTargetControl))
+                    if (!Renderer.ElementManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._targetElement))
                     {
-                        Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target control ({matchedEarlierSibling._possibleTargetControl.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
+                        Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target element ({matchedEarlierSibling._targetElement.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
                     }
 
-                    // If a native control was found somewhere within this sibling, the index for the new element
+                    // If a native element was found somewhere within this sibling, the index for the new element
                     // will be 1 greater than its native index.
-                    return Renderer.ElementManager.GetPhysicalSiblingIndex(matchedEarlierSibling._possibleTargetControl) + 1;
+                    return Renderer.ElementManager.GetPhysicalSiblingIndex(matchedEarlierSibling._targetElement) + 1;
                 }
 
-                // If this level has a native control and all its relevant children have been scanned, then there's
+                // If this level has a native element and all its relevant children have been scanned, then there's
                 // no previous sibling, so the new element to be added will be its earliest child (index=0). (There
                 // might be *later* siblings, but they are not relevant to this search.)
-                if (parentAdapter._possibleTargetControl != null)
+                if (parentAdapter._targetElement != null)
                 {
-                    Debug.Assert(parentAdapter._possibleTargetControl == _closestPhysicalParent, $"Expected that nearest parent ({parentAdapter.DebugName}) with native control ({parentAdapter._possibleTargetControl.GetType().FullName}) would have the closest physical parent ({_closestPhysicalParent.GetType().FullName}).");
+                    Debug.Assert(parentAdapter._targetElement == _closestPhysicalParent, $"Expected that nearest parent ({parentAdapter.DebugName}) with native element ({parentAdapter._targetElement.GetType().FullName}) would have the closest physical parent ({_closestPhysicalParent.GetType().FullName}).");
                     return 0;
                 }
 
-                // If we haven't found a previous sibling with a native control or reached a native container, keep
+                // If we haven't found a previous sibling with a native element or reached a native container, keep
                 // walking up the parent tree...
                 childAdapter = parentAdapter;
                 parentAdapter = parentAdapter.Parent;
             }
-            Debug.Fail($"Expected to find a parent with a native control but found none.");
+            Debug.Fail($"Expected to find a parent with a native element but found none.");
             return -1;
         }
 
@@ -330,31 +330,31 @@ namespace Emblazon
             {
                 var sibling = parentAdapter.Children[i];
 
-                // Deep scan this sibling adapter to find its latest and highest native control
-                var siblingWithNativeControl = sibling.GetLastDescendantWithPhysicalControl();
-                if (siblingWithNativeControl != null)
+                // Deep scan this sibling adapter to find its latest and highest native element
+                var siblingWithNativeElement = sibling.GetLastDescendantWithPhysicalElement();
+                if (siblingWithNativeElement != null)
                 {
-                    return siblingWithNativeControl;
+                    return siblingWithNativeElement;
                 }
             }
 
-            // No preceding sibling has any native controls
+            // No preceding sibling has any native elements
             return null;
         }
 
-        private EmblazonAdapter GetLastDescendantWithPhysicalControl()
+        private EmblazonAdapter GetLastDescendantWithPhysicalElement()
         {
-            if (_possibleTargetControl != null)
+            if (_targetElement != null)
             {
-                // If this adapter has a target control, then this is the droid we're looking for. It can't be
-                // any children of this target control because they can't be children of this control's parent.
+                // If this adapter has a target element, then this is the droid we're looking for. It can't be
+                // any children of this target element because they can't be children of this element's parent.
                 return this;
             }
 
             for (var i = Children.Count - 1; i >= 0; i--)
             {
                 var child = Children[i];
-                var physicalDescendant = child.GetLastDescendantWithPhysicalControl();
+                var physicalDescendant = child.GetLastDescendantWithPhysicalElement();
                 if (physicalDescendant != null)
                 {
                     return physicalDescendant;
@@ -412,9 +412,9 @@ namespace Emblazon
 
         public void Dispose()
         {
-            if (_possibleTargetControl is IDisposable disposableTargetControl)
+            if (_targetElement is IDisposable disposableTargetElement)
             {
-                disposableTargetControl.Dispose();
+                disposableTargetElement.Dispose();
             }
         }
     }
