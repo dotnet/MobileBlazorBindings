@@ -252,18 +252,6 @@ namespace Emblazon
                     break;
                 }
             }
-
-
-            //// Ignoring non-UI elements, such as Timer Component
-
-            //if (element is Control elementControl)
-            //{
-            //    AddChildControl(siblingIndex, elementControl);
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("Ignoring non-control child: " + element.GetType().FullName);
-            //}
         }
 
         /// <summary>
