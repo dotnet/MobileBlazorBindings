@@ -39,6 +39,5 @@ namespace Blaxamarin.Framework.Elements
         }
 
         protected override RenderFragment GetChildContent() => ChildContent;
-
     }
 }
