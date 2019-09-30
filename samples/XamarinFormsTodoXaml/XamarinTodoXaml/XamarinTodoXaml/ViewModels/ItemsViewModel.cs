@@ -48,7 +48,7 @@ namespace XamarinTodoXaml.ViewModels
             }
         }
 
-        void ExecuteAddItemCommand()
+        private void ExecuteAddItemCommand()
         {
             var appState = DependencyService.Get<AppState>();
 
