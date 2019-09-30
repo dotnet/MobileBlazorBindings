@@ -13,13 +13,15 @@ namespace Blaxamarin.Framework.Elements
                 .RegisterElementHandler<Label>(renderer => new LabelHandler(renderer, new XF.Label()));
         }
 
-        [Parameter] public string Text { get; set; }
-        [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         [Parameter] public double? FontSize { get; set; }
         [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
-        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
-        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        [Parameter] public string Text { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
+        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+
+        [Parameter] public RenderFragment FormattedText { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -54,5 +56,7 @@ namespace Blaxamarin.Framework.Elements
                 builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
             }
         }
+
+        protected override RenderFragment GetChildContent() => FormattedText;
     }
 }

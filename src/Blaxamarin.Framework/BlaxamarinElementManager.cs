@@ -65,6 +65,36 @@ namespace Blaxamarin.Framework
                         }
                     }
                     break;
+                case Label parentAsLabel:
+                    {
+                        var childAsFormattedString = child as FormattedString;
+
+                        if (physicalSiblingIndex == 0)
+                        {
+                            // Label can have exactly one child, which is a FormatterString
+                            parentAsLabel.FormattedText = childAsFormattedString;
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsLabel can have only 1 child");
+                        }
+                    }
+                    break;
+                case FormattedString parentAsFormattedString:
+                    {
+                        var childAsSpan = child as Span;
+
+                        if (physicalSiblingIndex <= parentAsFormattedString.Spans.Count)
+                        {
+                            parentAsFormattedString.Spans.Insert(physicalSiblingIndex, childAsSpan);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"WARNING: {nameof(AddChildElement)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsFormattedString.Spans.Count={parentAsFormattedString.Spans.Count}");
+                            parentAsFormattedString.Spans.Add(childAsSpan);
+                        }
+                    }
+                    break;
                 case ScrollView parentAsScrollView:
                     {
                         var childAsView = child as View;
@@ -144,6 +174,16 @@ namespace Blaxamarin.Framework
                     {
                         // A ScrollView can have only 1 child, so the child's index is always 0.
                         return 0;
+                    }
+                case Label _:
+                    {
+                        // A Label can have only 1 child, so the child's index is always 0.
+                        return 0;
+                    }
+                case FormattedString parentAsFormattedString:
+                    {
+                        var childAsSpan = nativeComponent as Span;
+                        return parentAsFormattedString.Spans.IndexOf(childAsSpan);
                     }
                 case Application _:
                     {
