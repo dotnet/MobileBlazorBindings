@@ -14,6 +14,8 @@ namespace Blaxamarin.Framework.Elements
         }
 
         [Parameter] public string Text { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
+
         [Parameter] public EventCallback OnClick { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -23,6 +25,10 @@ namespace Blaxamarin.Framework.Elements
             if (Text != null)
             {
                 builder.AddAttribute(nameof(Text), Text);
+            }
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
 
             builder.AddAttribute("onclick", OnClick);

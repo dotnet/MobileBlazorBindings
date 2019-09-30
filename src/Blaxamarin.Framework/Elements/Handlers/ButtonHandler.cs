@@ -25,8 +25,11 @@ namespace Blaxamarin.Framework.Elements.Handlers
         {
             switch (attributeName)
             {
-                case nameof(XF.Button.Text):
+                case nameof(Button.Text):
                     ButtonControl.Text = (string)attributeValue;
+                    break;
+                case nameof(Button.TextColor):
+                    ButtonControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case "onclick":
                     Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
