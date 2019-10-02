@@ -41,7 +41,7 @@ namespace Emblazon
         /// <returns></returns>
         public async Task AddComponent<TComponent>(IElementHandler parent) where TComponent : IComponent
         {
-            await AddComponent(typeof(TComponent), parent);
+            await AddComponent(typeof(TComponent), parent).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace Emblazon
 
                 _componentIdToAdapter[componentId] = rootAdapter;
 
-                await RenderRootComponentAsync(componentId);
-            });
+                await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)

@@ -25,6 +25,7 @@ namespace BlinForms.Framework
         private readonly IServiceProvider _serviceProvider;
         private readonly IHostApplicationLifetime _hostApplicationLifetime;
         private readonly IEnumerable<IBlinFormsStartup> _blinFormsStartups;
+        private BlinFormsRenderer _renderer;
 
         public BlinFormsHostedService(
             IBlinFormsRootFormContent blinFormsMainForm,
@@ -44,22 +45,22 @@ namespace BlinForms.Framework
         {
             if (_blinFormsStartups != null)
             {
-                await Task.WhenAll(_blinFormsStartups.Select(async startup => await startup.OnStartAsync()));
+                await Task.WhenAll(_blinFormsStartups.Select(async startup => await startup.OnStartAsync().ConfigureAwait(false))).ConfigureAwait(false);
             }
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var renderer = new BlinFormsRenderer(_serviceProvider, _loggerFactory);
-            await renderer.Dispatcher.InvokeAsync(async () =>
+            _renderer = new BlinFormsRenderer(_serviceProvider, _loggerFactory);
+            await _renderer.Dispatcher.InvokeAsync(async () =>
             {
                 var rootForm = new RootForm();
                 rootForm.FormClosed += OnRootFormFormClosed;
 
-                await renderer.AddComponent(_blinFormsMainForm.RootFormContentType, new ControlWrapper(rootForm));
+                await _renderer.AddComponent(_blinFormsMainForm.RootFormContentType, new ControlWrapper(rootForm)).ConfigureAwait(false);
 
                 Application.Run(rootForm);
-            });
+            }).ConfigureAwait(false);
         }
 
         private void OnRootFormFormClosed(object sender, FormClosedEventArgs e)
@@ -70,6 +71,8 @@ namespace BlinForms.Framework
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _renderer?.Dispose();
+
             return Task.CompletedTask;
         }
 
