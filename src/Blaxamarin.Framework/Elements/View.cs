@@ -1,13 +1,14 @@
 ﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
     public class View : VisualElement
     {
-        public XF.LayoutOptions? HorizontalOptions { get; set; }
-        public XF.Thickness? Margin { get; set; }
-        public XF.LayoutOptions? VerticalOptions { get; set; }
+        [Parameter] public XF.LayoutOptions? HorizontalOptions { get; set; }
+        [Parameter] public XF.Thickness? Margin { get; set; }
+        [Parameter] public XF.LayoutOptions? VerticalOptions { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
