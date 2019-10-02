@@ -2,7 +2,7 @@ steps:
 
 - task: MSBuild@1
   inputs:
-    msbuildArguments: /t:build /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
+    msbuildArguments: /t:build /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" /p:SkipOnCI=true
     restoreNugetPackages: false
     logFileVerbosity: 'minimal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
     configuration: $(BuildConfiguration)
