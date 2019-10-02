@@ -1,4 +1,5 @@
 ﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -11,6 +12,8 @@ namespace Blaxamarin.Framework
             : base(serviceProvider, loggerFactory)
         {
         }
+
+        public override Dispatcher Dispatcher { get; } = new XamarinDeviceDispatcher();
 
         protected override void HandleException(Exception exception)
         {

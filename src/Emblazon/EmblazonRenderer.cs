@@ -52,16 +52,20 @@ namespace Emblazon
         /// <returns></returns>
         public async Task AddComponent(Type componentType, IElementHandler parent)
         {
-            var component = InstantiateComponent(componentType);
-            var componentId = AssignRootComponentId(component);
-
-            var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
+            await Dispatcher.InvokeAsync(async () =>
             {
-                Name = "RootAdapter"
-            };
+                var component = InstantiateComponent(componentType);
+                var componentId = AssignRootComponentId(component);
 
-            _componentIdToAdapter[componentId] = rootAdapter;
-            await RenderRootComponentAsync(componentId);
+                var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
+                {
+                    Name = "RootAdapter"
+                };
+
+                _componentIdToAdapter[componentId] = rootAdapter;
+
+                await RenderRootComponentAsync(componentId);
+            });
         }
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)

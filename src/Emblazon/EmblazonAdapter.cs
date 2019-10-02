@@ -48,6 +48,8 @@ namespace Emblazon
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
         {
+            Renderer.Dispatcher.AssertAccess();
+
             if (edits.Count == 0)
             {
                 // TODO: Without this check there's a NullRef in ArrayBuilderSegment? Possibly a Blazor bug?

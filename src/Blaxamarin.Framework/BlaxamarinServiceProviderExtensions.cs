@@ -23,10 +23,7 @@ namespace Blaxamarin.Framework
             }
 
             var renderer = new BlaxamarinRenderer(services, services.GetRequiredService<ILoggerFactory>());
-            renderer.Dispatcher.InvokeAsync(async () =>
-            {
-                await renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent));
-            });
+            renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent));
         }
     }
 }
