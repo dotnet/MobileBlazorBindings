@@ -18,7 +18,7 @@ namespace BlinForms.Framework
     /// This service will invoke all instances of <see cref="IBlinFormsStartup"/> that are registered in the
     /// container. The order of the startup instances is not guaranteed.
     /// </summary>
-    public class BlinFormsHostedService : IHostedService
+    public class BlinFormsHostedService : IHostedService, IDisposable
     {
         private readonly IBlinFormsRootFormContent _blinFormsMainForm;
         private readonly ILoggerFactory _loggerFactory;
@@ -72,6 +72,7 @@ namespace BlinForms.Framework
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _renderer?.Dispose();
+            _renderer = null;
 
             return Task.CompletedTask;
         }
@@ -92,5 +93,16 @@ namespace BlinForms.Framework
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            _renderer?.Dispose();
+            _renderer = null;
+        }
     }
 }
