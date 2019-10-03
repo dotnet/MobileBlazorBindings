@@ -1,38 +1,84 @@
 steps:
 
-- task: MSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    msbuildArguments: /t:build /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" /p:SkipOnCI=true
-    restoreNugetPackages: false
-    logFileVerbosity: 'minimal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic
-    configuration: $(BuildConfiguration)
-    clean: true
-    solution: 'Emblazon.sln'
-    #msbuildLocationMethod: 'version' # Optional. Options: version, location
-    #msbuildVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 4.0
-    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
-    #msbuildLocation: # Optional
-    #platform: # Optional
-    #maximumCpuCount: false # Optional
-    #logProjectEvents: false # Optional
-    #createLogFile: false # Optional
+    command: 'build' # Options: build, push, pack, publish, restore, run, test, custom
+    projects: src/**/*.csproj # Optional
+    restoreDirectory: 
+    workingDirectory: 
+    configuration: '$(BuildConfiguration)' # Optional
+    arguments: --no-restore /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" # Optional
+    #publishWebProjects: true # Required when command == Publish
+    #custom: # Required when command == Custom
+    #publishTestResults: true # Optional
+    #testRunTitle: # Optional
+    #zipAfterPublish: true # Optional
+    #modifyOutputPath: true # Optional
+    #feedsToUse: 'select' # Options: select, config
+    #vstsFeed: # Required when feedsToUse == Select
+    #includeNuGetOrg: true # Required when feedsToUse == Select
+    #nugetConfigPath: # Required when feedsToUse == Config
+    #externalFeedCredentials: # Optional
+    #noCache: false 
+    #verbosityRestore: 'Detailed' # Options: -, quiet, minimal, normal, detailed, diagnostic
+    #packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg' # Required when command == Push
+    #nuGetFeedType: 'internal' # Required when command == Push# Options: internal, external
+    #publishVstsFeed: # Required when command == Push && NuGetFeedType == Internal
+    #publishPackageMetadata: true # Optional
+    #publishFeedCredentials: # Required when command == Push && NuGetFeedType == External
+    #packagesToPack: '**/*.csproj' # Required when command == Pack
+    #packDirectory: '$(Build.ArtifactStagingDirectory)' # Optional
+    #nobuild: false # Optional
+    #includesymbols: false # Optional
+    #includesource: false # Optional
+    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
+    #versionEnvVar: # Required when versioningScheme == ByEnvVar
+    #majorVersion: '1' # Required when versioningScheme == ByPrereleaseNumber
+    #minorVersion: '0' # Required when versioningScheme == ByPrereleaseNumber
+    #patchVersion: '0' # Required when versioningScheme == ByPrereleaseNumber
+    #buildProperties: # Optional
+    #verbosityPack: 'Detailed' # Options: -, quiet, minimal, normal, detailed, diagnostic
 
-- task: MSBuild@1
+
+
+- task: DotNetCoreCLI@2
   inputs:
-    msbuildArguments: /t:pack
-    #solution: '**/*.sln' 
-    #msbuildLocationMethod: 'version' # Optional. Options: version, location
-    #msbuildVersion: 'latest' # Optional. Options: latest, 16.0, 15.0, 14.0, 12.0, 4.0
-    #msbuildArchitecture: 'x86' # Optional. Options: x86, x64
-    #msbuildLocation: # Optional
-    #platform: # Optional
-    #configuration: # Optional
-    #clean: false # Optional
-    #maximumCpuCount: false # Optional
-    #restoreNugetPackages: false # Optional
-    #logProjectEvents: false # Optional
-    #createLogFile: false # Optional
-    #logFileVerbosity: 'normal' # Optional. Options: quiet, minimal, normal, detailed, diagnostic- script: msbuild /t:pack /p:RestorePackages=false -c $(BuildConfiguration) /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/pack.binlog"
+    command: 'pack' # Options: build, push, pack, publish, restore, run, test, custom
+    projects: src/**/*.csproj # Optional
+    restoreDirectory: 
+    workingDirectory: 
+    configuration: '$(BuildConfiguration)' # Optional
+    arguments: --no-build /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" # Optional
+    #publishWebProjects: true # Required when command == Publish
+    #custom: # Required when command == Custom
+    #publishTestResults: true # Optional
+    #testRunTitle: # Optional
+    #zipAfterPublish: true # Optional
+    #modifyOutputPath: true # Optional
+    #feedsToUse: 'select' # Options: select, config
+    #vstsFeed: # Required when feedsToUse == Select
+    #includeNuGetOrg: true # Required when feedsToUse == Select
+    #nugetConfigPath: # Required when feedsToUse == Config
+    #externalFeedCredentials: # Optional
+    #noCache: false 
+    #verbosityRestore: 'Detailed' # Options: -, quiet, minimal, normal, detailed, diagnostic
+    #packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg' # Required when command == Push
+    #nuGetFeedType: 'internal' # Required when command == Push# Options: internal, external
+    #publishVstsFeed: # Required when command == Push && NuGetFeedType == Internal
+    #publishPackageMetadata: true # Optional
+    #publishFeedCredentials: # Required when command == Push && NuGetFeedType == External
+    #packagesToPack: '**/*.csproj' # Required when command == Pack
+    #packDirectory: '$(Build.ArtifactStagingDirectory)' # Optional
+    #nobuild: false # Optional
+    #includesymbols: false # Optional
+    #includesource: false # Optional
+    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
+    #versionEnvVar: # Required when versioningScheme == ByEnvVar
+    #majorVersion: '1' # Required when versioningScheme == ByPrereleaseNumber
+    #minorVersion: '0' # Required when versioningScheme == ByPrereleaseNumber
+    #patchVersion: '0' # Required when versioningScheme == ByPrereleaseNumber
+    #buildProperties: # Optional
+    #verbosityPack: 'Detailed' # Options: -, quiet, minimal, normal, detailed, diagnostic
 
 #- task: DotNetCoreCLI@2
 #  displayName: dotnet test -f net472
