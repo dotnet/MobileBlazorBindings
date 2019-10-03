@@ -7,7 +7,7 @@ steps:
     restoreDirectory: 
     workingDirectory: 
     configuration: '$(BuildConfiguration)' # Optional
-    arguments: --no-restore /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" # Optional
+    arguments: --no-restore /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" /p:Configuration=$(BuildConfiguration) # Optional
     #publishWebProjects: true # Required when command == Publish
     #custom: # Required when command == Custom
     #publishTestResults: true # Optional
