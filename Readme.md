@@ -113,6 +113,11 @@ Emblazon and its related projects require:
 1. You're ready to go! Run the Android or iOS project to launch your new Blaxamarin-based app!
 
 
+## NuGet feed
+
+Browse the latest packages here: https://devdiv.visualstudio.com/Personal/_packaging?_a=feed&feed=Emblazon
+
+
 ## Solution structure
 
 There are 3 main areas:
