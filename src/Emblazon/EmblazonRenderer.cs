@@ -59,7 +59,7 @@ namespace Emblazon
 
                 var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
                 {
-                    Name = "RootAdapter"
+                    Name = $"RootAdapter attached to {parent.GetType().FullName}",
                 };
 
                 _componentIdToAdapter[componentId] = rootAdapter;
