@@ -17,6 +17,7 @@ namespace Blaxamarin.Framework.Elements
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
         [Parameter] public XF.StackOrientation? Orientation { get; set; }
+        [Parameter] public double? Spacing { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -25,6 +26,10 @@ namespace Blaxamarin.Framework.Elements
             if (Orientation != null)
             {
                 builder.AddAttribute(nameof(Orientation), (int)Orientation.Value);
+            }
+            if (Spacing != null)
+            {
+                builder.AddAttribute(nameof(Spacing), AttributeHelper.DoubleToString(Spacing.Value));
             }
         }
 

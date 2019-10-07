@@ -19,6 +19,9 @@ namespace Blaxamarin.Framework.Elements.Handlers
                 case nameof(XF.StackLayout.Orientation):
                     StackLayoutControl.Orientation = (XF.StackOrientation)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.StackLayout.Spacing):
+                    StackLayoutControl.Spacing = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

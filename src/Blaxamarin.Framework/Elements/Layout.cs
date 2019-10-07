@@ -1,8 +1,23 @@
-﻿namespace Blaxamarin.Framework.Elements
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
+using XF = Xamarin.Forms;
+
+namespace Blaxamarin.Framework.Elements
 {
 #pragma warning disable CA1724 // Type name matches .NET Framework namespace; this type name matches a Xamarin.Forms type name
     public abstract class Layout : View
 #pragma warning restore CA1724 // Type name matches .NET Framework namespace
     {
+        [Parameter] public XF.Thickness? Padding { get; set; }
+
+        protected override void RenderAttributes(AttributesBuilder builder)
+        {
+            base.RenderAttributes(builder);
+
+            if (Padding != null)
+            {
+                builder.AddAttribute(nameof(Padding), AttributeHelper.ThicknessToString(Padding.Value));
+            }
+        }
     }
 }

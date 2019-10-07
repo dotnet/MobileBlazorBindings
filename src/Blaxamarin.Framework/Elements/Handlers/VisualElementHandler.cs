@@ -41,11 +41,20 @@ namespace Blaxamarin.Framework.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.VisualElement.AnchorX):
+                    VisualElementControl.AnchorX = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.AnchorY):
+                    VisualElementControl.AnchorY = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
                 case nameof(XF.VisualElement.BackgroundColor):
                     VisualElementControl.BackgroundColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(XF.VisualElement.HeightRequest):
                     VisualElementControl.HeightRequest = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.InputTransparent):
+                    VisualElementControl.InputTransparent = AttributeHelper.GetBool(attributeValue);
                     break;
                 case nameof(XF.VisualElement.IsEnabled):
                     VisualElementControl.IsEnabled = AttributeHelper.GetBool(attributeValue);
@@ -55,6 +64,42 @@ namespace Blaxamarin.Framework.Elements.Handlers
                     break;
                 case nameof(XF.VisualElement.IsVisible):
                     VisualElementControl.IsVisible = AttributeHelper.GetBool(attributeValue);
+                    break;
+                case nameof(XF.VisualElement.MinimumHeightRequest):
+                    VisualElementControl.MinimumHeightRequest = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.MinimumWidthRequest):
+                    VisualElementControl.MinimumWidthRequest = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.Opacity):
+                    VisualElementControl.Opacity = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.Rotation):
+                    VisualElementControl.Rotation = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.RotationX):
+                    VisualElementControl.RotationX = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.RotationY):
+                    VisualElementControl.RotationY = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.Scale):
+                    VisualElementControl.Scale = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.ScaleX):
+                    VisualElementControl.ScaleX = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.ScaleY):
+                    VisualElementControl.ScaleY = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.TabIndex):
+                    VisualElementControl.TabIndex = AttributeHelper.GetInt(attributeValue);
+                    break;
+                case nameof(XF.VisualElement.TranslationX):
+                    VisualElementControl.TranslationX = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.VisualElement.TranslationY):
+                    VisualElementControl.TranslationY = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
                 case nameof(XF.VisualElement.WidthRequest):
                     VisualElementControl.WidthRequest = AttributeHelper.StringToDouble((string)attributeValue);
