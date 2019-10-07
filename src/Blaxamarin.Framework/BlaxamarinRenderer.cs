@@ -20,7 +20,10 @@ namespace Blaxamarin.Framework
         {
             Debug.WriteLine($"{nameof(HandleException)} called with '{exception?.GetType().Name}': '{exception?.Message}'");
 
-            XF.Application.Current.MainPage = GetErrorPageForException(exception);
+            XF.Device.InvokeOnMainThreadAsync(() =>
+            {
+                XF.Application.Current.MainPage = GetErrorPageForException(exception);
+            });
         }
 
         private static XF.ContentPage GetErrorPageForException(Exception exception)
