@@ -5,7 +5,7 @@ using XF = Xamarin.Forms;
 
 namespace Blaxamarin.Framework.Elements
 {
-    public class StackLayout : Element
+    public class StackLayout : Layout
     {
         static StackLayout()
         {
@@ -34,6 +34,5 @@ namespace Blaxamarin.Framework.Elements
         }
 
         protected override RenderFragment GetChildContent() => ChildContent;
-
     }
 }
