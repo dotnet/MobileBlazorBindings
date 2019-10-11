@@ -1,12 +1,29 @@
 ﻿<StackLayout Orientation="StackOrientation.Horizontal">
-    <Switch
-        @bind-IsToggled="Item.IsDone" />
-    <Label
-        Text="@Item.Text"
-        TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)" />
+    <Switch @bind-IsToggled="Item.IsDone" />
+    <Label Text="@Item.Text"
+           TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)" />
+    <Button Text="..."
+            OnClick="@OnDetailsClick" />
 </StackLayout>
+
+<ModalContainer @ref="todoEntryDialog" OnClosed="@OnDetailsClosed">
+    <TodoEntryDetails Item="@Item" />
+</ModalContainer>
 
 @code
 {
     [Parameter] public TodoItem Item { get; set; }
+
+    ModalContainer todoEntryDialog;
+
+    public void OnDetailsClick()
+    {
+        todoEntryDialog.ShowDialog();
+    }
+
+    // NOTE: This method shouldn't be needed and is a temporary workaround
+    public void OnDetailsClosed()
+    {
+        todoEntryDialog.FinishClosingDialog();
+    }
 }

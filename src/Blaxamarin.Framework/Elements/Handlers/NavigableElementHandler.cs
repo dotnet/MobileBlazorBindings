@@ -11,5 +11,21 @@ namespace Blaxamarin.Framework.Elements.Handlers
         }
 
         public XF.NavigableElement NavigableElementControl { get; }
+
+        public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        {
+            switch (attributeName)
+            {
+                case "__CloseDialog":
+                    if (attributeValue != null)
+                    {
+                        NavigableElementControl.Navigation.PopModalAsync();
+                    }
+                    break;
+                default:
+                    base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                    break;
+            }
+        }
     }
 }

@@ -323,6 +323,10 @@ namespace Emblazon
             for (var i = indexOfParentsChildAdapter - 1; i >= 0; i--)
             {
                 var sibling = parentAdapter.Children[i];
+                if (sibling._targetElement is INonChildContainerElement)
+                {
+                    continue;
+                }
 
                 // Deep scan this sibling adapter to find its latest and highest native element
                 var siblingWithNativeElement = sibling.GetLastDescendantWithPhysicalElement();
@@ -338,6 +342,10 @@ namespace Emblazon
 
         private EmblazonAdapter GetLastDescendantWithPhysicalElement()
         {
+            if (_targetElement is INonChildContainerElement)
+            {
+                return null;
+            }
             if (_targetElement != null)
             {
                 // If this adapter has a target element, then this is the droid we're looking for. It can't be

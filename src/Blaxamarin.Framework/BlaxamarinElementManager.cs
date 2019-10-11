@@ -1,4 +1,5 @@
-﻿using Emblazon;
+﻿using Blaxamarin.Framework.Elements.Handlers;
+using Emblazon;
 using System.Diagnostics;
 using Xamarin.Forms;
 
@@ -16,10 +17,24 @@ namespace Blaxamarin.Framework
             IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
         {
-            // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
+            if (parentHandler is ModalContainerHandler parentModalContainerHandler)
+            {
+                var childAsPage = childHandler.ElementControl as Page;
+                parentModalContainerHandler.ModalChild = childAsPage;
+                return;
+            }
+
+            if (childHandler is ModalContainerHandler childModalContainerHandler)
+            {
+                var parentAsNavigableElement = parentHandler.ElementControl as NavigableElement;
+                childModalContainerHandler.ModalParent = parentAsNavigableElement;
+                return;
+            }
 
             var parent = parentHandler.ElementControl;
             var child = childHandler.ElementControl;
+
+            // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
 
             switch (parent)
             {
@@ -199,7 +214,7 @@ namespace Blaxamarin.Framework
         protected override void RemoveElement(IXamarinFormsElementHandler handler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
-           
+
             var control = handler.ElementControl;
             var physicalParent = control.Parent;
             if (physicalParent is Layout<View> physicalParentAsLayout)
