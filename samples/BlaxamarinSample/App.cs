@@ -7,9 +7,11 @@ namespace BlaxamarinSample
 {
     public class App : Application
     {
+        public IHost EmblazonHost { get; }
+
         public App()
         {
-            var host = Host.CreateDefaultBuilder()
+            EmblazonHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services
@@ -17,7 +19,7 @@ namespace BlaxamarinSample
                 })
                 .Build();
 
-            host.Services.AddComponent<TodoApp>(parent: this);
+            EmblazonHost.AddComponent<TodoApp>(parent: this);
         }
 
         protected override void OnStart()

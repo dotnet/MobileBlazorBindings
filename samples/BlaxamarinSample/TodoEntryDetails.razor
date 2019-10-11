@@ -1,0 +1,26 @@
+﻿@inherits Blaxamarin.Framework.Elements.ContentPage
+
+<ContentPage>
+    <StackLayout Orientation="StackOrientation.Vertical">
+        <Label Text="Edit todo item details"
+               FontAttributes="FontAttributes.Bold"
+               FontSize="30" />
+        <StackLayout Orientation="StackOrientation.Vertical">
+            <Label Text="Done?" />
+            <Switch @bind-IsToggled="Item.IsDone" />
+        </StackLayout>
+        <Entry @bind-Text="@Item.Text" MinimumHeightRequest="60" />
+        <Button Text="Done"
+                OnClick="@OnDoneClick" />
+    </StackLayout>
+</ContentPage>
+
+@code
+{
+    [Parameter] public TodoItem Item { get; set; }
+
+    public async Task OnDoneClick()
+    {
+        //await Navigation.PopModalAsync();
+    }
+}
