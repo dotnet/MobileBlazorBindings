@@ -1,37 +1,32 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace BlaxamarinSample
 {
     public class AppState
     {
-        public List<TodoItem> Items { get; } = new List<TodoItem>();
+        private TodoItemDatabase _todoDatabase;
+
+        public TodoItemDatabase TodoDatabase
+        {
+            get
+            {
+                if (_todoDatabase == null)
+                {
+                    _todoDatabase =
+                        new TodoItemDatabase(
+                            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TodoSQLite.db3"),
+                            dbChanged: NotifyStateChanged);
+                }
+                return _todoDatabase;
+            }
+        }
 
         public int Counter { get; set; }
 
-        public void ResetAppState(bool createDefaultTodoItems)
-        {
-            Items.Clear();
+        public event Func<Task> OnChange;
 
-            if (createDefaultTodoItems)
-            {
-                Items.AddRange(
-                    new[]
-                    {
-                        new TodoItem { Text = "sell dog", IsDone = true },
-                        new TodoItem { Text = "buy cat" },
-                        new TodoItem { Text = "buy cat food" },
-                    });
-            }
-
-            Counter = 0;
-        }
-
-        public bool IsEmptyAppState()
-        {
-            return
-                !Items.Any() &&
-                Counter == 0;
-        }
+        private async Task NotifyStateChanged() => await OnChange?.Invoke();
     }
 }

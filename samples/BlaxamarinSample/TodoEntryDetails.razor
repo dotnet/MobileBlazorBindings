@@ -1,15 +1,26 @@
-﻿<ContentPage @ref="contentPage">
-    <StackLayout Orientation="StackOrientation.Vertical">
+﻿@inject AppState AppState
+@inject IEnumerable<ITextToSpeech> TextToSpeech
+
+<ContentPage @ref="contentPage">
+    <StackLayout Margin="20" VerticalOptions="LayoutOptions.StartAndExpand">
         <Label Text="Edit todo item details"
                FontAttributes="FontAttributes.Bold"
                FontSize="30" />
         <StackLayout Orientation="StackOrientation.Vertical">
             <Label Text="Done?" />
-            <Switch @bind-IsToggled="Item.IsDone" />
+            <Switch @bind-IsToggled="ItemCopy.IsDone" />
         </StackLayout>
-        <Entry @bind-Text="@Item.Text" MinimumHeightRequest="60" />
-        <Button Text="Done"
-                OnClick="@OnDoneClick" />
+        <Entry @bind-Text="ItemCopy.Text" MinimumHeightRequest="60" />
+        <Label Text="Additional notes" />
+        <Entry @bind-Text="ItemCopy.Notes" MinimumHeightRequest="60" />
+        <Button Text="Save"
+                OnClick="@OnSaveClick" BackgroundColor="@Color.Blue" TextColor="@Color.White" />
+        <Button Text="Delete"
+                OnClick="@OnDeleteClick" BackgroundColor="@Color.Red" TextColor="@Color.White" />
+        <Button Text="Cancel"
+                OnClick="@OnCancelClick" />
+        <Button Text="Speak"
+                OnClick="@OnSpeakClick" IsVisible="@IsSpeechAvailable" />
     </StackLayout>
 </ContentPage>
 
@@ -19,8 +30,55 @@
 
     [Parameter] public TodoItem Item { get; set; }
 
-    public void OnDoneClick()
+    private TodoItem ItemCopy { get; set; }
+
+    private ITextToSpeech SpeechService => TextToSpeech?.FirstOrDefault();
+    private bool IsSpeechAvailable => SpeechService != null;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        // Make a copy for editing purposes
+        ItemCopy = new TodoItem
+        {
+            ID = Item.ID,
+            IsDone = Item.IsDone,
+            Text = Item.Text,
+            Notes = Item.Notes,
+        };
+    }
+
+    public async Task OnSaveClick()
+    {
+        // On save, copy the edited data back to the original
+        Item.ID = ItemCopy.ID;
+        Item.IsDone = ItemCopy.IsDone;
+        Item.Text = ItemCopy.Text;
+        Item.Notes = ItemCopy.Notes;
+
+        await AppState.TodoDatabase.SaveItemAsync(Item);
+
+        contentPage.CloseDialog();
+    }
+
+    public async Task OnDeleteClick()
+    {
+        await AppState.TodoDatabase.DeleteItemAsync(Item);
+
+        contentPage.CloseDialog();
+    }
+
+    public void OnCancelClick()
     {
         contentPage.CloseDialog();
+    }
+
+    public void OnSpeakClick()
+    {
+        if (SpeechService != null)
+        {
+            SpeechService.Speak(Item.Text + " " + Item.Notes);
+        }
     }
 }

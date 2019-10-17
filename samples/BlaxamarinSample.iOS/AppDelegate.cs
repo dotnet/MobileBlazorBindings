@@ -1,5 +1,5 @@
-﻿
-using Foundation;
+﻿using Foundation;
+using Microsoft.Extensions.DependencyInjection;
 using UIKit;
 
 namespace BlaxamarinSample.iOS
@@ -20,7 +20,12 @@ namespace BlaxamarinSample.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+
+            // Register backend-specific services
+            var additionalServices = new ServiceCollection();
+            additionalServices.AddSingleton<ITextToSpeech, TextToSpeech_iOS>();
+
+            LoadApplication(new App(additionalServices));
 
             return base.FinishedLaunching(app, options);
         }

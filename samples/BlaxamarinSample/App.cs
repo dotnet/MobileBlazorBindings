@@ -9,11 +9,17 @@ namespace BlaxamarinSample
     {
         public IHost EmblazonHost { get; }
 
-        public App()
+        public App(IServiceCollection additionalServices)
         {
             EmblazonHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    // Register backend-specific services (e.g. iOS, Android)
+                    if (additionalServices != null)
+                    {
+                        services.AddAdditionalServices(additionalServices);
+                    }
+
                     // Register app-specific services
                     services.AddSingleton<AppState>();
                 })

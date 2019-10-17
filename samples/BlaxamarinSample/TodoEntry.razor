@@ -1,7 +1,10 @@
-﻿<StackLayout Orientation="StackOrientation.Horizontal">
-    <Switch @bind-IsToggled="Item.IsDone" />
+﻿@inject AppState AppState
+
+<StackLayout Orientation="StackOrientation.Horizontal">
+    <Switch @bind-IsToggled="@Item.IsDone" IsEnabled="false" />
     <Label Text="@Item.Text"
-           TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)" />
+           TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)"
+           HorizontalOptions="LayoutOptions.FillAndExpand" />
     <Button Text="..."
             OnClick="@OnDetailsClick" />
 </StackLayout>
@@ -26,4 +29,11 @@
     {
         todoEntryDialog.FinishClosingDialog();
     }
+
+    // TODO: Also need to somehow handle IsToggledChanged="@OnToggledChanged" so that the DB update can take place:
+    //public async Task OnToggledChanged()
+    //{
+    //    await AppState.TodoDatabase.SaveItemAsync(Item);
+    //    StateHasChanged();
+    //}
 }

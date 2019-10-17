@@ -10,16 +10,27 @@
                HorizontalOptions="LayoutOptions.FillAndExpand" />
         <Button Text="Add"
                 OnClick="@AddItem"
-                IsEnabled="@(!isAdding)" />
+                IsEnabled="@(!isAdding && !string.IsNullOrWhiteSpace(newText))" />
         <ActivityIndicator Color="Color.Orange"
                            IsRunning="@isAdding" />
     </StackLayout>
     <ScrollView>
         <StackLayout>
             @* List of todos *@
-            @foreach (var item in AppState.Items)
+            @if (items == null)
             {
-                <TodoEntry Item="@item" />
+                <StackLayout Orientation="StackOrientation.Horizontal">
+                    <Label Text="Loading..." />
+                    <ActivityIndicator Color="Color.Purple"
+                                       IsRunning="true" />
+                </StackLayout>
+            }
+            else
+            {
+                foreach (var item in items)
+                {
+                    <TodoEntry Item="@item" />
+                }
             }
         </StackLayout>
     </ScrollView>
@@ -30,17 +41,35 @@
     string newText;
     bool isAdding;
 
-    async Task AddItem()
+    List<TodoItem> items;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AppState.OnChange += OnItemsChanged;
+        await Task.Delay(5000);
+        items = await AppState.TodoDatabase.GetItemsAsync();
+    }
+
+    private async Task AddItem()
     {
         isAdding = true;
         StateHasChanged();
 
-        // Pretend we're calling some API to save the new item
+        // Create an artificial delay to make the activity indicator show up
         await Task.Delay(500);
 
-        AppState.Items.Add(new TodoItem { Text = newText });
+        await AppState.TodoDatabase.SaveItemAsync(new TodoItem { Text = newText });
+
         newText = null;
 
         isAdding = false;
+
+        items = await AppState.TodoDatabase.GetItemsAsync();
+    }
+
+    private async Task OnItemsChanged()
+    {
+        items = await AppState.TodoDatabase.GetItemsAsync();
+        StateHasChanged();
     }
 }

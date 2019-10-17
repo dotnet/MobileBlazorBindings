@@ -12,6 +12,6 @@ namespace BlaxamarinSample
 
         public string Text { get; set; }
 
-        //public string Notes { get; set; }
+        public string Notes { get; set; }
     }
 }
