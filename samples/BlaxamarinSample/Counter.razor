@@ -1,9 +1,9 @@
 ﻿@inject AppState AppState
 
-<StackLayout Orientation="StackOrientation.Horizontal">
-    <Button Text="+1" OnClick="@HandleClick" />
-    <Label FontSize="30" FontAttributes="FontAttributes.Italic" Text="@("You have pressed " + AppState.Counter + " times")" />
-</StackLayout>
+    <StackLayout>
+        <Label FontSize="30" FontAttributes="FontAttributes.Italic" Text="@("You have pressed " + AppState.Counter + " times")" />
+        <Button Text="+1" OnClick="@HandleClick" />
+    </StackLayout>
 
 @code {
     void HandleClick()
