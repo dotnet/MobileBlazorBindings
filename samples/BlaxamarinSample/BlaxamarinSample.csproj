@@ -13,6 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Blaxamarin.Framework\Blaxamarin.Framework.csproj" />
+    <ProjectReference Include="..\..\src\Microsoft.Blazor.Native\Microsoft.Blazor.Native.csproj" />
   </ItemGroup>
 </Project>
