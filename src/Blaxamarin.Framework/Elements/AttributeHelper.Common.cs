@@ -33,5 +33,21 @@ namespace Blaxamarin.Framework.Elements
         {
             return double.Parse(doubleString, CultureInfo.InvariantCulture);
         }
+
+        /// <summary>
+        /// Helper method to serialize <see cref="System.Single" /> objects.
+        /// </summary>
+        public static string SingleToString(float color)
+        {
+            return color.ToString("R", CultureInfo.InvariantCulture); // "R" --> Round-trip format specifier guarantees fidelity when parsing
+        }
+
+        /// <summary>
+        /// Helper method to deserialize <see cref="System.Single" /> objects.
+        /// </summary>
+        public static float StringToSingle(string singleString)
+        {
+            return float.Parse(singleString, CultureInfo.InvariantCulture);
+        }
     }
 }

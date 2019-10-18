@@ -1,39 +1,43 @@
 ﻿@inject AppState AppState
 
 <StackLayout>
-    <StackLayout Orientation="StackOrientation.Horizontal">
-        @* Input area *@
-        <Entry @bind-Text="newText"
-               Placeholder="What's to be done?"
-               OnCompleted="@AddItem"
-               IsEnabled="@(!isAdding)"
-               HorizontalOptions="LayoutOptions.FillAndExpand" />
-        <Button Text="Add"
-                OnClick="@AddItem"
-                IsEnabled="@(!isAdding && !string.IsNullOrWhiteSpace(newText))" />
-        <ActivityIndicator Color="Color.Orange"
-                           IsRunning="@isAdding" />
-    </StackLayout>
-    <ScrollView>
-        <StackLayout>
-            @* List of todos *@
-            @if (items == null)
-            {
-                <StackLayout Orientation="StackOrientation.Horizontal">
-                    <Label Text="Loading..." />
-                    <ActivityIndicator Color="Color.Purple"
-                                       IsRunning="true" />
-                </StackLayout>
-            }
-            else
-            {
-                foreach (var item in items)
-                {
-                    <TodoEntry Item="@item" />
-                }
-            }
+    <Frame BorderColor="@Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
+        <StackLayout Orientation="StackOrientation.Horizontal">
+            @* Input area *@
+            <Entry @bind-Text="newText"
+                   Placeholder="What's to be done?"
+                   OnCompleted="@AddItem"
+                   IsEnabled="@(!isAdding)"
+                   HorizontalOptions="LayoutOptions.FillAndExpand" />
+            <Button Text="Add"
+                    OnClick="@AddItem"
+                    IsEnabled="@(!isAdding && !string.IsNullOrWhiteSpace(newText))" />
+            <ActivityIndicator Color="Color.Orange"
+                               IsRunning="@isAdding" />
         </StackLayout>
-    </ScrollView>
+    </Frame>
+    <Frame BorderColor="@Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
+        <ScrollView>
+            <StackLayout>
+                @* List of todos *@
+                @if (items == null)
+                {
+                    <StackLayout Orientation="StackOrientation.Horizontal">
+                        <Label Text="Loading..." />
+                        <ActivityIndicator Color="Color.Purple"
+                                           IsRunning="true" />
+                    </StackLayout>
+                }
+                else
+                {
+                    foreach (var item in items)
+                    {
+                        <TodoEntry Item="@item" />
+                    }
+                }
+            </StackLayout>
+        </ScrollView>
+    </Frame>
 </StackLayout>
 
 @code
