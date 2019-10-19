@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace BlaxamarinSample.iOS
+namespace BlazorNativeTodo.iOS
 {
     public class Application
     {

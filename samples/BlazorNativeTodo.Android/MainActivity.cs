@@ -5,7 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlaxamarinSample.Droid
+namespace BlazorNativeTodo.Droid
 {
     [Activity(Label = "BlaxamarinSample", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity

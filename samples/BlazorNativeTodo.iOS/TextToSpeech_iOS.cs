@@ -1,6 +1,6 @@
 ﻿using AVFoundation;
 
-namespace BlaxamarinSample.iOS
+namespace BlazorNativeTodo.iOS
 {
     public class TextToSpeech_iOS : ITextToSpeech
     {

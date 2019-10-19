@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace BlaxamarinSample
+namespace BlazorNativeTodo
 {
     public class TodoItem
     {

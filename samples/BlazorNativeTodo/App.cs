@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xamarin.Forms;
 
-namespace BlaxamarinSample
+namespace BlazorNativeTodo
 {
     public class App : Application
     {

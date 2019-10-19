@@ -1,7 +1,7 @@
 ﻿using Android.Speech.Tts;
 using Java.Lang;
 
-namespace BlaxamarinSample.Droid
+namespace BlazorNativeTodo.Droid
 {
     public class TextToSpeech_Android : Object, ITextToSpeech, TextToSpeech.IOnInitListener
     {

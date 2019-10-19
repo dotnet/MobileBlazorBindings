@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{9AA2D3C6-3393-45F1-8E7C-5A9901728795}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>BlaxamarinSample.Droid</RootNamespace>
-    <AssemblyName>BlaxamarinSample.Android</AssemblyName>
+    <RootNamespace>BlazorNativeTodo.Droid</RootNamespace>
+    <AssemblyName>BlazorNativeTodo.Android</AssemblyName>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -94,9 +94,9 @@
     <Folder Include="Resources\drawable-xxxhdpi\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlaxamarinSample\BlaxamarinSample.csproj">
+    <ProjectReference Include="..\BlazorNativeTodo\BlazorNativeTodo.csproj">
       <Project>{6FDD7B7F-5F55-492F-A294-70C0BACE2B7D}</Project>
-      <Name>BlaxamarinSample</Name>
+      <Name>BlazorNativeTodo</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

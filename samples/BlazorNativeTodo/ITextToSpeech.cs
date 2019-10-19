@@ -1,4 +1,4 @@
-﻿namespace BlaxamarinSample
+﻿namespace BlazorNativeTodo
 {
     public interface ITextToSpeech
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BlaxamarinSample
+namespace BlazorNativeTodo
 {
     public class AppState
     {

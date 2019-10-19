@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{65C0771A-452F-423B-995C-F0AE46E643BA}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BlaxamarinSample.iOS</RootNamespace>
+    <RootNamespace>BlazorNativeTodo.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>BlaxamarinSample.iOS</AssemblyName>
+    <AssemblyName>BlazorNativeTodo.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
   </PropertyGroup>
@@ -135,9 +135,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\BlaxamarinSample\BlaxamarinSample.csproj">
+    <ProjectReference Include="..\BlazorNativeTodo\BlazorNativeTodo.csproj">
       <Project>{6FDD7B7F-5F55-492F-A294-70C0BACE2B7D}</Project>
-      <Name>BlaxamarinSample</Name>
+      <Name>BlazorNativeTodo</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
