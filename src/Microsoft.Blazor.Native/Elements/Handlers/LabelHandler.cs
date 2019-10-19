@@ -1,7 +1,7 @@
 ﻿using Emblazon;
 using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework.Elements.Handlers
+namespace Microsoft.Blazor.Native.Elements.Handlers
 {
     public class LabelHandler : ViewHandler
     {

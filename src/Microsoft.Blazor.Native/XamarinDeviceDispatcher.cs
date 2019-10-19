@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Blaxamarin.Framework
+namespace Microsoft.Blazor.Native
 {
     /// <summary>
     /// Custom dispatcher for Xamarin.Forms apps to ensure all UI work is done on the UI (main) thread.

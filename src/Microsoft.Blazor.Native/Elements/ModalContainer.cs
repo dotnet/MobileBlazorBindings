@@ -1,9 +1,9 @@
-﻿using Blaxamarin.Framework.Elements.Handlers;
+﻿using Microsoft.Blazor.Native.Elements.Handlers;
 using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Blaxamarin.Framework.Elements
+namespace Microsoft.Blazor.Native.Elements
 {
     public class ModalContainer : NativeControlComponentBase
     {

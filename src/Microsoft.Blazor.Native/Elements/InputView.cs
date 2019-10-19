@@ -1,7 +1,7 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 
-namespace Blaxamarin.Framework.Elements
+namespace Microsoft.Blazor.Native.Elements
 {
     public class InputView : View
     {

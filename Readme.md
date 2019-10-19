@@ -1,4 +1,4 @@
-# Emblazon - Home of Blaxamarin and BlinForms
+# Emblazon - Home of Blazor Native
 
 [![Build Status](https://devdiv.visualstudio.com/Personal/_apis/build/status/xamarin.Emblazon?branchName=master)](https://devdiv.visualstudio.com/Personal/_build/latest?definitionId=12095&branchName=master)
 
@@ -14,12 +14,12 @@ Emblazon enables using Blazor to target native UI renderers (as opposed to web/H
 Emblazon and its related projects require:
 
 1. [Visual Studio 2019 16.3](https://visualstudio.microsoft.com/vs/) or newer
-   * For Blaxamarin, the Xamarin workload must be enabled in Visual Studio
+   * For Blazor Native, the Xamarin workload must be enabled in Visual Studio
    * For BlinForms, you must run on Windows (that's the `in` of BlinForms!)
 2. [.NET Core 3.0 SDK](https://dotnet.microsoft.com/download)
 
 
-### Create a Blaxamarin project
+### Create a Blazor Native project
 
 1. In Visual Studio, create a Xamarin.Forms Mobile App project
 1. Select the Blank app template
@@ -37,14 +37,14 @@ Emblazon and its related projects require:
 1. In the solution's shared project (the one that isn't Android or iOS), make these changes:
    1. Change the top `<Project>` node to use the Razor SDK `<Project Sdk="Microsoft.NET.Sdk.Razor">`
    1. In the `<PropertyGroup>` section, add this node to set the Razor language version: `<RazorLangVersion>3.0</RazorLangVersion>`
-   1. Add a reference to Blaxamarin in the `<ItemGroup>` containing other package references: `<PackageReference Include="Blaxamarin.Framework" Version="0.1.54-beta" />` (update to a newer build as needed)
+   1. Add a reference to Blazor Native in the `<ItemGroup>` containing other package references: `<PackageReference Include="Microsoft.Blazor.Native" Version="0.1.54-beta" />` (update to a newer build as needed)
    1. Delete `MainPage.xaml` and `MainPage.xaml.cs`
    1. Delete `App.xaml` and `App.xaml.cs`
    1. Add a new class file called `App.cs` to the project
    1. Add these `using` statements:
 
    ```c#
-   using Blaxamarin.Framework;
+   using Microsoft.Blazor.Native;
    using Microsoft.Extensions.DependencyInjection;
    using Microsoft.Extensions.Hosting;
    using Xamarin.Forms;
@@ -87,7 +87,7 @@ Emblazon and its related projects require:
    1. Add a Razor Component to the project named `_Imports.razor` with these contents:
 
    ```c#
-    @using Blaxamarin.Framework.Elements
+    @using Microsoft.Blazor.Native.Elements
     @using Xamarin.Forms
    ```
 
@@ -110,7 +110,7 @@ Emblazon and its related projects require:
         }
     }
    ```
-1. You're ready to go! Run the Android or iOS project to launch your new Blaxamarin-based app!
+1. You're ready to go! Run the Android or iOS project to launch your new Blazor Native-based app!
 
 
 ## NuGet feed
@@ -125,11 +125,11 @@ There are 3 main areas:
 1. [Emblazon](src/Emblazon) - Base framework for Blazor rendering to native UI frameworks.
 2. [BlinForms](src/BlinForms.Framework) - Blazor rendering to Windows Forms.
    * Check out the [BlinForms sample app](samples/BlinFormsSample).
-3. [Blaxamarin](src/Blaxamarin.Framework) - Blazor rendering to Xamarin.Forms.
-   * Check out the [Blaxamarin sample app](samples/BlaxamarinSample).
+3. [Microsoft.Blazor.Native](src/Microsoft.Blazor.Native) - Blazor rendering to Xamarin.Forms.
+   * Check out the [Blazor Native sample todo app](samples/BlazorNativeTodo).
 
 
 ## Comparison projects
 
-To compare Blaxamarin with Xamarin.Forms, see the [Xamarin.Forms Todo XAML sample](samples/XamarinFormsTodoXaml/XamarinTodoXaml/XamarinTodoXaml).
+To compare Blazor Native with Xamarin.Forms, see the [Xamarin.Forms Todo XAML sample](samples/XamarinFormsTodoXaml/XamarinTodoXaml/XamarinTodoXaml).
 

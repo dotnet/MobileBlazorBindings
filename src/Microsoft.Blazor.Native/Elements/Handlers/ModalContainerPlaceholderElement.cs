@@ -1,6 +1,6 @@
 ﻿using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework.Elements
+namespace Microsoft.Blazor.Native.Elements
 {
 
     namespace Handlers

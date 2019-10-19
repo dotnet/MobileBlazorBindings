@@ -5,11 +5,11 @@ using System;
 using System.Diagnostics;
 using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework
+namespace Microsoft.Blazor.Native
 {
-    public class BlaxamarinRenderer : EmblazonRenderer
+    public class BlazorNativeRenderer : EmblazonRenderer
     {
-        public BlaxamarinRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+        public BlazorNativeRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
         }
@@ -66,7 +66,7 @@ namespace Blaxamarin.Framework
 
         protected override ElementManager CreateNativeControlManager()
         {
-            return new BlaxamarinElementManager();
+            return new BlazorNativeElementManager();
         }
     }
 }

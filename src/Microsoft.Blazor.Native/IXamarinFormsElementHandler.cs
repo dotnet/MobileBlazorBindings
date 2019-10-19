@@ -1,7 +1,7 @@
 using Emblazon;
 using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework
+namespace Microsoft.Blazor.Native
 {
     public interface IXamarinFormsElementHandler : IElementHandler
     {

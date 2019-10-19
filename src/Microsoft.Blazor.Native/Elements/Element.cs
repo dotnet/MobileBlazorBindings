@@ -1,6 +1,6 @@
 ﻿using Emblazon;
 
-namespace Blaxamarin.Framework.Elements
+namespace Microsoft.Blazor.Native.Elements
 {
     public abstract class Element : NativeControlComponentBase
     {

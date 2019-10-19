@@ -1,11 +1,11 @@
-﻿using Blaxamarin.Framework.Elements.Handlers;
+﻿using Microsoft.Blazor.Native.Elements.Handlers;
 using Emblazon;
 using System.Diagnostics;
 using Xamarin.Forms;
 
-namespace Blaxamarin.Framework
+namespace Microsoft.Blazor.Native
 {
-    internal class BlaxamarinElementManager : ElementManager<IXamarinFormsElementHandler>
+    internal class BlazorNativeElementManager : ElementManager<IXamarinFormsElementHandler>
     {
         protected override bool IsParented(IXamarinFormsElementHandler handler)
         {

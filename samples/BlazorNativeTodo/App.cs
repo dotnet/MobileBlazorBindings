@@ -1,4 +1,4 @@
-﻿using Blaxamarin.Framework;
+﻿using Microsoft.Blazor.Native;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Xamarin.Forms;

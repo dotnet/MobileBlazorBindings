@@ -1,4 +1,4 @@
-﻿using Blaxamarin.Framework.Elements.Handlers;
+﻿using Microsoft.Blazor.Native.Elements.Handlers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,9 +7,9 @@ using System;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework
+namespace Microsoft.Blazor.Native
 {
-    public static class BlaxamarinHostExtensions
+    public static class BlazorNativeHostExtensions
     {
         /// <summary>
         /// Creates a component of type <typeparamref name="TComponent"/> and adds it as a child of <paramref name="parent"/>.
@@ -30,7 +30,7 @@ namespace Blaxamarin.Framework
             }
 
             var services = host.Services;
-            var renderer = new BlaxamarinRenderer(services, services.GetRequiredService<ILoggerFactory>());
+            var renderer = new BlazorNativeRenderer(services, services.GetRequiredService<ILoggerFactory>());
             await renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent)).ConfigureAwait(false);
         }
     }

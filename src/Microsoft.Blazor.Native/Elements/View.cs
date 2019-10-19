@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
-namespace Blaxamarin.Framework.Elements
+namespace Microsoft.Blazor.Native.Elements
 {
     public class View : VisualElement
     {
