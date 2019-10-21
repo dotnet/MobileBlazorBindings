@@ -37,7 +37,7 @@ Emblazon and its related projects require:
 1. In the solution's shared project (the one that isn't Android or iOS), make these changes:
    1. Change the top `<Project>` node to use the Razor SDK `<Project Sdk="Microsoft.NET.Sdk.Razor">`
    1. In the `<PropertyGroup>` section, add this node to set the Razor language version: `<RazorLangVersion>3.0</RazorLangVersion>`
-   1. Add a reference to Blazor Native in the `<ItemGroup>` containing other package references: `<PackageReference Include="Microsoft.Blazor.Native" Version="0.1.54-beta" />` (update to a newer build as needed)
+   1. Add a reference to Blazor Native in the `<ItemGroup>` containing other package references: `<PackageReference Include="Microsoft.Blazor.Native" Version="0.1.71-beta" />` (update to a newer build as needed)
    1. Delete `MainPage.xaml` and `MainPage.xaml.cs`
    1. Delete `App.xaml` and `App.xaml.cs`
    1. Add a new class file called `App.cs` to the project
