@@ -64,7 +64,7 @@ Emblazon and its related projects require:
                 })
                 .Build();
 
-            host.Services.AddComponent<MainPage>(parent: this);
+            host.AddComponent<MainPage>(parent: this);
         }
 
         protected override void OnStart()
