@@ -1,0 +1,89 @@
+﻿@inject WeatherService WeatherService
+
+<ContentPage>
+    <PancakeView BackgroundGradientStartColor="@BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: true)"
+                 BackgroundGradientEndColor="@BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: false)">
+        <StackLayout>
+            <Label HorizontalOptions="@LayoutOptions.Center"
+                   Text="SEATTLE"
+                   FontSize="@FontSizeUtility.GetFontSize(NamedSize.Large)"
+                   TextColor="@AppResources.MainTextColor" />
+            <Label
+                HorizontalOptions="@LayoutOptions.FillAndExpand"
+                VerticalOptions="@LayoutOptions.FillAndExpand"
+                Opacity=".8"
+                Text="COOL SPACE NEEDLE"
+                Margin="@(new Thickness(0,0,0,-80))" />
+            @* TODO: Use this instead of the dummy label above
+                <Image Grid.Row="1"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Opacity=".8"
+                Source="spaceneedle.png"
+                Margin="0,0,0,-80" />*@
+            <StackLayout Orientation="@StackOrientation.Horizontal">
+                <Label FontSize="@AppResources.LabelTemperatureStyle.FontSize"
+                       HorizontalOptions="@AppResources.LabelTemperatureStyle.HorizontalOptions"
+                       Text="@CurrentWeather.Temperature.ToString()"
+                       TextColor="@AppResources.LabelTemperatureStyle.TextColor" />
+                <Label FontSize="@AppResources.LabelTemperatureStyle.FontSize"
+                       HorizontalOptions="@LayoutOptions.Start"
+                       Text="°F"
+                       TextColor="@AppResources.LabelTemperatureStyle.TextColor" />
+            </StackLayout>
+
+            <Label HorizontalOptions="@LayoutOptions.Center"
+                   Text="SUNNY"
+                   FontSize="@FontSizeUtility.GetFontSize(NamedSize.Large)"
+                   TextColor="@AppResources.MainTextColor" />
+            <Label HorizontalOptions="@LayoutOptions.Center"
+                   Text="FRIDAY, SEPTEMBER 13"
+                   FontSize="@FontSizeUtility.GetFontSize(NamedSize.Small)"
+                   TextColor="@AppResources.MainTextColor" />
+
+            <ScrollView Orientation="@ScrollOrientation.Horizontal">
+                <StackLayout Orientation="@StackOrientation.Horizontal">
+                    @foreach (var weatherDataItem in CurrentWeather.DataItems)
+                    {
+                        <PancakeView CornerRadius="@(new CornerRadius(20, 20, 20, 0))"
+                                     Padding="8"
+                                     BackgroundGradientStartColor="@Color.FromHex("#98FFFFFF")"
+                                     BackgroundGradientEndColor="@Color.FromHex("#60FFFFFF")"
+                                     BackgroundGradientAngle="315">
+                            <StackLayout Spacing="0"
+                                         VerticalOptions="@LayoutOptions.Center">
+                                <Label Text="@weatherDataItem.Name"
+                                       FontAttributes="@FontAttributes.Bold"
+                                       FontSize="@FontSizeUtility.GetFontSize(NamedSize.Small)"
+                                       TextColor="@Color.White"
+                                       HorizontalOptions="@LayoutOptions.Center" />
+                                <StackLayout Orientation="@StackOrientation.Horizontal">
+                                    <Label Text="@weatherDataItem.Value.ToString()"
+                                           TextColor="@Color.White"
+                                           FontSize="@FontSizeUtility.GetFontSize(NamedSize.Small)"
+                                           HorizontalOptions="@LayoutOptions.Center" />
+                                    @if (weatherDataItem.Unit != null)
+                                    {
+                                        <Label Text="@weatherDataItem.Unit"
+                                               TextColor="@Color.White"
+                                               FontSize="@FontSizeUtility.GetFontSize(NamedSize.Micro)"
+                                               HorizontalOptions="@LayoutOptions.Center" />
+                                    }
+                                </StackLayout>
+                            </StackLayout>
+                        </PancakeView>
+                    }
+                </StackLayout>
+            </ScrollView>
+            <Button Text="Refresh" OnClick="@OnGetNewWeather" />
+        </StackLayout>
+    </PancakeView>
+</ContentPage>
+
+@code {
+    WeatherReport CurrentWeather = WeatherService.GetWeatherReport();
+
+    void OnGetNewWeather()
+    {
+    }
+}
