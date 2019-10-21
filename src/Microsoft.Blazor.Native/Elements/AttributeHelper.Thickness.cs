@@ -31,7 +31,7 @@ namespace Microsoft.Blazor.Native.Elements
             }
             if (!(thicknessString is string thicknessAsString))
             {
-                throw new ArgumentNullException(nameof(thicknessString));
+                throw new ArgumentException("Expected parameter instance to be a string.", nameof(thicknessString));
             }
 
             var marginStringParts = thicknessAsString.Split(',');
