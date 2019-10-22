@@ -31,6 +31,20 @@ namespace Microsoft.Blazor.Native
                 return;
             }
 
+            if (parentHandler is GridCellHandler parentGridCellHandler)
+            {
+                var childAsView = childHandler.ElementControl as View;
+                parentGridCellHandler.ChildView = childAsView;
+                return;
+            }
+
+            if (childHandler is GridCellHandler childGridCellHandler)
+            {
+                var parentAsGrid = parentHandler.ElementControl as Grid;
+                childGridCellHandler.ParentGrid = parentAsGrid;
+                return;
+            }
+
             var parent = parentHandler.ElementControl;
             var child = childHandler.ElementControl;
 
@@ -160,6 +174,13 @@ namespace Microsoft.Blazor.Native
         protected override int GetPhysicalSiblingIndex(
             IXamarinFormsElementHandler handler)
         {
+            if (handler is GridCellHandler)
+            {
+                // TODO: Not sure if this is correct. Grid components have dummy GridCell components in them that
+                // are containers for metadata and the actual child controls. So does their physical index matter?
+                return 0;
+            }
+
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
             var nativeComponent = handler.ElementControl;
 
