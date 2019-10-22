@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
@@ -8,7 +9,7 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
     {
         public EntryHandler(EmblazonRenderer renderer, XF.Entry entryControl) : base(renderer, entryControl)
         {
-            EntryControl = entryControl ?? throw new System.ArgumentNullException(nameof(entryControl));
+            EntryControl = entryControl ?? throw new ArgumentNullException(nameof(entryControl));
             EntryControl.Completed += (s, e) =>
             {
                 if (CompletedEventHandlerId != default)
