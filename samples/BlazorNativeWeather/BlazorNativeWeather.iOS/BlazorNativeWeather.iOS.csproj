@@ -130,4 +130,7 @@
       <Name>BlazorNativeWeather</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\spaceneedle.png" />
+  </ItemGroup>
 </Project>
