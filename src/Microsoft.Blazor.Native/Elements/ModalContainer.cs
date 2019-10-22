@@ -1,7 +1,7 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.Blazor.Native.Elements.Handlers;
 
 namespace Microsoft.Blazor.Native.Elements
 {
@@ -9,7 +9,6 @@ namespace Microsoft.Blazor.Native.Elements
     {
         static ModalContainer()
         {
-            // TODO: What type of element to create here? We probably need *something*, but not sure what. Maybe create a new dummy type.
             ElementHandlerRegistry.RegisterElementHandler<ModalContainer>(
                 renderer => new ModalContainerHandler(renderer, new ModalContainerPlaceholderElement()));
         }
