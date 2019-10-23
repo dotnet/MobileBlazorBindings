@@ -39,7 +39,7 @@ namespace Microsoft.Blazor.Native.Elements
             }
             else
             {
-                throw new NotSupportedException($"Unsupported ImageSource value: {imageSourceString}"),
+                throw new NotSupportedException($"Unsupported ImageSource value: {imageSourceString}");
             }
         }
     }
