@@ -4,14 +4,14 @@ namespace BlazorNativeWeather
 {
     public class WeatherService
     {
-        private int _randomSeed;
+        private int _temperature = 70;
 
         public WeatherReport GetWeatherReport()
         {
-            var rand = (new Random(_randomSeed).NextDouble() * 2d) - 1d; // rand = [-1.0, 1.0)
+            var rand = (new Random(_temperature).NextDouble() * 2d) - 1d; // rand = [-1.0, 1.0)
 
             // TODO: Get this from an actual weather service!
-            return new WeatherReport(60 + (int)(rand * 40d),
+            return new WeatherReport(_temperature,
                 new[]
                 {
                     new WeatherDataItem("Pressure", 10 + (int)(rand * 5d), "in"),
@@ -23,9 +23,9 @@ namespace BlazorNativeWeather
                 });
         }
 
-        public void RandomizeWeather()
+        public void CreateNewWeather(int temperature)
         {
-            _randomSeed = new Random(_randomSeed).Next();
+            _temperature = temperature;
         }
     }
 }

@@ -107,7 +107,16 @@
                 </GridCell>
 
                 <GridCell Row="6">
-                    <Button Text="Refresh" OnClick="@OnGetNewWeather" />
+                    <StackLayout Orientation="@StackOrientation.Horizontal" HorizontalOptions="@LayoutOptions.Center">
+                        <Label Text="I'm feeling too hot/cold!"
+                               VerticalOptions="@LayoutOptions.Center"/>
+                        <Stepper @bind-Value="Temperature"
+                                 Minimum="0"
+                                 Maximum="120"
+                                 Increment="3"
+                                 Opacity="0.6"
+                                 VerticalOptions="@LayoutOptions.Center" />
+                    </StackLayout>
                 </GridCell>
 
             </Contents>
@@ -118,15 +127,26 @@
 @code
 {
     WeatherReport CurrentWeather;
+    double _temperature;
+    double Temperature
+    {
+        get => _temperature;
+        set
+        {
+            _temperature = value;
+            UpdateWeather();
+        }
+    }
 
     protected override void OnInitialized()
     {
         CurrentWeather = WeatherService.GetWeatherReport();
+        Temperature = CurrentWeather.Temperature;
     }
 
-    void OnGetNewWeather()
+    void UpdateWeather()
     {
-        WeatherService.RandomizeWeather();
+        WeatherService.CreateNewWeather((int)Math.Round(Temperature));
         CurrentWeather = WeatherService.GetWeatherReport();
     }
 }
