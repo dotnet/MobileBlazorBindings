@@ -17,8 +17,8 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
         {
             switch (attributeName)
             {
-                case nameof(XF.Page.IconImageSource) + "_AsFile":
-                    PageControl.IconImageSource = new XF.FileImageSource { File = (string)attributeValue };
+                case nameof(XF.Page.IconImageSource):
+                    PageControl.IconImageSource = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
                     break;
                 case nameof(XF.Page.Title):
                     PageControl.Title = (string)attributeValue;

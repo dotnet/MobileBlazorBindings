@@ -1,7 +1,6 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using System;
+using Microsoft.Blazor.Native.Elements.Handlers;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements
@@ -14,11 +13,12 @@ namespace Microsoft.Blazor.Native.Elements
                 renderer => new PageHandler(renderer, new XF.Page()));
         }
 
+        [Parameter] public XF.ImageSource IconImageSource { get; set; }
+        [Parameter] public string Title { get; set; }
+
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
-        [Parameter] public XF.ImageSource IconImageSource { get; set; }
-        [Parameter] public string Title { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -26,16 +26,7 @@ namespace Microsoft.Blazor.Native.Elements
 
             if (IconImageSource != null)
             {
-                switch (IconImageSource)
-                {
-                    case XF.FileImageSource fileImageSource:
-                        {
-                            builder.AddAttribute(nameof(IconImageSource) + "_AsFile", fileImageSource.File);
-                        }
-                        break;
-                    default:
-                        throw new NotSupportedException($"Unsupported {nameof(IconImageSource)} type: {IconImageSource.GetType().FullName}.");
-                }
+                builder.AddAttribute(nameof(IconImageSource), AttributeHelper.ImageSourceToString(IconImageSource));
             }
             if (Title != null)
             {

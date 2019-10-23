@@ -1,7 +1,6 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using System;
+using Microsoft.Blazor.Native.Elements.Handlers;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements
@@ -32,16 +31,7 @@ namespace Microsoft.Blazor.Native.Elements
             }
             if (Source != null)
             {
-                switch (Source)
-                {
-                    case XF.FileImageSource fileImageSource:
-                        {
-                            builder.AddAttribute(nameof(Source) + "_AsFile", fileImageSource.File);
-                        }
-                        break;
-                    default:
-                        throw new NotSupportedException($"Unsupported {nameof(Source)} type: {Source.GetType().FullName}.");
-                }
+                builder.AddAttribute(nameof(Source), AttributeHelper.ImageSourceToString(Source));
             }
         }
     }

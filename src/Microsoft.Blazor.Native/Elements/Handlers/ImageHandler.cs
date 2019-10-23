@@ -1,6 +1,5 @@
 ﻿using Emblazon;
 using System;
-using Xamarin.Forms;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
@@ -19,13 +18,13 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.Image.Aspect):
-                    ImageControl.Aspect = (Aspect)AttributeHelper.GetInt(attributeValue);
+                    ImageControl.Aspect = (XF.Aspect)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(XF.Image.IsOpaque):
                     ImageControl.IsOpaque = AttributeHelper.GetBool(attributeValue);
                     break;
-                case nameof(XF.Image.Source) + "_AsFile":
-                    ImageControl.Source = new XF.FileImageSource { File = (string)attributeValue };
+                case nameof(XF.Image.Source):
+                    ImageControl.Source = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
