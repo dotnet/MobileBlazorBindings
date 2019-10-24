@@ -1,0 +1,104 @@
+﻿using Emblazon;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Blazor.Native.Elements.Handlers;
+using System;
+using XF = Xamarin.Forms;
+
+namespace Microsoft.Blazor.Native.Elements
+{
+    public class Shell : Page
+    {
+        static Shell()
+        {
+            ElementHandlerRegistry.RegisterElementHandler<Shell>(
+                renderer => new ShellHandler(renderer, new XF.Shell()));
+        }
+
+        //[Parameter] public ShellItem CurrentItem { get; set; }
+        //[Parameter] public ShellNavigationState CurrentState { get; }
+        [Parameter] public XF.ImageSource FlyoutBackgroundImage { get; set; }
+        [Parameter] public XF.Aspect? FlyoutBackgroundImageAspect { get; set; }
+        [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
+        [Parameter] public XF.FlyoutBehavior? FlyoutBehavior { get; set; }
+        //[Parameter] public object FlyoutHeader { get; set; }
+        [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
+        //[Parameter] public DataTemplate FlyoutHeaderTemplate { get; set; }
+        [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
+        //[Parameter] public bool? FlyoutIsPresented { get; set; } // TODO: Two-way binding?
+        //[Parameter] public IList<ShellItem> Items { get; } // TODO: Not needed? This is the Children collection
+        //[Parameter] public DataTemplate ItemTemplate { get; set; }
+        //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
+
+        [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
+        [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
+
+        private ShellGoToState __ShellGoToState { get; set; }
+
+        protected override void RenderAttributes(AttributesBuilder builder)
+        {
+            base.RenderAttributes(builder);
+
+            //[Parameter] public ShellItem CurrentItem { get; set; }
+            //[Parameter] public ShellNavigationState CurrentState { get; }
+            if (FlyoutBackgroundImage != null)
+            {
+                builder.AddAttribute(nameof(FlyoutBackgroundImage), AttributeHelper.ImageSourceToString(FlyoutBackgroundImage));
+            }
+            if (FlyoutBackgroundImageAspect != null)
+            {
+                builder.AddAttribute(nameof(FlyoutBackgroundImageAspect), (int)FlyoutBackgroundImageAspect.Value);
+            }
+            if (FlyoutBackgroundColor != null)
+            {
+                builder.AddAttribute(nameof(FlyoutBackgroundColor), AttributeHelper.ColorToString(FlyoutBackgroundColor.Value));
+            }
+            if (FlyoutBehavior != null)
+            {
+                builder.AddAttribute(nameof(FlyoutBehavior), (int)FlyoutBehavior.Value);
+            }
+            //object FlyoutHeader
+            if (FlyoutHeaderBehavior != null)
+            {
+                builder.AddAttribute(nameof(FlyoutHeaderBehavior), (int)FlyoutHeaderBehavior.Value);
+            }
+            //[Parameter] public DataTemplate FlyoutHeaderTemplate { get; set; }
+            if (FlyoutIcon != null)
+            {
+                builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToString(FlyoutIcon));
+            }
+            //[Parameter] public bool? FlyoutIsPresented { get; set; } // TODO: Two-way binding?
+            //[Parameter] public DataTemplate ItemTemplate { get; set; }
+            //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
+
+            if (__ShellGoToState != null)
+            {
+                builder.AddAttribute(nameof(__ShellGoToState), System.Text.Json.JsonSerializer.Serialize(__ShellGoToState));
+                __ShellGoToState = null;
+            }
+
+            builder.AddAttribute("onnavigated", OnNavigated);
+            builder.AddAttribute("onnavigating", OnNavigating);
+        }
+
+        public void GoTo(XF.ShellNavigationState state, bool animate = true)
+        {
+            if (state is null)
+            {
+                throw new ArgumentNullException(nameof(state));
+            }
+
+            __ShellGoToState = new ShellGoToState
+            {
+                Location = state.Location.ToString(),
+                Animate = animate,
+            };
+            StateHasChanged();
+        }
+    }
+
+    internal class ShellGoToState
+    {
+        public string Location { get; set; }
+        public bool Animate { get; set; }
+    }
+}

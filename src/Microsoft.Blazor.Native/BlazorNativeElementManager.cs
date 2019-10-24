@@ -2,6 +2,7 @@
 using Emblazon;
 using System.Diagnostics;
 using Xamarin.Forms;
+using System;
 
 namespace Microsoft.Blazor.Native
 {
@@ -52,6 +53,60 @@ namespace Microsoft.Blazor.Native
 
             switch (parent)
             {
+                case Shell parentAsShell:
+                    switch (child)
+                    {
+                        case TemplatedPage childAsTemplatedPage:
+                            parentAsShell.Items.Add(childAsTemplatedPage); // Implicit conversion
+                            break;
+                        case ShellContent childAsShellContent:
+                            parentAsShell.Items.Add(childAsShellContent); // Implicit conversion
+                            break;
+                        case ShellSection childAsShellSection:
+                            parentAsShell.Items.Add(childAsShellSection); // Implicit conversion
+                            break;
+                        case ShellItem childAsShellItem:
+                            parentAsShell.Items.Add(childAsShellItem);
+                            break;
+                        default:
+                            throw new ArgumentException($"Cannot add child of type '{child?.GetType().FullName}' to parent of type '{parent?.GetType().FullName}'.");
+                    }
+                    break;
+                case ShellItem parentAsShellItem:
+                    switch (child)
+                    {
+                        case TemplatedPage childAsTemplatedPage:
+                            parentAsShellItem.Items.Add(childAsTemplatedPage); // Implicit conversion
+                            break;
+                        case ShellContent childAsShellContent:
+                            parentAsShellItem.Items.Add(childAsShellContent); // Implicit conversion
+                            break;
+                        case ShellSection childAsShellSection:
+                            parentAsShellItem.Items.Add(childAsShellSection);
+                            break;
+                        default:
+                            throw new ArgumentException($"Cannot add child of type '{child?.GetType().FullName}' to parent of type '{parent?.GetType().FullName}'.");
+                    }
+                    break;
+                case ShellSection parentAsShellSection:
+                    switch (child)
+                    {
+                        case TemplatedPage childAsTemplatedPage:
+                            parentAsShellSection.Items.Add(childAsTemplatedPage); // Implicit conversion
+                            break;
+                        case ShellContent childAsShellContent:
+                            parentAsShellSection.Items.Add(childAsShellContent);
+                            break;
+                        default:
+                            throw new ArgumentException($"Cannot add child of type '{child?.GetType().FullName}' to parent of type '{parent?.GetType().FullName}'.");
+                    }
+                    break;
+                case ShellContent parentAsShellContent:
+                    {
+                        var childAsTemplatedPage = child as TemplatedPage;
+                        parentAsShellContent.Content = childAsTemplatedPage;
+                    }
+                    break;
                 case Layout<View> parentAsLayout:
                     {
                         var childAsView = child as View;
@@ -183,6 +238,11 @@ namespace Microsoft.Blazor.Native
 
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
             var nativeComponent = handler.ElementControl;
+
+            if (nativeComponent.Parent is null)
+            {
+                return 0;
+            }
 
             switch (nativeComponent.Parent)
             {
