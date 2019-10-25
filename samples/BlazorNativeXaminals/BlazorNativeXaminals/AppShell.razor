@@ -1,0 +1,46 @@
+﻿<Shell>
+    <FlyoutItem Route="animals"
+                Title="Animals"
+                FlyoutDisplayOptions="@FlyoutDisplayOptions.AsMultipleItems">
+        <Tab Title="Domestic"
+             Route="domestic">
+            <ShellContent Route="cats"
+                          Title="Cats">
+                <CatsPage />
+            </ShellContent>
+
+            <ShellContent Route="dogs"
+                          Title="Dogs">
+                <DogsPage />
+            </ShellContent>
+        </Tab>
+
+        <ShellContent Route="monkeys"
+                      Title="Monkeys">
+            <DogsPage />
+        </ShellContent>
+
+        <ShellContent Route="elephants"
+                      Title="Elephants">
+            <DogsPage />
+        </ShellContent>
+
+        <ShellContent Route="bears"
+                      Title="Bears">
+            <DogsPage />
+        </ShellContent>
+    </FlyoutItem>
+
+    <ShellContent Route="about"
+                  Title="About">
+        <DogsPage />
+    </ShellContent>
+
+    @*<MenuItem Text="Random"
+              IconImageSource="random.png"
+              Command="{Binding RandomPageCommand}" />
+    <MenuItem Text="Help"
+              IconImageSource="help.png"
+              Command="{Binding HelpCommand}"
+              CommandParameter="https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell" />*@
+</Shell>
