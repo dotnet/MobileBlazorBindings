@@ -1,3 +1,10 @@
 ﻿<ContentPage>
-    <Label Text="Woof" />
+    <ScrollView>
+        <StackLayout>
+            @foreach (var animal in BlazorNativeXaminals.Data.DogData.Dogs)
+            {
+                <AnimalTemplate Animal="@animal" />
+            }
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
