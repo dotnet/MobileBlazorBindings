@@ -16,8 +16,8 @@ namespace Microsoft.Blazor.Native.Elements
         [Parameter] public XF.Color? BackgroundColor { get; set; }
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         [Parameter] public double? FontSize { get; set; }
-        [Parameter] public XF.Color? ForegroundColor { get; set; }
         [Parameter] public string Text { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -36,13 +36,13 @@ namespace Microsoft.Blazor.Native.Elements
             {
                 builder.AddAttribute(nameof(FontSize), AttributeHelper.DoubleToString(FontSize.Value));
             }
-            if (ForegroundColor != null)
-            {
-                builder.AddAttribute(nameof(ForegroundColor), AttributeHelper.ColorToString(ForegroundColor.Value));
-            }
             if (Text != null)
             {
                 builder.AddAttribute(nameof(Text), Text);
+            }
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
             if (TextDecorations != null)
             {

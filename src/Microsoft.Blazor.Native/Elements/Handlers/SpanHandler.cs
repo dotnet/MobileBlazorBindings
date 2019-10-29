@@ -26,11 +26,11 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
                 case nameof(Span.FontSize):
                     SpanControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
-                case nameof(Span.ForegroundColor):
-                    SpanControl.ForegroundColor = AttributeHelper.StringToColor((string)attributeValue);
-                    break;
                 case nameof(Span.Text):
                     SpanControl.Text = (string)attributeValue;
+                    break;
+                case nameof(Span.TextColor):
+                    SpanControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(Span.TextDecorations):
                     SpanControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue);
