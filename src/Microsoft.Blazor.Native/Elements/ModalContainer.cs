@@ -10,7 +10,7 @@ namespace Microsoft.Blazor.Native.Elements
         static ModalContainer()
         {
             ElementHandlerRegistry.RegisterElementHandler<ModalContainer>(
-                renderer => new ModalContainerHandler(renderer, new ModalContainerPlaceholderElement()));
+                renderer => new ModalContainerHandler(renderer, new DummyElement()));
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
@@ -20,7 +20,6 @@ namespace Microsoft.Blazor.Native.Elements
         private bool __ShowDialog { get; set; }
         private bool __DialogIsShown { get; set; }
         [Parameter] public EventCallback OnClosed { get; set; }
-
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

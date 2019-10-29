@@ -18,31 +18,15 @@ namespace Microsoft.Blazor.Native
             IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
         {
-            if (parentHandler is ModalContainerHandler parentModalContainerHandler)
+
+            if (parentHandler is IParentChildManagementRequired parentChildManagementRequiredForParent)
             {
-                var childAsPage = childHandler.ElementControl as Page;
-                parentModalContainerHandler.ModalChild = childAsPage;
+                parentChildManagementRequiredForParent.ParentChildManager.SetChild(childHandler.ElementControl);
                 return;
             }
-
-            if (childHandler is ModalContainerHandler childModalContainerHandler)
+            if (childHandler is IParentChildManagementRequired parentChildManagementRequiredForChild)
             {
-                var parentAsNavigableElement = parentHandler.ElementControl as NavigableElement;
-                childModalContainerHandler.ModalParent = parentAsNavigableElement;
-                return;
-            }
-
-            if (parentHandler is GridCellHandler parentGridCellHandler)
-            {
-                var childAsView = childHandler.ElementControl as View;
-                parentGridCellHandler.ChildView = childAsView;
-                return;
-            }
-
-            if (childHandler is GridCellHandler childGridCellHandler)
-            {
-                var parentAsGrid = parentHandler.ElementControl as Grid;
-                childGridCellHandler.ParentGrid = parentAsGrid;
+                parentChildManagementRequiredForChild.ParentChildManager.SetParent(parentHandler.ElementControl);
                 return;
             }
 

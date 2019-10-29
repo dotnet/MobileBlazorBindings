@@ -4,52 +4,38 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
 {
-    public class ModalContainerHandler : IXamarinFormsElementHandler, INonChildContainerElement
+    public class ModalContainerHandler : IXamarinFormsElementHandler, INonChildContainerElement, IParentChildManagementRequired
     {
-        private XF.NavigableElement _modalParent;
-        private XF.Page _modalChild;
-
-        public ModalContainerHandler(EmblazonRenderer renderer, ModalContainerPlaceholderElement modalContainerPlaceholderElementControl)
+        public ModalContainerHandler(EmblazonRenderer renderer, DummyElement modalContainerDummyControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
-            ModalContainerPlaceholderElementControl = modalContainerPlaceholderElementControl ?? throw new ArgumentNullException(nameof(modalContainerPlaceholderElementControl));
+            ModalContainerPlaceholderElementControl = modalContainerDummyControl ?? throw new ArgumentNullException(nameof(modalContainerDummyControl));
+      
+            _parentChildManager = new ParentChildManager<XF.NavigableElement, XF.Page>(ShowDialogIfPossible);
+            _parentChildManager.ChildChanged += OnParentChildManagerChildChanged;
         }
 
         public EmblazonRenderer Renderer { get; }
-        public ModalContainerPlaceholderElement ModalContainerPlaceholderElementControl { get; }
+        public DummyElement ModalContainerPlaceholderElementControl { get; }
         public XF.Element ElementControl => ModalContainerPlaceholderElementControl;
         public object TargetElement => ElementControl;
 
-        public XF.NavigableElement ModalParent
-        {
-            get => _modalParent;
-            set
-            {
-                _modalParent = value;
-                ShowDialogIfPossible();
-            }
-        }
+        private readonly ParentChildManager<XF.NavigableElement, XF.Page> _parentChildManager;
+        public IParentChildManager ParentChildManager => _parentChildManager;
 
-        public XF.Page ModalChild
+        private void OnParentChildManagerChildChanged(object sender, EventArgs e)
         {
-            get => _modalChild;
-            set
+            if (_parentChildManager.Child != null)
             {
-                _modalChild = value;
-                if (_modalChild != null)
-                {
-                    _modalChild.Disappearing += CleanUpDisappearingPage;
-                }
-                ShowDialogIfPossible();
+                _parentChildManager.Child.Disappearing += CleanUpDisappearingPage;
             }
         }
 
         private void CleanUpDisappearingPage(object sender, EventArgs e)
         {
-            _modalChild.Disappearing -= CleanUpDisappearingPage;
-
-            ModalChild = null;
-            ModalParent = null;
+            _parentChildManager.Child.Disappearing -= CleanUpDisappearingPage;
+            _parentChildManager.Parent = null;
+            _parentChildManager.Child = null;
 
             if (ClosedEventHandlerId != default)
             {
@@ -66,7 +52,7 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
                 case "__ShowDialog":
                     if (attributeValue != null)
                     {
-                        ShowDialogIfPossible();
+                        ShowDialogIfPossible(_parentChildManager);
                     }
                     break;
                 case "onclosed":
@@ -78,11 +64,11 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
             }
         }
 
-        private void ShowDialogIfPossible()
+        private void ShowDialogIfPossible(ParentChildManager<XF.NavigableElement, XF.Page> parentChildManager)
         {
-            if (ModalParent != null && ModalChild != null)
+            if (_parentChildManager.Parent != null && _parentChildManager.Child != null)
             {
-                ModalParent.Navigation.PushModalAsync(ModalChild);
+                _parentChildManager.Parent.Navigation.PushModalAsync(_parentChildManager.Child);
             }
         }
     }

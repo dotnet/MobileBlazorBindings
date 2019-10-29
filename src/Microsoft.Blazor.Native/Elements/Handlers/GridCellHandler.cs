@@ -4,15 +4,14 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
 {
-    public class GridCellHandler : IXamarinFormsElementHandler
+    public class GridCellHandler : IXamarinFormsElementHandler, IParentChildManagementRequired
     {
-        private XF.Grid _parentGrid;
-        private XF.View _childView;
-
         public GridCellHandler(EmblazonRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             GridCellPlaceholderElementControl = gridCellPlaceholderElementControl ?? throw new ArgumentNullException(nameof(gridCellPlaceholderElementControl));
+
+            ParentChildManager = new ParentChildManager<XF.Grid, XF.View>(AddChildViewToParentGrid);
         }
 
         public EmblazonRenderer Renderer { get; }
@@ -25,25 +24,7 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
         public int? Row { get; set; }
         public int? RowSpan { get; set; }
 
-        public XF.Grid ParentGrid
-        {
-            get => _parentGrid;
-            set
-            {
-                _parentGrid = value;
-                AddGridChildIfPossible();
-            }
-        }
-
-        public XF.View ChildView
-        {
-            get => _childView;
-            set
-            {
-                _childView = value;
-                AddGridChildIfPossible();
-            }
-        }
+        public IParentChildManager ParentChildManager { get; }
 
         public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
@@ -66,17 +47,14 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
             }
         }
 
-        private void AddGridChildIfPossible()
+        private void AddChildViewToParentGrid(ParentChildManager<XF.Grid, XF.View> parentChildManager)
         {
-            if (ParentGrid != null && ChildView != null)
-            {
-                ParentGrid.Children.Add(
-                    view: ChildView,
-                    left: (Column ?? 0),
-                    right: (Column ?? 0) + (ColumnSpan ?? 1),
-                    top: (Row ?? 0),
-                    bottom: (Row ?? 0) + (RowSpan ?? 1));
-            }
+            parentChildManager.Parent.Children.Add(
+                view: parentChildManager.Child,
+                left: (Column ?? 0),
+                right: (Column ?? 0) + (ColumnSpan ?? 1),
+                top: (Row ?? 0),
+                bottom: (Row ?? 0) + (RowSpan ?? 1));
         }
     }
 }
