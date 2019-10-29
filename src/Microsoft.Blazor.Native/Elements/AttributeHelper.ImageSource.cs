@@ -6,6 +6,8 @@ namespace Microsoft.Blazor.Native.Elements
 {
     public static partial class AttributeHelper
     {
+        private const string ImageFileSourcePrefix = "file:";
+
         /// <summary>
         /// Helper method to serialize <see cref="ImageSource" /> objects.
         /// </summary>
@@ -33,9 +35,10 @@ namespace Microsoft.Blazor.Native.Elements
                 throw new ArgumentNullException(nameof(imageSourceString));
             }
 
-            if (imageSourceString.StartsWith("file:", StringComparison.OrdinalIgnoreCase))
+            if (imageSourceString.StartsWith(ImageFileSourcePrefix, StringComparison.OrdinalIgnoreCase))
             {
-                return new FileImageSource { File = imageSourceString };
+                var imageFile = imageSourceString.Substring(ImageFileSourcePrefix.Length);
+                return new FileImageSource { File = imageFile };
             }
             else
             {
