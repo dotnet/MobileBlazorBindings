@@ -1,5 +1,6 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Blazor.Native.Elements.Handlers;
 using System;
 using XF = Xamarin.Forms;
@@ -20,7 +21,7 @@ namespace Microsoft.Blazor.Native.Elements
         [Parameter] public XF.Aspect? FlyoutBackgroundImageAspect { get; set; }
         [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
         [Parameter] public XF.FlyoutBehavior? FlyoutBehavior { get; set; }
-        //[Parameter] public object FlyoutHeader { get; set; }
+        [Parameter] public RenderFragment FlyoutHeader { get; set; }
         [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
         //[Parameter] public DataTemplate FlyoutHeaderTemplate { get; set; }
         [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
@@ -40,13 +41,14 @@ namespace Microsoft.Blazor.Native.Elements
 
             //[Parameter] public ShellItem CurrentItem { get; set; }
             //[Parameter] public ShellNavigationState CurrentState { get; }
+            if (FlyoutBackgroundImageAspect != null)
+            {
+                // NOTE: The Aspect must be set before the image or else an exception is thrown
+                builder.AddAttribute(nameof(FlyoutBackgroundImageAspect), (int)FlyoutBackgroundImageAspect.Value);
+            }
             if (FlyoutBackgroundImage != null)
             {
                 builder.AddAttribute(nameof(FlyoutBackgroundImage), AttributeHelper.ImageSourceToString(FlyoutBackgroundImage));
-            }
-            if (FlyoutBackgroundImageAspect != null)
-            {
-                builder.AddAttribute(nameof(FlyoutBackgroundImageAspect), (int)FlyoutBackgroundImageAspect.Value);
             }
             if (FlyoutBackgroundColor != null)
             {
@@ -56,7 +58,6 @@ namespace Microsoft.Blazor.Native.Elements
             {
                 builder.AddAttribute(nameof(FlyoutBehavior), (int)FlyoutBehavior.Value);
             }
-            //object FlyoutHeader
             if (FlyoutHeaderBehavior != null)
             {
                 builder.AddAttribute(nameof(FlyoutHeaderBehavior), (int)FlyoutHeaderBehavior.Value);
@@ -95,5 +96,20 @@ namespace Microsoft.Blazor.Native.Elements
             StateHasChanged();
         }
 
+#pragma warning disable CA1721 // Property names should not match get methods
+        protected override RenderFragment GetChildContent() => RenderChildContent;
+#pragma warning restore CA1721 // Property names should not match get methods
+
+        private void RenderChildContent(RenderTreeBuilder builder)
+        {
+            if (FlyoutHeader != null)
+            {
+                builder.OpenComponent<ShellFlyoutHeader>(1);
+                builder.AddAttribute(0, nameof(ChildContent), FlyoutHeader);
+                builder.CloseComponent();
+            }
+
+            builder.AddContent(2, ChildContent);
+        }
     }
 }

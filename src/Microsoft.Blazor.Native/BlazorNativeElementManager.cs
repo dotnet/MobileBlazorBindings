@@ -38,6 +38,7 @@ namespace Microsoft.Blazor.Native
             switch (parent)
             {
                 case Shell parentAsShell:
+                    var removedDummyChild = ((ShellHandler)parentHandler).ClearDummyChild();
                     switch (child)
                     {
                         case TemplatedPage childAsTemplatedPage:
@@ -55,6 +56,12 @@ namespace Microsoft.Blazor.Native
                         default:
                             throw new ArgumentException($"Cannot add child of type '{child?.GetType().FullName}' to parent of type '{parent?.GetType().FullName}'.");
                     }
+                    // TODO: If this was the first item added, mark it as the current item
+                    // But this code seems to cause a NullRef...
+                    //if (removedDummyChild)
+                    //{
+                    //    parentAsShell.CurrentItem = parentAsShell.Items[0];
+                    //}
                     break;
                 case ShellItem parentAsShellItem:
                     switch (child)

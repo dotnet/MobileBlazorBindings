@@ -2,12 +2,17 @@
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
 {
-    internal sealed class ShellContentMarkerItem : XF.ShellContent
+    internal sealed class ShellContentMarkerItem : XF.FlyoutItem
     {
         public ShellContentMarkerItem()
         {
             // Set dummy content to ensure the item is valid
-            Content = new XF.ContentPage();
+            var tab = new XF.Tab();
+            tab.Items.Add(new XF.ShellContent
+            {
+                Content = new XF.ContentPage()
+            });
+            Items.Add(tab);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
     public class ShellHandler : PageHandler
     {
         private readonly ShellContentMarkerItem _dummyShellContent = new ShellContentMarkerItem();
+        private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
 
         public ShellHandler(EmblazonRenderer renderer, XF.Shell shellControl) : base(renderer, shellControl)
         {
@@ -15,7 +16,12 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
             // Add one item for Shell to load correctly. It will later be removed when the first real
             // item is added by the app.
             ShellControl.Items.Add(_dummyShellContent);
-            ShellControl.ChildAdded += OnShellControlChildAdded;
+
+            // Add a dummy FlyoutHeader because it cannot be set dynamically later. When app code sets
+            // its own FlyoutHeader, it will be set as the Content of this ContentView.
+            // See https://github.com/xamarin/Xamarin.Forms/issues/6161 ([Bug] Changing the Shell Flyout Header after it's already rendered doesn't work)
+            _flyoutHeaderContentView.IsVisible = false;
+            ShellControl.FlyoutHeader = _flyoutHeaderContentView;
 
             ShellControl.Navigated += (s, e) =>
             {
@@ -33,10 +39,10 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
             };
         }
 
-        private void OnShellControlChildAdded(object sender, XF.ElementEventArgs e)
+        internal bool ClearDummyChild()
         {
             // Remove the dummy ShellContent if it's still there. This won't throw even if the item is already removed.
-            ShellControl.Items.Remove(_dummyShellContent);
+            return ShellControl.Items.Remove(_dummyShellContent);
         }
 
         public XF.Shell ShellControl { get; }
@@ -61,7 +67,6 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
                 case nameof(XF.Shell.FlyoutBehavior):
                     ShellControl.FlyoutBehavior = (XF.FlyoutBehavior)AttributeHelper.GetInt(attributeValue);
                     break;
-                //object FlyoutHeader
                 case nameof(XF.Shell.FlyoutHeaderBehavior):
                     ShellControl.FlyoutHeaderBehavior = (XF.FlyoutHeaderBehavior)AttributeHelper.GetInt(attributeValue);
                     break;
