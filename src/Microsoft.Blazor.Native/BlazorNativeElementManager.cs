@@ -50,6 +50,9 @@ namespace Microsoft.Blazor.Native
                         case ShellSection childAsShellSection:
                             parentAsShell.Items.Add(childAsShellSection); // Implicit conversion
                             break;
+                        case MenuItem childAsMenuItem:
+                            parentAsShell.Items.Add(childAsMenuItem); // Implicit conversion
+                            break;
                         case ShellItem childAsShellItem:
                             parentAsShell.Items.Add(childAsShellItem);
                             break;
