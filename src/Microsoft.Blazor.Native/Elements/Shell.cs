@@ -94,11 +94,6 @@ namespace Microsoft.Blazor.Native.Elements
             };
             StateHasChanged();
         }
-    }
 
-    internal class ShellGoToState
-    {
-        public string Location { get; set; }
-        public bool Animate { get; set; }
     }
 }
