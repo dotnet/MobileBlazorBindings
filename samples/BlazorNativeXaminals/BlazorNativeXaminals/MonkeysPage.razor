@@ -1,9 +1,9 @@
 ﻿<ContentPage>
     <ScrollView>
         <StackLayout>
-            @foreach (var cat in BlazorNativeXaminals.Data.MonkeyData.Monkeys)
+            @foreach (var animal in BlazorNativeXaminals.Data.MonkeyData.Monkeys)
             {
-                <AnimalTemplate Animal="@cat" />
+                <AnimalTemplate Animal="@animal" />
             }
         </StackLayout>
     </ScrollView>
