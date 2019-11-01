@@ -26,7 +26,7 @@
 
 @code
 {
-   Microsoft.Blazor.Native.Elements.ContentPage contentPage;
+    Microsoft.Blazor.Native.Elements.ContentPage contentPage;
 
     [Parameter] public TodoItem Item { get; set; }
 
@@ -59,19 +59,19 @@
 
         await AppState.TodoDatabase.SaveItemAsync(Item);
 
-        contentPage.CloseDialog();
+        await contentPage.PopModalAsync();
     }
 
     public async Task OnDeleteClick()
     {
         await AppState.TodoDatabase.DeleteItemAsync(Item);
 
-        contentPage.CloseDialog();
+        await contentPage.PopModalAsync();
     }
 
-    public void OnCancelClick()
+    public async Task OnCancelClick()
     {
-        contentPage.CloseDialog();
+        await contentPage.PopModalAsync();
     }
 
     public void OnSpeakClick()
