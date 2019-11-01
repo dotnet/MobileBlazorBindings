@@ -78,13 +78,6 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
                 //[Parameter] public DataTemplate ItemTemplate { get; set; }
                 //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
 
-                case "__ShellGoToState":
-                    {
-                        var shellGoToState = System.Text.Json.JsonSerializer.Deserialize<ShellGoToState>((string)attributeValue);
-                        ShellControl.GoToAsync(new XF.ShellNavigationState(shellGoToState.Location), shellGoToState.Animate);
-                    }
-                    break;
-
                 case "onnavigated":
                     Renderer.RegisterEvent(attributeEventHandlerId, () => NavigatedEventHandlerId = 0);
                     NavigatedEventHandlerId = attributeEventHandlerId;

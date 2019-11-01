@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Blazor.Native.Elements.Handlers;
 using System;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements
@@ -32,8 +33,6 @@ namespace Microsoft.Blazor.Native.Elements
 
         [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
         [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
-
-        private ShellGoToState __ShellGoToState { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -71,29 +70,18 @@ namespace Microsoft.Blazor.Native.Elements
             //[Parameter] public DataTemplate ItemTemplate { get; set; }
             //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
 
-            if (__ShellGoToState != null)
-            {
-                builder.AddAttribute(nameof(__ShellGoToState), System.Text.Json.JsonSerializer.Serialize(__ShellGoToState));
-                __ShellGoToState = null;
-            }
-
             builder.AddAttribute("onnavigated", OnNavigated);
             builder.AddAttribute("onnavigating", OnNavigating);
         }
 
-        public void GoTo(XF.ShellNavigationState state, bool animate = true)
+        public async Task GoTo(XF.ShellNavigationState state, bool animate = true)
         {
             if (state is null)
             {
                 throw new ArgumentNullException(nameof(state));
             }
 
-            __ShellGoToState = new ShellGoToState
-            {
-                Location = state.Location.ToString(),
-                Animate = animate,
-            };
-            StateHasChanged();
+            await ((ShellHandler)ElementHandler).ShellControl.GoToAsync(state, animate).ConfigureAwait(true);
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods
