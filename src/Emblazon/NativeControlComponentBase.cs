@@ -6,6 +6,13 @@ namespace Emblazon
 {
     public abstract class NativeControlComponentBase : ComponentBase
     {
+        public IElementHandler ElementHandler { get; private set; }
+
+        public void SetElementReference(IElementHandler elementHandler)
+        {
+            ElementHandler = elementHandler ?? throw new ArgumentNullException(nameof(elementHandler));
+        }
+
         protected override void BuildRenderTree(RenderTreeBuilder builder)
         {
             if (builder is null)

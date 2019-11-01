@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -33,6 +34,7 @@ namespace Emblazon
 
         private readonly IElementHandler _closestPhysicalParent;
         private IElementHandler _targetElement;
+        private IComponent _targetComponent;
 
         public EmblazonRenderer Renderer { get; }
 
@@ -162,9 +164,10 @@ namespace Emblazon
                     }
                 case RenderTreeFrameType.Component:
                     {
-                        // Components are represented by BlontrolAdapters
+                        // Components are represented by EmblazonAdapters
                         var childAdapter = Renderer.CreateAdapterForChildComponent(_targetElement ?? _closestPhysicalParent, frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
+                        childAdapter._targetComponent = frame.Component;
                         AddChildAdapter(siblingIndex, childAdapter);
                         return 1;
                     }
@@ -216,6 +219,11 @@ namespace Emblazon
             var elementName = frame.ElementName;
             var elementHandlerFactory = ElementHandlerRegistry.ElementHandlers[elementName];
             var elementHandler = elementHandlerFactory.CreateElementHandler(new ElementHandlerFactoryContext(Renderer, _closestPhysicalParent));
+
+            if (_targetComponent is NativeControlComponentBase componentInstance)
+            {
+                componentInstance.SetElementReference(elementHandler);
+            }
 
             if (siblingIndex != 0)
             {
