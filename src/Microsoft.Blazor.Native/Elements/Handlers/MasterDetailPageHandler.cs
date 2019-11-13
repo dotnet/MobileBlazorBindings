@@ -1,4 +1,5 @@
 ﻿using Emblazon;
+using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native.Elements.Handlers
@@ -7,7 +8,7 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
     {
         public MasterDetailPageHandler(EmblazonRenderer renderer, XF.MasterDetailPage masterDetailPageControl) : base(renderer, masterDetailPageControl)
         {
-            MasterDetailPageControl = masterDetailPageControl ?? throw new System.ArgumentNullException(nameof(masterDetailPageControl));
+            MasterDetailPageControl = masterDetailPageControl ?? throw new ArgumentNullException(nameof(masterDetailPageControl));
 
             // Set dummy Master and Detail because this element cannot be parented unless both are set.
             // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L199

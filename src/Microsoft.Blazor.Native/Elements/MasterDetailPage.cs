@@ -24,7 +24,6 @@ namespace Microsoft.Blazor.Native.Elements
         {
             base.RenderAttributes(builder);
 
-
             if (MasterBehavior != null)
             {
                 builder.AddAttribute(nameof(MasterBehavior), (int)MasterBehavior.Value);
