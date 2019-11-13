@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Microsoft.Blazor.Native\Microsoft.Blazor.Native.csproj" />
+    <ProjectReference Include="..\..\..\src\Microsoft.Blazor.Native\Microsoft.Blazor.Native.csproj" />
   </ItemGroup>
 </Project>
