@@ -1,10 +1,22 @@
 ﻿<ContentPage>
-    <ScrollView>
-        <StackLayout>
-            @foreach (var animal in BlazorNativeXaminals.Data.CatData.Cats)
-            {
-                <AnimalTemplate Animal="@animal" />
-            }
-        </StackLayout>
-    </ScrollView>
+    <CollectionView VerticalOptions="@LayoutOptions.FillAndExpand"
+                    BackgroundColor="@Color.LightCoral"
+                    @ref="animalCollection">
+        <ItemTemplate>
+            <AnimalTemplate Animal="@((Animal)context)" />
+        </ItemTemplate>
+    </CollectionView>
 </ContentPage>
+
+@code
+{
+    Microsoft.Blazor.Native.Elements.CollectionView animalCollection;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            animalCollection.SetItemsSource(BlazorNativeXaminals.Data.CatData.Cats);
+        }
+    }
+}
