@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.Blazor.Native
@@ -17,7 +16,7 @@ namespace Microsoft.Blazor.Native
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="host"></param>
         /// <param name="parent"></param>
-        public static async Task AddComponent<TComponent>(this IHost host, XF.Element parent) where TComponent : IComponent
+        public static void AddComponent<TComponent>(this IHost host, XF.Element parent) where TComponent : IComponent
         {
             if (host is null)
             {
@@ -31,7 +30,11 @@ namespace Microsoft.Blazor.Native
 
             var services = host.Services;
             var renderer = new BlazorNativeRenderer(services, services.GetRequiredService<ILoggerFactory>());
-            await renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent)).ConfigureAwait(false);
+
+            // TODO: This call is an async call, but is called as "fire-and-forget," which is not ideal.
+            // We need to figure out how to get Xamarin.Forms to run this startup code asynchronously, which
+            // is how this method should be called.
+            renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent)).ConfigureAwait(false);
         }
     }
 }
