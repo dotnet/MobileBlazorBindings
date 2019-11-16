@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>Microsoft.Blazor.Native.Templates</PackageId>
+    <Title>Blazor Native Templates</Title>
+    <Description>Templates to use when creating Blazor Native applications.</Description>
+    <PackageTags>dotnet-new;templates;blazor;blazor-native</PackageTags>
+    <IncludeSymbols>false</IncludeSymbols>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="blazor-native-app\**\*" Exclude="blazor-native-app\**\bin\**;blazor-native-app\**\obj\**" />
+    <Compile Remove="**\*" />
+  </ItemGroup>
+
+  <Target Name="ShowNuGetPackageVersion" AfterTargets="Build">
+    <Message Text="NuGetPackageVersion = $(NuGetPackageVersion)" Importance="High" />
+  </Target>
+
+</Project>
