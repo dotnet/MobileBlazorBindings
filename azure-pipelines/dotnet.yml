@@ -1,6 +1,7 @@
 steps:
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build src projects'
   inputs:
     command: 'build'
     projects: src/**/*.csproj
@@ -9,9 +10,17 @@ steps:
     arguments: --no-restore /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" /p:Configuration=$(BuildConfiguration)
 
 - task: MSBuild@1
+  displayName: 'Pack src projects'
   inputs:
     msbuildArguments: /t:pack /p:NoBuild=true
     solution: 'src/**/*.csproj' 
+    configuration: '$(BuildConfiguration)'
+
+- task: MSBuild@1
+  displayName: 'Pack template projects'
+  inputs:
+    msbuildArguments: /t:pack /p:NoBuild=true
+    solution: 'templates/**/*.csproj' 
     configuration: '$(BuildConfiguration)'
 
 - task: PowerShell@2
