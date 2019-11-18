@@ -38,7 +38,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="blazor-native-app\**\*" Exclude="blazor-native-app\**\bin\**;blazor-native-app\**\obj\**;**\template.in.json" />
+    <Content Include="blazor-native-app\**\*" Exclude="blazor-native-app\**\bin\**;blazor-native-app\**\obj\**;**\template.in.json;**\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
