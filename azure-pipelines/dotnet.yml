@@ -20,7 +20,7 @@ steps:
   displayName: 'Pack template projects'
   inputs:
     msbuildArguments: /t:pack /p:NoBuild=true
-    solution: 'templates/**/*.csproj' 
+    solution: 'templates/*.csproj' 
     configuration: '$(BuildConfiguration)'
 
 - task: PowerShell@2
