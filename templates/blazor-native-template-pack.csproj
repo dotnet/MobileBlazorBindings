@@ -17,6 +17,7 @@
                 OutputFilename,
                 Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
                 );
+            Console.WriteLine("Saved modified '{0}' to {1}'.", InputFilename, OutputFilename);
           ]]>
       </Code>
     </Task>
@@ -38,11 +39,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="blazor-native-app\**\*" Exclude="blazor-native-app\**\bin\**;blazor-native-app\**\obj\**;**\template.in.json;**\.gitignore" />
+    <Content
+      Include="blazor-native-app\**\*"
+      Exclude="
+        blazor-native-app\**\bin\**;
+        blazor-native-app\**\obj\**;
+        **\template.in.json;
+        **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
-  <Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion">
+  <Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion" BeforeTargets="CopyFilesToOutputDirectory">
     <Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
 
     <ReplaceFileText

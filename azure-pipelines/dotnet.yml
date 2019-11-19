@@ -17,6 +17,13 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
+  displayName: 'Prepare template project generated files'
+  inputs:
+    msbuildArguments: /t:SetNuGetPackageVersionInTemplateJson
+    solution: 'templates/*.csproj' 
+    configuration: '$(BuildConfiguration)'
+
+- task: MSBuild@1
   displayName: 'Pack template projects'
   inputs:
     msbuildArguments: /t:pack
