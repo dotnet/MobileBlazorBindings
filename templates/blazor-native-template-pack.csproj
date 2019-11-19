@@ -26,7 +26,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>Microsoft.Blazor.Native.Templates</PackageId>
-    <Title>Blazor Native Templates</Title>
+    <Title>Blazor Native Templates (experimental)</Title>
     <Description>Templates to use when creating Blazor Native applications.</Description>
     <PackageTags>dotnet-new;templates;blazor;blazor-native</PackageTags>
     <NoWarn>$(NoWarn);NU5128</NoWarn>

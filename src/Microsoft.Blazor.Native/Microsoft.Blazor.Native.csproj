@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Title>Blazor Native for Xamarin.Forms (experimental)</Title>
+    <Description>Blazor Native enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
+    <PackageTags>blazor;blazor-native</PackageTags>
 
     <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
     <SignAssembly>false</SignAssembly>
