@@ -26,8 +26,8 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>Microsoft.Blazor.Native.Templates</PackageId>
-    <Title>Blazor Native Templates (experimental)</Title>
-    <Description>Templates to use when creating Blazor Native applications.</Description>
+    <Title>Experimental Forms binding for Blazor Project Templates (experimental)</Title>
+    <Description>Templates to use when creating apps with Experimental Forms binding for Blazor.</Description>
     <PackageTags>dotnet-new;templates;blazor;blazor-native</PackageTags>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
 
