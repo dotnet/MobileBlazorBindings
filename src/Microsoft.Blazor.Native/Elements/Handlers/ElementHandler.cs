@@ -20,6 +20,9 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.Element.StyleId):
+                    ElementControl.StyleId = (string)attributeValue;
+                    break;
                 default:
                     throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
             }

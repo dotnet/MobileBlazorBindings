@@ -1,10 +1,8 @@
-﻿using XF = Xamarin.Forms;
-
-namespace Microsoft.Blazor.Native.Elements.Handlers
+﻿namespace Microsoft.Blazor.Native.Elements.Handlers
 {
     public interface IParentChildManager
     {
-        void SetParent(XF.Element parentElement);
-        void SetChild(XF.Element childElement);
+        void SetParent(object parent);
+        void SetChild(object child);
     }
 }

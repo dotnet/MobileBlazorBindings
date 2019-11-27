@@ -1,6 +1,7 @@
 ﻿@inject WeatherService WeatherService
 
 <ContentPage>
+    <StyleSheet Resource="WeatherStyles.css" Assembly="@GetType().Assembly"></StyleSheet>
     <PancakeView BackgroundGradientStartColor="@BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: true)"
                  BackgroundGradientEndColor="@BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: false)">
         <Grid Padding="@(new Thickness(0,44,0,0))"
@@ -18,8 +19,7 @@
                 <GridCell Row="0">
                     <Label HorizontalOptions="@LayoutOptions.Center"
                            Text="SEATTLE"
-                           FontSize="@FontSizeUtility.GetFontSize(NamedSize.Large)"
-                           TextColor="@AppResources.MainTextColor" />
+                           FontSize="@FontSizeUtility.GetFontSize(NamedSize.Large)" />
                 </GridCell>
 
                 <GridCell Row="1">
@@ -114,7 +114,6 @@
                                  Minimum="0"
                                  Maximum="120"
                                  Increment="3"
-                                 Opacity="0.6"
                                  VerticalOptions="@LayoutOptions.Center" />
                     </StackLayout>
                 </GridCell>

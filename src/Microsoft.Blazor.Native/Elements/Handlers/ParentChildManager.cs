@@ -13,8 +13,8 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
     public class ParentChildManager<TParent, TChild> : IParentChildManager
-        where TParent : XF.Element
-        where TChild : XF.Element
+        where TParent : class
+        where TChild : class
     {
         private TParent _parent;
         private TChild _child;
@@ -51,39 +51,39 @@ namespace Microsoft.Blazor.Native.Elements.Handlers
         public event EventHandler ChildChanged;
         public event EventHandler ParentChanged;
 
-        public void SetChild(XF.Element childElement)
+        public void SetChild(object child)
         {
-            if (childElement is null)
+            if (child is null)
             {
                 Child = null;
                 return;
             }
 
-            if (childElement is TChild childOfChildType)
+            if (child is TChild childOfChildType)
             {
                 Child = childOfChildType;
             }
             else
             {
-                throw new ArgumentException($"Expected element to be of type {typeof(TChild).FullName} but it is of type {childElement.GetType().FullName}.", nameof(childElement));
+                throw new ArgumentException($"Expected child to be of type {typeof(TChild).FullName} but it is of type {child.GetType().FullName}.", nameof(child));
             }
         }
 
-        public void SetParent(XF.Element parentElement)
+        public void SetParent(object parent)
         {
-            if (parentElement is null)
+            if (parent is null)
             {
                 Parent = null;
                 return;
             }
 
-            if (parentElement is TParent parentOfParentType)
+            if (parent is TParent parentOfParentType)
             {
                 Parent = parentOfParentType;
             }
             else
             {
-                throw new ArgumentException($"Expected element to be of type {typeof(TParent).FullName} but it is of type {parentElement.GetType().FullName}.", nameof(parentElement));
+                throw new ArgumentException($"Expected parent to be of type {typeof(TParent).FullName} but it is of type {parent.GetType().FullName}.", nameof(parent));
             }
         }
 

@@ -10,6 +10,10 @@ namespace Microsoft.Blazor.Native
     {
         protected override bool IsParented(IXamarinFormsElementHandler handler)
         {
+            if (handler is ICustomParentProcessor customParentProcessor)
+            {
+                return customParentProcessor.IsParented();
+            }
             return handler.ElementControl.Parent != null;
         }
 
@@ -18,15 +22,26 @@ namespace Microsoft.Blazor.Native
             IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
         {
+            if (parentHandler is ICustomChildProcessor customChildProcessor)
+            {
+                customChildProcessor.SetChild(childHandler.TargetElement);
+                return;
+            }
+            // TODO: What about ICustomParentProcessor? In what order do we handle these? What if it's a parent+child?
+            if (childHandler is ICustomParentProcessor customParentProcessor)
+            {
+                customParentProcessor.SetParent(parentHandler.TargetElement);
+                return;
+            }
 
             if (parentHandler is IParentChildManagementRequired parentChildManagementRequiredForParent)
             {
-                parentChildManagementRequiredForParent.ParentChildManager.SetChild(childHandler.ElementControl);
+                parentChildManagementRequiredForParent.ParentChildManager.SetChild(childHandler.TargetElement);
                 return;
             }
             if (childHandler is IParentChildManagementRequired parentChildManagementRequiredForChild)
             {
-                parentChildManagementRequiredForChild.ParentChildManager.SetParent(parentHandler.ElementControl);
+                parentChildManagementRequiredForChild.ParentChildManager.SetParent(parentHandler.TargetElement);
                 return;
             }
 
@@ -233,8 +248,17 @@ namespace Microsoft.Blazor.Native
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)
             var nativeComponent = handler.ElementControl;
 
+            if (nativeComponent is null)
+            {
+                // If there is no native object representing this element, bail out
+                // TODO: Is this OK? It's probably OK for the same reason the GridCellHandler case above is OK. If this item has
+                // no physical representation in the live UI tree, there's nothing to track.
+                return 0;
+            }
+
             if (nativeComponent.Parent is null)
             {
+                // If this is the root element, the child's index is always 0
                 return 0;
             }
 
@@ -301,6 +325,10 @@ namespace Microsoft.Blazor.Native
 
         protected override bool IsParentOfChild(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
         {
+            if (childHandler is ICustomParentProcessor customParentProcessor)
+            {
+                return customParentProcessor.IsParentedTo(parentHandler.ElementControl);
+            }
             return childHandler.ElementControl.Parent == parentHandler.ElementControl;
         }
     }
