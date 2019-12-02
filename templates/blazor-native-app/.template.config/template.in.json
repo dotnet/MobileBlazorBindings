@@ -5,16 +5,19 @@
         "Blazor",
         "Xamarin.Forms"
     ],
-    "name": "Blazor Native App",
-    "groupIdentity": "Blazor.Native.App",
-    "identity": "Blazor.Native.App.CSharp",
-    "shortName": "blazor-native",
+    "name": "Experimental Mobile Blazor Bindings App",
+    "groupIdentity": "Microsoft.MobileBlazorBindings.App",
+    "identity": "Microsoft.MobileBlazorBindings.App.CSharp",
+    "shortName": "mobileblazorbindings",
     "tags": {
         "language": "C#",
         "type": "project"
     },
     "sourceName": "NewApp",
     "primaryOutputs": [
+        {
+            "path": "NewApp.sln"
+        },
         {
             "condition": "CreateAndroidProject",
             "path": "NewApp.Android\\NewApp.Android.csproj"
@@ -31,6 +34,7 @@
     "defaultName": "App",
     "preferNameDirectory": true,
     "guids": [
+        "4C26868E-5E7C-458D-82E3-040509D0C71F", // Solution file (SLN)
         "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library
         "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android
         "91D74A40-E440-42AD-B51F-C2D641C49384" // iOS
