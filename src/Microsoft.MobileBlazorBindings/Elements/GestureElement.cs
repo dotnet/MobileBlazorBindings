@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Blazor.Native.Elements
+﻿namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class GestureElement : Element
     {

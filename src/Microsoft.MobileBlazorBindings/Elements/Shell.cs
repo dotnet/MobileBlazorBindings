@@ -1,12 +1,12 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.Blazor.Native.Elements.Handlers;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class Shell : Page
     {

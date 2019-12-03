@@ -1,7 +1,7 @@
 ﻿using System;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Helper class for managing cases where an intermediate component is used to connect a parent

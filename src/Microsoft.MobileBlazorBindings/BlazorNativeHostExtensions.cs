@@ -1,4 +1,4 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
+﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native
+namespace Microsoft.MobileBlazorBindings
 {
     public static class BlazorNativeHostExtensions
     {

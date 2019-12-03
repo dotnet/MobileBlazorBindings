@@ -1,6 +1,6 @@
 ﻿using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     internal sealed class ShellContentMarkerItem : XF.FlyoutItem
     {

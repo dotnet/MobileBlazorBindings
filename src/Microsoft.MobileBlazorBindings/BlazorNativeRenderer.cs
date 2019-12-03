@@ -5,7 +5,7 @@ using System;
 using System.Diagnostics;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native
+namespace Microsoft.MobileBlazorBindings
 {
     public class BlazorNativeRenderer : EmblazonRenderer
     {

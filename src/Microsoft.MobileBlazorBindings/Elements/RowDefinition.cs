@@ -1,10 +1,10 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.Blazor.Native.Elements.GridInternals;
+using Microsoft.MobileBlazorBindings.Elements.GridInternals;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class RowDefinition : NativeControlComponentBase
     {

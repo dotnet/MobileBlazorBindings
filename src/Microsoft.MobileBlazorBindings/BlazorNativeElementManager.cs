@@ -1,10 +1,10 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
+﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Emblazon;
 using System.Diagnostics;
 using Xamarin.Forms;
 using System;
 
-namespace Microsoft.Blazor.Native
+namespace Microsoft.MobileBlazorBindings
 {
     internal class BlazorNativeElementManager : ElementManager<IXamarinFormsElementHandler>
     {

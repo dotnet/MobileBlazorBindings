@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class SwitchHandler : ViewHandler
     {

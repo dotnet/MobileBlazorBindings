@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
 #pragma warning disable CA1724 // Type name matches .NET Framework namespace; this type name matches a Xamarin.Forms type name
     public abstract class Layout : View

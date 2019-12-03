@@ -1,9 +1,9 @@
 ﻿using Emblazon;
-using Microsoft.Blazor.Native.Elements.GridInternals;
+using Microsoft.MobileBlazorBindings.Elements.GridInternals;
 using System;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GridHandler : LayoutHandler
     {

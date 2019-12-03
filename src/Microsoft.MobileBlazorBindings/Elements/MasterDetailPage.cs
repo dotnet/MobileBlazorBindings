@@ -1,10 +1,10 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
+﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class MasterDetailPage : Page
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class VisualElement : NavigableElement
     {

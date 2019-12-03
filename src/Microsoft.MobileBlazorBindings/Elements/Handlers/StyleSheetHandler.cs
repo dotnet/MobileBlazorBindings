@@ -5,7 +5,7 @@ using System.Reflection;
 using XF = Xamarin.Forms;
 using XFS = Xamarin.Forms.StyleSheets;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class StyleSheetHandler : IXamarinFormsElementHandler, ICustomParentProcessor
     {

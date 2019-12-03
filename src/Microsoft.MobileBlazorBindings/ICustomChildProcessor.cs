@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Blazor.Native
+﻿namespace Microsoft.MobileBlazorBindings
 {
     public interface ICustomChildProcessor
     {

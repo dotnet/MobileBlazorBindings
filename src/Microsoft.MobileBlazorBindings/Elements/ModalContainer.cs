@@ -1,9 +1,9 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
-using Microsoft.Blazor.Native.Elements.Handlers;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class ModalContainer : NativeControlComponentBase
     {

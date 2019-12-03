@@ -1,7 +1,7 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class InputView : View
     {

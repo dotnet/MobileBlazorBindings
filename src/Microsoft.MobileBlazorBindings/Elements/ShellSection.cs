@@ -1,9 +1,9 @@
 ﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Blazor.Native.Elements.Handlers;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class ShellSection : ShellGroupItem
     {

@@ -44,7 +44,7 @@ Emblazon and its related projects require:
    1. Add these `using` statements:
 
    ```c#
-   using Microsoft.Blazor.Native;
+   using Microsoft.MobileBlazorBindings;
    using Microsoft.Extensions.DependencyInjection;
    using Microsoft.Extensions.Hosting;
    using Xamarin.Forms;
@@ -87,7 +87,7 @@ Emblazon and its related projects require:
    1. Add a Razor Component to the project named `_Imports.razor` with these contents:
 
    ```c#
-    @using Microsoft.Blazor.Native.Elements
+    @using Microsoft.MobileBlazorBindings.Elements
     @using Xamarin.Forms
    ```
 

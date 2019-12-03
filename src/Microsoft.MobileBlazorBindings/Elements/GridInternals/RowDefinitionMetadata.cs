@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.GridInternals
+namespace Microsoft.MobileBlazorBindings.Elements.GridInternals
 {
     internal class RowDefinitionMetadata : INotifyPropertyChanged
     {

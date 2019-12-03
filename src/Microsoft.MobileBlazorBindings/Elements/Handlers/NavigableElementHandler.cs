@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class NavigableElementHandler : ElementHandler
     {

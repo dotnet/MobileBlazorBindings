@@ -1,8 +1,8 @@
-﻿using Microsoft.Blazor.Native.Elements.Handlers;
+﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Emblazon;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
 #pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is instantiated generically
     internal class MasterDetailDetailPage : ContentPage

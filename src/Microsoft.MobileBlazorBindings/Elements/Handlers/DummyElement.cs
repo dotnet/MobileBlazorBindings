@@ -1,7 +1,7 @@
 ﻿using System;
 using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Placeholder element typically used with <see cref="ParentChildManager{TParent, TChild}"/>. This

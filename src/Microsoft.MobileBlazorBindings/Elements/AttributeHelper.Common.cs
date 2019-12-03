@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Microsoft.Blazor.Native.Elements
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public static partial class AttributeHelper
     {

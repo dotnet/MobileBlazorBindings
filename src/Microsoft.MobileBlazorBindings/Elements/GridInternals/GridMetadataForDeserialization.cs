@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microsoft.Blazor.Native.Elements.GridInternals
+namespace Microsoft.MobileBlazorBindings.Elements.GridInternals
 {
 #pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is used for deserialization
     internal class GridMetadataForDeserialization

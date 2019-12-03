@@ -1,6 +1,6 @@
 ﻿using XF = Xamarin.Forms;
 
-namespace Microsoft.Blazor.Native.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Placeholder element for use with <see cref="GridCell"/> to manage the containing

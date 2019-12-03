@@ -1,4 +1,4 @@
-﻿namespace Microsoft.Blazor.Native.Elements.Handlers
+﻿namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Indicates that the <see cref="IXamarinFormsElementHandler"/> implementing this interface has

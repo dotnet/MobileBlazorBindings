@@ -1,11 +1,11 @@
-﻿using Microsoft.Blazor.Native.Elements;
+﻿using Microsoft.MobileBlazorBindings.Elements;
 using System;
 using XF = Xamarin.Forms;
 using Xamarin.Forms.PancakeView;
 using Emblazon;
-using Microsoft.Blazor.Native.Elements.Handlers;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
-namespace Microsoft.Blazor.Native.PancakeView.Elements
+namespace Microsoft.MobileBlazorBindings.PancakeView.Elements
 {
     public class PancakeViewHandler : ContentViewHandler
     {
