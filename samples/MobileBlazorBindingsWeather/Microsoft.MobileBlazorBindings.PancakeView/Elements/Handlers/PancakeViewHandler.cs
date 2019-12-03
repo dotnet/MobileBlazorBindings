@@ -1,9 +1,9 @@
-﻿using Microsoft.MobileBlazorBindings.Elements;
-using System;
-using XF = Xamarin.Forms;
-using Xamarin.Forms.PancakeView;
-using Emblazon;
+﻿using Emblazon;
+using Microsoft.MobileBlazorBindings.Elements;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System;
+using Xamarin.Forms.PancakeView;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.PancakeView.Elements
 {

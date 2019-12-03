@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using MobileBlazorBindingsXaminals.Models;
+﻿using MobileBlazorBindingsXaminals.Models;
+using System.Collections.Generic;
 
 namespace MobileBlazorBindingsXaminals.Data
 {

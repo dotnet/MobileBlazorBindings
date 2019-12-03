@@ -1,5 +1,5 @@
-﻿using Microsoft.MobileBlazorBindings;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
+using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
 namespace MobileBlazorBindingsXaminals

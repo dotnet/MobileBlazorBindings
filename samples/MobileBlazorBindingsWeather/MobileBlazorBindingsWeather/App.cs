@@ -1,6 +1,6 @@
-﻿using Microsoft.MobileBlazorBindings;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
 namespace MobileBlazorBindingsWeather

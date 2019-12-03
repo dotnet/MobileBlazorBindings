@@ -1,5 +1,5 @@
 ﻿using Emblazon;
-using XF=Xamarin.Forms;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {

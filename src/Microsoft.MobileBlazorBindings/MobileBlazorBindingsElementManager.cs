@@ -1,8 +1,8 @@
-﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using Emblazon;
+﻿using Emblazon;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System;
 using System.Diagnostics;
 using Xamarin.Forms;
-using System;
 
 namespace Microsoft.MobileBlazorBindings
 {

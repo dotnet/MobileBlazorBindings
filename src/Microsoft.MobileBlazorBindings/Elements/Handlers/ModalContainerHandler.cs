@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ModalContainerPlaceholderElementControl = modalContainerDummyControl ?? throw new ArgumentNullException(nameof(modalContainerDummyControl));
-      
+
             _parentChildManager = new ParentChildManager<XF.NavigableElement, XF.Page>(ShowDialogIfPossible);
             _parentChildManager.ChildChanged += OnParentChildManagerChildChanged;
         }

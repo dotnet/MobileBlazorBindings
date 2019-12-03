@@ -1,5 +1,4 @@
 ﻿using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {

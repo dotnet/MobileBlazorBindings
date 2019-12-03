@@ -1,6 +1,6 @@
-﻿using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using Emblazon;
+﻿using Emblazon;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
