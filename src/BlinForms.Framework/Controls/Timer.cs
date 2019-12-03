@@ -17,7 +17,7 @@ namespace BlinForms.Framework.Controls
     //        builder.AddAttribute(1, "ontick", OnTick);
     //    }
 
-    //    class BlazorTimer : System.Windows.Forms.Timer, IBlazorNativeControl
+    //    class BlazorTimer : System.Windows.Forms.Timer, INativeControl
     //    {
     //        public ulong TickEventHandlerId { get; set; }
 

@@ -6,7 +6,7 @@ using System;
 
 namespace Microsoft.MobileBlazorBindings
 {
-    internal class BlazorNativeElementManager : ElementManager<IXamarinFormsElementHandler>
+    internal class MobileBlazorBindingsElementManager : ElementManager<IXamarinFormsElementHandler>
     {
         protected override bool IsParented(IXamarinFormsElementHandler handler)
         {

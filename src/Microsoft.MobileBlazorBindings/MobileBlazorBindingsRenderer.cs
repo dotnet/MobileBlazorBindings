@@ -7,9 +7,9 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {
-    public class BlazorNativeRenderer : EmblazonRenderer
+    public class MobileBlazorBindingsRenderer : EmblazonRenderer
     {
-        public BlazorNativeRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+        public MobileBlazorBindingsRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
         }
@@ -66,7 +66,7 @@ namespace Microsoft.MobileBlazorBindings
 
         protected override ElementManager CreateNativeControlManager()
         {
-            return new BlazorNativeElementManager();
+            return new MobileBlazorBindingsElementManager();
         }
     }
 }
