@@ -1,0 +1,10 @@
+﻿<ContentPage>
+    <ScrollView>
+        <StackLayout>
+            @foreach (var animal in MobileBlazorBindingsXaminals.Data.ElephantData.Elephants)
+            {
+                <AnimalTemplate Animal="@animal" />
+            }
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

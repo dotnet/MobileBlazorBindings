@@ -7,7 +7,7 @@ echo --- Emblazon ---
 msbuild /t:pack %* %THIS_DIR%\src\Emblazon\Emblazon.csproj
 echo --- BlinForms ---
 msbuild /t:pack %* %THIS_DIR%\src\BlinForms.Framework\BlinForms.Framework.csproj
-echo --- Blazor Native ---
-msbuild /t:pack %* %THIS_DIR%\src\Microsoft.Blazor.Native\Microsoft.Blazor.Native.csproj
-echo --- Blazor Native Templates ---
-msbuild /t:pack %* %THIS_DIR%\templates\blazor-native-template-pack.csproj
+echo --- MobileBlazorBindings ---
+msbuild /t:pack %* %THIS_DIR%\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj
+echo --- MobileBlazorBindings Templates ---
+msbuild /t:pack %* %THIS_DIR%\templates\MobileBlazorBindings-template-pack.csproj

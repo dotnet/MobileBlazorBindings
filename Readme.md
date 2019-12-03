@@ -1,4 +1,4 @@
-# Emblazon - Home of Blazor Native
+# Emblazon - Home of Experimental Mobile Blazor Bindings
 
 [![Build Status](https://devdiv.visualstudio.com/Personal/_apis/build/status/xamarin.Emblazon?branchName=master)](https://devdiv.visualstudio.com/Personal/_build/latest?definitionId=12095&branchName=master)
 
@@ -126,7 +126,7 @@ There are 3 main areas:
 2. [BlinForms](src/BlinForms.Framework) - Blazor rendering to Windows Forms.
    * Check out the [BlinForms sample app](samples/BlinFormsSample).
 3. [Microsoft.Blazor.Native](src/Microsoft.Blazor.Native) - Blazor rendering to Xamarin.Forms.
-   * Check out the [Blazor Native sample todo app](samples/BlazorNativeTodo).
+   * Check out the [Blazor Native sample todo app](samples/MobileBlazorBindingsTodo).
 
 
 ## Comparison projects

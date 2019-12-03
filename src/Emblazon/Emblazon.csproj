@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Title>Emblazon Core Runtime (experimental)</Title>
-    <Description>Common Emblazon logic for using Blazor to target native renderers. For Xamarin.Forms projects used the Microsoft.Blazor.Native package.</Description>
-    <PackageTags>blazor;blazor-native</PackageTags>
+    <Description>Common Emblazon logic for using Blazor to target native renderers. For mobile app projects for Android and iOS use the Microsoft.MobileBlazorBindings package.</Description>
+    <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

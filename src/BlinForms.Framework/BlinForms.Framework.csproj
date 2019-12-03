@@ -6,7 +6,7 @@
 
     <Title>Blazor for Windows Forms (experimental)</Title>
     <Description>Blazor for Windows Forms enables using Blazor syntax in .razor files to build Windows Forms apps running on .NET Core.</Description>
-    <PackageTags>blazor;blazor-native;windows-forms;windowsforms;winforms</PackageTags>
+    <PackageTags>blazor;windows-forms;windowsforms;winforms</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

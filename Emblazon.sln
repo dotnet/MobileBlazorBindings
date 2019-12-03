@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlinForms", "BlinForms", "{4D06362E-96E0-4359-BF69-9E3DC7570984}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Blazor.Native", "Blazor.Native", "{A497EAAE-8B20-4749-B93F-68CC35FC7D80}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.MobileBlazorBindings", "Microsoft.MobileBlazorBindings", "{A497EAAE-8B20-4749-B93F-68CC35FC7D80}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Emblazon", "Emblazon", "{B094376E-6EA4-4BCE-875F-600EEA9752CB}"
 EndProject
@@ -23,43 +23,43 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlinFormsSample", "samples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlinForms.Framework", "src\BlinForms.Framework\BlinForms.Framework.csproj", "{B81C7084-BC74-4765-9045-A590B9099403}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Blazor.Native", "src\Microsoft.Blazor.Native\Microsoft.Blazor.Native.csproj", "{3AB2926C-AFED-49EE-8E2D-5A6910C285B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings", "src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj", "{3AB2926C-AFED-49EE-8E2D-5A6910C285B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeWeather.Android", "samples\BlazorNativeWeather\BlazorNativeWeather.Android\BlazorNativeWeather.Android.csproj", "{6F809079-188E-4B27-89E0-2E6AB46EF321}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsWeather.Android", "samples\MobileBlazorBindingsWeather\MobileBlazorBindingsWeather.Android\MobileBlazorBindingsWeather.Android.csproj", "{6F809079-188E-4B27-89E0-2E6AB46EF321}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeWeather.iOS", "samples\BlazorNativeWeather\BlazorNativeWeather.iOS\BlazorNativeWeather.iOS.csproj", "{11991683-E4AC-45BB-B737-59FBBAC63C5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsWeather.iOS", "samples\MobileBlazorBindingsWeather\MobileBlazorBindingsWeather.iOS\MobileBlazorBindingsWeather.iOS.csproj", "{11991683-E4AC-45BB-B737-59FBBAC63C5F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorNativeWeather", "samples\BlazorNativeWeather\BlazorNativeWeather\BlazorNativeWeather.csproj", "{0F4EF5E2-91EA-49B2-8124-420F4B66A6DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBlazorBindingsWeather", "samples\MobileBlazorBindingsWeather\MobileBlazorBindingsWeather\MobileBlazorBindingsWeather.csproj", "{0F4EF5E2-91EA-49B2-8124-420F4B66A6DB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TodoSample", "TodoSample", "{9D142AD5-A0E6-4656-ADA1-4B5ACC4F7010}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WeatherSample", "WeatherSample", "{9B1F38B1-0661-4883-AD4D-ADA9ECA6941B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Blazor.Native.PancakeView", "samples\BlazorNativeWeather\Microsoft.Blazor.Native.PancakeView\Microsoft.Blazor.Native.PancakeView.csproj", "{4907501E-B483-4544-834B-C3B85F5DC55C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.PancakeView", "samples\MobileBlazorBindingsWeather\Microsoft.MobileBlazorBindings.PancakeView\Microsoft.MobileBlazorBindings.PancakeView.csproj", "{4907501E-B483-4544-834B-C3B85F5DC55C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XaminalsSample", "XaminalsSample", "{42F94A54-D32B-4C05-8AAA-027E9B65DF39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorNativeXaminals", "samples\BlazorNativeXaminals\BlazorNativeXaminals\BlazorNativeXaminals.csproj", "{F43D2BAF-0E9B-4B87-B490-A9AA267BD926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBlazorBindingsXaminals", "samples\MobileBlazorBindingsXaminals\MobileBlazorBindingsXaminals\MobileBlazorBindingsXaminals.csproj", "{F43D2BAF-0E9B-4B87-B490-A9AA267BD926}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeXaminals.Android", "samples\BlazorNativeXaminals\BlazorNativeXaminals.Android\BlazorNativeXaminals.Android.csproj", "{7C0223A3-EC14-4432-A2E1-1E4CFEDA45D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsXaminals.Android", "samples\MobileBlazorBindingsXaminals\MobileBlazorBindingsXaminals.Android\MobileBlazorBindingsXaminals.Android.csproj", "{7C0223A3-EC14-4432-A2E1-1E4CFEDA45D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeXaminals.iOS", "samples\BlazorNativeXaminals\BlazorNativeXaminals.iOS\BlazorNativeXaminals.iOS.csproj", "{CAD95219-78B3-478E-906D-542585C844C3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsXaminals.iOS", "samples\MobileBlazorBindingsXaminals\MobileBlazorBindingsXaminals.iOS\MobileBlazorBindingsXaminals.iOS.csproj", "{CAD95219-78B3-478E-906D-542585C844C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeHelloWorld.Android", "samples\BlazorNativeHelloWorld\BlazorNativeHelloWorld.Android\BlazorNativeHelloWorld.Android.csproj", "{19AAE44D-B40F-4FD9-B6B2-A971B419501E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsHelloWorld.Android", "samples\MobileBlazorBindingsHelloWorld\MobileBlazorBindingsHelloWorld.Android\MobileBlazorBindingsHelloWorld.Android.csproj", "{19AAE44D-B40F-4FD9-B6B2-A971B419501E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeHelloWorld.iOS", "samples\BlazorNativeHelloWorld\BlazorNativeHelloWorld.iOS\BlazorNativeHelloWorld.iOS.csproj", "{91A83E87-DCF0-46F3-9B1D-646A813B3B40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsHelloWorld.iOS", "samples\MobileBlazorBindingsHelloWorld\MobileBlazorBindingsHelloWorld.iOS\MobileBlazorBindingsHelloWorld.iOS.csproj", "{91A83E87-DCF0-46F3-9B1D-646A813B3B40}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorNativeHelloWorld", "samples\BlazorNativeHelloWorld\BlazorNativeHelloWorld\BlazorNativeHelloWorld.csproj", "{0A7A4594-D3E3-4EFE-9375-0B80BC049F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBlazorBindingsHelloWorld", "samples\MobileBlazorBindingsHelloWorld\MobileBlazorBindingsHelloWorld\MobileBlazorBindingsHelloWorld.csproj", "{0A7A4594-D3E3-4EFE-9375-0B80BC049F6F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HelloWorldSample", "HelloWorldSample", "{6EC09416-261E-48BD-848B-20CC98AC2CCA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorNativeTodo", "samples\BlazorNativeTodoSample\BlazorNativeTodo\BlazorNativeTodo.csproj", "{E1B7618A-C873-44C1-A20F-94D9068EBB3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBlazorBindingsTodo", "samples\MobileBlazorBindingsTodoSample\MobileBlazorBindingsTodo\MobileBlazorBindingsTodo.csproj", "{E1B7618A-C873-44C1-A20F-94D9068EBB3C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeTodo.Android", "samples\BlazorNativeTodoSample\BlazorNativeTodo.Android\BlazorNativeTodo.Android.csproj", "{5E52B05E-5F6D-4BFB-9F58-651CDE373D25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsTodo.Android", "samples\MobileBlazorBindingsTodoSample\MobileBlazorBindingsTodo.Android\MobileBlazorBindingsTodo.Android.csproj", "{5E52B05E-5F6D-4BFB-9F58-651CDE373D25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorNativeTodo.iOS", "samples\BlazorNativeTodoSample\BlazorNativeTodo.iOS\BlazorNativeTodo.iOS.csproj", "{E966A851-1BEB-4381-B275-6F0D532CF268}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileBlazorBindingsTodo.iOS", "samples\MobileBlazorBindingsTodoSample\MobileBlazorBindingsTodo.iOS\MobileBlazorBindingsTodo.iOS.csproj", "{E966A851-1BEB-4381-B275-6F0D532CF268}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "blazor-native-template-pack", "templates\blazor-native-template-pack.csproj", "{5BC2F6D0-DF39-4ADA-9DC5-7064F7B5D671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MobileBlazorBindings-template-pack", "templates\MobileBlazorBindings-template-pack.csproj", "{5BC2F6D0-DF39-4ADA-9DC5-7064F7B5D671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
