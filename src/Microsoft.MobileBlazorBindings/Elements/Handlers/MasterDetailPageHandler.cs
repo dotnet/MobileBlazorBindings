@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class MasterDetailPageHandler : PageHandler
     {
-        public MasterDetailPageHandler(EmblazonRenderer renderer, XF.MasterDetailPage masterDetailPageControl) : base(renderer, masterDetailPageControl)
+        public MasterDetailPageHandler(NativeComponentRenderer renderer, XF.MasterDetailPage masterDetailPageControl) : base(renderer, masterDetailPageControl)
         {
             MasterDetailPageControl = masterDetailPageControl ?? throw new ArgumentNullException(nameof(masterDetailPageControl));
 

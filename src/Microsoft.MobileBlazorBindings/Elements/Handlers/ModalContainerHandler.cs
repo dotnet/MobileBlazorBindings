@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ModalContainerHandler : IXamarinFormsElementHandler, INonChildContainerElement, IParentChildManagementRequired
     {
-        public ModalContainerHandler(EmblazonRenderer renderer, DummyElement modalContainerDummyControl)
+        public ModalContainerHandler(NativeComponentRenderer renderer, DummyElement modalContainerDummyControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ModalContainerPlaceholderElementControl = modalContainerDummyControl ?? throw new ArgumentNullException(nameof(modalContainerDummyControl));
@@ -15,7 +15,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _parentChildManager.ChildChanged += OnParentChildManagerChildChanged;
         }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
         public DummyElement ModalContainerPlaceholderElementControl { get; }
         public XF.Element ElementControl => ModalContainerPlaceholderElementControl;
         public object TargetElement => ElementControl;

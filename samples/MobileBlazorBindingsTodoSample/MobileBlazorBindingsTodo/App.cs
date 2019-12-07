@@ -7,11 +7,11 @@ namespace MobileBlazorBindingsTodo
 {
     public class App : Application
     {
-        public IHost EmblazonHost { get; }
+        public IHost AppHost { get; }
 
         public App(IServiceCollection additionalServices)
         {
-            EmblazonHost = Host.CreateDefaultBuilder()
+            AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register backend-specific services (e.g. iOS, Android)
@@ -25,7 +25,7 @@ namespace MobileBlazorBindingsTodo
                 })
                 .Build();
 
-            EmblazonHost.AddComponent<TodoApp>(parent: this);
+            AppHost.AddComponent<TodoApp>(parent: this);
         }
 
         protected override void OnStart()

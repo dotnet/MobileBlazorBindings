@@ -3,8 +3,8 @@ setlocal
 
 set THIS_DIR=%~dp0
 
-echo --- Emblazon ---
-msbuild /t:pack %* %THIS_DIR%\src\Emblazon\Emblazon.csproj
+echo --- Microsoft.MobileBlazorBindings.Core ---
+msbuild /t:pack %* %THIS_DIR%\src\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj
 echo --- BlinForms ---
 msbuild /t:pack %* %THIS_DIR%\src\BlinForms.Framework\BlinForms.Framework.csproj
 echo --- MobileBlazorBindings ---

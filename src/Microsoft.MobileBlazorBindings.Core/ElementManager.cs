@@ -1,7 +1,7 @@
-﻿namespace Emblazon
+﻿namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
-    /// Utilities needed by Emblazon to managed native controls. Implementations
+    /// Utilities needed by the system to manage native controls. Implementations
     /// of native rendering systems have their own quirks in terms of dealing with
     /// parent/child relationships, so each must implement this given the constraints
     /// and requirements of their systems.

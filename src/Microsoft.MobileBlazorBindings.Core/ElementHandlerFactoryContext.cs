@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     internal class ElementHandlerFactoryContext
     {
-        public ElementHandlerFactoryContext(EmblazonRenderer renderer, IElementHandler parentHandler)
+        public ElementHandlerFactoryContext(NativeComponentRenderer renderer, IElementHandler parentHandler)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ParentHandler = parentHandler;
@@ -12,6 +12,6 @@ namespace Emblazon
 
         public IElementHandler ParentHandler { get; }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
     }
 }

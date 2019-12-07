@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Rendering;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     // This wraps a RenderTreeBuilder in such a way that consumers
     // can only call the desired AddAttribute method, can't supply

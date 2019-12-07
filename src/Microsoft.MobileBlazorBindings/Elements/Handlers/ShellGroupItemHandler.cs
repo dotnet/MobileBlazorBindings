@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ShellGroupItemHandler : BaseShellItemHandler
     {
-        public ShellGroupItemHandler(EmblazonRenderer renderer, XF.ShellGroupItem shellGroupItemControl) : base(renderer, shellGroupItemControl)
+        public ShellGroupItemHandler(NativeComponentRenderer renderer, XF.ShellGroupItem shellGroupItemControl) : base(renderer, shellGroupItemControl)
         {
             ShellGroupItemControl = shellGroupItemControl ?? throw new ArgumentNullException(nameof(shellGroupItemControl));
         }

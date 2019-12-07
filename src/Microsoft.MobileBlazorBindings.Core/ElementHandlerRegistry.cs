@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     public static class ElementHandlerRegistry
     {
@@ -9,13 +9,13 @@ namespace Emblazon
             = new Dictionary<string, ElementHandlerFactory>();
 
         public static void RegisterElementHandler<TComponent>(
-            Func<EmblazonRenderer, IElementHandler, IElementHandler> factory) where TComponent : NativeControlComponentBase
+            Func<NativeComponentRenderer, IElementHandler, IElementHandler> factory) where TComponent : NativeControlComponentBase
         {
             ElementHandlers.Add(typeof(TComponent).FullName, new ElementHandlerFactory(factory));
         }
 
         public static void RegisterElementHandler<TComponent>(
-            Func<EmblazonRenderer, IElementHandler> factory) where TComponent : NativeControlComponentBase
+            Func<NativeComponentRenderer, IElementHandler> factory) where TComponent : NativeControlComponentBase
         {
             ElementHandlers.Add(typeof(TComponent).FullName, new ElementHandlerFactory((renderer, _) => factory(renderer)));
         }

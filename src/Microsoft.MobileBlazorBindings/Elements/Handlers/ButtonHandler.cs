@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ButtonHandler : ViewHandler
     {
-        public ButtonHandler(EmblazonRenderer renderer, XF.Button buttonControl) : base(renderer, buttonControl)
+        public ButtonHandler(NativeComponentRenderer renderer, XF.Button buttonControl) : base(renderer, buttonControl)
         {
             ButtonControl = buttonControl ?? throw new ArgumentNullException(nameof(buttonControl));
             ButtonControl.Clicked += (s, e) =>

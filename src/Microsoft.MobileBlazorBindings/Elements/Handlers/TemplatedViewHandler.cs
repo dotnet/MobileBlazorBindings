@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class TemplatedViewHandler : LayoutHandler
     {
-        public TemplatedViewHandler(EmblazonRenderer renderer, XF.TemplatedView templatedViewControl) : base(renderer, templatedViewControl)
+        public TemplatedViewHandler(NativeComponentRenderer renderer, XF.TemplatedView templatedViewControl) : base(renderer, templatedViewControl)
         {
             TemplatedViewControl = templatedViewControl ?? throw new ArgumentNullException(nameof(templatedViewControl));
         }

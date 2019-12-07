@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
     /// Represents a "shadow" item that Blazor uses to map changes into the live native UI tree.
     /// </summary>
     [DebuggerDisplay("{DebugName}")]
-    internal sealed class EmblazonAdapter : IDisposable
+    internal sealed class NativeComponentAdapter : IDisposable
     {
         private static volatile int DebugInstanceCounter;
 
-        public EmblazonAdapter(EmblazonRenderer renderer, IElementHandler closestPhysicalParent, IElementHandler knownTargetElement = null)
+        public NativeComponentAdapter(NativeComponentRenderer renderer, IElementHandler closestPhysicalParent, IElementHandler knownTargetElement = null)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             _closestPhysicalParent = closestPhysicalParent;
@@ -29,14 +29,14 @@ namespace Emblazon
 
         private string DebugName => $"[#{_debugInstanceCounterValue}] {Name}";
 
-        public EmblazonAdapter Parent { get; private set; }
-        public List<EmblazonAdapter> Children { get; } = new List<EmblazonAdapter>();
+        public NativeComponentAdapter Parent { get; private set; }
+        public List<NativeComponentAdapter> Children { get; } = new List<NativeComponentAdapter>();
 
         private readonly IElementHandler _closestPhysicalParent;
         private IElementHandler _targetElement;
         private IComponent _targetComponent;
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
 
         /// <summary>
         /// Used for debugging purposes.
@@ -45,7 +45,7 @@ namespace Emblazon
 
         public override string ToString()
         {
-            return $"EmblazonAdapter: Name={Name ?? "<?>"}, Target={_targetElement?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
+            return $"{nameof(NativeComponentAdapter)}: Name={Name ?? "<?>"}, Target={_targetElement?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
         }
 
         internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
@@ -164,7 +164,7 @@ namespace Emblazon
                     }
                 case RenderTreeFrameType.Component:
                     {
-                        // Components are represented by EmblazonAdapters
+                        // Components are represented by NativeComponentAdapter
                         var childAdapter = Renderer.CreateAdapterForChildComponent(_targetElement ?? _closestPhysicalParent, frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
                         childAdapter._targetComponent = frame.Component;
@@ -207,9 +207,9 @@ namespace Emblazon
             }
         }
 
-        private EmblazonAdapter CreateAdapter(IElementHandler physicalParent)
+        private NativeComponentAdapter CreateAdapter(IElementHandler physicalParent)
         {
-            return new EmblazonAdapter(Renderer, physicalParent);
+            return new NativeComponentAdapter(Renderer, physicalParent);
         }
 
         private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
@@ -324,7 +324,7 @@ namespace Emblazon
             return -1;
         }
 
-        private static EmblazonAdapter GetEarlierSiblingMatch(EmblazonAdapter parentAdapter, EmblazonAdapter childAdapter)
+        private static NativeComponentAdapter GetEarlierSiblingMatch(NativeComponentAdapter parentAdapter, NativeComponentAdapter childAdapter)
         {
             var indexOfParentsChildAdapter = parentAdapter.Children.IndexOf(childAdapter);
 
@@ -348,7 +348,7 @@ namespace Emblazon
             return null;
         }
 
-        private EmblazonAdapter GetLastDescendantWithPhysicalElement()
+        private NativeComponentAdapter GetLastDescendantWithPhysicalElement()
         {
             if (_targetElement is INonChildContainerElement)
             {
@@ -405,7 +405,7 @@ namespace Emblazon
             ;
         }
 
-        private void AddChildAdapter(int siblingIndex, EmblazonAdapter childAdapter)
+        private void AddChildAdapter(int siblingIndex, NativeComponentAdapter childAdapter)
         {
             childAdapter.Parent = this;
 

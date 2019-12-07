@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class StackLayoutHandler : LayoutHandler
     {
-        public StackLayoutHandler(EmblazonRenderer renderer, XF.StackLayout stackLayoutControl) : base(renderer, stackLayoutControl)
+        public StackLayoutHandler(NativeComponentRenderer renderer, XF.StackLayout stackLayoutControl) : base(renderer, stackLayoutControl)
         {
             StackLayoutControl = stackLayoutControl ?? throw new System.ArgumentNullException(nameof(stackLayoutControl));
         }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     public abstract class NativeControlComponentBase : ComponentBase
     {

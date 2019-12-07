@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.MobileBlazorBindings.Elements

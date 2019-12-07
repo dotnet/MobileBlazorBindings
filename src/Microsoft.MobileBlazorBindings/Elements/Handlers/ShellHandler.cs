@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private readonly ShellContentMarkerItem _dummyShellContent = new ShellContentMarkerItem();
         private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
 
-        public ShellHandler(EmblazonRenderer renderer, XF.Shell shellControl) : base(renderer, shellControl)
+        public ShellHandler(NativeComponentRenderer renderer, XF.Shell shellControl) : base(renderer, shellControl)
         {
             ShellControl = shellControl ?? throw new ArgumentNullException(nameof(shellControl));
 

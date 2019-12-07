@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ScrollViewHandler : LayoutHandler
     {
-        public ScrollViewHandler(EmblazonRenderer renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
+        public ScrollViewHandler(NativeComponentRenderer renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
         {
             ScrollViewControl = scrollViewControl ?? throw new System.ArgumentNullException(nameof(scrollViewControl));
         }

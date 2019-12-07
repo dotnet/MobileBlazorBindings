@@ -15,9 +15,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlinForms", "BlinForms", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.MobileBlazorBindings", "Microsoft.MobileBlazorBindings", "{A497EAAE-8B20-4749-B93F-68CC35FC7D80}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Emblazon", "Emblazon", "{B094376E-6EA4-4BCE-875F-600EEA9752CB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.MobileBlazorBindings.Core", "Microsoft.MobileBlazorBindings.Core", "{B094376E-6EA4-4BCE-875F-600EEA9752CB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emblazon", "src\Emblazon\Emblazon.csproj", "{367B082F-8D65-42EF-9DC0-EC078CDD577A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.Core", "src\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj", "{367B082F-8D65-42EF-9DC0-EC078CDD577A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlinFormsSample", "samples\BlinFormsSample\BlinFormsSample.csproj", "{1B6BEF03-CFDE-468B-8C50-2F261897826F}"
 EndProject

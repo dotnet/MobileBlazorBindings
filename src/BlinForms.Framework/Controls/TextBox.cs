@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -55,7 +55,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorTextBox : System.Windows.Forms.TextBox, IWindowsFormsControlHandler
         {
-            public BlazorTextBox(EmblazonRenderer renderer)
+            public BlazorTextBox(NativeComponentRenderer renderer)
             {
                 TextChanged += (s, e) =>
                 {
@@ -68,7 +68,7 @@ namespace BlinForms.Framework.Controls
             }
 
             public ulong TextChangedEventHandlerId { get; set; }
-            public EmblazonRenderer Renderer { get; }
+            public NativeComponentRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GridCellHandler : IXamarinFormsElementHandler, IParentChildManagementRequired
     {
-        public GridCellHandler(EmblazonRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
+        public GridCellHandler(NativeComponentRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             GridCellPlaceholderElementControl = gridCellPlaceholderElementControl ?? throw new ArgumentNullException(nameof(gridCellPlaceholderElementControl));
@@ -14,7 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ParentChildManager = new ParentChildManager<XF.Grid, XF.View>(AddChildViewToParentGrid);
         }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
         public GridCellPlaceholderElement GridCellPlaceholderElementControl { get; }
         public XF.Element ElementControl => GridCellPlaceholderElementControl;
         public object TargetElement => ElementControl;

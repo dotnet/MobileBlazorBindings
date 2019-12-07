@@ -6,16 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
-    public abstract class EmblazonRenderer : Renderer
+    public abstract class NativeComponentRenderer : Renderer
     {
-        private readonly Dictionary<int, EmblazonAdapter> _componentIdToAdapter = new Dictionary<int, EmblazonAdapter>();
+        private readonly Dictionary<int, NativeComponentAdapter> _componentIdToAdapter = new Dictionary<int, NativeComponentAdapter>();
         private ElementManager _elementManager;
         private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
 
 
-        public EmblazonRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+        public NativeComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)
         {
         }
@@ -57,7 +57,7 @@ namespace Emblazon
                 var component = InstantiateComponent(componentType);
                 var componentId = AssignRootComponentId(component);
 
-                var rootAdapter = new EmblazonAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
+                var rootAdapter = new NativeComponentAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
                 {
                     Name = $"RootAdapter attached to {parent.GetType().FullName}",
                 };
@@ -121,9 +121,9 @@ namespace Emblazon
             unregisterCallback();
         }
 
-        internal EmblazonAdapter CreateAdapterForChildComponent(IElementHandler physicalParent, int componentId)
+        internal NativeComponentAdapter CreateAdapterForChildComponent(IElementHandler physicalParent, int componentId)
         {
-            var result = new EmblazonAdapter(this, physicalParent);
+            var result = new NativeComponentAdapter(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
         }

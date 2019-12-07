@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Linq;
 using XF = Xamarin.Forms;
@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class NavigableElementHandler : ElementHandler
     {
-        public NavigableElementHandler(EmblazonRenderer renderer, XF.NavigableElement navigableElementControl) : base(renderer, navigableElementControl)
+        public NavigableElementHandler(NativeComponentRenderer renderer, XF.NavigableElement navigableElementControl) : base(renderer, navigableElementControl)
         {
             NavigableElementControl = navigableElementControl ?? throw new ArgumentNullException(nameof(navigableElementControl));
         }

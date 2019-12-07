@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class LabelHandler : ViewHandler
     {
-        public LabelHandler(EmblazonRenderer renderer, XF.Label labelControl) : base(renderer, labelControl)
+        public LabelHandler(NativeComponentRenderer renderer, XF.Label labelControl) : base(renderer, labelControl)
         {
             LabelControl = labelControl ?? throw new System.ArgumentNullException(nameof(labelControl));
         }

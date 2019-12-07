@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.PancakeView.Elements
 {
     public class PancakeViewHandler : ContentViewHandler
     {
-        public PancakeViewHandler(EmblazonRenderer renderer, XF.PancakeView.PancakeView pancakeViewControl) : base(renderer, pancakeViewControl)
+        public PancakeViewHandler(NativeComponentRenderer renderer, XF.PancakeView.PancakeView pancakeViewControl) : base(renderer, pancakeViewControl)
         {
             PancakeViewControl = pancakeViewControl ?? throw new ArgumentNullException(nameof(pancakeViewControl));
         }

@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     internal class ElementHandlerFactory
     {
-        private readonly Func<EmblazonRenderer, IElementHandler, IElementHandler> _callback;
+        private readonly Func<NativeComponentRenderer, IElementHandler, IElementHandler> _callback;
 
-        public ElementHandlerFactory(Func<EmblazonRenderer, IElementHandler, IElementHandler> callback)
+        public ElementHandlerFactory(Func<NativeComponentRenderer, IElementHandler, IElementHandler> callback)
         {
             _callback = callback ?? throw new ArgumentNullException(nameof(callback));
         }

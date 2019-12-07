@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class FrameHandler : ContentViewHandler
     {
-        public FrameHandler(EmblazonRenderer renderer, XF.Frame frameControl) : base(renderer, frameControl)
+        public FrameHandler(NativeComponentRenderer renderer, XF.Frame frameControl) : base(renderer, frameControl)
         {
             FrameControl = frameControl ?? throw new ArgumentNullException(nameof(frameControl));
         }

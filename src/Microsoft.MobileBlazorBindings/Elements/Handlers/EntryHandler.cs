@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using System;
 using XF = Xamarin.Forms;
@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class EntryHandler : InputViewHandler
     {
-        public EntryHandler(EmblazonRenderer renderer, XF.Entry entryControl) : base(renderer, entryControl)
+        public EntryHandler(NativeComponentRenderer renderer, XF.Entry entryControl) : base(renderer, entryControl)
         {
             EntryControl = entryControl ?? throw new ArgumentNullException(nameof(entryControl));
             EntryControl.Completed += (s, e) =>

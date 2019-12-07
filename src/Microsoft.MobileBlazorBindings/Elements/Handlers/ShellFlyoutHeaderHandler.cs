@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ShellFlyoutHeaderHandler : IXamarinFormsElementHandler, IParentChildManagementRequired
     {
-        public ShellFlyoutHeaderHandler(EmblazonRenderer renderer, DummyElement shellFlyoutHeaderDummyControl)
+        public ShellFlyoutHeaderHandler(NativeComponentRenderer renderer, DummyElement shellFlyoutHeaderDummyControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ShellFlyoutHeaderDummyControl = shellFlyoutHeaderDummyControl ?? throw new ArgumentNullException(nameof(shellFlyoutHeaderDummyControl));
@@ -14,7 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ParentChildManager = new ParentChildManager<XF.Shell, XF.View>(SetShellFlyoutHeader);
         }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
         public DummyElement ShellFlyoutHeaderDummyControl { get; }
         public XF.Element ElementControl => ShellFlyoutHeaderDummyControl;
         public object TargetElement => ElementControl;

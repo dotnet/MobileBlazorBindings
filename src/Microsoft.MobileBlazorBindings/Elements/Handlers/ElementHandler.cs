@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,13 +6,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ElementHandler : IXamarinFormsElementHandler
     {
-        public ElementHandler(EmblazonRenderer renderer, XF.Element elementControl)
+        public ElementHandler(NativeComponentRenderer renderer, XF.Element elementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
         public XF.Element ElementControl { get; }
         public object TargetElement => ElementControl;
 

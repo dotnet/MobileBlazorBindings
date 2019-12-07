@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class SwitchHandler : ViewHandler
     {
-        public SwitchHandler(EmblazonRenderer renderer, XF.Switch switchControl) : base(renderer, switchControl)
+        public SwitchHandler(NativeComponentRenderer renderer, XF.Switch switchControl) : base(renderer, switchControl)
         {
             SwitchControl = switchControl ?? throw new System.ArgumentNullException(nameof(switchControl));
             SwitchControl.Toggled += (s, e) =>

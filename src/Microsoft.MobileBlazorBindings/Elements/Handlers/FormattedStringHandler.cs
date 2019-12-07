@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class FormattedStringHandler : ElementHandler
     {
-        public FormattedStringHandler(EmblazonRenderer renderer, XF.FormattedString formattedStringControl) : base(renderer, formattedStringControl)
+        public FormattedStringHandler(NativeComponentRenderer renderer, XF.FormattedString formattedStringControl) : base(renderer, formattedStringControl)
         {
             FormattedStringControl = formattedStringControl ?? throw new ArgumentNullException(nameof(formattedStringControl));
         }

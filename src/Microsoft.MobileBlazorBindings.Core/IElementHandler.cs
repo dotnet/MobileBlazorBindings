@@ -1,7 +1,7 @@
-﻿namespace Emblazon
+﻿namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
-    /// Represents an arbitrary element that Emblazon can create.
+    /// Represents a container for native element.
     /// </summary>
     public interface IElementHandler
     {

@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GestureElementHandler : ElementHandler
     {
-        public GestureElementHandler(EmblazonRenderer renderer, XF.GestureElement gestureElementControl) : base(renderer, gestureElementControl)
+        public GestureElementHandler(NativeComponentRenderer renderer, XF.GestureElement gestureElementControl) : base(renderer, gestureElementControl)
         {
             GestureElementControl = gestureElementControl ?? throw new System.ArgumentNullException(nameof(gestureElementControl));
         }

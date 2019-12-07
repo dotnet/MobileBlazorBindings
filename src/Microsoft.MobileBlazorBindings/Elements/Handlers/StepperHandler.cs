@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using System;
 using XF = Xamarin.Forms;
@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class StepperHandler : ViewHandler
     {
-        public StepperHandler(EmblazonRenderer renderer, XF.Stepper stepperControl) : base(renderer, stepperControl)
+        public StepperHandler(NativeComponentRenderer renderer, XF.Stepper stepperControl) : base(renderer, stepperControl)
         {
             StepperControl = stepperControl ?? throw new ArgumentNullException(nameof(stepperControl));
             StepperControl.ValueChanged += (s, e) =>

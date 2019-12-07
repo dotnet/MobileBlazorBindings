@@ -6,11 +6,11 @@ namespace MobileBlazorBindingsXaminals
 {
     public class App : Application
     {
-        public IHost EmblazonHost { get; }
+        public IHost AppHost { get; }
 
         public App()
         {
-            EmblazonHost = Host.CreateDefaultBuilder()
+            AppHost = Host.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services
@@ -18,7 +18,7 @@ namespace MobileBlazorBindingsXaminals
                 })
                 .Build();
 
-            EmblazonHost.AddComponent<AppShell>(parent: this);
+            AppHost.AddComponent<AppShell>(parent: this);
         }
 
         protected override void OnStart()

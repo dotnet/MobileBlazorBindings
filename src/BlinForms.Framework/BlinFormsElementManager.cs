@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System.Diagnostics;
 
 namespace BlinForms.Framework

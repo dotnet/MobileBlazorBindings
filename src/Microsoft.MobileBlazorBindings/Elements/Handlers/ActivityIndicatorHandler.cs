@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ActivityIndicatorHandler : ViewHandler
     {
-        public ActivityIndicatorHandler(EmblazonRenderer renderer, XF.ActivityIndicator activityIndicatorControl) : base(renderer, activityIndicatorControl)
+        public ActivityIndicatorHandler(NativeComponentRenderer renderer, XF.ActivityIndicator activityIndicatorControl) : base(renderer, activityIndicatorControl)
         {
             ActivityIndicatorControl = activityIndicatorControl ?? throw new ArgumentNullException(nameof(activityIndicatorControl));
         }

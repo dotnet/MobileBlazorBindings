@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class LayoutHandler : ViewHandler
     {
-        public LayoutHandler(EmblazonRenderer renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
+        public LayoutHandler(NativeComponentRenderer renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
         {
             LayoutControl = layoutControl ?? throw new System.ArgumentNullException(nameof(layoutControl));
         }

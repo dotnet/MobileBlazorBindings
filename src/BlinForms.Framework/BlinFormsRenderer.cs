@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework
 {
-    public class BlinFormsRenderer : EmblazonRenderer
+    public class BlinFormsRenderer : NativeComponentRenderer
     {
         public BlinFormsRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
             : base(serviceProvider, loggerFactory)

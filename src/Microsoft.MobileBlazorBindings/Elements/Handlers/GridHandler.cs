@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.GridInternals;
 using System;
 using XF = Xamarin.Forms;
@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GridHandler : LayoutHandler
     {
-        public GridHandler(EmblazonRenderer renderer, XF.Grid gridControl) : base(renderer, gridControl)
+        public GridHandler(NativeComponentRenderer renderer, XF.Grid gridControl) : base(renderer, gridControl)
         {
             GridControl = gridControl ?? throw new ArgumentNullException(nameof(gridControl));
         }

@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class VisualElementHandler : NavigableElementHandler
     {
-        public VisualElementHandler(EmblazonRenderer renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
+        public VisualElementHandler(NativeComponentRenderer renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
         {
             VisualElementControl = visualElementControl ?? throw new ArgumentNullException(nameof(visualElementControl));
             VisualElementControl.Focused += (s, e) =>

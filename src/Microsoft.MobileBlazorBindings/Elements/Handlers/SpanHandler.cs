@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class SpanHandler : GestureElementHandler
     {
-        public SpanHandler(EmblazonRenderer renderer, XF.Span spanControl) : base(renderer, spanControl)
+        public SpanHandler(NativeComponentRenderer renderer, XF.Span spanControl) : base(renderer, spanControl)
         {
             SpanControl = spanControl ?? throw new ArgumentNullException(nameof(spanControl));
         }

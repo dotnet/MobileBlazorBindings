@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -56,7 +56,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorCheckBox : System.Windows.Forms.CheckBox, IWindowsFormsControlHandler
         {
-            public BlazorCheckBox(EmblazonRenderer renderer)
+            public BlazorCheckBox(NativeComponentRenderer renderer)
             {
                 CheckedChanged += (s, e) =>
                 {
@@ -77,7 +77,7 @@ namespace BlinForms.Framework.Controls
 
             public ulong CheckedChangedEventHandlerId { get; set; }
             public ulong CheckStateChangedEventHandlerId { get; set; }
-            public EmblazonRenderer Renderer { get; }
+            public NativeComponentRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

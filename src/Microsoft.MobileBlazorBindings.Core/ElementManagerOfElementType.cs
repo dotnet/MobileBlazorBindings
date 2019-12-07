@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Emblazon
+namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
     /// Utility intermediate class to make it easier to strongly-type a derived <see cref="ElementManager"/>.

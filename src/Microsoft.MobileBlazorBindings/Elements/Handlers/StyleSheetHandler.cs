@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.IO;
 using System.Reflection;
@@ -11,12 +11,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         private XF.VisualElement _parentVisualElement;
 
-        public StyleSheetHandler(EmblazonRenderer renderer)
+        public StyleSheetHandler(NativeComponentRenderer renderer)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
         }
 
-        public EmblazonRenderer Renderer { get; }
+        public NativeComponentRenderer Renderer { get; }
         public XF.Element ElementControl => null;
         public object TargetElement => ElementControl;
 

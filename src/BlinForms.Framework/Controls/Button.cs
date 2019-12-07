@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Windows.Forms;
@@ -30,7 +30,7 @@ namespace BlinForms.Framework.Controls
 
         private class BlazorButton : System.Windows.Forms.Button, IWindowsFormsControlHandler
         {
-            public BlazorButton(EmblazonRenderer renderer)
+            public BlazorButton(NativeComponentRenderer renderer)
             {
                 Click += (s, e) =>
                 {
@@ -43,7 +43,7 @@ namespace BlinForms.Framework.Controls
             }
 
             public ulong ClickEventHandlerId { get; set; }
-            public EmblazonRenderer Renderer { get; }
+            public NativeComponentRenderer Renderer { get; }
 
             public Control Control => this;
             public object TargetElement => this;

@@ -1,4 +1,4 @@
-﻿namespace Emblazon
+﻿namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
     /// Marker interface to indicate that this element is a container of elements that are not

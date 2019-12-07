@@ -1,11 +1,11 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class InputViewHandler : ViewHandler
     {
-        public InputViewHandler(EmblazonRenderer renderer, XF.InputView inputViewControl) : base(renderer, inputViewControl)
+        public InputViewHandler(NativeComponentRenderer renderer, XF.InputView inputViewControl) : base(renderer, inputViewControl)
         {
             InputViewControl = inputViewControl ?? throw new System.ArgumentNullException(nameof(inputViewControl));
         }

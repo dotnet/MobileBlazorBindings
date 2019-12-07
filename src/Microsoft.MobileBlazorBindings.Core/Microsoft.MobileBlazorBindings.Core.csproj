@@ -2,17 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Title>Emblazon Core Runtime (experimental)</Title>
-    <Description>Common Emblazon logic for using Blazor to target native renderers. For mobile app projects for Android and iOS use the Microsoft.MobileBlazorBindings package.</Description>
+    <Title>Mobile Blazor Bindings Core Runtime (experimental)</Title>
+    <Description>Common logic for using Blazor to target native renderers. For mobile app projects for Android and iOS use the Microsoft.MobileBlazorBindings package.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <CodeAnalysisRuleSet>Emblazon.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Microsoft.MobileBlazorBindings.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <CodeAnalysisRuleSet>Emblazon.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>Microsoft.MobileBlazorBindings.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ViewHandler : VisualElementHandler
     {
-        public ViewHandler(EmblazonRenderer renderer, XF.View viewControl) : base(renderer, viewControl)
+        public ViewHandler(NativeComponentRenderer renderer, XF.View viewControl) : base(renderer, viewControl)
         {
             ViewControl = viewControl ?? throw new ArgumentNullException(nameof(viewControl));
         }

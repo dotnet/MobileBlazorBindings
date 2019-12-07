@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class MenuItemHandler : BaseMenuItemHandler
     {
-        public MenuItemHandler(EmblazonRenderer renderer, XF.MenuItem menuItemControl) : base(renderer, menuItemControl)
+        public MenuItemHandler(NativeComponentRenderer renderer, XF.MenuItem menuItemControl) : base(renderer, menuItemControl)
         {
             MenuItemControl = menuItemControl ?? throw new ArgumentNullException(nameof(menuItemControl));
             MenuItemControl.Clicked += (s, e) =>

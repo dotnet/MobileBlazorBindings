@@ -1,4 +1,4 @@
-﻿using Emblazon;
+﻿using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,7 +6,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class PageHandler : VisualElementHandler
     {
-        public PageHandler(EmblazonRenderer renderer, XF.Page pageControl) : base(renderer, pageControl)
+        public PageHandler(NativeComponentRenderer renderer, XF.Page pageControl) : base(renderer, pageControl)
         {
             PageControl = pageControl ?? throw new ArgumentNullException(nameof(pageControl));
         }
