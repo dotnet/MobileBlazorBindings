@@ -6,11 +6,12 @@
     <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(RepoRootPath)bin\$(MSBuildProjectName)\</BaseOutputPath>
     <PackageOutputPath>$(RepoRootPath)bin\Packages\$(Configuration)\</PackageOutputPath>
 
-    <Company>.NET Foundation Contributors</Company>
-    <Authors>.NET Foundation Contributors</Authors>
-    <Copyright>© .NET Foundation Contributors. All rights reserved.</Copyright>
+    <Company>Microsoft</Company>
+    <Authors>Microsoft</Authors>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <PackageProjectUrl>https://aka.ms/mobileblazorbindings</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
