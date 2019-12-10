@@ -39,3 +39,4 @@ namespace Microsoft.MobileBlazorBindings
     }
 }
 Test
+Test 2
