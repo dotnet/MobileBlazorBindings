@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.Core
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
     /// Marker interface to indicate that this element is a container of elements that are not

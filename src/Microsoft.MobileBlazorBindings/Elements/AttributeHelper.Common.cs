@@ -1,4 +1,7 @@
-﻿using System.Globalization;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using System.Globalization;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {

@@ -1,4 +1,7 @@
-﻿using BlinForms.Framework;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using BlinForms.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;

@@ -1,4 +1,7 @@
-﻿using MobileBlazorBindingsXaminals.Models;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using MobileBlazorBindingsXaminals.Models;
 using System.Collections.Generic;
 
 namespace MobileBlazorBindingsXaminals.Data

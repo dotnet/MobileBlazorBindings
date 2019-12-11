@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.Elements.Handlers
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public interface IParentChildManager
     {

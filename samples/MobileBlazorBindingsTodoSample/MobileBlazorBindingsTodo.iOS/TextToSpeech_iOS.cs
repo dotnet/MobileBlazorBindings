@@ -1,4 +1,7 @@
-﻿using AVFoundation;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using AVFoundation;
 
 namespace MobileBlazorBindingsTodo.iOS
 {

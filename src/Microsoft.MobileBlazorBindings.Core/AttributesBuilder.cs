@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Rendering;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace Microsoft.MobileBlazorBindings.Core
 {

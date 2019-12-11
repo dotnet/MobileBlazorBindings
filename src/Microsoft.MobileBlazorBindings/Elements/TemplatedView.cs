@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.Elements
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class TemplatedView : Layout
     {

@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings.Core;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings.Core;
 
 namespace BlinForms.Framework.Controls
 {

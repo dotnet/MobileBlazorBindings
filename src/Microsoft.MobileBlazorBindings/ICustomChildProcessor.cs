@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings
 {
     public interface ICustomChildProcessor
     {

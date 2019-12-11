@@ -1,4 +1,7 @@
-﻿namespace MobileBlazorBindingsXaminals.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace MobileBlazorBindingsXaminals.Models
 {
     public class Animal
     {

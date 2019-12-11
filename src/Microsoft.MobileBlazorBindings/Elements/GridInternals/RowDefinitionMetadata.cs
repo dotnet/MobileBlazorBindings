@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using System.ComponentModel;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.GridInternals

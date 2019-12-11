@@ -1,4 +1,7 @@
-﻿using Xamarin.Forms;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {

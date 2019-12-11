@@ -1,10 +1,13 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
 namespace MobileBlazorBindingsHelloWorld
 {
-    public partial class App : Application
+    public class App : Application
     {
         public App()
         {

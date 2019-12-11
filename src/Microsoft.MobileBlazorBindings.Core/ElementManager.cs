@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.Core
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.Core
 {
     /// <summary>
     /// Utilities needed by the system to manage native controls. Implementations

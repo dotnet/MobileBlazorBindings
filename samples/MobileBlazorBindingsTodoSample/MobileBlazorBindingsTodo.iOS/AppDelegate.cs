@@ -1,4 +1,7 @@
-﻿using Foundation;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Foundation;
 using Microsoft.Extensions.DependencyInjection;
 using UIKit;
 

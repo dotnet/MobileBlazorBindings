@@ -1,4 +1,7 @@
-﻿using SQLite;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using SQLite;
 
 namespace MobileBlazorBindingsTodo
 {

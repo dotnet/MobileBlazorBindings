@@ -1,4 +1,7 @@
-﻿using Android.Speech.Tts;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Android.Speech.Tts;
 using Java.Lang;
 
 namespace MobileBlazorBindingsTodo.Droid

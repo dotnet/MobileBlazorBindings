@@ -1,4 +1,7 @@
-﻿using UIKit;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using UIKit;
 
 namespace MobileBlazorBindingsXaminals.iOS
 {

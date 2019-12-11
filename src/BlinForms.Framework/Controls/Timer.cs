@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using System.Windows.Forms;
 
 namespace BlinForms.Framework.Controls

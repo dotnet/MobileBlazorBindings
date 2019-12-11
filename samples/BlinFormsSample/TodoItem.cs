@@ -1,4 +1,7 @@
-﻿namespace BlinFormsSample
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace BlinFormsSample
 {
     public class TodoItem
     {
