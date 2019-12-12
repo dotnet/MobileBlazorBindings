@@ -1,5 +1,5 @@
 parameters:
-  windowsPool: Hosted Windows 2019 with VS2019
+  windowsPool: VSEng-MicroBuildVS2019
 
 jobs:
 - job: Windows
