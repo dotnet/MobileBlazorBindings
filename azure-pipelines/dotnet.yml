@@ -15,7 +15,7 @@ steps:
     msbuildArguments: /t:build /p:NoRestore=true
     solution: 'src/**/*.csproj' 
     configuration: '$(BuildConfiguration)'
-    arguments: /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
+    arguments: /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
 
 - task: MSBuild@1
   displayName: 'Pack src projects'
