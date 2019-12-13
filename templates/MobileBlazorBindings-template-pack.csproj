@@ -39,29 +39,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content
-      Include="MobileBlazorBindings-app\**\*"
-      Exclude="
-        MobileBlazorBindings-app\**\bin\**;
-        MobileBlazorBindings-app\**\obj\**;
-        **\template.in.json;
-        **\.gitignore" />
+    <Content Include="MobileBlazorBindings-app\**\*" Exclude="&#xD;&#xA;        MobileBlazorBindings-app\**\bin\**;&#xD;&#xA;        MobileBlazorBindings-app\**\obj\**;&#xD;&#xA;        **\template.in.json;&#xD;&#xA;        **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
   <Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion" BeforeTargets="CopyFilesToOutputDirectory">
     <Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
 
-    <ReplaceFileText
-      InputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.in.json"
-      OutputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.json"
-      MatchExpression="NuGetPackageVersionFromBuild"
-      ReplacementText="$(NuGetPackageVersion)" />
+    <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
   </Target>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\**\*.nupkg">
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.nupkg">
           <Authenticode>NuGet</Authenticode>
       </FilesToSign>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>
