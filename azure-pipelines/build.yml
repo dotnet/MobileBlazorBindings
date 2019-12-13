@@ -60,19 +60,19 @@ jobs:
     - name: _PublishArgs
       value: ''
 
-  steps:
-  - task: MicroBuildSigningPlugin@2
-    inputs:
-      signType: $(_SignType)
-      feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
-    continueOnError: false
-    env:
-      TeamName: $(_TeamName)
-  - task: MicroBuildCodesignVerify@2
-    inputs:
-      TargetFolders: '$(Build.StagingDirectory)'
-      ExcludeSNVerify: true
-  - task: MicroBuildCleanup@1
+  # steps:
+  # - task: MicroBuildSigningPlugin@2
+  #   inputs:
+  #     signType: $(_SignType)
+  #     feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+  #   continueOnError: false
+  #   env:
+  #     TeamName: $(_TeamName)
+  # - task: MicroBuildCodesignVerify@2
+  #   inputs:
+  #     TargetFolders: '$(Build.StagingDirectory)'
+  #     ExcludeSNVerify: true
+  # - task: MicroBuildCleanup@1
 
 - job: WrapUp
   dependsOn:

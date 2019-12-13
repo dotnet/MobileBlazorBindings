@@ -44,13 +44,6 @@ steps:
   displayName: Publish artifacts
   condition: succeededOrFailed()
 
-- task: NuGetCommand@2
-  displayName: 'NuGet push'
-  inputs:
-    command: push
-    publishVstsFeed: 'Emblazon'
-    allowPackageConflicts: true
-
 - task: PublishSymbols@2
   inputs:
     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols-Windows
