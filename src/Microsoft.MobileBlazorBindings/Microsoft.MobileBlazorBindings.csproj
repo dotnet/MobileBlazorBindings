@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutputAssembly)">
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.dll">
           <Authenticode>Microsoft400</Authenticode>
       </FilesToSign>
   </ItemGroup>
