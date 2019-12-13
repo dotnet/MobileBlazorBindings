@@ -8,14 +8,14 @@ steps:
   env:
     TeamName: $(_TeamName)
 
-- task: DotNetCoreCLI@2
+# Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
+- task: MSBuild@1
   displayName: 'Build src projects'
   inputs:
-    command: 'build'
-    projects: src/**/*.csproj
-    restoreDirectory: 
-    workingDirectory: 
-    arguments: --no-restore /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog" /p:Configuration=$(BuildConfiguration)
+    msbuildArguments: /t:build /p:NoRestore=true
+    solution: 'src/**/*.csproj' 
+    configuration: '$(BuildConfiguration)'
+    arguments: /v:m /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
 
 - task: MSBuild@1
   displayName: 'Pack src projects'
