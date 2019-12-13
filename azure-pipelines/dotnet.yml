@@ -1,4 +1,33 @@
+variables:
+- name: DOTNET_SKIP_FIRST_TIME_EXPERIENCE
+  value: true
+- name: _TeamName
+  value:  Emblazon
+
+- ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+  - name: _BuildArgs
+    value: /p:TeamName=$(_TeamName)
+  - name: _SignType
+    value: real
+
+- ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+  - name: _BuildArgs
+    value: ''
+  - name: _SignType
+    value: test
+  - name: _PublishArgs
+    value: ''
+
+
 steps:
+
+- task: MicroBuildSigningPlugin@2
+  inputs:
+    signType: $(_SignType)
+    feedSource: 'https://devdiv.pkgs.visualstudio.com/DefaultCollection/_packaging/MicroBuildToolset/nuget/v3/index.json'
+  continueOnError: false
+  env:
+    TeamName: $(_TeamName)
 
 - task: DotNetCoreCLI@2
   displayName: 'Build src projects'
@@ -52,3 +81,10 @@ steps:
     SymbolServerType: TeamServices
   displayName: Publish symbols to symbol server
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
+
+- task: MicroBuildCodesignVerify@2
+  inputs:
+    TargetFolders: '$(Build.StagingDirectory)'
+    ExcludeSNVerify: true
+
+- task: MicroBuildCleanup@1
