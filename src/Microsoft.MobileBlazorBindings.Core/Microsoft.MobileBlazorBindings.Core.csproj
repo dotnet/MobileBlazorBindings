@@ -25,4 +25,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\**\*.dll">
+          <Authenticode>Microsoft400</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>

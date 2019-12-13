@@ -23,4 +23,9 @@
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\**\*.dll">
+          <Authenticode>Microsoft400</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>

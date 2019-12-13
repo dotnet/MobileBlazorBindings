@@ -17,13 +17,4 @@
   <ItemGroup>
     <PackageReference Include="Nerdbank.GitVersioning" Version="3.0.25" PrivateAssets="all" />
   </ItemGroup>
-
-  <ItemGroup>
-      <FilesToSign Include="$(OutDir)\**\*.dll">
-          <Authenticode>Microsoft400</Authenticode>
-      </FilesToSign>
-      <FilesToSign Include="$(OutDir)\**\*.nupkg">
-          <Authenticode>NuGet</Authenticode>
-      </FilesToSign>
-  </ItemGroup>
 </Project>

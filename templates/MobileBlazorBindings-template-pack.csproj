@@ -58,4 +58,10 @@
       MatchExpression="NuGetPackageVersionFromBuild"
       ReplacementText="$(NuGetPackageVersion)" />
   </Target>
+
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\**\*.nupkg">
+          <Authenticode>NuGet</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>
