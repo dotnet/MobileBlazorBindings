@@ -51,6 +51,11 @@
     <Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
 
     <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
+
+    <Message Importance="High" Text="PATHPATH OutDir = $(OutDir)" />
+    <Message Importance="High" Text="PATHPATH IntermediateOutputPath =  $(IntermediateOutputPath)" />
+    <Message Importance="High" Text="PATHPATH OutputPath =  $(OutputPath)" />
+    <Message Importance="High" Text="PATHPATH PackageOutputPath =  $(PackageOutputPath)" />
   </Target>
 
   <ItemGroup>
