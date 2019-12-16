@@ -39,7 +39,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="MobileBlazorBindings-app\**\*" Exclude="&#xD;&#xA;        MobileBlazorBindings-app\**\bin\**;&#xD;&#xA;        MobileBlazorBindings-app\**\obj\**;&#xD;&#xA;        **\template.in.json;&#xD;&#xA;        **\.gitignore" />
+    <Content Include="MobileBlazorBindings-app\**\*" Exclude="
+            MobileBlazorBindings-app\**\bin\**;
+            MobileBlazorBindings-app\**\obj\**;
+            **\template.in.json;
+            **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
@@ -50,7 +54,7 @@
   </Target>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.nupkg">
+      <FilesToSign Include="$(PackageOutputPath)\Microsoft.MobileBlazorBindings.Templates.$(NuGetPackageVersion).nupkg">
           <Authenticode>NuGet</Authenticode>
       </FilesToSign>
   </ItemGroup>
