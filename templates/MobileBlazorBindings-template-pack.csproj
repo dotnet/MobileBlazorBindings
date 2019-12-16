@@ -36,8 +36,6 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
-
-    <PackageOutputPath>$(OutDir)\Packages\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,7 +59,7 @@
   </Target>
 
   <ItemGroup>
-      <FilesToSign Include="$(PackageOutputPath)\Microsoft.MobileBlazorBindings.Templates.$(NuGetPackageVersion).nupkg">
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.$(NuGetPackageVersion).nupkg">
           <Authenticode>NuGet</Authenticode>
       </FilesToSign>
   </ItemGroup>
