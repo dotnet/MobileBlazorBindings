@@ -4,7 +4,6 @@
     <RepoRootPath>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</RepoRootPath>
     <BaseIntermediateOutputPath>$(RepoRootPath)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
     <BaseOutputPath Condition=" '$(BaseOutputPath)' == '' ">$(RepoRootPath)bin\$(MSBuildProjectName)\</BaseOutputPath>
-    <PackageOutputPath>$(OutDir)\Packages\</PackageOutputPath>
 
     <Company>Microsoft</Company>
     <Authors>Microsoft</Authors>

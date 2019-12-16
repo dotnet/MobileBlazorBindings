@@ -36,6 +36,8 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
+
+    <PackageOutputPath>$(OutDir)\Packages\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
