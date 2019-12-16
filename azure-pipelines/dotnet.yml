@@ -61,9 +61,9 @@ steps:
   displayName: Publish symbols to symbol server
   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
 
-- task: MicroBuildCodesignVerify@2
-  inputs:
-    TargetFolders: '$(Build.StagingDirectory)'
-    ExcludeSNVerify: true
+# - task: MicroBuildCodesignVerify@2
+#   inputs:
+#     TargetFolders: '$(Build.StagingDirectory)'
+#     ExcludeSNVerify: true
 
 - task: MicroBuildCleanup@1
