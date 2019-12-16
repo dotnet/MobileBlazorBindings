@@ -60,7 +60,7 @@
   </Target>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.$(NuGetPackageVersion).nupkg">
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.*.nupkg">
           <Authenticode>NuGet</Authenticode>
       </FilesToSign>
   </ItemGroup>
