@@ -65,5 +65,9 @@ steps:
 #   inputs:
 #     TargetFolders: '$(Build.StagingDirectory)'
 #     ExcludeSNVerify: true
+  # env:
+  #   TeamName: $(_TeamName)
 
 - task: MicroBuildCleanup@1
+  env:
+    TeamName: $(_TeamName)
