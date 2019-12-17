@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
 using XF = Xamarin.Forms;
-Bad code
+//Bad code
 namespace Microsoft.MobileBlazorBindings
 {
     public static class MobileBlazorBindingsHostExtensions
