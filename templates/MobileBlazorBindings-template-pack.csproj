@@ -70,17 +70,4 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
-
-  <Target Name="MovePackagesToFinalBin" DependsOnTargets="SignNuGetPackage" AfterTargets="SignNuGetPackage">
-    <ItemGroup>
-      <PackageBinFiles Include="$(OutDir)\**\*.nupkg"/>
-      <PackageBinFiles Include="$(OutDir)\**\*.snupkg"/>
-    </ItemGroup>
-
-    <Message Text="MovePackagesToFinalBin, sources = '@(PackageBinFiles)'" Importance="High" />
-    <Message Text="MovePackagesToFinalBin, destination = '$(RepoRootPath)/bin/Packages/$(Configuration)'" Importance="High" />
-
-    <Copy SourceFiles="@(PackageBinFiles)" DestinationFolder="$(RepoRootPath)/bin/Packages/$(Configuration)" />
-  </Target>
 </Project>
