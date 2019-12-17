@@ -55,7 +55,7 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy packages to staging directory'
   inputs:
-    contents:
+    contents: |
       - '**/*.nupkg'
       - '**/*.snupkg'
     targetFolder: $(Build.ArtifactStagingDirectory)/SignedPackages
