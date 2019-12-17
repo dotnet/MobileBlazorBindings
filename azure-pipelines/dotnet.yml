@@ -56,21 +56,21 @@ steps:
     targetPath: $(Build.ArtifactStagingDirectory)/SignedPackages
     artifactName: 'SignedPackages'
 
-- task: PublishSymbols@2
-  inputs:
-    SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols-Windows
-    SearchPattern: '**/*.pdb'
-    IndexSources: false
-    SymbolServerType: TeamServices
-  displayName: Publish symbols to symbol server
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
-
-# - task: MicroBuildCodesignVerify@2
+# - task: PublishSymbols@2
 #   inputs:
-#     TargetFolders: '$(Build.StagingDirectory)'
-#     ExcludeSNVerify: true
-  # env:
-  #   TeamName: $(_TeamName)
+#     SymbolsFolder: $(Build.ArtifactStagingDirectory)/symbols-Windows
+#     SearchPattern: '**/*.pdb'
+#     IndexSources: false
+#     SymbolServerType: TeamServices
+#   displayName: Publish symbols to symbol server
+#   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
+
+- task: MicroBuildCodesignVerify@2
+  inputs:
+    TargetFolders: '$(Build.ArtifactStagingDirectory)/SignedPackages'
+    ExcludeSNVerify: true
+  env:
+    TeamName: $(_TeamName)
 
 - task: MicroBuildCleanup@1
   env:
