@@ -78,8 +78,9 @@
   </ItemGroup>
 
   <Target Name="MovePackagesToFinalBin" DependsOnTargets="SignNuGetPackage" AfterTargets="SignNuGetPackage">
-    <Message Text="MovePackagesToFinalBin, destination =  '$(RepoRootPath)/bin/Packages/$(Configuration)'" Importance="High" />
+    <Message Text="MovePackagesToFinalBin, sources = '@(PackageBinFiles)'" Importance="High" />
+    <Message Text="MovePackagesToFinalBin, destination = '$(RepoRootPath)/bin/Packages/$(Configuration)'" Importance="High" />
 
-    <Copy SourceFiles="$(MySourceFiles)" DestinationFolder="$(RepoRootPath)/bin/Packages/$(Configuration)" />
+    <Copy SourceFiles="@(PackageBinFiles)" DestinationFolder="$(RepoRootPath)/bin/Packages/$(Configuration)" />
   </Target>
 </Project>
