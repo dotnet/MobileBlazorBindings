@@ -50,6 +50,7 @@ steps:
   inputs:
     contents: '$(System.DefaultWorkingDirectory)/**/*.nupkg'
     targetFolder: $(Build.ArtifactStagingDirectory)/SignedPackages
+    flattenFolders: true
 
 - task: PublishPipelineArtifact@1
   inputs:
