@@ -36,7 +36,6 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
-    <PackageOutputPath>$(PackageOutputPath)\netstandard2.0</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
