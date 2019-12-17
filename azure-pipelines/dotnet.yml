@@ -66,14 +66,14 @@ steps:
 #   displayName: Publish symbols to symbol server
 #   condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), eq(variables['Agent.OS'], 'Windows_NT'))
 
-- task: MicroBuildCodesignVerify@2
-  inputs:
-    TargetFolders: '$(Build.ArtifactStagingDirectory)/SignedPackages'
-    ExcludeSNVerify: true
-    WhiteListPathForCerts: SignVerifyIgnore.csv
-    WhiteListPathForSigs: SignVerifyIgnore.csv
-  env:
-    TeamName: $(_TeamName)
+# - task: MicroBuildCodesignVerify@2
+#   inputs:
+#     TargetFolders: '$(Build.ArtifactStagingDirectory)/SignedPackages'
+#     ExcludeSNVerify: true
+#     WhiteListPathForCerts: SignVerifyIgnore.csv
+#     WhiteListPathForSigs: SignVerifyIgnore.csv
+#   env:
+#     TeamName: $(_TeamName)
 
 - task: MicroBuildCleanup@1
   env:
