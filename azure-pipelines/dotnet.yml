@@ -45,19 +45,10 @@ steps:
   displayName: Update pipeline variables based on build outputs
   condition: succeededOrFailed()
 
-# - task: PowerShell@2
-#   inputs:
-#     filePath: azure-pipelines/artifacts/_pipelines.ps1
-#     arguments: -ArtifactNameSuffix "-$(Agent.JobName)"
-#   displayName: Publish artifacts
-#   condition: succeededOrFailed()
-
 - task: CopyFiles@2
   displayName: 'Copy packages to staging directory'
   inputs:
-    contents: |
-      - '**/*.nupkg'
-      - '**/*.snupkg'
+    contents: '$(System.DefaultWorkingDirectory)/**/*.nupkg'
     targetFolder: $(Build.ArtifactStagingDirectory)/SignedPackages
 
 - task: PublishPipelineArtifact@1
