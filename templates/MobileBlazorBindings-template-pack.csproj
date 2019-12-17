@@ -60,9 +60,9 @@
   </Target>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.*.nupkg">
-          <Authenticode>NuGet</Authenticode>
-      </FilesToSign>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.*.nupkg">
+      <Authenticode>NuGet</Authenticode>
+    </FilesToSign>
   </ItemGroup>
 
   <ItemGroup>
@@ -71,4 +71,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageBinFiles Include="$(OutDir)\**\*.nupkg"/>
+    <PackageBinFiles Include="$(OutDir)\**\*.snupkg"/>
+  </ItemGroup>
+
+  <Target Name="MovePackagesToFinalBin" DependsOnTargets="SignNuGetPackage" AfterTargets="SignNuGetPackage">
+    <Message Text="MovePackagesToFinalBin, destination =  '$(RepoRootPath)/bin/Packages/$(Configuration)'" Importance="High" />
+
+    <Copy SourceFiles="$(MySourceFiles)" DestinationFolder="$(RepoRootPath)/bin/Packages/$(Configuration)" />
+  </Target>
 </Project>
