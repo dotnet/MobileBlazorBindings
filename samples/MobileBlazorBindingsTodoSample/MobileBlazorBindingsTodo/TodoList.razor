@@ -1,22 +1,22 @@
 ﻿@inject AppState AppState
 
 <StackLayout>
-    <Frame BorderColor="@Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
+    <Frame BorderColor="Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
         <StackLayout Orientation="StackOrientation.Horizontal">
             @* Input area *@
             <Entry @bind-Text="newText"
                    Placeholder="What's to be done?"
-                   OnCompleted="@AddItem"
-                   IsEnabled="@(!isAdding)"
+                   OnCompleted="AddItem"
+                   IsEnabled="(!isAdding)"
                    HorizontalOptions="LayoutOptions.FillAndExpand" />
             <Button Text="Add"
-                    OnClick="@AddItem"
-                    IsEnabled="@(!isAdding && !string.IsNullOrWhiteSpace(newText))" />
+                    OnClick="AddItem"
+                    IsEnabled="(!isAdding && !string.IsNullOrWhiteSpace(newText))" />
             <ActivityIndicator Color="Color.Orange"
-                               IsRunning="@isAdding" />
+                               IsRunning="isAdding" />
         </StackLayout>
     </Frame>
-    <Frame BorderColor="@Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
+    <Frame BorderColor="Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
         <ScrollView>
             <StackLayout>
                 @* List of todos *@
@@ -32,7 +32,7 @@
                 {
                     foreach (var item in items)
                     {
-                        <TodoEntry Item="@item" />
+                        <TodoEntry Item="item" />
                     }
                 }
             </StackLayout>

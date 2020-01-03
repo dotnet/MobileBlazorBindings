@@ -2,21 +2,21 @@
     <ScrollView>
         <Grid>
             <Layout>
-                <RowDefinition GridUnitType="@GridUnitType.Auto" />
-                <RowDefinition GridUnitType="@GridUnitType.Star" />
+                <RowDefinition GridUnitType="GridUnitType.Auto" />
+                <RowDefinition GridUnitType="GridUnitType.Star" />
             </Layout>
             <Contents>
                 <GridCell>
-                    <StackLayout BackgroundColor="@primaryColor"
-                                 VerticalOptions="@LayoutOptions.FillAndExpand"
-                                 HorizontalOptions="@LayoutOptions.Fill">
-                        <StackLayout Orientation="@StackOrientation.Horizontal"
-                                     HorizontalOptions="@LayoutOptions.Center"
-                                     VerticalOptions="@LayoutOptions.Center">
-                            <ContentView Padding="@(new Thickness(0,40,0,40))"
-                                         VerticalOptions="@LayoutOptions.FillAndExpand">
+                    <StackLayout BackgroundColor="primaryColor"
+                                 VerticalOptions="LayoutOptions.FillAndExpand"
+                                 HorizontalOptions="LayoutOptions.Fill">
+                        <StackLayout Orientation="StackOrientation.Horizontal"
+                                     HorizontalOptions="LayoutOptions.Center"
+                                     VerticalOptions="LayoutOptions.Center">
+                            <ContentView Padding="new Thickness(0,40,0,40)"
+                                         VerticalOptions="LayoutOptions.FillAndExpand">
                                 <Image Source="@(new FileImageSource{File = "xamarin_logo.png"})"
-                                       VerticalOptions="@LayoutOptions.Center"
+                                       VerticalOptions="LayoutOptions.Center"
                                        HeightRequest="64" />
                             </ContentView>
                         </StackLayout>
@@ -25,19 +25,19 @@
 
                 <GridCell Row="1">
                     <ScrollView>
-                        <StackLayout Orientation="@StackOrientation.Vertical"
-                                     Padding="@(new Thickness(16,40,16,40))"
+                        <StackLayout Orientation="StackOrientation.Vertical"
+                                     Padding="new Thickness(16,40,16,40)"
                                      Spacing="10">
                             <Label FontSize="22">
                                 <FormattedText>
                                     <FormattedString>
                                         <Spans>
                                             <Span Text="Xamarin Animals"
-                                                  FontAttributes="@FontAttributes.Bold"
+                                                  FontAttributes="FontAttributes.Bold"
                                                   FontSize="22" />
                                             <Span Text=" " />
                                             <Span Text="1.0"
-                                                  TextColor="@lightTextColor" />
+                                                  TextColor="lightTextColor" />
                                         </Spans>
                                     </FormattedString>
                                 </FormattedText>
@@ -57,20 +57,20 @@
                                         <Spans>
                                             <Span Text="This app is written in XAML and C# with the " />
                                             <Span Text="Xamarin Platform"
-                                                  FontAttributes="@FontAttributes.Bold"
-                                                  TextColor="@Color.Blue"
-                                                  TextDecorations="@TextDecorations.Underline">
+                                                  FontAttributes="FontAttributes.Bold"
+                                                  TextColor="Color.Blue"
+                                                  TextDecorations="TextDecorations.Underline">
                                             </Span>
                                             <Span Text="." />
                                         </Spans>
                                     </FormattedString>
                                 </FormattedText>
                             </Label>
-                            <Button Margin="@(new Thickness(0,10,0,0))"
+                            <Button Margin="new Thickness(0,10,0,0)"
                                     Text="Learn more"
-                                    OnClick="@OpenWeb"
-                                    BackgroundColor="@primaryColor"
-                                    TextColor="@Color.White" />
+                                    OnClick="OpenWeb"
+                                    BackgroundColor="primaryColor"
+                                    TextColor="Color.White" />
                         </StackLayout>
                     </ScrollView>
                 </GridCell>

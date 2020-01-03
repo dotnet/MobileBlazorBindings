@@ -1,16 +1,16 @@
 ﻿@inject AppState AppState
 
 <StackLayout Orientation="StackOrientation.Horizontal">
-    <Switch @bind-IsToggled="@Item.IsDone" IsEnabled="false" />
+    <Switch @bind-IsToggled="Item.IsDone" IsEnabled="false" />
     <Label Text="@Item.Text"
-           TextDecorations="@(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)"
+           TextDecorations="(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)"
            HorizontalOptions="LayoutOptions.FillAndExpand" />
     <Button Text="..."
-            OnClick="@OnDetailsClick" />
+            OnClick="OnDetailsClick" />
 </StackLayout>
 
-<ModalContainer @ref="todoEntryDialog" OnClosed="@OnDetailsClosed">
-    <TodoEntryDetails Item="@Item" />
+<ModalContainer @ref="todoEntryDialog" OnClosed="OnDetailsClosed">
+    <TodoEntryDetails Item="Item" />
 </ModalContainer>
 
 @code
@@ -30,7 +30,7 @@
         todoEntryDialog.FinishClosingDialog();
     }
 
-    // TODO: Also need to somehow handle IsToggledChanged="@OnToggledChanged" so that the DB update can take place:
+    // TODO: Also need to somehow handle IsToggledChanged="OnToggledChanged" so that the DB update can take place:
     //public async Task OnToggledChanged()
     //{
     //    await AppState.TodoDatabase.SaveItemAsync(Item);

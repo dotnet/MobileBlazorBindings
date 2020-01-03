@@ -1,8 +1,8 @@
-﻿<Shell OnNavigated="@OnNavigated"
-       OnNavigating="@OnNavigating"
+﻿<Shell OnNavigated="OnNavigated"
+       OnNavigating="OnNavigating"
        FlyoutBackgroundImage="@(new FileImageSource { File = "photo.jpg" })"
-       FlyoutBackgroundImageAspect="@Aspect.AspectFill"
-       FlyoutHeaderBehavior="@FlyoutHeaderBehavior.CollapseOnScroll">
+       FlyoutBackgroundImageAspect="Aspect.AspectFill"
+       FlyoutHeaderBehavior="FlyoutHeaderBehavior.CollapseOnScroll">
     <FlyoutHeader>
         <XaminalsFlyoutHeader />
     </FlyoutHeader>
@@ -10,7 +10,7 @@
     <ChildContent>
         <FlyoutItem Route="animals"
                     Title="Animals"
-                    FlyoutDisplayOptions="@FlyoutDisplayOptions.AsMultipleItems">
+                    FlyoutDisplayOptions="FlyoutDisplayOptions.AsMultipleItems">
             <Tab Title="Domestic"
                  Route="domestic"
                  Icon="@(new FileImageSource { File="paw.png" })">
@@ -54,10 +54,10 @@
 
         <MenuItem Text="Random"
                   IconImageSource="@(new FileImageSource { File="random.png" })"
-                  OnClick="@OnRandomClick" />
+                  OnClick="OnRandomClick" />
         <MenuItem Text="Help"
                   IconImageSource="@(new FileImageSource { File="help.png" })"
-                  OnClick="@OnHelpClick" />
+                  OnClick="OnHelpClick" />
     </ChildContent>
 </Shell>
 

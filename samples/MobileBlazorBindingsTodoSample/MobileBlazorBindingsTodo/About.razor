@@ -3,10 +3,10 @@
 <StackLayout>
     <StackLayout>
         <StackLayout Orientation="StackOrientation.Horizontal"
-                     BackgroundColor="@primaryColor">
-            <ContentView Padding="@(new Thickness(0,40,0,40))" VerticalOptions="@LayoutOptions.FillAndExpand">
+                     BackgroundColor="primaryColor">
+            <ContentView Padding="new Thickness(0,40,0,40)" VerticalOptions="LayoutOptions.FillAndExpand">
                 <Image Source="@(new FileImageSource{File = "xamarin_logo.png"})"
-                       VerticalOptions="@LayoutOptions.Center"
+                       VerticalOptions="LayoutOptions.Center"
                        HeightRequest="64" />
             </ContentView>
         </StackLayout>
@@ -19,7 +19,7 @@
                         <Spans>
                             <Span Text="AppName" FontAttributes="FontAttributes.Bold" FontSize="22" />
                             <Span Text=" " />
-                            <Span Text="1.0" TextColor="@lightTextColor" />
+                            <Span Text="1.0" TextColor="lightTextColor" />
                         </Spans>
                     </FormattedString>
                 </FormattedText>
@@ -50,8 +50,8 @@
                 </FormattedText>
             </Label>
             <Button Text="Learn more"
-                    OnClick="@OpenWeb"
-                    BackgroundColor="@primaryColor"
+                    OnClick="OpenWeb"
+                    BackgroundColor="primaryColor"
                     TextColor="Color.White" />
         </StackLayout>
     </ScrollView>

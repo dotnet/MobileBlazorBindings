@@ -14,13 +14,13 @@
         <Label Text="Additional notes" />
         <Entry @bind-Text="ItemCopy.Notes" MinimumHeightRequest="60" />
         <Button Text="Save"
-                OnClick="@OnSaveClick" BackgroundColor="@Color.Blue" TextColor="@Color.White" />
+                OnClick="OnSaveClick" BackgroundColor="Color.Blue" TextColor="Color.White" />
         <Button Text="Delete"
-                OnClick="@OnDeleteClick" BackgroundColor="@Color.Red" TextColor="@Color.White" />
+                OnClick="OnDeleteClick" BackgroundColor="Color.Red" TextColor="Color.White" />
         <Button Text="Cancel"
-                OnClick="@OnCancelClick" />
+                OnClick="OnCancelClick" />
         <Button Text="Speak"
-                OnClick="@OnSpeakClick" IsVisible="@IsSpeechAvailable" />
+                OnClick="OnSpeakClick" IsVisible="IsSpeechAvailable" />
     </StackLayout>
 </ContentPage>
 
