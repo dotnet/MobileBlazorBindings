@@ -20,6 +20,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.Color? BorderColor { get; set; }
         [Parameter] public float? CornerRadius { get; set; }
 
+        public new XF.Frame NativeControl => ((FrameHandler)ElementHandler).FrameControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

@@ -26,6 +26,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public RenderFragment FormattedText { get; set; }
 
+        public new XF.Layout NativeControl => ((LayoutHandler)ElementHandler).LayoutControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

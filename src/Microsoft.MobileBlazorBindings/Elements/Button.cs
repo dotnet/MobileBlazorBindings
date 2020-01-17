@@ -21,6 +21,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public EventCallback OnClick { get; set; }
 
+        public new XF.Button NativeControl => ((ButtonHandler)ElementHandler).ButtonControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

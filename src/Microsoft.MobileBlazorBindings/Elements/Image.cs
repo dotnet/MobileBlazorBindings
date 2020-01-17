@@ -20,6 +20,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? IsOpaque { get; set; }
         [Parameter] public XF.ImageSource Source { get; set; }
 
+        public new XF.Image NativeControl => ((ImageHandler)ElementHandler).ImageControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

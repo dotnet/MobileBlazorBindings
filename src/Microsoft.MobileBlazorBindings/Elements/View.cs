@@ -4,6 +4,7 @@
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -12,6 +13,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.LayoutOptions? HorizontalOptions { get; set; }
         [Parameter] public XF.Thickness? Margin { get; set; }
         [Parameter] public XF.LayoutOptions? VerticalOptions { get; set; }
+
+        public new XF.View NativeControl => ((ViewHandler)ElementHandler).ViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -24,6 +24,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public EventCallback OnClick { get; set; }
 
+        public new XF.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

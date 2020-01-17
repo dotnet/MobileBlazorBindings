@@ -14,5 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             ElementHandlerRegistry.RegisterElementHandler<TabBar>(
                 renderer => new TabBarHandler(renderer, new XF.TabBar()));
         }
+
+        public new XF.TabBar NativeControl => ((TabBarHandler)ElementHandler).TabBarControl;
     }
 }

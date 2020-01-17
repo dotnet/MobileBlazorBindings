@@ -14,5 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             ElementHandlerRegistry
                 .RegisterElementHandler<TabbedPage>(renderer => new TabbedPageHandler(renderer, new XF.TabbedPage()));
         }
+
+        public new XF.TabbedPage NativeControl => ((TabbedPageHandler)ElementHandler).TabbedPageControl;
     }
 }

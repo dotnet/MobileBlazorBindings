@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
 
+        public new XF.Span NativeControl => ((SpanHandler)ElementHandler).SpanControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

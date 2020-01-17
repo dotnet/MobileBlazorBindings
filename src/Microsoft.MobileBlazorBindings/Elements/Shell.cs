@@ -37,6 +37,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
         [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
 
+        public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
@@ -84,7 +86,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 throw new ArgumentNullException(nameof(state));
             }
 
-            await ((ShellHandler)ElementHandler).ShellControl.GoToAsync(state, animate).ConfigureAwait(true);
+            await NativeControl.GoToAsync(state, animate).ConfigureAwait(true);
         }
 
 #pragma warning disable CA1721 // Property names should not match get methods

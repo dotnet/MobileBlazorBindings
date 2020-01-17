@@ -5,6 +5,7 @@ using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// A comma-separated list of style classes that should be applied to this element.
         /// </summary>
         [Parameter] public string StyleClass { get; set; }
+
+        public new XF.NavigableElement NativeControl => ((NavigableElementHandler)ElementHandler).NavigableElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -27,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         public async Task PopModalAsync(bool animated = true)
         {
-            await ((NavigableElementHandler)ElementHandler).NavigableElementControl.Navigation.PopModalAsync(animated).ConfigureAwait(true);
+            await NativeControl.Navigation.PopModalAsync(animated).ConfigureAwait(true);
         }
     }
 }

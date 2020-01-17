@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public RenderFragment Master { get; set; }
         [Parameter] public RenderFragment Detail { get; set; }
 
+        public new XF.MasterDetailPage NativeControl => ((MasterDetailPageHandler)ElementHandler).MasterDetailPageControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

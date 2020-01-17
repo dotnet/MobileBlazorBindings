@@ -38,6 +38,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public RenderFragment Contents { get; set; }
         [Parameter] public RenderFragment Layout { get; set; }
 
+        public new XF.Grid NativeControl => ((GridHandler)ElementHandler).GridControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

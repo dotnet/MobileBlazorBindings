@@ -4,6 +4,7 @@
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -34,6 +35,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public EventCallback<XF.FocusEventArgs> OnFocused { get; set; }
         [Parameter] public EventCallback OnSizeChanged { get; set; }
         [Parameter] public EventCallback<XF.FocusEventArgs> OnUnfocused { get; set; }
+
+        public new XF.VisualElement NativeControl => ((VisualElementHandler)ElementHandler).VisualElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

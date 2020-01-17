@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public EventCallback OnCompleted { get; set; }
         [Parameter] public EventCallback<string> TextChanged { get; set; }
 
+        public new XF.Entry NativeControl => ((EntryHandler)ElementHandler).EntryControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

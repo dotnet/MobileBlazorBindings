@@ -21,6 +21,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public EventCallback<bool> IsToggledChanged { get; set; }
 
+        public new XF.Switch NativeControl => ((SwitchHandler)ElementHandler).SwitchControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

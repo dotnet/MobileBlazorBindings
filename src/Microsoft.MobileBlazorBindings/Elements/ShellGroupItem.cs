@@ -18,6 +18,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public XF.FlyoutDisplayOptions? FlyoutDisplayOptions { get; set; }
 
+        public new XF.ShellGroupItem NativeControl => ((ShellGroupItemHandler)ElementHandler).ShellGroupItemControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

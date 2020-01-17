@@ -22,6 +22,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.StackOrientation? Orientation { get; set; }
         [Parameter] public double? Spacing { get; set; }
 
+        public new XF.StackLayout NativeControl => ((StackLayoutHandler)ElementHandler).StackLayoutControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

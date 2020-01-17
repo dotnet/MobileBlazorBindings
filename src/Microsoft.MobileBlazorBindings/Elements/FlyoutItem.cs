@@ -14,5 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             ElementHandlerRegistry.RegisterElementHandler<FlyoutItem>(
                 renderer => new FlyoutItemHandler(renderer, new XF.FlyoutItem()));
         }
+
+        public new XF.FlyoutItem NativeControl => ((FlyoutItemHandler)ElementHandler).FlyoutItemControl;
     }
 }
