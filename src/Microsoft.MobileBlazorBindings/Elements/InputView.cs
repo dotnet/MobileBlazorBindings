@@ -3,6 +3,8 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using XF = Xamarin.Forms;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -12,6 +14,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? IsSpellCheckEnabled { get; set; }
         //[Parameter] public XF.Keyboard Keyboard { get; set; }
         [Parameter] public int? MaxLength { get; set; }
+
+        public new XF.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

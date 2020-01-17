@@ -27,6 +27,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public EventCallback OnAppearing { get; set; }
         [Parameter] public EventCallback OnDisappearing { get; set; }
 
+        public new XF.BaseShellItem NativeControl => ((BaseShellItemHandler)ElementHandler).BaseShellItemControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

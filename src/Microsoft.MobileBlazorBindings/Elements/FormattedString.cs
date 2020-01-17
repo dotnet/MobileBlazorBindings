@@ -18,6 +18,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public RenderFragment Spans { get; set; }
 
+        public new XF.FormattedString NativeControl => ((FormattedStringHandler)ElementHandler).FormattedStringControl;
+
         protected override RenderFragment GetChildContent() => Spans;
     }
 }

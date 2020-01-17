@@ -4,6 +4,7 @@
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
 using XF = Xamarin.Forms;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -12,6 +13,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 #pragma warning restore CA1724 // Type name matches .NET Framework namespace
     {
         [Parameter] public XF.Thickness? Padding { get; set; }
+
+        public new XF.Layout NativeControl => ((LayoutHandler)ElementHandler).LayoutControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

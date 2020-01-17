@@ -19,6 +19,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? IsRunning { get; set; }
         [Parameter] public XF.Color? Color { get; set; }
 
+        public new XF.ActivityIndicator NativeControl => ((ActivityIndicatorHandler)ElementHandler).ActivityIndicatorControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

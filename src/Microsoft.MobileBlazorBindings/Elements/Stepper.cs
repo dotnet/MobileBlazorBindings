@@ -24,6 +24,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public EventCallback<double> ValueChanged { get; set; }
 
+        public new XF.Stepper NativeControl => ((StepperHandler)ElementHandler).StepperControl;
+        
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);

@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.ScrollOrientation? Orientation { get; set; }
         [Parameter] public XF.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
+        public new XF.ScrollView NativeControl => ((ScrollViewHandler)ElementHandler).ScrollViewControl;
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
