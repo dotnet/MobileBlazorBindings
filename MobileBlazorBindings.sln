@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\Directory.Build.targets = src\Directory.Build.targets
 		nuget.config = nuget.config
 		Readme.md = Readme.md
+		version.json = version.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BlinForms", "BlinForms", "{4D06362E-96E0-4359-BF69-9E3DC7570984}"
