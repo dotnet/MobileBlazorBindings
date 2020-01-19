@@ -11,6 +11,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
     {
         [Parameter] public string StyleId { get; set; }
 
+        [Parameter] public string AutomationId { get; set; }
+
         public XF.Element NativeControl => ((Handlers.ElementHandler)ElementHandler).ElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -20,6 +22,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (StyleId != null)
             {
                 builder.AddAttribute(nameof(StyleId), StyleId);
+            }
+            if (AutomationId != null)
+            {
+                builder.AddAttribute(nameof(AutomationId), AutomationId);
             }
         }
     }
