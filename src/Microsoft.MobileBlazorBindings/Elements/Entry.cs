@@ -17,8 +17,24 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new EntryHandler(renderer, new XF.Entry()));
         }
 
-        [Parameter] public string Text { get; set; }
+        [Parameter] public double? CharacterSpacing { get; set; }
+        [Parameter] public XF.ClearButtonVisibility? ClearButtonVisibility { get; set; }
+        [Parameter] public int? CursorPosition { get; set; }
+        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        [Parameter] public string FontFamily { get; set; }
+        [Parameter] public double? FontSize { get; set; }
+        [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
+        [Parameter] public bool? IsPassword { get; set; }
+        [Parameter] public bool? IsTextPredictionEnabled { get; set; }
         [Parameter] public string Placeholder { get; set; }
+        [Parameter] public XF.Color? PlaceholderColor { get; set; }
+        //[Parameter] public XF.ICommand ReturnCommand { get; set; }
+        //[Parameter] public object ReturnCommandParameter { get; set; }
+        [Parameter] public XF.ReturnType? ReturnType { get; set; }
+        [Parameter] public int? SelectionLength { get; set; }
+        [Parameter] public string Text { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
 
         [Parameter] public EventCallback OnCompleted { get; set; }
         [Parameter] public EventCallback<string> TextChanged { get; set; }
@@ -29,13 +45,69 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
-            if (Text != null)
+            if (CharacterSpacing != null)
             {
-                builder.AddAttribute(nameof(Text), Text);
+                builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
+            }
+            if (ClearButtonVisibility != null)
+            {
+                builder.AddAttribute(nameof(ClearButtonVisibility), (int)ClearButtonVisibility.Value);
+            }
+            if (CursorPosition != null)
+            {
+                builder.AddAttribute(nameof(CursorPosition), CursorPosition.Value);
+            }
+            if (FontAttributes != null)
+            {
+                builder.AddAttribute(nameof(FontAttributes), (int)FontAttributes.Value);
+            }
+            if (FontFamily != null)
+            {
+                builder.AddAttribute(nameof(FontFamily), FontFamily);
+            }
+            if (FontSize != null)
+            {
+                builder.AddAttribute(nameof(FontSize), AttributeHelper.DoubleToString(FontSize.Value));
+            }
+            if (HorizontalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment);
+            }
+            if (IsPassword != null)
+            {
+                builder.AddAttribute(nameof(IsPassword), IsPassword.Value);
+            }
+            if (IsTextPredictionEnabled != null)
+            {
+                builder.AddAttribute(nameof(IsTextPredictionEnabled), IsTextPredictionEnabled.Value);
             }
             if (Placeholder != null)
             {
                 builder.AddAttribute(nameof(Placeholder), Placeholder);
+            }
+            if (PlaceholderColor != null)
+            {
+                builder.AddAttribute(nameof(PlaceholderColor), AttributeHelper.ColorToString(PlaceholderColor.Value));
+            }
+            if (ReturnType != null)
+            {
+                builder.AddAttribute(nameof(ReturnType), (int)ReturnType);
+            }
+            if (SelectionLength != null)
+            {
+                builder.AddAttribute(nameof(SelectionLength), SelectionLength.Value);
+            }
+            if (Text != null)
+            {
+                builder.AddAttribute(nameof(Text), Text);
+            }
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+            }
+            if (VerticalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment);
             }
 
             builder.AddAttribute("oncompleted", OnCompleted);
