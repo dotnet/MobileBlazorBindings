@@ -34,6 +34,9 @@ To get started, all you need is the [.NET Core 3.0 or 3.1 SDK][1], Visual Stud
 
 Get started by reading the Getting Started section in the [docs](https://docs.microsoft.com/mobile-blazor-bindings/) and read through the related walkthroughs.
 
+## Build
+To able be able to build the Mobile Blazor Bindings in this repo, make sure you have installed .[NET Core SDK 3](https://dotnet.microsoft.com/download/dotnet-core/3.0).
+
 
 ## Contributing
 
