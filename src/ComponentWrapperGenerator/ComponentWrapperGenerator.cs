@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,6 +10,8 @@ using XF = Xamarin.Forms;
 
 namespace ComponentWrapperGenerator
 {
+    // TODO: XML Doc Comments
+
     public class ComponentWrapperGenerator
     {
         public ComponentWrapperGenerator(GeneratorSettings settings)
@@ -68,10 +71,6 @@ namespace ComponentWrapperGenerator
             var eventDeclarations = "";
 
             var propertyAttributeBuilder = new StringBuilder();
-            if (propertiesToGenerate.Any())
-            {
-                propertyAttributeBuilder.AppendLine();
-            }
             foreach (var prop in propertiesToGenerate)
             {
                 propertyAttributeBuilder.Append(GetPropertyRenderAttribute(prop));
@@ -242,7 +241,7 @@ namespace {Settings.RootNamespace}
             // usings
             var usings = new List<UsingStatement>
             {
-                new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" },
+                //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" }, // Typically needed only when there are event handlers for the EventArgs types
                 new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core" },
                 new UsingStatement { Namespace = "System" },
                 new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
@@ -297,15 +296,27 @@ namespace {Settings.RootNamespace}.Handlers
 
         private static string GetPropertySetAttribute(PropertyInfo prop, List<UsingStatement> usings)
         {
-            var formattedValue = string.Empty;
-            if (TypeToAttributeHelperSetter.TryGetValue(prop.PropertyType, out var propValue))
+            // Handle null values by resetting to default value
+            var bindablePropertyForProp = GetBindablePropertyForProp(prop);
+            var declaredDefaultValue = bindablePropertyForProp.DefaultValue;
+            var defaultValueForType = GetDefaultValueForType(prop.PropertyType);
+            var needsCustomResetValue = declaredDefaultValue == null ? false : !declaredDefaultValue.Equals(defaultValueForType);
+
+            var resetValueParameterExpression = string.Empty;
+            if (needsCustomResetValue)
             {
-                formattedValue = propValue;
+                resetValueParameterExpression = ", " + GetValueExpression(declaredDefaultValue);
+            }
+
+            var formattedValue = string.Empty;
+            if (TypeToAttributeHelperSetter.TryGetValue(prop.PropertyType, out var propValueFormat))
+            {
+                formattedValue = string.Format(CultureInfo.InvariantCulture, propValueFormat, resetValueParameterExpression);
             }
             else if (prop.PropertyType.IsEnum)
             {
                 var castTypeName = GetTypeNameAndAddNamespace(prop.PropertyType, usings);
-                formattedValue = $"({castTypeName})AttributeHelper.GetInt(attributeValue)";
+                formattedValue = $"({castTypeName})AttributeHelper.GetInt(attributeValue{resetValueParameterExpression})";
             }
             else
             {
@@ -318,17 +329,61 @@ namespace {Settings.RootNamespace}.Handlers
 ";
         }
 
+        private static string GetValueExpression(object declaredDefaultValue)
+        {
+            if (declaredDefaultValue is null)
+            {
+                throw new ArgumentNullException(nameof(declaredDefaultValue));
+            }
+            return declaredDefaultValue switch
+            {
+                bool boolValue => boolValue ? "true" : "false",
+                int intValue => GetIntAsString(intValue),
+                float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
+                double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
+                Enum enumValue => enumValue.GetType().Name + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue), // TODO: Add 'using' for enum type name
+                string stringValue => $@"""{stringValue}""",
+                // TODO: More types here
+                _ => "UNKNOWN", // TODO: How to handle this?
+            };
+        }
+
+        private static string GetIntAsString(int intValue)
+        {
+            return intValue switch
+            {
+                int.MinValue => "int.MinValue",
+                int.MaxValue => "int.MaxValue",
+                _ => intValue.ToString(CultureInfo.InvariantCulture),
+            };
+        }
+
+        private static object GetDefaultValueForType(Type propertyType)
+        {
+            if (propertyType.IsValueType)
+            {
+                return Activator.CreateInstance(propertyType);
+            }
+            return null;
+        }
+
+        private static XF.BindableProperty GetBindablePropertyForProp(PropertyInfo prop)
+        {
+            var bindablePropertyField = prop.DeclaringType.GetField(prop.Name + "Property");
+            return (XF.BindableProperty)bindablePropertyField.GetValue(null);
+        }
+
         private static readonly Dictionary<Type, string> TypeToAttributeHelperSetter = new Dictionary<Type, string>
         {
-            { typeof(XF.Color), "AttributeHelper.StringToColor((string)attributeValue)" },
-            { typeof(XF.CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue)" },
-            { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue)" },
-            { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue)" },
-            { typeof(bool), "AttributeHelper.GetBool(attributeValue)" },
-            { typeof(double), "AttributeHelper.StringToDouble((string)attributeValue)" },
-            { typeof(float), "AttributeHelper.SingleToString((string)attributeValue)" },
-            { typeof(int), "AttributeHelper.GetInt(attributeValue)" },
-            { typeof(string), "(string)attributeValue" },
+            { typeof(XF.Color), "AttributeHelper.StringToColor((string)attributeValue{0})" },
+            { typeof(XF.CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
+            { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
+            { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
+            { typeof(bool), "AttributeHelper.GetBool(attributeValue{0})" },
+            { typeof(double), "AttributeHelper.StringToDouble((string)attributeValue{0})" },
+            { typeof(float), "AttributeHelper.StringToSingle((string)attributeValue{0})" },
+            { typeof(int), "AttributeHelper.GetInt(attributeValue{0})" },
+            { typeof(string), "(string)attributeValue ?? {0}" },
         };
 
         private static IEnumerable<PropertyInfo> GetPropertiesToGenerate(Type componentType)
