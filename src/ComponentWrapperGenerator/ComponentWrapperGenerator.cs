@@ -39,7 +39,7 @@ namespace ComponentWrapperGenerator
 
             var componentName = typeToGenerate.Name;
             var componentHandlerName = $"{componentName}Handler";
-            var componentBaseName = typeToGenerate.BaseType.Name;
+            var componentBaseName = GetBaseTypeOfInterest(typeToGenerate).Name;
 
             // header
             var headerText = Settings.FileHeader;
@@ -222,6 +222,28 @@ namespace {Settings.RootNamespace}
             return TypeToCSharpName.TryGetValue(propertyType, out var typeName) ? typeName : null;
         }
 
+        /// <summary>
+        /// Finds the next non-generic base type of the specified type. This matches the Mobile Blazor Bindings
+        /// model where there is no need to represent the intermediate generic base classes because they are
+        /// generally only containers and have no API functionality that needs to be generated.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        private static Type GetBaseTypeOfInterest(Type type)
+        {
+            do
+            {
+                type = type.BaseType;
+                if (!type.IsGenericType)
+                {
+                    return type;
+                }
+            }
+            while (type != null);
+
+            return null;
+        }
+
         private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
             var fileName = $@"Handlers\{typeToGenerate.Name}Handler.cs";
@@ -232,7 +254,7 @@ namespace {Settings.RootNamespace}
             var componentName = typeToGenerate.Name;
             var componentVarName = char.ToLowerInvariant(componentName[0]) + componentName.Substring(1);
             var componentHandlerName = $"{componentName}Handler";
-            var componentBaseName = typeToGenerate.BaseType.Name;
+            var componentBaseName = GetBaseTypeOfInterest(typeToGenerate).Name;
             var componentHandlerBaseName = $"{componentBaseName}Handler";
 
             // header
