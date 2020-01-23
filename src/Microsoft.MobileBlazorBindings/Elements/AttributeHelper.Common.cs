@@ -7,17 +7,17 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public static partial class AttributeHelper
     {
-        public static bool GetBool(object value)
+        public static bool GetBool(object value, bool defaultValueIfNull = default)
         {
             return (value == null)
-                ? false
+                ? defaultValueIfNull
                 : (bool)value;
         }
 
-        public static int GetInt(object value)
+        public static int GetInt(object value, int defaultValueIfNull = default)
         {
             return (value == null)
-                ? 0
+                ? defaultValueIfNull
                 : int.Parse((string)value, CultureInfo.InvariantCulture);
         }
 
@@ -32,8 +32,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="System.Double" /> objects.
         /// </summary>
-        public static double StringToDouble(string doubleString)
+        public static double StringToDouble(string doubleString, double defaultValueIfNull = default)
         {
+            if (doubleString is null)
+            {
+                return defaultValueIfNull;
+            }
             return double.Parse(doubleString, CultureInfo.InvariantCulture);
         }
 
@@ -48,8 +52,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="System.Single" /> objects.
         /// </summary>
-        public static float StringToSingle(string singleString)
+        public static float StringToSingle(string singleString, float defaultValueIfNull = default)
         {
+            if (singleString is null)
+            {
+                return defaultValueIfNull;
+            }
             return float.Parse(singleString, CultureInfo.InvariantCulture);
         }
     }

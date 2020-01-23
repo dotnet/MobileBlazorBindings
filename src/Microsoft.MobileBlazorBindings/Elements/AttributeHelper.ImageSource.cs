@@ -33,11 +33,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="ImageSource" /> objects.
         /// </summary>
-        public static ImageSource StringToImageSource(string imageSourceString)
+        public static ImageSource StringToImageSource(string imageSourceString, ImageSource defaultValueIfNull = default)
         {
             if (imageSourceString is null)
             {
-                throw new ArgumentNullException(nameof(imageSourceString));
+                return defaultValueIfNull;
             }
 
             var indexOfColon = imageSourceString.IndexOf(':');

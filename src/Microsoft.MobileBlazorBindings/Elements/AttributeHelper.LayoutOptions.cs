@@ -24,11 +24,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="LayoutOptions" /> objects.
         /// </summary>
-        public static LayoutOptions StringToLayoutOptions(object layoutString)
+        public static LayoutOptions StringToLayoutOptions(object layoutString, LayoutOptions defaultValueIfNull = default)
         {
             if (layoutString is null)
             {
-                throw new ArgumentNullException(nameof(layoutString));
+                return defaultValueIfNull;
             }
             if (!(layoutString is string layoutAsString))
             {

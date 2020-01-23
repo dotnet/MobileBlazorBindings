@@ -23,8 +23,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="Color" /> objects.
         /// </summary>
-        public static Color StringToColor(string colorString)
+        public static Color StringToColor(string colorString, Color defaultValueIfNull = default)
         {
+            if (colorString is null)
+            {
+                return defaultValueIfNull;
+            }
             if (colorString?.Length != 8)
             {
                 throw new ArgumentException($"Invalid color string '{colorString}'. Expected a hex color in the form 'AARRGGBB'.", nameof(colorString));
