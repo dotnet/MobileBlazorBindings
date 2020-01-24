@@ -127,6 +127,7 @@ namespace {Settings.RootNamespace}
             typeof(ICommand),
             typeof(object),
             typeof(XF.ResourceDictionary),
+            typeof(XF.IVisual),
         };
 
         private static string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
