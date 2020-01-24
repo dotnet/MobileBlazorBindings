@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.EventSource;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
@@ -22,9 +25,15 @@ namespace MobileBlazorBindingsTodo
                     {
                         services.AddAdditionalServices(additionalServices);
                     }
-
+                    
                     // Register app-specific services
                     services.AddSingleton<AppState>();
+                })
+
+                .ConfigureLogging(d =>
+                {
+                    d.ClearProviders();
+                    d.AddConsole();
                 })
                 .Build();
 
