@@ -26,11 +26,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="CornerRadius" /> objects.
         /// </summary>
-        public static CornerRadius StringToCornerRadius(object cornerRadiusString)
+        public static CornerRadius StringToCornerRadius(object cornerRadiusString, CornerRadius defaultValueIfNull = default)
         {
             if (cornerRadiusString is null)
             {
-                throw new ArgumentNullException(nameof(cornerRadiusString));
+                return defaultValueIfNull;
             }
             if (!(cornerRadiusString is string cornerRadiusAsString))
             {

@@ -26,11 +26,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="Thickness" /> objects.
         /// </summary>
-        public static Thickness StringToThickness(object thicknessString)
+        public static Thickness StringToThickness(object thicknessString, Thickness defaultValueIfNull = default)
         {
             if (thicknessString is null)
             {
-                throw new ArgumentNullException(nameof(thicknessString));
+                return defaultValueIfNull;
             }
             if (!(thicknessString is string thicknessAsString))
             {
