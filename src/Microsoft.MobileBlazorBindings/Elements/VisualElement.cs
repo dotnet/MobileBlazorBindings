@@ -31,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? TranslationX { get; set; }
         [Parameter] public double? TranslationY { get; set; }
         [Parameter] public double? WidthRequest { get; set; }
-
+        [Parameter] public XF.FlowDirection? FlowDirection { get; set; }
         [Parameter] public EventCallback<XF.FocusEventArgs> OnFocused { get; set; }
         [Parameter] public EventCallback OnSizeChanged { get; set; }
         [Parameter] public EventCallback<XF.FocusEventArgs> OnUnfocused { get; set; }
@@ -125,6 +125,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (WidthRequest != null)
             {
                 builder.AddAttribute(nameof(WidthRequest), AttributeHelper.DoubleToString(WidthRequest.Value));
+            }
+            if (FlowDirection != null)
+            {
+                builder.AddAttribute(nameof(FlowDirection), (int)FlowDirection.Value);
             }
 
             builder.AddAttribute("onfocused", OnFocused);
