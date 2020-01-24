@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -125,6 +126,7 @@ namespace {Settings.RootNamespace}
         {
             typeof(ICommand),
             typeof(object),
+            typeof(XF.ResourceDictionary),
         };
 
         private static string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
@@ -416,11 +418,24 @@ namespace {Settings.RootNamespace}.Handlers
 
             return
                 allPublicProperties
-                    .Where(prop => prop.CanRead && prop.CanWrite)
+                    .Where(HasPublicGetAndSet)
                     .Where(prop => prop.DeclaringType == componentType)
                     .Where(prop => !DisallowedComponentPropertyTypes.Contains(prop.PropertyType))
+                    .Where(IsPropertyBrowsable)
                     .OrderBy(prop => prop.Name, StringComparer.OrdinalIgnoreCase)
                     .ToList();
+        }
+
+        private static bool HasPublicGetAndSet(PropertyInfo propInfo)
+        {
+            return propInfo.GetGetMethod() != null && propInfo.GetSetMethod() != null;
+        }
+
+        private static bool IsPropertyBrowsable(PropertyInfo propInfo)
+        {
+            // [EditorBrowsable(EditorBrowsableState.Never)]
+            var attr = (EditorBrowsableAttribute)Attribute.GetCustomAttribute(propInfo, typeof(EditorBrowsableAttribute));
+            return (attr == null) || (attr.State != EditorBrowsableState.Never);
         }
     }
 }
