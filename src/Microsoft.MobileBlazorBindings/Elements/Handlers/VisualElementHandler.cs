@@ -107,6 +107,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.VisualElement.WidthRequest):
                     VisualElementControl.WidthRequest = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
+                case nameof(XF.VisualElement.FlowDirection):
+                    VisualElementControl.FlowDirection = (XF.FlowDirection)AttributeHelper.GetInt(attributeValue);
+                    break;
                 case "onfocused":
                     Renderer.RegisterEvent(attributeEventHandlerId, () => FocusedEventHandlerId = 0);
                     FocusedEventHandlerId = attributeEventHandlerId;
