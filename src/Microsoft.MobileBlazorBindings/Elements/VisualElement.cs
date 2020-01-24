@@ -13,6 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? AnchorX { get; set; }
         [Parameter] public double? AnchorY { get; set; }
         [Parameter] public XF.Color? BackgroundColor { get; set; }
+        [Parameter] public XF.FlowDirection? FlowDirection { get; set; }
         [Parameter] public double? HeightRequest { get; set; }
         [Parameter] public bool? InputTransparent { get; set; }
         [Parameter] public bool? IsEnabled { get; set; }
@@ -31,7 +32,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? TranslationX { get; set; }
         [Parameter] public double? TranslationY { get; set; }
         [Parameter] public double? WidthRequest { get; set; }
-        [Parameter] public XF.FlowDirection? FlowDirection { get; set; }
+
         [Parameter] public EventCallback<XF.FocusEventArgs> OnFocused { get; set; }
         [Parameter] public EventCallback OnSizeChanged { get; set; }
         [Parameter] public EventCallback<XF.FocusEventArgs> OnUnfocused { get; set; }
@@ -53,6 +54,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (BackgroundColor != null)
             {
                 builder.AddAttribute(nameof(BackgroundColor), AttributeHelper.ColorToString(BackgroundColor.Value));
+            }
+            if (FlowDirection != null)
+            {
+                builder.AddAttribute(nameof(FlowDirection), (int)FlowDirection.Value);
             }
             if (HeightRequest != null)
             {
@@ -125,10 +130,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (WidthRequest != null)
             {
                 builder.AddAttribute(nameof(WidthRequest), AttributeHelper.DoubleToString(WidthRequest.Value));
-            }
-            if (FlowDirection != null)
-            {
-                builder.AddAttribute(nameof(FlowDirection), (int)FlowDirection.Value);
             }
 
             builder.AddAttribute("onfocused", OnFocused);
