@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using ComponentWrapperGenerator;
+using FluentAssertions;
 
 namespace Tests
 {
@@ -18,9 +19,23 @@ namespace Tests
         }
 
         [Test]
-        public void GenerateLabel()
+        public void GenerateLabel_Should_ContainCopyright()
         {
-            generator.GenerateComponentWrapper(typeof(Xamarin.Forms.Label));
+            var result =  generator.GenerateComponentWrapper(typeof(Xamarin.Forms.Label));
+
+            result.Component.Content.Should().Contain("Copyright");
+            result.ComponentHandler.Content.Should().Contain("Copyright");
+        }
+
+        [Test]
+        public void Generate_Should_ContainNamespace()
+        {
+            var result = generator.GenerateComponentWrapper(typeof(Xamarin.Forms.Label));
+
+            var namespacet = "namespace Microsoft.MobileBlazorBindings.Elements";
+
+            result.Component.Content.Should().Contain(namespacet);
+            result.ComponentHandler.Content.Should().Contain(namespacet);
         }
     }
 }
