@@ -1,3 +1,4 @@
+using System;
 using NUnit.Framework;
 using ComponentWrapperGenerator;
 using FluentAssertions;
@@ -36,6 +37,15 @@ namespace Tests
 
             result.Component.Content.Should().Contain(namespacet);
             result.ComponentHandler.Content.Should().Contain(namespacet);
+        }
+
+        [Test]
+        public void Generate_Should_Result()
+        {
+            var result = generator.GenerateComponentWrapper(typeof(Xamarin.Forms.Label));
+
+            Console.WriteLine(result.Component.Content);
+            Console.WriteLine(result.ComponentHandler.Content);
         }
     }
 }
