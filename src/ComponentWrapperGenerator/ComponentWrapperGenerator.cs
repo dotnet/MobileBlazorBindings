@@ -13,10 +13,10 @@ namespace ComponentWrapperGenerator
     // TODO: XML Doc Comments
 
 #pragma warning disable CA1724 // Type name conflicts with namespace name
-    public class ComponentWrapperGenerator
+    public class Generator
 #pragma warning restore CA1724 // Type name conflicts with namespace name
     {
-        public ComponentWrapperGenerator(GeneratorSettings settings)
+        public Generator(GeneratorSettings settings)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }

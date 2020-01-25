@@ -27,7 +27,7 @@ namespace ComponentWrapperGenerator
             };
 
             var typeToGenerate = typeof(Xamarin.Forms.Element).Assembly.GetType("Xamarin.Forms." + args[0]);
-            var generator = new ComponentWrapperGenerator(settings);
+            var generator = new Generator(settings);
             generator.GenerateComponentWrapper(typeToGenerate);
 
             return 0;
