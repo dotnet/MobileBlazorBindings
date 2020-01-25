@@ -4,5 +4,6 @@
     {
         public string FileHeader { get; set; }
         public string RootNamespace { get; set; }
+        public string ResultPath { get; set; } = @".\";
     }
 }

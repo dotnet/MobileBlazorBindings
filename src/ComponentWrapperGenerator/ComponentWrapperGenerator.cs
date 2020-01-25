@@ -32,7 +32,7 @@ namespace ComponentWrapperGenerator
             GenerateComponentFile(typeToGenerate, propertiesToGenerate);
             GenerateHandlerFile(typeToGenerate, propertiesToGenerate);
         }
-
+      
         public GeneratorResult GenerateComponentWrapper(Type typeToGenerate)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
@@ -45,10 +45,16 @@ namespace ComponentWrapperGenerator
         private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
             var fileName = GenerateComponent(typeToGenerate, propertiesToGenerate);
-
-            File.WriteAllText(fileName.Name,fileName.Content);
+            Directory.CreateDirectory(Path.Combine(Settings.ResultPath));
+            File.WriteAllText(Path.Combine(Settings.ResultPath,fileName.Name) ,fileName.Content);
         }
+        private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
+        {
+            var fileName = GenerateHandler(typeToGenerate, propertiesToGenerate);
+            Directory.CreateDirectory(Path.Combine(Settings.ResultPath, "Handlers"));
 
+            File.WriteAllText(Path.Combine(Settings.ResultPath, fileName.Name), fileName.Content);
+        }
         private FileResult GenerateComponent(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
             var outputBuilder = new StringBuilder();
@@ -265,13 +271,7 @@ namespace {Settings.RootNamespace}
             return null;
         }
 
-        private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
-        {
-            var fileName = GenerateHandler(typeToGenerate, propertiesToGenerate);
-            Directory.CreateDirectory("Handlers");
-
-            File.WriteAllText(fileName.Name, fileName.Content);
-        }
+    
 
         private FileResult GenerateHandler(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {

@@ -66,6 +66,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComponentWrapperGenerator",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{E4B46BA0-AD26-4004-9C5C-C1E9EE7B83C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.Components", "Microsoft.MobileBlazorBindings.Components\Microsoft.MobileBlazorBindings.Components.csproj", "{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +334,18 @@ Global
 		{E4B46BA0-AD26-4004-9C5C-C1E9EE7B83C6}.Release|iPhone.Build.0 = Release|Any CPU
 		{E4B46BA0-AD26-4004-9C5C-C1E9EE7B83C6}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E4B46BA0-AD26-4004-9C5C-C1E9EE7B83C6}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|iPhone.Build.0 = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{89BBE9A7-BDC4-4620-93F3-D8E3C055A04D}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
