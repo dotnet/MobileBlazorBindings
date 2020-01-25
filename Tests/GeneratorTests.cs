@@ -20,7 +20,7 @@ namespace Tests
         [Test]
         public void GenerateLabel()
         {
-            
+            generator.GenerateComponentWrapper(typeof(Xamarin.Forms.Label));
         }
     }
 }

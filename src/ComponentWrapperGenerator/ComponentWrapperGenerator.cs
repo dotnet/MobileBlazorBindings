@@ -23,7 +23,7 @@ namespace ComponentWrapperGenerator
 
         private GeneratorSettings Settings { get; }
 
-        public void GenerateComponentWrapper(Type typeToGenerate)
+        public void GenerateComponentWrapperToFile(Type typeToGenerate)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
@@ -33,8 +33,25 @@ namespace ComponentWrapperGenerator
             GenerateHandlerFile(typeToGenerate, propertiesToGenerate);
         }
 
+        public GeneratorResult GenerateComponentWrapper(Type typeToGenerate)
+        {
+            typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
+
+            var propertiesToGenerate = GetPropertiesToGenerate(typeToGenerate);
+            var component = GenerateComponent(typeToGenerate, propertiesToGenerate);
+            var handler = GenerateHandler(typeToGenerate, propertiesToGenerate);
+            return new GeneratorResult(){ Component = component, ComponentHandler = handler};
+        }
         private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
+            var fileName = GenerateComponent(typeToGenerate, propertiesToGenerate);
+
+            File.WriteAllText(fileName.Name,fileName.Content);
+        }
+
+        private FileResult GenerateComponent(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
+        {
+            var outputBuilder = new StringBuilder();
             var fileName = $@"{typeToGenerate.Name}.cs";
 
             Console.WriteLine($"Generating component for type '{typeToGenerate.FullName}' into file '{fileName}'.");
@@ -49,11 +66,11 @@ namespace ComponentWrapperGenerator
             // usings
             var usings = new List<UsingStatement>
             {
-                new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core" },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers" },
-                new UsingStatement { Namespace = "System.Threading.Tasks" },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
+                new UsingStatement {Namespace = "Microsoft.AspNetCore.Components"},
+                new UsingStatement {Namespace = "Microsoft.MobileBlazorBindings.Core"},
+                new UsingStatement {Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers"},
+                new UsingStatement {Namespace = "System.Threading.Tasks"},
+                new UsingStatement {Namespace = "Xamarin.Forms", Alias = "XF"}
             };
 
             // props
@@ -62,10 +79,12 @@ namespace ComponentWrapperGenerator
             {
                 propertyDeclarationBuilder.AppendLine();
             }
+
             foreach (var prop in propertiesToGenerate)
             {
                 propertyDeclarationBuilder.Append(GetPropertyDeclaration(prop, usings));
             }
+
             var propertyDeclarations = propertyDeclarationBuilder.ToString();
 
             // events
@@ -77,6 +96,7 @@ namespace ComponentWrapperGenerator
             {
                 propertyAttributeBuilder.Append(GetPropertyRenderAttribute(prop));
             }
+
             var propertyAttributes = propertyAttributeBuilder.ToString();
             var eventHandlerAttributes = "";
 
@@ -92,7 +112,7 @@ namespace ComponentWrapperGenerator
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
 
-            var outputBuilder = new StringBuilder();
+            outputBuilder = new StringBuilder();
             outputBuilder.Append($@"{headerText}
 {usingsText}
 
@@ -117,8 +137,7 @@ namespace {Settings.RootNamespace}
     }}
 }}
 ");
-
-            File.WriteAllText(fileName, outputBuilder.ToString());
+            return new FileResult(){Name = fileName, Content = outputBuilder.ToString()};
         }
 
         private static readonly List<Type> DisallowedComponentPropertyTypes = new List<Type>
@@ -248,8 +267,16 @@ namespace {Settings.RootNamespace}
 
         private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
-            var fileName = $@"Handlers\{typeToGenerate.Name}Handler.cs";
+            var fileName = GenerateHandler(typeToGenerate, propertiesToGenerate);
             Directory.CreateDirectory("Handlers");
+
+            File.WriteAllText(fileName.Name, fileName.Content);
+        }
+
+        private FileResult GenerateHandler(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
+        {
+            var outputBuilder = new StringBuilder();
+            var fileName = $@"Handlers\{typeToGenerate.Name}Handler.cs";
 
             Console.WriteLine($"Generating component handler for type '{typeToGenerate.FullName}' into file '{fileName}'.");
 
@@ -266,9 +293,9 @@ namespace {Settings.RootNamespace}
             var usings = new List<UsingStatement>
             {
                 //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" }, // Typically needed only when there are event handlers for the EventArgs types
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core" },
-                new UsingStatement { Namespace = "System" },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
+                new UsingStatement {Namespace = "Microsoft.MobileBlazorBindings.Core"},
+                new UsingStatement {Namespace = "System"},
+                new UsingStatement {Namespace = "Xamarin.Forms", Alias = "XF"}
             };
 
             // props
@@ -277,6 +304,7 @@ namespace {Settings.RootNamespace}
             {
                 propertySettersBuilder.Append(GetPropertySetAttribute(prop, usings));
             }
+
             var propertySetters = propertySettersBuilder.ToString();
 
             var usingsText = string.Join(
@@ -287,7 +315,7 @@ namespace {Settings.RootNamespace}
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
 
-            var outputBuilder = new StringBuilder();
+            outputBuilder = new StringBuilder();
             outputBuilder.Append($@"{headerText}
 {usingsText}
 
@@ -314,8 +342,7 @@ namespace {Settings.RootNamespace}.Handlers
     }}
 }}
 ");
-
-            File.WriteAllText(fileName, outputBuilder.ToString());
+            return new FileResult(){Name = fileName, Content = outputBuilder.ToString()};
         }
 
         private static string GetPropertySetAttribute(PropertyInfo prop, List<UsingStatement> usings)
