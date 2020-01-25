@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System;
 using System.Globalization;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -11,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             return (value == null)
                 ? defaultValueIfNull
-                : (bool)value;
+                : (string.Equals((string)value, "1", StringComparison.Ordinal));
         }
 
         public static int GetInt(object value, int defaultValueIfNull = default)
