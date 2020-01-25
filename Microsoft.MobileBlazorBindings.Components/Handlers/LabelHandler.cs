@@ -23,21 +23,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Label.CharacterSpacing):
                     LabelControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
-                case nameof(XF.Label.Font):
-                    LabelControl.Font = ;
-                    break;
                 case nameof(XF.Label.FontAttributes):
                     LabelControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(XF.Label.FontFamily):
-                    LabelControl.FontFamily = (string)attributeValue ?? ;
+                    LabelControl.FontFamily = (string)attributeValue;
                     break;
                 case nameof(XF.Label.FontSize):
                     LabelControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
                 case nameof(XF.Label.FormattedText):
-                    LabelControl.FormattedText = ;
-                    break;
+                    throw new NotImplementedException("FormattedText has not been implemented yet");
                 case nameof(XF.Label.HorizontalTextAlignment):
                     LabelControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
@@ -54,7 +50,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     LabelControl.Padding = AttributeHelper.StringToThickness(attributeValue);
                     break;
                 case nameof(XF.Label.Text):
-                    LabelControl.Text = (string)attributeValue ?? ;
+                    LabelControl.Text = (string)attributeValue;
                     break;
                 case nameof(XF.Label.TextColor):
                     LabelControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
@@ -67,12 +63,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.Label.VerticalTextAlignment):
                     LabelControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
-                    break;
-                case nameof(XF.Label.XAlign):
-                    LabelControl.XAlign = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
-                    break;
-                case nameof(XF.Label.YAlign):
-                    LabelControl.YAlign = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

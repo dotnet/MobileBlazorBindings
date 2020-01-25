@@ -18,7 +18,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         [Parameter] public double? CharacterSpacing { get; set; }
-        [Parameter] public XF.Font? Font { get; set; }
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         [Parameter] public string FontFamily { get; set; }
         [Parameter] public double? FontSize { get; set; }
@@ -33,8 +32,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
         [Parameter] public XF.TextType? TextType { get; set; }
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
-        [Parameter] public XF.TextAlignment? XAlign { get; set; }
-        [Parameter] public XF.TextAlignment? YAlign { get; set; }
 
         public new XF.Label NativeControl => ((LabelHandler)ElementHandler).LabelControl;
 
@@ -45,10 +42,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (CharacterSpacing != null)
             {
                 builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
-            }
-            if (Font != null)
-            {
-                builder.AddAttribute(nameof(Font), Font.Value);
             }
             if (FontAttributes != null)
             {
@@ -105,14 +98,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (VerticalTextAlignment != null)
             {
                 builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
-            }
-            if (XAlign != null)
-            {
-                builder.AddAttribute(nameof(XAlign), (int)XAlign.Value);
-            }
-            if (YAlign != null)
-            {
-                builder.AddAttribute(nameof(YAlign), (int)YAlign.Value);
             }
 
         }

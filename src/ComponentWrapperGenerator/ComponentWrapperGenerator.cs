@@ -364,6 +364,7 @@ namespace {Settings.RootNamespace}.Handlers
                 resetValueParameterExpression = $", {cast}" + GetValueExpression(declaredDefaultValue);
             }
 
+            var supported = true;
             var formattedValue = string.Empty;
             if (TypeToAttributeHelperSetter.TryGetValue(prop.PropertyType, out var propValueFormat))
             {
@@ -376,13 +377,24 @@ namespace {Settings.RootNamespace}.Handlers
             }
             else
             {
+                supported = false;
                 // TODO: Error?
             }
 
-            return $@"                case nameof(XF.{prop.DeclaringType.Name}.{prop.Name}):
+            if (supported)
+            {
+                return $@"                case nameof(XF.{prop.DeclaringType.Name}.{prop.Name}):
                     {prop.DeclaringType.Name}Control.{prop.Name} = {formattedValue};
                     break;
 ";
+            }
+            else
+            {
+                return $@"                case nameof(XF.{prop.DeclaringType.Name}.{prop.Name}):
+                    throw new NotImplementedException(""{prop.Name} has not been implemented yet"");
+";
+            }
+            
         }
 
         private static string GetValueExpression(object declaredDefaultValue)
@@ -439,7 +451,7 @@ namespace {Settings.RootNamespace}.Handlers
             { typeof(double), "AttributeHelper.StringToDouble((string)attributeValue{0})" },
             { typeof(float), "AttributeHelper.StringToSingle((string)attributeValue{0})" },
             { typeof(int), "AttributeHelper.GetInt(attributeValue{0})" },
-            { typeof(string), "(string)attributeValue ?? {0}" },
+            { typeof(string), "(string)attributeValue{0}" },
         };
 
         private static IEnumerable<PropertyInfo> GetPropertiesToGenerate(Type componentType)
@@ -451,6 +463,7 @@ namespace {Settings.RootNamespace}.Handlers
                     .Where(prop => prop.CanRead && prop.CanWrite)
                     .Where(prop => prop.DeclaringType == componentType)
                     .Where(prop => !DisallowedComponentPropertyTypes.Contains(prop.PropertyType))
+                    .Where(prop => prop.GetCustomAttributes(typeof(ObsoleteAttribute)).Any() != true)
                     .OrderBy(prop => prop.Name, StringComparer.OrdinalIgnoreCase)
                     .ToList();
         }
