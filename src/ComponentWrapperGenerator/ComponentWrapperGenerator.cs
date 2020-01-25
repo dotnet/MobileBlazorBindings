@@ -356,7 +356,12 @@ namespace {Settings.RootNamespace}.Handlers
             var resetValueParameterExpression = string.Empty;
             if (needsCustomResetValue)
             {
-                resetValueParameterExpression = ", " + GetValueExpression(declaredDefaultValue);
+                var cast = "";
+                if (prop.PropertyType.IsEnum)
+                {
+                    cast = "(int)";
+                }
+                resetValueParameterExpression = $", {cast}" + GetValueExpression(declaredDefaultValue);
             }
 
             var formattedValue = string.Empty;
@@ -392,7 +397,7 @@ namespace {Settings.RootNamespace}.Handlers
                 int intValue => GetIntAsString(intValue),
                 float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
                 double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
-                Enum enumValue => enumValue.GetType().Name + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue), // TODO: Add 'using' for enum type name
+                Enum enumValue => enumValue.GetType().FullName + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue), // TODO: Add 'using' for enum type name
                 string stringValue => $@"""{stringValue}""",
                 // TODO: More types here
                 _ => "UNKNOWN", // TODO: How to handle this?

@@ -42,7 +42,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     LabelControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(XF.Label.LineBreakMode):
-                    LabelControl.LineBreakMode = (XF.LineBreakMode)AttributeHelper.GetInt(attributeValue, LineBreakMode.WordWrap);
+                    LabelControl.LineBreakMode = (XF.LineBreakMode)AttributeHelper.GetInt(attributeValue, (int)Xamarin.Forms.LineBreakMode.WordWrap);
                     break;
                 case nameof(XF.Label.LineHeight):
                     LabelControl.LineHeight = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
