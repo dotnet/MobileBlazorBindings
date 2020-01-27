@@ -21,7 +21,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(ActivityIndicator.IsRunning):
-                    ActivityIndicatorControl.IsRunning = (bool)(attributeValue ?? (bool)XF.ActivityIndicator.IsRunningProperty.DefaultValue);
+                    ActivityIndicatorControl.IsRunning = AttributeHelper.GetBool(attributeValue);
                     break;
                 case nameof(ActivityIndicator.Color):
                     ActivityIndicatorControl.Color = AttributeHelper.StringToColor((string)attributeValue);
