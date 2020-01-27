@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.NavigableElement.StyleClass):
-                    NavigableElementControl.StyleClass = ((string)attributeValue)?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+                    NavigableElementControl.StyleClass = AttributeHelper.GetStringList(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

@@ -2,7 +2,9 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -60,6 +62,16 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 return defaultValueIfNull;
             }
             return float.Parse(singleString, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Parses the attribute value as a comma-separated string. Entries are trimmed and empty entries are removed.
+        /// </summary>
+        /// <param name="attributeValue"></param>
+        /// <returns></returns>
+        public static IList<string> GetStringList(object attributeValue)
+        {
+            return ((string)attributeValue)?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
         }
     }
 }
