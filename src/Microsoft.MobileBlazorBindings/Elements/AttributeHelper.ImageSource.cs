@@ -33,21 +33,25 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="ImageSource" /> objects.
         /// </summary>
-        public static ImageSource StringToImageSource(string imageSourceString, ImageSource defaultValueIfNull = default)
+        public static ImageSource StringToImageSource(object imageSourceString, ImageSource defaultValueIfNull = default)
         {
             if (imageSourceString is null)
             {
                 return defaultValueIfNull;
             }
+            if (!(imageSourceString is string imageSourceAsString))
+            {
+                throw new ArgumentException("Expected parameter instance to be a string.", nameof(imageSourceString));
+            }
 
-            var indexOfColon = imageSourceString.IndexOf(':');
+            var indexOfColon = imageSourceAsString.IndexOf(':');
             if (indexOfColon == -1)
             {
                 throw new ArgumentException($"Invalid image source format: '{imageSourceString}'", nameof(imageSourceString));
             }
 
-            var prefix = imageSourceString.Substring(0, indexOfColon);
-            var data = imageSourceString.Substring(indexOfColon + 1);
+            var prefix = imageSourceAsString.Substring(0, indexOfColon);
+            var data = imageSourceAsString.Substring(indexOfColon + 1);
 
             return prefix switch
             {
