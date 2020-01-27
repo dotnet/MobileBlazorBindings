@@ -26,6 +26,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Element.AutomationId):
                     ElementControl.AutomationId = (string)attributeValue;
                     break;
+                case nameof(XF.Element.ClassId):
+                    ElementControl.ClassId = (string)attributeValue;
+                    break;
                 case nameof(XF.Element.StyleId):
                     ElementControl.StyleId = (string)attributeValue;
                     break;

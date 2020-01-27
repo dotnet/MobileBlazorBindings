@@ -10,6 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
     public abstract class Element : NativeControlComponentBase
     {
         [Parameter] public string AutomationId { get; set; }
+        [Parameter] public string ClassId { get; set; }
         [Parameter] public string StyleId { get; set; }
 
         public XF.Element NativeControl => ((Handlers.ElementHandler)ElementHandler).ElementControl;
@@ -21,6 +22,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (AutomationId != null)
             {
                 builder.AddAttribute(nameof(AutomationId), AutomationId);
+            }
+            if (ClassId != null)
+            {
+                builder.AddAttribute(nameof(ClassId), ClassId);
             }
             if (StyleId != null)
             {
