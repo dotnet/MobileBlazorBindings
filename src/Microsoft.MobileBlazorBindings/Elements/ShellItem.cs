@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
 
-        public new XF.ShellGroupItem NativeControl => ((ShellGroupItemHandler)ElementHandler).ShellGroupItemControl;
+        public new XF.ShellItem NativeControl => ((ShellItemHandler)ElementHandler).ShellItemControl;
 
         protected override RenderFragment GetChildContent() => ChildContent;
     }
