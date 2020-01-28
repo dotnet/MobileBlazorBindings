@@ -7,34 +7,26 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class BaseShellItemHandler : NavigableElementHandler
+    public partial class BaseShellItemHandler : NavigableElementHandler
     {
         public BaseShellItemHandler(NativeComponentRenderer renderer, XF.BaseShellItem baseShellItemControl) : base(renderer, baseShellItemControl)
         {
             BaseShellItemControl = baseShellItemControl ?? throw new ArgumentNullException(nameof(baseShellItemControl));
 
-            BaseShellItemControl.Appearing += (s, e) =>
-            {
-                if (AppearingEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(AppearingEventHandlerId, null, e));
-                }
-            };
-            BaseShellItemControl.Disappearing += (s, e) =>
-            {
-                if (DisappearingEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(DisappearingEventHandlerId, null, e));
-                }
-            };
+            Initialize(renderer);
         }
 
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.BaseShellItem BaseShellItemControl { get; }
-        public ulong AppearingEventHandlerId { get; set; }
-        public ulong DisappearingEventHandlerId { get; set; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(XF.BaseShellItem.FlyoutIcon):
@@ -58,19 +50,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.BaseShellItem.TabIndex):
                     BaseShellItemControl.TabIndex = AttributeHelper.GetInt(attributeValue);
                     break;
-
-                case "onappearing":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => AppearingEventHandlerId = 0);
-                    AppearingEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "ondisappearing":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => DisappearingEventHandlerId = 0);
-                    DisappearingEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

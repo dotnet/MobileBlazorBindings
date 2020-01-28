@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Button : View
+    public partial class Button : View
     {
         static Button()
         {
@@ -18,8 +18,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public string Text { get; set; }
         [Parameter] public XF.Color? TextColor { get; set; }
-
-        [Parameter] public EventCallback OnClick { get; set; }
 
         public new XF.Button NativeControl => ((ButtonHandler)ElementHandler).ButtonControl;
 
@@ -36,7 +34,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
 
-            builder.AddAttribute("onclick", OnClick);
+            RenderAdditionalAttributes(builder);
         }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

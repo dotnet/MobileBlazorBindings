@@ -7,41 +7,26 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class VisualElementHandler : NavigableElementHandler
+    public partial class VisualElementHandler : NavigableElementHandler
     {
         public VisualElementHandler(NativeComponentRenderer renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
         {
             VisualElementControl = visualElementControl ?? throw new ArgumentNullException(nameof(visualElementControl));
-            VisualElementControl.Focused += (s, e) =>
-            {
-                if (FocusedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(FocusedEventHandlerId, null, e));
-                }
-            };
-            VisualElementControl.SizeChanged += (s, e) =>
-            {
-                if (SizeChangedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(SizeChangedEventHandlerId, null, e));
-                }
-            };
-            VisualElementControl.Unfocused += (s, e) =>
-            {
-                if (UnfocusedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(UnfocusedEventHandlerId, null, e));
-                }
-            };
+
+            Initialize(renderer);
         }
 
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.VisualElement VisualElementControl { get; }
-        public ulong FocusedEventHandlerId { get; set; }
-        public ulong SizeChangedEventHandlerId { get; set; }
-        public ulong UnfocusedEventHandlerId { get; set; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(XF.VisualElement.AnchorX):
@@ -110,22 +95,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.VisualElement.WidthRequest):
                     VisualElementControl.WidthRequest = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
-                case "onfocused":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => FocusedEventHandlerId = 0);
-                    FocusedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "onsizechanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => SizeChangedEventHandlerId = 0);
-                    SizeChangedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "onunfocused":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => UnfocusedEventHandlerId = 0);
-                    UnfocusedEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

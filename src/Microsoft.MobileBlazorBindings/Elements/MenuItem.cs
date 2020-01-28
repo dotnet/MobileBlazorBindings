@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class MenuItem : BaseMenuItem
+    public partial class MenuItem : BaseMenuItem
     {
         static MenuItem()
         {
@@ -21,8 +21,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.ImageSource IconImageSource { get; set; }
         [Parameter] public bool? IsDestructive { get; set; }
         [Parameter] public string Text { get; set; }
-
-        [Parameter] public EventCallback OnClick { get; set; }
 
         public new XF.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;
 
@@ -43,7 +41,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(Text), Text);
             }
 
-            builder.AddAttribute("onclick", OnClick);
+            RenderAdditionalAttributes(builder);
         }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

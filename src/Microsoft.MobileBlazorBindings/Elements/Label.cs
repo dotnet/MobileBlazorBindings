@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Label : View
+    public partial class Label : View
     {
         static Label()
         {
@@ -23,8 +23,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
-
-        [Parameter] public RenderFragment FormattedText { get; set; }
 
         public new XF.Layout NativeControl => ((LayoutHandler)ElementHandler).LayoutControl;
 
@@ -60,8 +58,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
             }
+
+            RenderAdditionalAttributes(builder);
         }
 
-        protected override RenderFragment GetChildContent() => FormattedText;
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

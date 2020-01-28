@@ -7,25 +7,26 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ButtonHandler : ViewHandler
+    public partial class ButtonHandler : ViewHandler
     {
         public ButtonHandler(NativeComponentRenderer renderer, XF.Button buttonControl) : base(renderer, buttonControl)
         {
             ButtonControl = buttonControl ?? throw new ArgumentNullException(nameof(buttonControl));
-            ButtonControl.Clicked += (s, e) =>
-            {
-                if (ClickEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, e));
-                }
-            };
+
+            Initialize(renderer);
         }
 
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.Button ButtonControl { get; }
-        public ulong ClickEventHandlerId { get; set; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(Button.Text):
@@ -34,14 +35,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(Button.TextColor):
                     ButtonControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
-                case "onclick":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
-                    ClickEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

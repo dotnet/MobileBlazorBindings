@@ -9,7 +9,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Stepper : View
+    public partial class Stepper : View
     {
         static Stepper()
         {
@@ -21,8 +21,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? Maximum { get; set; }
         [Parameter] public double? Minimum { get; set; }
         [Parameter] public double? Value { get; set; }
-
-        [Parameter] public EventCallback<double> ValueChanged { get; set; }
 
         public new XF.Stepper NativeControl => ((StepperHandler)ElementHandler).StepperControl;
         
@@ -47,12 +45,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(Value), AttributeHelper.DoubleToString(Value.Value));
             }
 
-            builder.AddAttribute("onvaluechanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleValueChanged));
+            RenderAdditionalAttributes(builder);
         }
 
-        private Task HandleValueChanged(ChangeEventArgs evt)
-        {
-            return ValueChanged.InvokeAsync((double)evt.Value);
-        }
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

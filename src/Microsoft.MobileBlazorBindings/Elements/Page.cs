@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Page : VisualElement
+    public partial class Page : VisualElement
     {
         static Page()
         {
@@ -18,10 +18,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public XF.ImageSource IconImageSource { get; set; }
         [Parameter] public string Title { get; set; }
-
-#pragma warning disable CA1721 // Property names should not match get methods
-        [Parameter] public RenderFragment ChildContent { get; set; }
-#pragma warning restore CA1721 // Property names should not match get methods
 
         public new XF.Page NativeControl => ((PageHandler)ElementHandler).PageControl;
 
@@ -37,8 +33,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(Title), Title);
             }
+
+            RenderAdditionalAttributes(builder);
         }
 
-        protected override RenderFragment GetChildContent() => ChildContent;
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

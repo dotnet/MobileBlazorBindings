@@ -9,7 +9,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Switch : View
+    public partial class Switch : View
     {
         static Switch()
         {
@@ -18,8 +18,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         [Parameter] public bool? IsToggled { get; set; }
-
-        [Parameter] public EventCallback<bool> IsToggledChanged { get; set; }
 
         public new XF.Switch NativeControl => ((SwitchHandler)ElementHandler).SwitchControl;
 
@@ -32,13 +30,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(IsToggled), IsToggled.Value);
             }
 
-            builder.AddAttribute("onistoggledchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleIsToggledChanged));
+            RenderAdditionalAttributes(builder);
         }
 
-        private Task HandleIsToggledChanged(ChangeEventArgs evt)
-        {
-            return IsToggledChanged.InvokeAsync((bool)evt.Value);
-        }
-
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

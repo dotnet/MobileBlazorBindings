@@ -7,25 +7,26 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class MenuItemHandler : BaseMenuItemHandler
+    public partial class MenuItemHandler : BaseMenuItemHandler
     {
         public MenuItemHandler(NativeComponentRenderer renderer, XF.MenuItem menuItemControl) : base(renderer, menuItemControl)
         {
             MenuItemControl = menuItemControl ?? throw new ArgumentNullException(nameof(menuItemControl));
-            MenuItemControl.Clicked += (s, e) =>
-            {
-                if (ClickEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ClickEventHandlerId, null, e));
-                }
-            };
+
+            Initialize(renderer);
         }
 
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.MenuItem MenuItemControl { get; }
-        public ulong ClickEventHandlerId { get; set; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(XF.MenuItem.IconImageSource):
@@ -37,14 +38,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.MenuItem.Text):
                     MenuItemControl.Text = (string)attributeValue;
                     break;
-                case "onclick":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
-                    ClickEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

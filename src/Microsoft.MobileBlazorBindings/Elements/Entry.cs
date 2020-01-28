@@ -9,7 +9,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Entry : InputView
+    public partial class Entry : InputView
     {
         static Entry()
         {
@@ -35,9 +35,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public string Text { get; set; }
         [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
-
-        [Parameter] public EventCallback OnCompleted { get; set; }
-        [Parameter] public EventCallback<string> TextChanged { get; set; }
 
         public new XF.Entry NativeControl => ((EntryHandler)ElementHandler).EntryControl;
 
@@ -110,13 +107,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment);
             }
 
-            builder.AddAttribute("oncompleted", OnCompleted);
-            builder.AddAttribute("ontextchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleTextChanged));
+            RenderAdditionalAttributes(builder);
         }
 
-        private Task HandleTextChanged(ChangeEventArgs evt)
-        {
-            return TextChanged.InvokeAsync((string)evt.Value);
-        }
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }
