@@ -12,6 +12,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class Shell : Page
     {
+        [Parameter] public RenderFragment FlyoutHeader { get; set; }
+
         [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
         [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
 
