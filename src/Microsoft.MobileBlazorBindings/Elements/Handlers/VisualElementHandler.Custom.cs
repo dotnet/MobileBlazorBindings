@@ -9,6 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
+            RegisterEvent(
+                eventName: "onfocused",
+                setId: id => FocusedEventHandlerId = id,
+                clearId: () => FocusedEventHandlerId = 0);
             VisualElementControl.Focused += (s, e) =>
             {
                 if (FocusedEventHandlerId != default)
@@ -16,6 +20,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(FocusedEventHandlerId, null, e));
                 }
             };
+            RegisterEvent(
+                eventName: "onsizechanged",
+                setId: id => SizeChangedEventHandlerId = id,
+                clearId: () => SizeChangedEventHandlerId = 0);
             VisualElementControl.SizeChanged += (s, e) =>
             {
                 if (SizeChangedEventHandlerId != default)
@@ -23,6 +31,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(SizeChangedEventHandlerId, null, e));
                 }
             };
+            RegisterEvent(
+                eventName: "onunfocused",
+                setId: id => UnfocusedEventHandlerId = id,
+                clearId: () => UnfocusedEventHandlerId = 0);
             VisualElementControl.Unfocused += (s, e) =>
             {
                 if (UnfocusedEventHandlerId != default)
@@ -35,24 +47,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public ulong FocusedEventHandlerId { get; set; }
         public ulong SizeChangedEventHandlerId { get; set; }
         public ulong UnfocusedEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "onfocused":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => FocusedEventHandlerId = 0);
-                    FocusedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "onsizechanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => SizeChangedEventHandlerId = 0);
-                    SizeChangedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "onunfocused":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => UnfocusedEventHandlerId = 0);
-                    UnfocusedEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }

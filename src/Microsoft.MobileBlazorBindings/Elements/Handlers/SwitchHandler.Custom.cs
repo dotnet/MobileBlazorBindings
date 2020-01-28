@@ -10,6 +10,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
+            RegisterEvent(
+                eventName: "onistoggledchanged",
+                setId: id => IsToggledChangedEventHandlerId = id,
+                clearId: () => IsToggledChangedEventHandlerId = 0);
             SwitchControl.Toggled += (s, e) =>
             {
                 if (IsToggledChangedEventHandlerId != default)
@@ -20,16 +24,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public ulong IsToggledChangedEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "onistoggledchanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => IsToggledChangedEventHandlerId = 0);
-                    IsToggledChangedEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }

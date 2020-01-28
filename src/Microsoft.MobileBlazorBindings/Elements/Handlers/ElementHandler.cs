@@ -3,6 +3,7 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
+using System.Collections.Generic;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -14,6 +15,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
+
+        protected void RegisterEvent(string eventName, Action<ulong> setId, Action clearId)
+        {
+            RegisteredEvents[eventName] = new EventRegistration(eventName, setId, clearId);
+        }
+        private Dictionary<string, EventRegistration> RegisteredEvents { get; } = new Dictionary<string, EventRegistration>();
 
         public NativeComponentRenderer Renderer { get; }
         public XF.Element ElementControl { get; }
@@ -33,8 +40,24 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ElementControl.StyleId = (string)attributeValue;
                     break;
                 default:
-                    throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
+                    if (!TryCallRegisteredEvent(attributeName, attributeEventHandlerId))
+                    {
+                        throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
+                    }
+                    break;
             }
+        }
+
+        private bool TryCallRegisteredEvent(string eventName, ulong eventHandlerId)
+        {
+            if (RegisteredEvents.TryGetValue(eventName, out var eventRegistration))
+            {
+                Renderer.RegisterEvent(eventHandlerId, eventRegistration.ClearId);
+                eventRegistration.SetId(eventHandlerId);
+
+                return true;
+            }
+            return false;
         }
     }
 }

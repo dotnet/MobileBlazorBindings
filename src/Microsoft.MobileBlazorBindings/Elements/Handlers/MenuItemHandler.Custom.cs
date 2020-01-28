@@ -9,6 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
+            RegisterEvent(
+                eventName: "onclick",
+                setId: id => ClickEventHandlerId = id,
+                clearId: () => ClickEventHandlerId = 0);
             MenuItemControl.Clicked += (s, e) =>
             {
                 if (ClickEventHandlerId != default)
@@ -19,16 +23,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public ulong ClickEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "onclick":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
-                    ClickEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }

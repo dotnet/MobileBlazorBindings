@@ -3,8 +3,6 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
@@ -12,6 +10,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
+            RegisterEvent(
+                eventName: "onvaluechanged",
+                setId: id => ValueChangedEventHandlerId = id,
+                clearId: () => ValueChangedEventHandlerId = 0);
             StepperControl.ValueChanged += (s, e) =>
             {
                 if (ValueChangedEventHandlerId != default)
@@ -22,16 +24,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public ulong ValueChangedEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "onvaluechanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => ValueChangedEventHandlerId = 0);
-                    ValueChangedEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }

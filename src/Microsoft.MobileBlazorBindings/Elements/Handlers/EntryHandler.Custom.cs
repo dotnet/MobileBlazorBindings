@@ -10,6 +10,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
+            RegisterEvent(
+                eventName: "oncompleted",
+                setId: id => CompletedEventHandlerId = id,
+                clearId: () => CompletedEventHandlerId = 0);
             EntryControl.Completed += (s, e) =>
             {
                 if (CompletedEventHandlerId != default)
@@ -17,6 +21,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(CompletedEventHandlerId, null, e));
                 }
             };
+            RegisterEvent(
+                eventName: "ontextchanged",
+                setId: id => TextChangedEventHandlerId = id,
+                clearId: () => TextChangedEventHandlerId = 0);
             EntryControl.TextChanged += (s, e) =>
             {
                 if (TextChangedEventHandlerId != default)
@@ -28,20 +36,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public ulong CompletedEventHandlerId { get; set; }
         public ulong TextChangedEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "oncompleted":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => CompletedEventHandlerId = 0);
-                    CompletedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "ontextchanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);
-                    TextChangedEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }

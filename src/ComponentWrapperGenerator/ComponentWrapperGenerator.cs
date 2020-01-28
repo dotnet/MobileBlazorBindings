@@ -368,11 +368,6 @@ namespace {Settings.RootNamespace}
                 applyAttributesMethod = $@"
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {{
-            if (attributeEventHandlerId != 0)
-            {{
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }}
-
             switch (attributeName)
             {{
 {propertySetters}                default:
@@ -380,8 +375,6 @@ namespace {Settings.RootNamespace}
                     break;
             }}
         }}
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
 ";
             }
 

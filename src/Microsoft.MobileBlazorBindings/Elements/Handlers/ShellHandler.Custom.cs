@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -24,6 +23,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _flyoutHeaderContentView.IsVisible = false;
             ShellControl.FlyoutHeader = _flyoutHeaderContentView;
 
+            RegisterEvent(
+                eventName: "onnavigated",
+                setId: id => NavigatedEventHandlerId = id,
+                clearId: () => NavigatedEventHandlerId = 0);
             ShellControl.Navigated += (s, e) =>
             {
                 if (NavigatedEventHandlerId != default)
@@ -31,6 +34,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(NavigatedEventHandlerId, null, e));
                 }
             };
+            RegisterEvent(
+                eventName: "onnavigating",
+                setId: id => NavigatingEventHandlerId = id,
+                clearId: () => NavigatingEventHandlerId = 0);
             ShellControl.Navigating += (s, e) =>
             {
                 if (NavigatingEventHandlerId != default)
@@ -48,20 +55,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public ulong NavigatedEventHandlerId { get; set; }
         public ulong NavigatingEventHandlerId { get; set; }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId)
-        {
-            switch (attributeName)
-            {
-                case "onnavigated":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => NavigatedEventHandlerId = 0);
-                    NavigatedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "onnavigating":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => NavigatingEventHandlerId = 0);
-                    NavigatingEventHandlerId = attributeEventHandlerId;
-                    break;
-            }
-        }
     }
 }
