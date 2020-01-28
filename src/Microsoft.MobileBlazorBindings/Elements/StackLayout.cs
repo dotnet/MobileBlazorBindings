@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class StackLayout : Layout
+    public partial class StackLayout : Layout
     {
         static StackLayout()
         {
@@ -16,9 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 .RegisterElementHandler<StackLayout>(renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
         }
 
-#pragma warning disable CA1721 // Property names should not match get methods
-        [Parameter] public RenderFragment ChildContent { get; set; }
-#pragma warning restore CA1721 // Property names should not match get methods
         [Parameter] public XF.StackOrientation? Orientation { get; set; }
         [Parameter] public double? Spacing { get; set; }
 
@@ -37,7 +34,5 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(Spacing), AttributeHelper.DoubleToString(Spacing.Value));
             }
         }
-
-        protected override RenderFragment GetChildContent() => ChildContent;
     }
 }

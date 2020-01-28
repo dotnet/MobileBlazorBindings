@@ -9,7 +9,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class NavigableElement : Element
+    public partial class NavigableElement : Element
     {
         /// <summary>
         /// A comma-separated list of style classes that should be applied to this element.
@@ -26,11 +26,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(StyleClass), StyleClass);
             }
+
+            RenderAdditionalAttributes(builder);
         }
 
-        public async Task PopModalAsync(bool animated = true)
-        {
-            await NativeControl.Navigation.PopModalAsync(animated).ConfigureAwait(true);
-        }
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class VisualElement : NavigableElement
+    public partial class VisualElement : NavigableElement
     {
         [Parameter] public double? AnchorX { get; set; }
         [Parameter] public double? AnchorY { get; set; }
@@ -32,10 +32,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? TranslationX { get; set; }
         [Parameter] public double? TranslationY { get; set; }
         [Parameter] public double? WidthRequest { get; set; }
-
-        [Parameter] public EventCallback<XF.FocusEventArgs> OnFocused { get; set; }
-        [Parameter] public EventCallback OnSizeChanged { get; set; }
-        [Parameter] public EventCallback<XF.FocusEventArgs> OnUnfocused { get; set; }
 
         public new XF.VisualElement NativeControl => ((VisualElementHandler)ElementHandler).VisualElementControl;
 
@@ -132,9 +128,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(WidthRequest), AttributeHelper.DoubleToString(WidthRequest.Value));
             }
 
-            builder.AddAttribute("onfocused", OnFocused);
-            builder.AddAttribute("onsizechanged", OnSizeChanged);
-            builder.AddAttribute("onunfocused", OnUnfocused);
+            RenderAdditionalAttributes(builder);
         }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

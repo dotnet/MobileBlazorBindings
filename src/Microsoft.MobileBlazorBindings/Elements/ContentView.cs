@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class ContentView : TemplatedView
+    public partial class ContentView : TemplatedView
     {
         static ContentView()
         {
@@ -16,12 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ContentViewHandler(renderer, new XF.ContentView()));
         }
 
-#pragma warning disable CA1721 // Property names should not match get methods
-        [Parameter] public RenderFragment ChildContent { get; set; }
-#pragma warning restore CA1721 // Property names should not match get methods
-
         public new XF.ContentView NativeControl => ((ContentViewHandler)ElementHandler).ContentViewControl;
-
-        protected override RenderFragment GetChildContent() => ChildContent;
     }
 }

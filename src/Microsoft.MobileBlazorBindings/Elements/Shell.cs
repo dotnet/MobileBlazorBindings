@@ -11,7 +11,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Shell : Page
+    public partial class Shell : Page
     {
         static Shell()
         {
@@ -33,9 +33,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         //[Parameter] public IList<ShellItem> Items { get; } // TODO: Not needed? This is the Children collection
         //[Parameter] public DataTemplate ItemTemplate { get; set; }
         //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
-
-        [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
-        [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
 
         public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
 
@@ -75,34 +72,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
             //[Parameter] public DataTemplate ItemTemplate { get; set; }
             //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
 
-            builder.AddAttribute("onnavigated", OnNavigated);
-            builder.AddAttribute("onnavigating", OnNavigating);
+            RenderAdditionalAttributes(builder);
         }
 
-        public async Task GoTo(XF.ShellNavigationState state, bool animate = true)
-        {
-            if (state is null)
-            {
-                throw new ArgumentNullException(nameof(state));
-            }
-
-            await NativeControl.GoToAsync(state, animate).ConfigureAwait(true);
-        }
-
-#pragma warning disable CA1721 // Property names should not match get methods
-        protected override RenderFragment GetChildContent() => RenderChildContent;
-#pragma warning restore CA1721 // Property names should not match get methods
-
-        private void RenderChildContent(RenderTreeBuilder builder)
-        {
-            if (FlyoutHeader != null)
-            {
-                builder.OpenComponent<ShellFlyoutHeader>(1);
-                builder.AddAttribute(0, nameof(ChildContent), FlyoutHeader);
-                builder.CloseComponent();
-            }
-
-            builder.AddContent(2, ChildContent);
-        }
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

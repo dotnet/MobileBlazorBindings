@@ -8,7 +8,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class BaseShellItem : NavigableElement
+    public partial class BaseShellItem : NavigableElement
     {
         static BaseShellItem()
         {
@@ -23,9 +23,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public string Route { get; set; }
         [Parameter] public string Title { get; set; }
         [Parameter] public int? TabIndex { get; set; }
-
-        [Parameter] public EventCallback OnAppearing { get; set; }
-        [Parameter] public EventCallback OnDisappearing { get; set; }
 
         public new XF.BaseShellItem NativeControl => ((BaseShellItemHandler)ElementHandler).BaseShellItemControl;
 
@@ -62,8 +59,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(TabIndex), TabIndex.Value);
             }
 
-            builder.AddAttribute("onappearing", OnAppearing);
-            builder.AddAttribute("ondisappearing", OnDisappearing);
+            RenderAdditionalAttributes(builder);
         }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

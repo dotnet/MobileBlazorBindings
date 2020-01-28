@@ -2,31 +2,31 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.AspNetCore.Components;
 using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class StepperHandler : ViewHandler
+    public partial class StepperHandler : ViewHandler
     {
         public StepperHandler(NativeComponentRenderer renderer, XF.Stepper stepperControl) : base(renderer, stepperControl)
         {
             StepperControl = stepperControl ?? throw new ArgumentNullException(nameof(stepperControl));
-            StepperControl.ValueChanged += (s, e) =>
-            {
-                if (ValueChangedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ValueChangedEventHandlerId, null, new ChangeEventArgs { Value = StepperControl.Value }));
-                }
-            };
+
+            Initialize(renderer);
         }
 
-        public ulong ValueChangedEventHandlerId { get; set; }
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.Stepper StepperControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(XF.Stepper.Increment):
@@ -41,14 +41,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Stepper.Value):
                     StepperControl.Value = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
-                case "onvaluechanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => ValueChangedEventHandlerId = 0);
-                    ValueChangedEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

@@ -8,33 +8,26 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class EntryHandler : InputViewHandler
+    public partial class EntryHandler : InputViewHandler
     {
         public EntryHandler(NativeComponentRenderer renderer, XF.Entry entryControl) : base(renderer, entryControl)
         {
             EntryControl = entryControl ?? throw new ArgumentNullException(nameof(entryControl));
-            EntryControl.Completed += (s, e) =>
-            {
-                if (CompletedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(CompletedEventHandlerId, null, e));
-                }
-            };
-            EntryControl.TextChanged += (s, e) =>
-            {
-                if (TextChangedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new ChangeEventArgs { Value = EntryControl.Text }));
-                }
-            };
+
+            Initialize(renderer);
         }
 
-        public ulong CompletedEventHandlerId { get; set; }
-        public ulong TextChangedEventHandlerId { get; set; }
+        partial void Initialize(NativeComponentRenderer renderer);
+
         public XF.Entry EntryControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (attributeEventHandlerId != 0)
+            {
+                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
+            }
+
             switch (attributeName)
             {
                 case nameof(XF.Entry.CharacterSpacing):
@@ -85,19 +78,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Entry.VerticalTextAlignment):
                     EntryControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
-
-                case "oncompleted":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => CompletedEventHandlerId = 0);
-                    CompletedEventHandlerId = attributeEventHandlerId;
-                    break;
-                case "ontextchanged":
-                    Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);
-                    TextChangedEventHandlerId = attributeEventHandlerId;
-                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }
