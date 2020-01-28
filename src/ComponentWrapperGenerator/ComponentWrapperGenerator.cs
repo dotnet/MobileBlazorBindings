@@ -371,7 +371,6 @@ namespace {Settings.RootNamespace}
             if (attributeEventHandlerId != 0)
             {{
                 ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-                return;
             }}
 
             switch (attributeName)
@@ -398,10 +397,10 @@ namespace {Settings.RootNamespace}.Handlers
         {{
             {componentName}Control = {componentVarName}Control ?? throw new ArgumentNullException(nameof({componentVarName}Control));
 
-            ClassConstructor();
+            Initialize(renderer);
         }}
 
-        partial void ClassConstructor();
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.{componentName} {componentName}Control {{ get; }}
 {applyAttributesMethod}    }}
