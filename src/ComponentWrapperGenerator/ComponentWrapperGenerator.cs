@@ -24,19 +24,24 @@ namespace ComponentWrapperGenerator
 
         private GeneratorSettings Settings { get; }
 
-        public void GenerateComponentWrapper(Type typeToGenerate)
+        public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
             var propertiesToGenerate = GetPropertiesToGenerate(typeToGenerate);
 
-            GenerateComponentFile(typeToGenerate, propertiesToGenerate);
-            GenerateHandlerFile(typeToGenerate, propertiesToGenerate);
+            GenerateComponentFile(typeToGenerate, propertiesToGenerate, outputFolder);
+            GenerateHandlerFile(typeToGenerate, propertiesToGenerate, outputFolder);
         }
 
-        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
+        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
         {
-            var fileName = $@"{typeToGenerate.Name}.generated.cs";
+            var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
+            var directoryName = Path.GetDirectoryName(fileName);
+            if (!string.IsNullOrEmpty(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
 
             Console.WriteLine($"Generating component for type '{typeToGenerate.FullName}' into file '{fileName}'.");
 
@@ -314,10 +319,14 @@ namespace {Settings.RootNamespace}
             return null;
         }
 
-        private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
+        private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
         {
-            var fileName = $@"Handlers\{typeToGenerate.Name}Handler.generated.cs";
-            Directory.CreateDirectory("Handlers");
+            var fileName = Path.Combine(outputFolder, "Handlers", $"{typeToGenerate.Name}Handler.generated.cs");
+            var directoryName = Path.GetDirectoryName(fileName);
+            if (!string.IsNullOrEmpty(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
 
             Console.WriteLine($"Generating component handler for type '{typeToGenerate.FullName}' into file '{fileName}'.");
 

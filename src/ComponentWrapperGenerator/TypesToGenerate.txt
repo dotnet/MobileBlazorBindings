@@ -1,0 +1,46 @@
+ActivityIndicator
+BaseMenuItem
+BaseShellItem
+Button
+#ColumnDefinition // Not based on real XF type
+ContentPage
+ContentView
+#Element // Element is special so we don't generate it
+Entry
+FlyoutItem
+FormattedString
+Frame
+GestureElement
+#Grid // Temporary because we need a way to handle special Grid.Metadata property
+#GridCell // Not based on real XF type
+Image
+InputView
+Label
+Layout
+#MasterDetailDetailPage // Not based on real XF type
+#MasterDetailMasterPage // Not based on real XF type
+MasterDetailPage
+MenuItem
+#ModalContainer // Not based on real XF type
+NavigableElement
+Page
+#RowDefinition // Not based on real XF type
+ScrollView
+Shell
+ShellContent
+#ShellFlyoutHeader // Not based on real XF type
+ShellGroupItem
+ShellItem
+ShellSection
+Span
+StackLayout
+Stepper
+#StyleSheet // Not based on real XF type
+Switch
+Tab
+TabBar
+TabbedPage
+TemplatedPage
+TemplatedView
+View
+VisualElement
