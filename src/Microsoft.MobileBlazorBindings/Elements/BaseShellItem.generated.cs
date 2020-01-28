@@ -1,9 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -21,8 +22,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? IsEnabled { get; set; }
         [Parameter] public bool? IsTabStop { get; set; }
         [Parameter] public string Route { get; set; }
-        [Parameter] public string Title { get; set; }
         [Parameter] public int? TabIndex { get; set; }
+        [Parameter] public string Title { get; set; }
 
         public new XF.BaseShellItem NativeControl => ((BaseShellItemHandler)ElementHandler).BaseShellItemControl;
 
@@ -50,13 +51,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(Route), Route);
             }
-            if (Title != null)
-            {
-                builder.AddAttribute(nameof(Title), Title);
-            }
             if (TabIndex != null)
             {
                 builder.AddAttribute(nameof(TabIndex), TabIndex.Value);
+            }
+            if (Title != null)
+            {
+                builder.AddAttribute(nameof(Title), Title);
             }
 
             RenderAdditionalAttributes(builder);

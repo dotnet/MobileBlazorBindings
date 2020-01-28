@@ -1,10 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -13,10 +13,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
     {
         static MasterDetailPage()
         {
-            ElementHandlerRegistry
-                .RegisterElementHandler<MasterDetailPage>(renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
+            ElementHandlerRegistry.RegisterElementHandler<MasterDetailPage>(
+                renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
         }
 
+        [Parameter] public bool? IsGestureEnabled { get; set; }
+        [Parameter] public bool? IsPresented { get; set; }
         [Parameter] public XF.MasterBehavior? MasterBehavior { get; set; }
 
         public new XF.MasterDetailPage NativeControl => ((MasterDetailPageHandler)ElementHandler).MasterDetailPageControl;
@@ -25,6 +27,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
+            if (IsGestureEnabled != null)
+            {
+                builder.AddAttribute(nameof(IsGestureEnabled), IsGestureEnabled.Value);
+            }
+            if (IsPresented != null)
+            {
+                builder.AddAttribute(nameof(IsPresented), IsPresented.Value);
+            }
             if (MasterBehavior != null)
             {
                 builder.AddAttribute(nameof(MasterBehavior), (int)MasterBehavior.Value);

@@ -1,17 +1,22 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
+using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ScrollViewHandler : LayoutHandler
+    public partial class ScrollViewHandler : LayoutHandler
     {
         public ScrollViewHandler(NativeComponentRenderer renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
         {
-            ScrollViewControl = scrollViewControl ?? throw new System.ArgumentNullException(nameof(scrollViewControl));
+            ScrollViewControl = scrollViewControl ?? throw new ArgumentNullException(nameof(scrollViewControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.ScrollView ScrollViewControl { get; }
 

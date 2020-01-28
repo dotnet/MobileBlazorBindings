@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -7,12 +7,16 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ShellGroupItemHandler : BaseShellItemHandler
+    public partial class ShellGroupItemHandler : BaseShellItemHandler
     {
         public ShellGroupItemHandler(NativeComponentRenderer renderer, XF.ShellGroupItem shellGroupItemControl) : base(renderer, shellGroupItemControl)
         {
             ShellGroupItemControl = shellGroupItemControl ?? throw new ArgumentNullException(nameof(shellGroupItemControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.ShellGroupItem ShellGroupItemControl { get; }
 

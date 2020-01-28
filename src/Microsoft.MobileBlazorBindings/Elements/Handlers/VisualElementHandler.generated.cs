@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -22,11 +22,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
                 case nameof(XF.VisualElement.AnchorX):
@@ -100,7 +95,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
             }
         }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

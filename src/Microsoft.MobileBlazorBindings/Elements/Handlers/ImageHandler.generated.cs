@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -7,12 +7,16 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ImageHandler : ViewHandler
+    public partial class ImageHandler : ViewHandler
     {
         public ImageHandler(NativeComponentRenderer renderer, XF.Image imageControl) : base(renderer, imageControl)
         {
             ImageControl = imageControl ?? throw new ArgumentNullException(nameof(imageControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.Image ImageControl { get; }
 
@@ -27,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ImageControl.IsOpaque = AttributeHelper.GetBool(attributeValue);
                     break;
                 case nameof(XF.Image.Source):
-                    ImageControl.Source = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
+                    ImageControl.Source = AttributeHelper.StringToImageSource(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

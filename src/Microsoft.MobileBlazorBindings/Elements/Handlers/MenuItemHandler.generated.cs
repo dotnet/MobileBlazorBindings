@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -22,18 +22,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
                 case nameof(XF.MenuItem.IconImageSource):
-                    MenuItemControl.IconImageSource = AttributeHelper.StringToImageSource((string)attributeValue);
+                    MenuItemControl.IconImageSource = AttributeHelper.StringToImageSource(attributeValue);
                     break;
                 case nameof(XF.MenuItem.IsDestructive):
                     MenuItemControl.IsDestructive = AttributeHelper.GetBool(attributeValue);
+                    break;
+                case nameof(XF.MenuItem.IsEnabled):
+                    MenuItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue, true);
                     break;
                 case nameof(XF.MenuItem.Text):
                     MenuItemControl.Text = (string)attributeValue;
@@ -43,7 +41,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
             }
         }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

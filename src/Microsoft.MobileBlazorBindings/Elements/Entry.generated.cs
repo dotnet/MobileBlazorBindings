@@ -1,8 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
@@ -28,8 +28,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? IsTextPredictionEnabled { get; set; }
         [Parameter] public string Placeholder { get; set; }
         [Parameter] public XF.Color? PlaceholderColor { get; set; }
-        //[Parameter] public XF.ICommand ReturnCommand { get; set; }
-        //[Parameter] public object ReturnCommandParameter { get; set; }
         [Parameter] public XF.ReturnType? ReturnType { get; set; }
         [Parameter] public int? SelectionLength { get; set; }
         [Parameter] public string Text { get; set; }
@@ -68,7 +66,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (HorizontalTextAlignment != null)
             {
-                builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment);
+                builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment.Value);
             }
             if (IsPassword != null)
             {
@@ -88,7 +86,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (ReturnType != null)
             {
-                builder.AddAttribute(nameof(ReturnType), (int)ReturnType);
+                builder.AddAttribute(nameof(ReturnType), (int)ReturnType.Value);
             }
             if (SelectionLength != null)
             {
@@ -104,7 +102,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (VerticalTextAlignment != null)
             {
-                builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment);
+                builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
             }
 
             RenderAdditionalAttributes(builder);

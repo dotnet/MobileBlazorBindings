@@ -1,15 +1,17 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class VisualElement : NavigableElement
     {
+
         [Parameter] public double? AnchorX { get; set; }
         [Parameter] public double? AnchorY { get; set; }
         [Parameter] public XF.Color? BackgroundColor { get; set; }

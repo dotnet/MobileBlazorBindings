@@ -1,8 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.AspNetCore.Components;
 using System;
 using XF = Xamarin.Forms;
 
@@ -23,11 +22,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
                 case nameof(XF.Entry.CharacterSpacing):
@@ -46,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     EntryControl.FontFamily = (string)attributeValue;
                     break;
                 case nameof(XF.Entry.FontSize):
-                    EntryControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue);
+                    EntryControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
                 case nameof(XF.Entry.HorizontalTextAlignment):
                     EntryControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
@@ -55,7 +49,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     EntryControl.IsPassword = AttributeHelper.GetBool(attributeValue);
                     break;
                 case nameof(XF.Entry.IsTextPredictionEnabled):
-                    EntryControl.IsTextPredictionEnabled = AttributeHelper.GetBool(attributeValue);
+                    EntryControl.IsTextPredictionEnabled = AttributeHelper.GetBool(attributeValue, true);
                     break;
                 case nameof(XF.Entry.Placeholder):
                     EntryControl.Placeholder = (string)attributeValue;
@@ -76,14 +70,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     EntryControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(XF.Entry.VerticalTextAlignment):
-                    EntryControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
+                    EntryControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue, (int)XF.TextAlignment.Center);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

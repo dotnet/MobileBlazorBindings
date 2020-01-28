@@ -1,9 +1,10 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -12,14 +13,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
     {
         static MenuItem()
         {
-            ElementHandlerRegistry
-                .RegisterElementHandler<MenuItem>(renderer => new MenuItemHandler(renderer, new XF.MenuItem()));
+            ElementHandlerRegistry.RegisterElementHandler<MenuItem>(
+                renderer => new MenuItemHandler(renderer, new XF.MenuItem()));
         }
 
-        //[Parameter] public ICommand Command { get; set; }
-        //[Parameter] public object CommandParameter { get; set; }
         [Parameter] public XF.ImageSource IconImageSource { get; set; }
         [Parameter] public bool? IsDestructive { get; set; }
+        [Parameter] public bool? IsEnabled { get; set; }
         [Parameter] public string Text { get; set; }
 
         public new XF.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;
@@ -35,6 +35,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (IsDestructive != null)
             {
                 builder.AddAttribute(nameof(IsDestructive), IsDestructive.Value);
+            }
+            if (IsEnabled != null)
+            {
+                builder.AddAttribute(nameof(IsEnabled), IsEnabled.Value);
             }
             if (Text != null)
             {

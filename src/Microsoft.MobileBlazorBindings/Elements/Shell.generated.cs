@@ -1,11 +1,9 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using System;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
@@ -19,20 +17,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ShellHandler(renderer, new XF.Shell()));
         }
 
-        //[Parameter] public ShellItem CurrentItem { get; set; }
-        //[Parameter] public ShellNavigationState CurrentState { get; }
+        [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
         [Parameter] public XF.ImageSource FlyoutBackgroundImage { get; set; }
         [Parameter] public XF.Aspect? FlyoutBackgroundImageAspect { get; set; }
-        [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
         [Parameter] public XF.FlyoutBehavior? FlyoutBehavior { get; set; }
-        [Parameter] public RenderFragment FlyoutHeader { get; set; }
         [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
-        //[Parameter] public DataTemplate FlyoutHeaderTemplate { get; set; }
         [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
-        //[Parameter] public bool? FlyoutIsPresented { get; set; } // TODO: Two-way binding?
-        //[Parameter] public IList<ShellItem> Items { get; } // TODO: Not needed? This is the Children collection
-        //[Parameter] public DataTemplate ItemTemplate { get; set; }
-        //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
+        [Parameter] public bool? FlyoutIsPresented { get; set; }
 
         public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
 
@@ -40,20 +31,17 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
-            //[Parameter] public ShellItem CurrentItem { get; set; }
-            //[Parameter] public ShellNavigationState CurrentState { get; }
-            if (FlyoutBackgroundImageAspect != null)
+            if (FlyoutBackgroundColor != null)
             {
-                // NOTE: The Aspect must be set before the image or else an exception is thrown
-                builder.AddAttribute(nameof(FlyoutBackgroundImageAspect), (int)FlyoutBackgroundImageAspect.Value);
+                builder.AddAttribute(nameof(FlyoutBackgroundColor), AttributeHelper.ColorToString(FlyoutBackgroundColor.Value));
             }
             if (FlyoutBackgroundImage != null)
             {
                 builder.AddAttribute(nameof(FlyoutBackgroundImage), AttributeHelper.ImageSourceToString(FlyoutBackgroundImage));
             }
-            if (FlyoutBackgroundColor != null)
+            if (FlyoutBackgroundImageAspect != null)
             {
-                builder.AddAttribute(nameof(FlyoutBackgroundColor), AttributeHelper.ColorToString(FlyoutBackgroundColor.Value));
+                builder.AddAttribute(nameof(FlyoutBackgroundImageAspect), (int)FlyoutBackgroundImageAspect.Value);
             }
             if (FlyoutBehavior != null)
             {
@@ -63,14 +51,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(FlyoutHeaderBehavior), (int)FlyoutHeaderBehavior.Value);
             }
-            //[Parameter] public DataTemplate FlyoutHeaderTemplate { get; set; }
             if (FlyoutIcon != null)
             {
                 builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToString(FlyoutIcon));
             }
-            //[Parameter] public bool? FlyoutIsPresented { get; set; } // TODO: Two-way binding?
-            //[Parameter] public DataTemplate ItemTemplate { get; set; }
-            //[Parameter] public DataTemplate MenuItemTemplate { get; set; }
+            if (FlyoutIsPresented != null)
+            {
+                builder.AddAttribute(nameof(FlyoutIsPresented), FlyoutIsPresented.Value);
+            }
 
             RenderAdditionalAttributes(builder);
         }

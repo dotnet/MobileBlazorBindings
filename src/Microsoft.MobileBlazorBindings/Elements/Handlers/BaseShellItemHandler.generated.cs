@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -22,40 +22,33 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
                 case nameof(XF.BaseShellItem.FlyoutIcon):
-                    BaseShellItemControl.FlyoutIcon = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
+                    BaseShellItemControl.FlyoutIcon = AttributeHelper.StringToImageSource(attributeValue);
                     break;
                 case nameof(XF.BaseShellItem.Icon):
-                    BaseShellItemControl.Icon = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
+                    BaseShellItemControl.Icon = AttributeHelper.StringToImageSource(attributeValue);
                     break;
                 case nameof(XF.BaseShellItem.IsEnabled):
-                    BaseShellItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue);
+                    BaseShellItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue, true);
                     break;
                 case nameof(XF.BaseShellItem.IsTabStop):
-                    BaseShellItemControl.IsTabStop = AttributeHelper.GetBool(attributeValue);
+                    BaseShellItemControl.IsTabStop = AttributeHelper.GetBool(attributeValue, true);
                     break;
                 case nameof(XF.BaseShellItem.Route):
                     BaseShellItemControl.Route = (string)attributeValue;
                     break;
-                case nameof(XF.BaseShellItem.Title):
-                    BaseShellItemControl.Title = (string)attributeValue;
-                    break;
                 case nameof(XF.BaseShellItem.TabIndex):
                     BaseShellItemControl.TabIndex = AttributeHelper.GetInt(attributeValue);
+                    break;
+                case nameof(XF.BaseShellItem.Title):
+                    BaseShellItemControl.Title = (string)attributeValue;
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

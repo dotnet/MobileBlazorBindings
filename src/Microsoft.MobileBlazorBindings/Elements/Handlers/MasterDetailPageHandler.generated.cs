@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -24,6 +24,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.MasterDetailPage.IsGestureEnabled):
+                    MasterDetailPageControl.IsGestureEnabled = AttributeHelper.GetBool(attributeValue, true);
+                    break;
+                case nameof(XF.MasterDetailPage.IsPresented):
+                    MasterDetailPageControl.IsPresented = AttributeHelper.GetBool(attributeValue);
+                    break;
                 case nameof(XF.MasterDetailPage.MasterBehavior):
                     MasterDetailPageControl.MasterBehavior = (XF.MasterBehavior)AttributeHelper.GetInt(attributeValue);
                     break;

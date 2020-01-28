@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -7,12 +7,16 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ActivityIndicatorHandler : ViewHandler
+    public partial class ActivityIndicatorHandler : ViewHandler
     {
         public ActivityIndicatorHandler(NativeComponentRenderer renderer, XF.ActivityIndicator activityIndicatorControl) : base(renderer, activityIndicatorControl)
         {
             ActivityIndicatorControl = activityIndicatorControl ?? throw new ArgumentNullException(nameof(activityIndicatorControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.ActivityIndicator ActivityIndicatorControl { get; }
 
@@ -20,11 +24,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
-                case nameof(ActivityIndicator.IsRunning):
-                    ActivityIndicatorControl.IsRunning = AttributeHelper.GetBool(attributeValue);
-                    break;
-                case nameof(ActivityIndicator.Color):
+                case nameof(XF.ActivityIndicator.Color):
                     ActivityIndicatorControl.Color = AttributeHelper.StringToColor((string)attributeValue);
+                    break;
+                case nameof(XF.ActivityIndicator.IsRunning):
+                    ActivityIndicatorControl.IsRunning = AttributeHelper.GetBool(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

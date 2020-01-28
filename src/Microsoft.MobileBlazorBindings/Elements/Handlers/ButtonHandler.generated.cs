@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -22,17 +22,39 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
-                case nameof(Button.Text):
+                case nameof(XF.Button.BorderColor):
+                    ButtonControl.BorderColor = AttributeHelper.StringToColor((string)attributeValue);
+                    break;
+                case nameof(XF.Button.BorderWidth):
+                    ButtonControl.BorderWidth = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
+                    break;
+                case nameof(XF.Button.CharacterSpacing):
+                    ButtonControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
+                case nameof(XF.Button.CornerRadius):
+                    ButtonControl.CornerRadius = AttributeHelper.GetInt(attributeValue, -1);
+                    break;
+                case nameof(XF.Button.FontAttributes):
+                    ButtonControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue);
+                    break;
+                case nameof(XF.Button.FontFamily):
+                    ButtonControl.FontFamily = (string)attributeValue;
+                    break;
+                case nameof(XF.Button.FontSize):
+                    ButtonControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
+                    break;
+                case nameof(XF.Button.ImageSource):
+                    ButtonControl.ImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    break;
+                case nameof(XF.Button.Padding):
+                    ButtonControl.Padding = AttributeHelper.StringToThickness(attributeValue);
+                    break;
+                case nameof(XF.Button.Text):
                     ButtonControl.Text = (string)attributeValue;
                     break;
-                case nameof(Button.TextColor):
+                case nameof(XF.Button.TextColor):
                     ButtonControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 default:
@@ -40,7 +62,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
             }
         }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

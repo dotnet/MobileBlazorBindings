@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -7,12 +7,16 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ViewHandler : VisualElementHandler
+    public partial class ViewHandler : VisualElementHandler
     {
         public ViewHandler(NativeComponentRenderer renderer, XF.View viewControl) : base(renderer, viewControl)
         {
             ViewControl = viewControl ?? throw new ArgumentNullException(nameof(viewControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.View ViewControl { get; }
 
@@ -21,13 +25,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.View.HorizontalOptions):
-                    ViewControl.HorizontalOptions = AttributeHelper.StringToLayoutOptions(attributeValue);
+                    ViewControl.HorizontalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, XF.LayoutOptions.Fill);
                     break;
                 case nameof(XF.View.Margin):
                     ViewControl.Margin = AttributeHelper.StringToThickness(attributeValue);
                     break;
                 case nameof(XF.View.VerticalOptions):
-                    ViewControl.VerticalOptions = AttributeHelper.StringToLayoutOptions(attributeValue);
+                    ViewControl.VerticalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, XF.LayoutOptions.Fill);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

@@ -1,15 +1,17 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using XF = Xamarin.Forms;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class View : VisualElement
+    public partial class View : VisualElement
     {
+
         [Parameter] public XF.LayoutOptions? HorizontalOptions { get; set; }
         [Parameter] public XF.Thickness? Margin { get; set; }
         [Parameter] public XF.LayoutOptions? VerticalOptions { get; set; }
@@ -32,6 +34,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(VerticalOptions), AttributeHelper.LayoutOptionsToString(VerticalOptions.Value));
             }
+
+            RenderAdditionalAttributes(builder);
         }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

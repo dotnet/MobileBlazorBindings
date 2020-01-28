@@ -1,16 +1,32 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class TemplatedView : Layout
+    public partial class TemplatedView : Layout
     {
-        // TODO: Look in the future how to support a ControlTemplate:
-        // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/app-fundamentals/templates/control-templates/creating
+        static TemplatedView()
+        {
+            ElementHandlerRegistry.RegisterElementHandler<TemplatedView>(
+                renderer => new TemplatedViewHandler(renderer, new XF.TemplatedView()));
+        }
 
         public new XF.TemplatedView NativeControl => ((TemplatedViewHandler)ElementHandler).TemplatedViewControl;
+
+        protected override void RenderAttributes(AttributesBuilder builder)
+        {
+            base.RenderAttributes(builder);
+
+
+            RenderAdditionalAttributes(builder);
+        }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

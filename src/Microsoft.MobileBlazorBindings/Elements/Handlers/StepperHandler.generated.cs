@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -25,10 +25,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.Stepper.Increment):
-                    StepperControl.Increment = AttributeHelper.StringToDouble((string)attributeValue);
+                    StepperControl.Increment = AttributeHelper.StringToDouble((string)attributeValue, 1.00);
                     break;
                 case nameof(XF.Stepper.Maximum):
-                    StepperControl.Maximum = AttributeHelper.StringToDouble((string)attributeValue);
+                    StepperControl.Maximum = AttributeHelper.StringToDouble((string)attributeValue, 100.00);
                     break;
                 case nameof(XF.Stepper.Minimum):
                     StepperControl.Minimum = AttributeHelper.StringToDouble((string)attributeValue);

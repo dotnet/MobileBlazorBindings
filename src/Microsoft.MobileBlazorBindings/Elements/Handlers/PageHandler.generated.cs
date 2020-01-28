@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -7,12 +7,16 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class PageHandler : VisualElementHandler
+    public partial class PageHandler : VisualElementHandler
     {
         public PageHandler(NativeComponentRenderer renderer, XF.Page pageControl) : base(renderer, pageControl)
         {
             PageControl = pageControl ?? throw new ArgumentNullException(nameof(pageControl));
+
+            Initialize(renderer);
         }
+
+        partial void Initialize(NativeComponentRenderer renderer);
 
         public XF.Page PageControl { get; }
 
@@ -20,8 +24,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.Page.BackgroundImageSource):
+                    PageControl.BackgroundImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    break;
                 case nameof(XF.Page.IconImageSource):
-                    PageControl.IconImageSource = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
+                    PageControl.IconImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    break;
+                case nameof(XF.Page.IsBusy):
+                    PageControl.IsBusy = AttributeHelper.GetBool(attributeValue);
+                    break;
+                case nameof(XF.Page.Padding):
+                    PageControl.Padding = AttributeHelper.StringToThickness(attributeValue);
                     break;
                 case nameof(XF.Page.Title):
                     PageControl.Title = (string)attributeValue;
