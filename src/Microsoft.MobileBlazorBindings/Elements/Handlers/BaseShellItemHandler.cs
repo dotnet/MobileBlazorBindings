@@ -2,60 +2,38 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class BaseShellItemHandler : NavigableElementHandler
     {
-        public BaseShellItemHandler(NativeComponentRenderer renderer, XF.BaseShellItem baseShellItemControl) : base(renderer, baseShellItemControl)
+        partial void Initialize(NativeComponentRenderer renderer)
         {
-            BaseShellItemControl = baseShellItemControl ?? throw new ArgumentNullException(nameof(baseShellItemControl));
-
-            Initialize(renderer);
+            RegisterEvent(
+                eventName: "onappearing",
+                setId: id => AppearingEventHandlerId = id,
+                clearId: () => AppearingEventHandlerId = 0);
+            BaseShellItemControl.Appearing += (s, e) =>
+            {
+                if (AppearingEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(AppearingEventHandlerId, null, e));
+                }
+            };
+            RegisterEvent(
+                eventName: "ondisappearing",
+                setId: id => DisappearingEventHandlerId = id,
+                clearId: () => DisappearingEventHandlerId = 0);
+            BaseShellItemControl.Disappearing += (s, e) =>
+            {
+                if (DisappearingEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(DisappearingEventHandlerId, null, e));
+                }
+            };
         }
 
-        partial void Initialize(NativeComponentRenderer renderer);
-
-        public XF.BaseShellItem BaseShellItemControl { get; }
-
-        public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-        {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
-            switch (attributeName)
-            {
-                case nameof(XF.BaseShellItem.FlyoutIcon):
-                    BaseShellItemControl.FlyoutIcon = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
-                    break;
-                case nameof(XF.BaseShellItem.Icon):
-                    BaseShellItemControl.Icon = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
-                    break;
-                case nameof(XF.BaseShellItem.IsEnabled):
-                    BaseShellItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue);
-                    break;
-                case nameof(XF.BaseShellItem.IsTabStop):
-                    BaseShellItemControl.IsTabStop = AttributeHelper.GetBool(attributeValue);
-                    break;
-                case nameof(XF.BaseShellItem.Route):
-                    BaseShellItemControl.Route = (string)attributeValue;
-                    break;
-                case nameof(XF.BaseShellItem.Title):
-                    BaseShellItemControl.Title = (string)attributeValue;
-                    break;
-                case nameof(XF.BaseShellItem.TabIndex):
-                    BaseShellItemControl.TabIndex = AttributeHelper.GetInt(attributeValue);
-                    break;
-                default:
-                    base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                    break;
-            }
-        }
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
+        public ulong AppearingEventHandlerId { get; set; }
+        public ulong DisappearingEventHandlerId { get; set; }
     }
 }

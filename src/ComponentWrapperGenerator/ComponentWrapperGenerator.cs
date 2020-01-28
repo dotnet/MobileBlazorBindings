@@ -36,7 +36,7 @@ namespace ComponentWrapperGenerator
 
         private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
-            var fileName = $@"{typeToGenerate.Name}.cs";
+            var fileName = $@"{typeToGenerate.Name}.generated.cs";
 
             Console.WriteLine($"Generating component for type '{typeToGenerate.FullName}' into file '{fileName}'.");
 
@@ -316,7 +316,7 @@ namespace {Settings.RootNamespace}
 
         private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate)
         {
-            var fileName = $@"Handlers\{typeToGenerate.Name}Handler.cs";
+            var fileName = $@"Handlers\{typeToGenerate.Name}Handler.generated.cs";
             Directory.CreateDirectory("Handlers");
 
             Console.WriteLine($"Generating component handler for type '{typeToGenerate.FullName}' into file '{fileName}'.");

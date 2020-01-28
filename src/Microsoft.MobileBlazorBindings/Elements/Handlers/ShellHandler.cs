@@ -2,57 +2,58 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellHandler : PageHandler
     {
-        public ShellHandler(NativeComponentRenderer renderer, XF.Shell shellControl) : base(renderer, shellControl)
-        {
-            ShellControl = shellControl ?? throw new ArgumentNullException(nameof(shellControl));
+        private readonly ShellContentMarkerItem _dummyShellContent = new ShellContentMarkerItem();
+        private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
 
-            Initialize(renderer);
+        partial void Initialize(NativeComponentRenderer renderer)
+        {
+            // Add one item for Shell to load correctly. It will later be removed when the first real
+            // item is added by the app.
+            ShellControl.Items.Add(_dummyShellContent);
+
+            // Add a dummy FlyoutHeader because it cannot be set dynamically later. When app code sets
+            // its own FlyoutHeader, it will be set as the Content of this ContentView.
+            // See https://github.com/xamarin/Xamarin.Forms/issues/6161 ([Bug] Changing the Shell Flyout Header after it's already rendered doesn't work)
+            _flyoutHeaderContentView.IsVisible = false;
+            ShellControl.FlyoutHeader = _flyoutHeaderContentView;
+
+            RegisterEvent(
+                eventName: "onnavigated",
+                setId: id => NavigatedEventHandlerId = id,
+                clearId: () => NavigatedEventHandlerId = 0);
+            ShellControl.Navigated += (s, e) =>
+            {
+                if (NavigatedEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(NavigatedEventHandlerId, null, e));
+                }
+            };
+            RegisterEvent(
+                eventName: "onnavigating",
+                setId: id => NavigatingEventHandlerId = id,
+                clearId: () => NavigatingEventHandlerId = 0);
+            ShellControl.Navigating += (s, e) =>
+            {
+                if (NavigatingEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(NavigatingEventHandlerId, null, e));
+                }
+            };
         }
 
-        partial void Initialize(NativeComponentRenderer renderer);
-
-        public XF.Shell ShellControl { get; }
-
-        public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        internal bool ClearDummyChild()
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
-            switch (attributeName)
-            {
-                case nameof(XF.Shell.FlyoutBackgroundImage):
-                    ShellControl.FlyoutBackgroundImage = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
-                    break;
-                case nameof(XF.Shell.FlyoutBackgroundImageAspect):
-                    ShellControl.FlyoutBackgroundImageAspect = (XF.Aspect)AttributeHelper.GetInt(attributeValue);
-                    break;
-                case nameof(XF.Shell.FlyoutBackgroundColor):
-                    ShellControl.FlyoutBackgroundColor = AttributeHelper.StringToColor((string)attributeValue);
-                    break;
-                case nameof(XF.Shell.FlyoutBehavior):
-                    ShellControl.FlyoutBehavior = (XF.FlyoutBehavior)AttributeHelper.GetInt(attributeValue);
-                    break;
-                case nameof(XF.Shell.FlyoutHeaderBehavior):
-                    ShellControl.FlyoutHeaderBehavior = (XF.FlyoutHeaderBehavior)AttributeHelper.GetInt(attributeValue);
-                    break;
-                case nameof(XF.Shell.FlyoutIcon):
-                    ShellControl.FlyoutIcon = attributeValue == null ? null : AttributeHelper.StringToImageSource((string)attributeValue);
-                    break;
-                default:
-                    base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                    break;
-            }
+            // Remove the dummy ShellContent if it's still there. This won't throw even if the item is already removed.
+            return ShellControl.Items.Remove(_dummyShellContent);
         }
 
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
+        public ulong NavigatedEventHandlerId { get; set; }
+        public ulong NavigatingEventHandlerId { get; set; }
     }
 }

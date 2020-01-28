@@ -3,36 +3,22 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class Switch : View
     {
-        static Switch()
+        [Parameter] public EventCallback<bool> IsToggledChanged { get; set; }
+
+        partial void RenderAdditionalAttributes(AttributesBuilder builder)
         {
-            ElementHandlerRegistry.RegisterElementHandler<Switch>(
-                renderer => new SwitchHandler(renderer, new XF.Switch()));
+            builder.AddAttribute("onistoggledchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleIsToggledChanged));
         }
 
-        [Parameter] public bool? IsToggled { get; set; }
-
-        public new XF.Switch NativeControl => ((SwitchHandler)ElementHandler).SwitchControl;
-
-        protected override void RenderAttributes(AttributesBuilder builder)
+        private Task HandleIsToggledChanged(ChangeEventArgs evt)
         {
-            base.RenderAttributes(builder);
-
-            if (IsToggled != null)
-            {
-                builder.AddAttribute(nameof(IsToggled), IsToggled.Value);
-            }
-
-            RenderAdditionalAttributes(builder);
+            return IsToggledChanged.InvokeAsync((bool)evt.Value);
         }
-
-        partial void RenderAdditionalAttributes(AttributesBuilder builder);
     }
 }

@@ -2,44 +2,27 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using System;
-using XF = Xamarin.Forms;
+using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class StepperHandler : ViewHandler
     {
-        public StepperHandler(NativeComponentRenderer renderer, XF.Stepper stepperControl) : base(renderer, stepperControl)
+        partial void Initialize(NativeComponentRenderer renderer)
         {
-            StepperControl = stepperControl ?? throw new ArgumentNullException(nameof(stepperControl));
-
-            Initialize(renderer);
-        }
-
-        partial void Initialize(NativeComponentRenderer renderer);
-
-        public XF.Stepper StepperControl { get; }
-
-        public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
-        {
-            switch (attributeName)
+            RegisterEvent(
+                eventName: "onvaluechanged",
+                setId: id => ValueChangedEventHandlerId = id,
+                clearId: () => ValueChangedEventHandlerId = 0);
+            StepperControl.ValueChanged += (s, e) =>
             {
-                case nameof(XF.Stepper.Increment):
-                    StepperControl.Increment = AttributeHelper.StringToDouble((string)attributeValue);
-                    break;
-                case nameof(XF.Stepper.Maximum):
-                    StepperControl.Maximum = AttributeHelper.StringToDouble((string)attributeValue);
-                    break;
-                case nameof(XF.Stepper.Minimum):
-                    StepperControl.Minimum = AttributeHelper.StringToDouble((string)attributeValue);
-                    break;
-                case nameof(XF.Stepper.Value):
-                    StepperControl.Value = AttributeHelper.StringToDouble((string)attributeValue);
-                    break;
-                default:
-                    base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
-                    break;
-            }
+                if (ValueChangedEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ValueChangedEventHandlerId, null, new ChangeEventArgs { Value = StepperControl.Value }));
+                }
+            };
         }
+
+        public ulong ValueChangedEventHandlerId { get; set; }
     }
 }
