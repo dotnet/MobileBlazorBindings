@@ -1,7 +1,7 @@
 ﻿@inject AppState AppState
 
 <StackLayout Orientation="StackOrientation.Horizontal">
-    <Switch @bind-IsToggled="Item.IsDone" />
+    <Switch @bind-IsToggled="ItemIsDone" />
     <Label Text="@Item.Text"
            TextDecorations="(Item.IsDone ? TextDecorations.Strikethrough : TextDecorations.None)"
            HorizontalOptions="LayoutOptions.FillAndExpand" />
@@ -24,16 +24,22 @@
         todoEntryDialog.ShowDialog();
     }
 
+    // This intermediate property allows change notifications to be raised when the IsDone value is toggled
+    bool ItemIsDone
+    {
+        get => Item.IsDone;
+        set {
+            if (value != Item.IsDone)
+            {
+                Item.IsDone = value;
+                AppState.TodoDatabase.SaveItemAsync(Item);
+            }
+        }
+    }
+
     // NOTE: This method shouldn't be needed and is a temporary workaround
     public void OnDetailsClosed()
     {
         todoEntryDialog.FinishClosingDialog();
     }
-
-    // TODO: Also need to somehow handle IsToggledChanged="OnToggledChanged" so that the DB update can take place:
-    //public async Task OnToggledChanged()
-    //{
-    //    await AppState.TodoDatabase.SaveItemAsync(Item);
-    //    StateHasChanged();
-    //}
 }

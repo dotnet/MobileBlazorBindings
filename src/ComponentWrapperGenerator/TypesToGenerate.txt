@@ -24,6 +24,7 @@ MenuItem
 #ModalContainer // Not based on real XF type
 NavigableElement
 Page
+ProgressBar
 #RowDefinition // Not based on real XF type
 ScrollView
 Shell

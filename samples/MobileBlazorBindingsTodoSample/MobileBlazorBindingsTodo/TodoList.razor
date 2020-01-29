@@ -19,6 +19,8 @@
     <Frame BorderColor="Color.LightBlue" CornerRadius="10" Margin="5" Padding="10">
         <ScrollView>
             <StackLayout>
+                <ProgressBar Margin="new Thickness(10)" Progress="@ItemsPercentComplete" />
+
                 @* List of todos *@
                 @if (items == null)
                 {
@@ -46,6 +48,11 @@
     bool isAdding;
 
     List<TodoItem> items;
+
+    int ItemsTotal => items?.Count ?? 0;
+    int ItemsDone => items?.Count(i => i.IsDone) ?? 0;
+
+    double ItemsPercentComplete => items == null ? 0d : (double)ItemsDone / (double)ItemsTotal;
 
     protected override async Task OnInitializedAsync()
     {
