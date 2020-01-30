@@ -16,6 +16,7 @@ GestureElement
 #Grid // Temporary because we need a way to handle special Grid.Metadata property
 #GridCell // Not based on real XF type
 Image
+ImageButton
 InputView
 Label
 Layout
