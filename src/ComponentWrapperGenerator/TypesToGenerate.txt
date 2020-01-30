@@ -1,6 +1,7 @@
 ActivityIndicator
 BaseMenuItem
 BaseShellItem
+BoxView
 Button
 #ColumnDefinition // Not based on real XF type
 ContentPage
