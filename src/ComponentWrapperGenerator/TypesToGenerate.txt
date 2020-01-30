@@ -3,6 +3,7 @@ BaseMenuItem
 BaseShellItem
 BoxView
 Button
+CheckBox
 #ColumnDefinition // Not based on real XF type
 ContentPage
 ContentView
