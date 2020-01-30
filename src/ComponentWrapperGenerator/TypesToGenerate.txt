@@ -36,6 +36,7 @@ ShellContent
 ShellGroupItem
 ShellItem
 ShellSection
+Slider
 Span
 StackLayout
 Stepper
