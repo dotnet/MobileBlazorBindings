@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.Extensions.Hosting;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace NewApp
