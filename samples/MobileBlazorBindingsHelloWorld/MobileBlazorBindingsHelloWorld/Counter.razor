@@ -8,6 +8,17 @@
                FontAttributes="FontAttributes.Bold"
                VerticalTextAlignment="TextAlignment.Center" />
 
+        <Label>
+            <FormattedText>
+                <FormattedString>
+                    <Spans>
+                        <Span Text="This span will Increment the count with TapGestureRecognizer!">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" OnTapped="IncrementCount" />
+                        </Span>
+                    </Spans>
+                </FormattedString>
+            </FormattedText>
+        </Label>
     </StackLayout>
 
 </Frame>
