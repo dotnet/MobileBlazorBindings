@@ -31,39 +31,38 @@ namespace Microsoft.MobileBlazorBindings
 
         private static XF.ContentPage GetErrorPageForException(Exception exception)
         {
-            var stackLayout = new XF.StackLayout
-            {
-                Padding = 10,
-            };
-            stackLayout.Children.Add(
-                new XF.Label
-                {
-                    FontAttributes = XF.FontAttributes.Bold,
-                    FontSize = XF.Device.GetNamedSize(XF.NamedSize.Large, typeof(XF.Label)),
-                    Text = "Unhandled exception",
-                });
-            stackLayout.Children.Add(
-                new XF.Label
-                {
-                    Text = exception?.Message,
-                });
-            stackLayout.Children.Add(
-                new XF.ScrollView
-                {
-                    Content =
-                        new XF.Label
-                        {
-                            FontSize = XF.Device.GetNamedSize(XF.NamedSize.Small, typeof(XF.Label)),
-                            Text = exception?.StackTrace,
-                        },
-
-                });
-
             var errorPage = new XF.ContentPage()
             {
                 Title = "Unhandled exception",
-                Content = stackLayout,
+                Content = new XF.StackLayout
+                {
+                    Padding = 10,
+                    Children =
+                    {
+                        new XF.Label
+                        {
+                            FontAttributes = XF.FontAttributes.Bold,
+                            FontSize = XF.Device.GetNamedSize(XF.NamedSize.Large, typeof(XF.Label)),
+                            Text = "Unhandled exception",
+                        },
+                        new XF.Label
+                        {
+                            Text = exception?.Message,
+                        },
+                        new XF.ScrollView
+                        {
+                            Content =
+                                new XF.Label
+                                {
+                                    FontSize = XF.Device.GetNamedSize(XF.NamedSize.Small, typeof(XF.Label)),
+                                    Text = exception?.StackTrace,
+                                },
+
+                        },
+                    },
+                },
             };
+
             return errorPage;
         }
 
