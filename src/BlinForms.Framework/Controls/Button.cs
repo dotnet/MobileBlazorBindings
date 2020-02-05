@@ -59,7 +59,7 @@ namespace BlinForms.Framework.Controls
                         Text = (string)attributeValue;
                         break;
                     case "onclick":
-                        Renderer.RegisterEvent(attributeEventHandlerId, () => ClickEventHandlerId = 0);
+                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (ClickEventHandlerId == id) ClickEventHandlerId = 0; });
                         ClickEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onistoggledchanged",
                 setId: id => IsToggledChangedEventHandlerId = id,
-                clearId: () => IsToggledChangedEventHandlerId = 0);
+                clearId: id => { if (IsToggledChangedEventHandlerId == id) IsToggledChangedEventHandlerId = 0; });
             SwitchControl.Toggled += (s, e) =>
             {
                 if (IsToggledChangedEventHandlerId != default)

@@ -96,7 +96,7 @@ namespace BlinForms.Framework.Controls
                         ScrollBars = (ScrollBars)AttributeHelper.GetInt(attributeValue);
                         break;
                     case "ontextchanged":
-                        Renderer.RegisterEvent(attributeEventHandlerId, () => TextChangedEventHandlerId = 0);
+                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (TextChangedEventHandlerId == id) TextChangedEventHandlerId = 0; });
                         TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     internal class EventRegistration
     {
-        public EventRegistration(string eventName, Action<ulong> setId, Action clearId)
+        public EventRegistration(string eventName, Action<ulong> setId, Action<ulong> clearId)
         {
             if (string.IsNullOrEmpty(eventName))
             {
@@ -21,6 +21,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public string EventName { get; }
         public Action<ulong> SetId { get; }
-        public Action ClearId { get; }
+        public Action<ulong> ClearId { get; }
     }
 }

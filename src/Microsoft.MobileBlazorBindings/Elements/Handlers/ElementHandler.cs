@@ -16,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
 
-        protected void RegisterEvent(string eventName, Action<ulong> setId, Action clearId)
+        protected void RegisterEvent(string eventName, Action<ulong> setId, Action<ulong> clearId)
         {
             RegisteredEvents[eventName] = new EventRegistration(eventName, setId, clearId);
         }

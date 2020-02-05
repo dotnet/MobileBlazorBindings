@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onvaluechanged",
                 setId: id => ValueChangedEventHandlerId = id,
-                clearId: () => ValueChangedEventHandlerId = 0);
+                clearId: id => { if (ValueChangedEventHandlerId == id) ValueChangedEventHandlerId = 0; });
             StepperControl.ValueChanged += (s, e) =>
             {
                 if (ValueChangedEventHandlerId != default)

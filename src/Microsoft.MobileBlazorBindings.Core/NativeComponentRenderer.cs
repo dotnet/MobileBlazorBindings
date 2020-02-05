@@ -15,7 +15,7 @@ namespace Microsoft.MobileBlazorBindings.Core
     {
         private readonly Dictionary<int, NativeComponentAdapter> _componentIdToAdapter = new Dictionary<int, NativeComponentAdapter>();
         private ElementManager _elementManager;
-        private readonly Dictionary<ulong, Action> _eventRegistrations = new Dictionary<ulong, Action>();
+        private readonly Dictionary<ulong, Action<ulong>> _eventRegistrations = new Dictionary<ulong, Action<ulong>>();
 
 
         public NativeComponentRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
@@ -102,7 +102,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             return Task.CompletedTask;
         }
 
-        public void RegisterEvent(ulong eventHandlerId, Action unregisterCallback)
+        public void RegisterEvent(ulong eventHandlerId, Action<ulong> unregisterCallback)
         {
             if (eventHandlerId == 0)
             {
@@ -121,7 +121,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             {
                 throw new InvalidOperationException($"Attempting to dispose unknown event handler id '{eventHandlerId}'.");
             }
-            unregisterCallback();
+            unregisterCallback(eventHandlerId);
         }
 
         internal NativeComponentAdapter CreateAdapterForChildComponent(IElementHandler physicalParent, int componentId)
