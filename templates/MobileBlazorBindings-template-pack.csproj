@@ -65,6 +65,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="MobileBlazorBindings-app\.template.config\template.in.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="MobileBlazorBindings-app\.template.config\.gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
