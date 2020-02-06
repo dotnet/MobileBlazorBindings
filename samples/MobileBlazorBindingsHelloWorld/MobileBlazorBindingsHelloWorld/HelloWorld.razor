@@ -1,10 +1,37 @@
-﻿<ContentPage>
-    <StackLayout Margin="new Thickness(20)">
+﻿<Shell>
+    <FlyoutHeader>
+        <ShellAppHeader />
+    </FlyoutHeader>
+    <ChildContent>
+        <FlyoutItem Route="home"
+                    Title="Home"
+                    FlyoutDisplayOptions="FlyoutDisplayOptions.AsSingleItem">
 
-        <Label Text="Hello, World!"
-               FontSize="40" />
+            <Tab Route="more"
+                 Title="More"
+                 Icon="@(new FileImageSource { File="bear.png"})">
+                <ShellContent Route="help"
+                              Title="Help"
+                              Icon="@(new FileImageSource { File="paw.png"})">
+                    <HelpPage />
+                </ShellContent>
 
-        <Counter />
-
-    </StackLayout>
-</ContentPage>
+                <ShellContent Route="info"
+                              Title="Info"
+                              Icon="@(new FileImageSource { File="cat.png"})">
+                    <InfoPage />
+                </ShellContent>
+            </Tab>
+            <ShellContent Route="chat"
+                          Title="Chat"
+                          Icon="@(new FileImageSource { File="dog.png"})">
+                <ChatPage />
+            </ShellContent>
+            <ShellContent Route="user"
+                          Title="User"
+                          Icon="@(new FileImageSource { File="cat.png"})">
+                <UserPage />
+            </ShellContent>
+        </FlyoutItem>
+    </ChildContent>
+</Shell>
