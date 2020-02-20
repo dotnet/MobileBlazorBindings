@@ -79,7 +79,18 @@ namespace Microsoft.MobileBlazorBindings.Core
                         ApplyRemoveAttribute(edit.RemovedAttributeName);
                         break;
                     case RenderTreeEditType.UpdateText:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                        {
+                            var frame = batch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
+                            if (_targetElement is IHandleChildContentText handleChildContentText)
+                            {
+                                handleChildContentText.HandleText(edit.SiblingIndex, frame.TextContent);
+                            }
+                            else
+                            {
+                                throw new Exception("Cannot set text content on child that doesn't handle inner text content.");
+                            }
+                            break;
+                        }
                     case RenderTreeEditType.StepIn:
                         {
                             // TODO: Need to implement this. For now it seems safe to ignore.
@@ -91,7 +102,18 @@ namespace Microsoft.MobileBlazorBindings.Core
                             break;
                         }
                     case RenderTreeEditType.UpdateMarkup:
-                        throw new NotImplementedException($"Not supported edit type: {edit.Type}");
+                        {
+                            var frame = batch.ReferenceFrames.Array[edit.ReferenceFrameIndex];
+                            if (_targetElement is IHandleChildContentText handleChildContentText)
+                            {
+                                handleChildContentText.HandleText(edit.SiblingIndex, frame.MarkupContent);
+                            }
+                            else
+                            {
+                                throw new Exception("Cannot set markup content on child that doesn't handle inner text content.");
+                            }
+                            break;
+                        }
                     case RenderTreeEditType.PermutationListEntry:
                         throw new NotImplementedException($"Not supported edit type: {edit.Type}");
                     case RenderTreeEditType.PermutationListEnd:
@@ -180,7 +202,11 @@ namespace Microsoft.MobileBlazorBindings.Core
                     }
                 case RenderTreeFrameType.Markup:
                     {
-                        if (!string.IsNullOrWhiteSpace(frame.MarkupContent))
+                        if (_targetElement is IHandleChildContentText handleChildContentText)
+                        {
+                            handleChildContentText.HandleText(siblingIndex, frame.MarkupContent);
+                        }
+                        else if (!string.IsNullOrWhiteSpace(frame.MarkupContent))
                         {
                             throw new NotImplementedException("Nonempty markup: " + frame.MarkupContent);
                         }
@@ -193,8 +219,11 @@ namespace Microsoft.MobileBlazorBindings.Core
                     }
                 case RenderTreeFrameType.Text:
                     {
-                        // TODO: Maybe support this for Labels for Text property, etc. ("DefaultProperty"?)
-                        if (!string.IsNullOrWhiteSpace(frame.TextContent))
+                        if (_targetElement is IHandleChildContentText handleChildContentText)
+                        {
+                            handleChildContentText.HandleText(siblingIndex, frame.TextContent);
+                        }
+                        else if (!string.IsNullOrWhiteSpace(frame.TextContent))
                         {
                             throw new NotImplementedException("Nonempty text: " + frame.TextContent);
                         }

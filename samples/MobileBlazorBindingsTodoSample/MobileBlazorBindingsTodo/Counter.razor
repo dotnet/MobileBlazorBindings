@@ -2,7 +2,9 @@
 
 <StackLayout>
     <Label FontSize="30" FontAttributes="FontAttributes.Italic" Text="@("You have pressed " + AppState.Counter + " times")" />
-    <Button Text="+1" OnClick="HandleClick" />
+    <Button OnClick="HandleClick">
+        +1
+    </Button>
 </StackLayout>
 
 @code {

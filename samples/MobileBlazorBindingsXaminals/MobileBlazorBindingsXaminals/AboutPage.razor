@@ -32,45 +32,42 @@
                                 <FormattedText>
                                     <FormattedString>
                                         <Spans>
-                                            <Span Text="Xamarin Animals"
-                                                  FontAttributes="FontAttributes.Bold"
-                                                  FontSize="22" />
-                                            <Span Text=" " />
-                                            <Span Text="1.0"
-                                                  TextColor="lightTextColor" />
+                                            <Span FontAttributes="FontAttributes.Bold"
+                                                  FontSize="22">Xamarin Animals</Span>
+                                            <Span> </Span>
+                                            <Span TextColor="lightTextColor">1.0</Span>
                                         </Spans>
                                     </FormattedString>
                                 </FormattedText>
                             </Label>
-@*
-    // TODO: Figure out how to do this for the underlined <Span> below
-    <Span.GestureRecognizers>
-        <TapGestureRecognizer
-            Command="{Binding TapCommand, Mode=OneWay}"
-            CommandParameter="https://docs.microsoft.com/en-us/xamarin/xamarin-forms/" />
-    </Span.GestureRecognizers>
-    
-*@
+                            @*
+                                // TODO: Figure out how to do this for the underlined <Span> below
+                                <Span.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding TapCommand, Mode=OneWay}"
+                                        CommandParameter="https://docs.microsoft.com/en-us/xamarin/xamarin-forms/" />
+                                </Span.GestureRecognizers>
+
+                            *@
                             <Label>
                                 <FormattedText>
                                     <FormattedString>
                                         <Spans>
-                                            <Span Text="This app is written in XAML and C# with the " />
-                                            <Span Text="Xamarin Platform"
-                                                  FontAttributes="FontAttributes.Bold"
+                                            <Span>This app is written in XAML and C# with the </Span>
+                                            <Span FontAttributes="FontAttributes.Bold"
                                                   TextColor="Color.Blue"
-                                                  TextDecorations="TextDecorations.Underline">
-                                            </Span>
-                                            <Span Text="." />
+                                                  TextDecorations="TextDecorations.Underline">Xamarin Platform</Span>
+                                            <Span>.</Span>
                                         </Spans>
                                     </FormattedString>
                                 </FormattedText>
                             </Label>
                             <Button Margin="new Thickness(0,10,0,0)"
-                                    Text="Learn more"
                                     OnClick="OpenWeb"
                                     BackgroundColor="primaryColor"
-                                    TextColor="Color.White" />
+                                    TextColor="Color.White">
+                                Learn more
+                            </Button>
                         </StackLayout>
                     </ScrollView>
                 </GridCell>

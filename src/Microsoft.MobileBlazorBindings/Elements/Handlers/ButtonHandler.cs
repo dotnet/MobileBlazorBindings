@@ -5,8 +5,10 @@ using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ButtonHandler : ViewHandler
+    public partial class ButtonHandler : ViewHandler, IHandleChildContentText
     {
+        private readonly TextSpanContainer _textSpanContainer = new TextSpanContainer();
+
         partial void Initialize(NativeComponentRenderer renderer)
         {
             RegisterEvent(
@@ -44,6 +46,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ReleaseEventHandlerId, null, e));
                 }
             };
+        }
+
+        public void HandleText(int index, string text)
+        {
+            ButtonControl.Text = _textSpanContainer.GetUpdatedText(index, text);
         }
 
         public ulong ClickEventHandlerId { get; set; }
