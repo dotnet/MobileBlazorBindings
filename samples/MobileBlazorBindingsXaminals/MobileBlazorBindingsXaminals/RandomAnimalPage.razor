@@ -1,0 +1,67 @@
+﻿@{ 
+    Color primaryColor = Color.FromHex("96d1ff");
+    Animal RandomAnimal = new Animal() { Name = "" , Details= "", ImageUrl="", Location=""};
+    List<Animal> AllAnimals = new List<Animal>() { };
+        foreach (var animal in MobileBlazorBindingsXaminals.Data.DogData.Dogs)
+        {
+            AllAnimals.Add(animal);
+        }
+
+        foreach (var animal in MobileBlazorBindingsXaminals.Data.CatData.Cats)
+        {
+            AllAnimals.Add(animal);
+        }
+        foreach (var animal in MobileBlazorBindingsXaminals.Data.BearData.Bears)
+        {
+            AllAnimals.Add(animal);
+        }
+        foreach (var animal in MobileBlazorBindingsXaminals.Data.ElephantData.Elephants)
+        {
+            AllAnimals.Add(animal);
+        }
+        foreach (var animal in MobileBlazorBindingsXaminals.Data.MonkeyData.Monkeys)
+        {
+            AllAnimals.Add(animal);
+        }
+        Random rand = new Random();
+    RandomAnimal = AllAnimals[rand.Next(0, AllAnimals.Count)];
+    void GetRandomAnimal() {
+
+        
+        //Assembly assembly = Assembly.GetExecutingAssembly();
+        //Type[] DataTypes = assembly.GetTypes()
+        //          .Where(t => String.Equals(t.Namespace, "MobileBlazorBindingsXaminals.Data", StringComparison.Ordinal))
+        //          .ToArray();
+
+        //foreach (var type in DataTypes)
+        //{
+        //    type.GetMethod("Dogs");
+        //    var instance = Activator.CreateInstance(type);
+        //}
+
+        RandomAnimal = AllAnimals[rand.Next(0, AllAnimals.Count)];
+        //  return AllAnimals[rand.Next(0, AllAnimals.Count)];
+    }
+
+}    
+<ContentPage>
+        
+        <ScrollView>
+            <StackLayout>
+                <Button Margin="new Thickness(0, 10, 0, 0)"
+                        OnClick="GetRandomAnimal"
+                        BackgroundColor="primaryColor"
+                        TextColor="Color.White">
+                    Get Random Animal
+                </Button>
+                <AnimalTemplate Animal="@RandomAnimal" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage>
+
+@{
+    
+    
+
+}
