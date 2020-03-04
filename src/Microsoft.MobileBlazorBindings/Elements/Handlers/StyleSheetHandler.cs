@@ -10,7 +10,7 @@ using XFS = Xamarin.Forms.StyleSheets;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class StyleSheetHandler : IXamarinFormsElementHandler, ICustomParentProcessor
+    public class StyleSheetHandler : IXamarinFormsElementHandler
     {
         private XF.VisualElement _parentVisualElement;
 
@@ -48,6 +48,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetPhysicalSiblingIndex()
+        {
+            return 0;
+        }
+
         public bool IsParented()
         {
             return _parentVisualElement != null;
@@ -58,7 +68,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return _parentVisualElement == elementControl;
         }
 
-        public void SetParent(object parent)
+        public void SetParent(XF.Element parent)
         {
             if (parent is null)
             {

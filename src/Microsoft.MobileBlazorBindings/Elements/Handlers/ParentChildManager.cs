@@ -14,7 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     /// </summary>
     /// <typeparam name="TParent"></typeparam>
     /// <typeparam name="TChild"></typeparam>
-    public class ParentChildManager<TParent, TChild> : IParentChildManager
+    public class ParentChildManager<TParent, TChild>
         where TParent : class
         where TChild : class
     {

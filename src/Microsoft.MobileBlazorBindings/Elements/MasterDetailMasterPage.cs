@@ -3,7 +3,6 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static MasterDetailMasterPage()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<MasterDetailMasterPage>(renderer => new MasterPageHandler(renderer, new XF.ContentPage()));
+                .RegisterElementHandler<MasterDetailMasterPage>(renderer => new MasterPageHandler(renderer, new MasterDetailMasterPageContentPage()));
         }
     }
 }

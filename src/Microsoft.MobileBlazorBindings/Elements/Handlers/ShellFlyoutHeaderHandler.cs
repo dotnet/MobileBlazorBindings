@@ -7,14 +7,14 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ShellFlyoutHeaderHandler : IXamarinFormsElementHandler, IParentChildManagementRequired
+    public class ShellFlyoutHeaderHandler : IXamarinFormsElementHandler, INonChildContainerElement
     {
         public ShellFlyoutHeaderHandler(NativeComponentRenderer renderer, DummyElement shellFlyoutHeaderDummyControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ShellFlyoutHeaderDummyControl = shellFlyoutHeaderDummyControl ?? throw new ArgumentNullException(nameof(shellFlyoutHeaderDummyControl));
 
-            ParentChildManager = new ParentChildManager<XF.Shell, XF.View>(SetShellFlyoutHeader);
+            _parentChildManager = new ParentChildManager<XF.Shell, XF.View>(SetShellFlyoutHeader);
         }
 
         public NativeComponentRenderer Renderer { get; }
@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public XF.Element ElementControl => ShellFlyoutHeaderDummyControl;
         public object TargetElement => ElementControl;
 
-        public IParentChildManager ParentChildManager { get; }
+        private readonly ParentChildManager<XF.Shell, XF.View> _parentChildManager;
 
         public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
@@ -33,6 +33,39 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            _parentChildManager.SetChild(child);
+        }
+
+        public int GetPhysicalSiblingIndex()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return 0;
+        }
+
+        public bool IsParented()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public bool IsParentedTo(XF.Element parent)
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public void SetParent(XF.Element parent)
+        {
+            // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
+            // in this class should get called.
+            throw new NotSupportedException();
+        }
+
         private void SetShellFlyoutHeader(ParentChildManager<XF.Shell, XF.View> parentChildManager)
         {
             // See comment in ShellHandler..ctor. We can't re-set the FlyoutHeader itself, so we have
@@ -40,6 +73,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             var flyoutHeaderContentView = (XF.ContentView)parentChildManager.Parent.FlyoutHeader;
             flyoutHeaderContentView.IsVisible = true;
             flyoutHeaderContentView.Content = parentChildManager.Child;
+        }
+
+        public void SetParent(object parentElement)
+        {
+            _parentChildManager.SetParent((XF.Element)parentElement);
         }
     }
 }
