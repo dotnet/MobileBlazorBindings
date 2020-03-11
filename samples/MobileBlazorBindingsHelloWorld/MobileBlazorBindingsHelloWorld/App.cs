@@ -19,7 +19,8 @@ namespace MobileBlazorBindingsHelloWorld
                 })
                 .Build();
 
-            host.AddComponent<HelloWorld>(parent: this);
+            MainPage = new ContentPage();
+            host.AddComponent<HelloWorld>(parent: MainPage);
         }
 
         protected override void OnStart()

@@ -20,7 +20,8 @@ namespace MobileBlazorBindingsWeather
                 })
                 .Build();
 
-            host.AddComponent<MainPage>(parent: this);
+            MainPage = new ContentPage();
+            host.AddComponent<WeatherApp>(parent: MainPage);
         }
 
         protected override void OnStart()

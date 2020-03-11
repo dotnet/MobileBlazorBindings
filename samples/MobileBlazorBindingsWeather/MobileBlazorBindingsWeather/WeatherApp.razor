@@ -1,6 +1,6 @@
 ﻿@inject WeatherService WeatherService
 
-<ContentPage>
+<ContentView>
     <StyleSheet Resource="WeatherStyles.css" Assembly="GetType().Assembly"></StyleSheet>
     <PancakeView BackgroundGradientStartColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: true)"
                  BackgroundGradientEndColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: false)">
@@ -105,7 +105,7 @@
             </Contents>
         </Grid>
     </PancakeView>
-</ContentPage>
+</ContentView>
 
 @code
 {
