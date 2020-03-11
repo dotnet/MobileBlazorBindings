@@ -37,7 +37,26 @@ namespace Microsoft.MobileBlazorBindings
             // TODO: This call is an async call, but is called as "fire-and-forget," which is not ideal.
             // We need to figure out how to get Xamarin.Forms to run this startup code asynchronously, which
             // is how this method should be called.
-            renderer.AddComponent<TComponent>(new ElementHandler(renderer, parent)).ConfigureAwait(false);
+            renderer.AddComponent<TComponent>(CreateHandler(parent, renderer)).ConfigureAwait(false);
+        }
+
+        private static ElementHandler CreateHandler(XF.Element parent, MobileBlazorBindingsRenderer renderer)
+        {
+            return parent switch
+            {
+                XF.ContentPage contentPage => new ContentPageHandler(renderer, contentPage),
+                XF.ContentView contentView => new ContentViewHandler(renderer, contentView),
+                XF.FormattedString formattedString => new FormattedStringHandler(renderer, formattedString),
+                XF.Label label => new LabelHandler(renderer, label),
+                XF.MasterDetailPage masterDetailPage => new MasterDetailPageHandler(renderer, masterDetailPage),
+                XF.ScrollView scrollView => new ScrollViewHandler(renderer, scrollView),
+                XF.ShellContent shellContent => new ShellContentHandler(renderer, shellContent),
+                XF.Shell shell => new ShellHandler(renderer, shell),
+                XF.ShellItem shellItem => new ShellItemHandler(renderer, shellItem),
+                XF.ShellSection shellSection => new ShellSectionHandler(renderer, shellSection),
+                XF.TabbedPage tabbedPage => new TabbedPageHandler(renderer, tabbedPage),
+                _ => new ElementHandler(renderer, parent),
+            };
         }
     }
 }
