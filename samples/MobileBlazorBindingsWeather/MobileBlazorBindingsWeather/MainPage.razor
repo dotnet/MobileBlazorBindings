@@ -4,8 +4,7 @@
     <StyleSheet Resource="WeatherStyles.css" Assembly="GetType().Assembly"></StyleSheet>
     <PancakeView BackgroundGradientStartColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: true)"
                  BackgroundGradientEndColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: false)">
-        <Grid Padding="new Thickness(0,44,0,0)"
-              RowSpacing="0">
+        <Grid class="mainGrid">
             <Layout>
                 <RowDefinition GridUnitType="GridUnitType.Auto" />
                 <RowDefinition GridUnitType="GridUnitType.Star" />
@@ -17,17 +16,15 @@
             </Layout>
             <Contents>
                 <GridCell Row="0">
-                    <Label HorizontalOptions="LayoutOptions.Center"
-                           Text="SEATTLE"
-                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Large)" />
+                    <Label class="largeText mainText"
+                           Text="SEATTLE" />
                 </GridCell>
 
                 <GridCell Row="1">
-                    <Image HorizontalOptions="LayoutOptions.FillAndExpand"
+                    <Image class="cityImage"
+                           HorizontalOptions="LayoutOptions.FillAndExpand"
                            VerticalOptions="LayoutOptions.FillAndExpand"
-                           Opacity=".8"
-                           Source="@(new FileImageSource { File = "spaceneedle.png" })"
-                           Margin="new Thickness(0,0,0,-80)" />
+                           Source="@(new FileImageSource { File = "spaceneedle.png" })" />
                 </GridCell>
 
                 <GridCell Row="2">
@@ -39,34 +36,28 @@
                         </Layout>
                         <Contents>
                             <GridCell Column="1">
-                                <Label FontSize="AppResources.LabelTemperatureStyle.FontSize"
-                                       HorizontalOptions="AppResources.LabelTemperatureStyle.HorizontalOptions"
-                                       Text="@CurrentWeather.Temperature.ToString()"
-                                       TextColor="AppResources.LabelTemperatureStyle.TextColor" />
+                                <Label class="temperatureStyle"
+                                       Text="@CurrentWeather.Temperature.ToString()" />
                             </GridCell>
 
                             <GridCell Column="2">
-                                <Label FontSize="AppResources.LabelTemperatureStyle.FontSize"
-                                       HorizontalOptions="LayoutOptions.Start"
-                                       Text="°F"
-                                       TextColor="AppResources.LabelTemperatureStyle.TextColor" />
+                                <Label class="degreeStyle"
+                                       Text="°F" />
                             </GridCell>
                         </Contents>
                     </Grid>
                 </GridCell>
 
                 <GridCell Row="3">
-                    <Label HorizontalOptions="LayoutOptions.Center"
+                    <Label class="mainText"
                            Text="SUNNY"
-                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Large)"
-                           TextColor="AppResources.MainTextColor" />
+                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Large)" />
                 </GridCell>
 
                 <GridCell Row="4">
-                    <Label HorizontalOptions="LayoutOptions.Center"
+                    <Label class="mainText"
                            Text="FRIDAY, SEPTEMBER 13"
-                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)"
-                           TextColor="AppResources.MainTextColor" />
+                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)" />
                 </GridCell>
 
                 <GridCell Row="5">
@@ -81,22 +72,15 @@
                                              BackgroundGradientAngle="315">
                                     <StackLayout Spacing="0"
                                                  VerticalOptions="LayoutOptions.Center">
-                                        <Label Text="@weatherDataItem.Name"
-                                               FontAttributes="FontAttributes.Bold"
-                                               FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)"
-                                               TextColor="Color.White"
-                                               HorizontalOptions="LayoutOptions.Center" />
+                                        <Label class="dataItemName"
+                                               Text="@weatherDataItem.Name" />
                                         <StackLayout Orientation="StackOrientation.Horizontal">
-                                            <Label Text="@weatherDataItem.Value.ToString()"
-                                                   TextColor="Color.White"
-                                                   FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)"
-                                                   HorizontalOptions="LayoutOptions.Center" />
+                                            <Label class="dataItemValue"
+                                                   Text="@weatherDataItem.Value.ToString()" />
                                             @if (weatherDataItem.Unit != null)
                                             {
-                                                <Label Text="@weatherDataItem.Unit"
-                                                       TextColor="Color.White"
-                                                       FontSize="FontSizeUtility.GetFontSize(NamedSize.Micro)"
-                                                       HorizontalOptions="LayoutOptions.Center" />
+                                                <Label class="dataItemUnit"
+                                                       Text="@weatherDataItem.Unit" />
                                             }
                                         </StackLayout>
                                     </StackLayout>
@@ -109,7 +93,7 @@
                 <GridCell Row="6">
                     <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
                         <Label Text="I'm feeling too hot/cold!"
-                               VerticalOptions="LayoutOptions.Center"/>
+                               VerticalOptions="LayoutOptions.Center" />
                         <Stepper @bind-Value="Temperature"
                                  Minimum="0"
                                  Maximum="120"
