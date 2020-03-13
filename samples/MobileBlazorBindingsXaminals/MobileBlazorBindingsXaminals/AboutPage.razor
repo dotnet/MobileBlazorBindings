@@ -29,16 +29,10 @@
                                      Padding="new Thickness(16,40,16,40)"
                                      Spacing="10">
                             <Label FontSize="22">
-                                <FormattedText>
-                                    <FormattedString>
-                                        <Spans>
-                                            <Span FontAttributes="FontAttributes.Bold"
-                                                  FontSize="22">Xamarin Animals</Span>
-                                            <Span> </Span>
-                                            <Span TextColor="lightTextColor">1.0</Span>
-                                        </Spans>
-                                    </FormattedString>
-                                </FormattedText>
+                                <Span FontAttributes="FontAttributes.Bold"
+                                      FontSize="22">Xamarin Animals</Span>
+                                <Span> </Span>
+                                <Span TextColor="lightTextColor">1.0</Span>
                             </Label>
                             @*
                                 // TODO: Figure out how to do this for the underlined <Span> below
@@ -50,17 +44,11 @@
 
                             *@
                             <Label>
-                                <FormattedText>
-                                    <FormattedString>
-                                        <Spans>
-                                            <Span>This app is written in XAML and C# with the </Span>
-                                            <Span FontAttributes="FontAttributes.Bold"
-                                                  TextColor="Color.Blue"
-                                                  TextDecorations="TextDecorations.Underline">Xamarin Platform</Span>
-                                            <Span>.</Span>
-                                        </Spans>
-                                    </FormattedString>
-                                </FormattedText>
+                                <Span>This app is written in XAML and C# with the </Span>
+                                <Span FontAttributes="FontAttributes.Bold"
+                                      TextColor="Color.Blue"
+                                      TextDecorations="TextDecorations.Underline">Xamarin Platform</Span>
+                                <Span>.</Span>
                             </Label>
                             <Button Margin="new Thickness(0,10,0,0)"
                                     OnClick="OpenWeb"

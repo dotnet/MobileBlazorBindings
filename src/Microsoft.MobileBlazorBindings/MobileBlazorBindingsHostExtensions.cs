@@ -48,7 +48,6 @@ namespace Microsoft.MobileBlazorBindings
             {
                 XF.ContentPage contentPage => new ContentPageHandler(renderer, contentPage),
                 XF.ContentView contentView => new ContentViewHandler(renderer, contentView),
-                XF.FormattedString formattedString => new FormattedStringHandler(renderer, formattedString),
                 XF.Label label => new LabelHandler(renderer, label),
                 XF.MasterDetailPage masterDetailPage => new MasterDetailPageHandler(renderer, masterDetailPage),
                 XF.ScrollView scrollView => new ScrollViewHandler(renderer, scrollView),

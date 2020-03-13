@@ -10,17 +10,27 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         public override void AddChild(XF.Element child, int physicalSiblingIndex)
         {
-            var childAsFormattedString = child as XF.FormattedString;
+            var childAsSpan = child as XF.Span;
 
-            if (physicalSiblingIndex == 0)
+            var formattedString = GetFormattedString();
+            if (physicalSiblingIndex <= formattedString.Spans.Count)
             {
-                // Label can have exactly one child, which is a FormattedString
-                LabelControl.FormattedText = childAsFormattedString;
+                formattedString.Spans.Insert(physicalSiblingIndex, childAsSpan);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but parentAsLabel can have only 1 child");
+                Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but Label.FormattedText.Spans.Count={LabelControl.FormattedText.Spans.Count}");
+                formattedString.Spans.Add(childAsSpan);
             }
+        }
+
+        private XF.FormattedString GetFormattedString()
+        {
+            if (LabelControl.FormattedText == null)
+            {
+                LabelControl.FormattedText = new XF.FormattedString();
+            }
+            return LabelControl.FormattedText;
         }
     }
 }
