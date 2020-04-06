@@ -1,10 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Title>WebWindow.Blazor</Title>
     <PackageDescription>Host a Blazor application inside a native OS window on Windows, Mac, and Linux</PackageDescription>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <BlazorPackageVersion>3.2.0-preview1.20073.1</BlazorPackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,10 +14,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <EmbeddedResource Include="../WebWindow.Blazor.JS/dist/blazor.desktop.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WebWindow\WebWindow.csproj" />
   </ItemGroup>
 
 </Project>
