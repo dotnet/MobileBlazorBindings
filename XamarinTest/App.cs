@@ -1,4 +1,5 @@
-﻿using Xamarin.Essentials;
+﻿using WebWindows.Blazor.XamarinForms;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace XamarinTest
@@ -22,11 +23,22 @@ namespace XamarinTest
     {
         public LocalHtml()
         {
-            var browser = new WebView();
+            var browser = new ExtendedWebView();
+            browser.OnWebMessageReceived += (sender, message) =>
+            {
+                browser.SendMessage("Got message: " + message);
+            };
+
             var htmlSource = new HtmlWebViewSource();
             htmlSource.Html = @"<html><body>
                                 <h1>Xamarin.Forms</h1>
                                 <p>Welcome to WebView.</p>
+                                <button onclick=""window.external.sendMessage('blah😋')"">Invoke .NET</button>
+                                <script>
+                                    window.external.receiveMessage(function (message) {
+                                        alert(message);
+                                    });
+                                </script>
                                 </body>
                                 </html>";
             browser.Source = htmlSource;
@@ -40,7 +52,7 @@ namespace XamarinTest
     {
         public LocalHtmlBaseUrl()
         {
-            var browser = new WebView();
+            var browser = new ExtendedWebView();
             var htmlSource = new HtmlWebViewSource();
 
             htmlSource.Html = @"<html>
@@ -105,7 +117,7 @@ namespace XamarinTest
     {
         public WebPage()
         {
-            var browser = new WebView();
+            var browser = new ExtendedWebView();
             browser.Source = "https://www.whatismybrowser.com/";
             Content = browser;
         }

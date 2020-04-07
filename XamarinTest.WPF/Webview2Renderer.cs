@@ -6,26 +6,27 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using System.Windows.Threading;
+using WebWindows.Blazor.XamarinForms;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.WPF;
 using XamarinTest.WPF;
 
-[assembly: ExportRenderer(typeof(WebView), typeof(Webview2Renderer))]
+[assembly: ExportRenderer(typeof(ExtendedWebView), typeof(Webview2Renderer))]
 
 namespace XamarinTest.WPF
 {
-    public class Webview2Renderer : ViewRenderer<WebView, WebView2Control>, IWebViewDelegate
+    public class Webview2Renderer : ViewRenderer<ExtendedWebView, WebView2Control>, IWebViewDelegate
     {
 		WebNavigationEvent _eventState;
 		bool _updating;
 
-		protected override void OnElementChanged(ElementChangedEventArgs<WebView> e)
+		protected override void OnElementChanged(ElementChangedEventArgs<ExtendedWebView> e)
 		{
 			_ = HandleElementChangedAsync(e);
 		}
 
-		private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebView> e)
+		private async Task HandleElementChangedAsync(ElementChangedEventArgs<ExtendedWebView> e)
 		{
 			if (e.OldElement != null) // Clear old element event
 			{
@@ -34,6 +35,7 @@ namespace XamarinTest.WPF
 				e.OldElement.GoBackRequested -= OnGoBackRequested;
 				e.OldElement.GoForwardRequested -= OnGoForwardRequested;
 				e.OldElement.ReloadRequested -= OnReloadRequested;
+				e.OldElement.SendMessageFromJSToDotNetRequested -= OnSendMessageFromJSToDotNetRequested;
 			}
 
 			if (e.NewElement != null)
@@ -43,6 +45,9 @@ namespace XamarinTest.WPF
 					SetNativeControl(new WebView2Control());
 					await WaitForBrowserCreatedAsync();
 
+					Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
+
+					Control.WebMessageRecieved += HandleWebMessageReceived;
 					Control.NavigationCompleted += WebBrowserOnNavigated;
 					Control.NavigationStarting += WebBrowserOnNavigating;
 					Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
@@ -58,9 +63,20 @@ namespace XamarinTest.WPF
 				Element.GoBackRequested += OnGoBackRequested;
 				Element.GoForwardRequested += OnGoForwardRequested;
 				Element.ReloadRequested += OnReloadRequested;
+				Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
 			}
 
 			base.OnElementChanged(e);
+		}
+
+		private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
+		{
+			Control.PostWebMessageAsString(message);
+		}
+
+		private void HandleWebMessageReceived(object sender, WebMessageReceivedEventArgs args)
+		{
+			Element.HandleWebMessageReceived(args.WebMessageAsString);
 		}
 
 		private Task WaitForBrowserCreatedAsync()
@@ -226,6 +242,7 @@ namespace XamarinTest.WPF
 					Control.NavigationCompleted -= WebBrowserOnNavigated;
 					Control.NavigationStarting -= WebBrowserOnNavigating;
 					Control.WebResourceRequested -= HandleWebResourceRequested;
+					Control.WebMessageRecieved -= HandleWebMessageReceived;
 					Control.Dispose();
 				}
 
