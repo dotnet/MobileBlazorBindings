@@ -18,4 +18,10 @@
   <ItemGroup>
     <ProjectReference Include="..\WebWindow.Blazor\WebWindow.Blazor.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

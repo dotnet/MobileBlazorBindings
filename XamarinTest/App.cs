@@ -10,11 +10,11 @@ namespace XamarinTest
         {
             var tabs = new TabbedPage();
 
+            tabs.Children.Add(new BlazorPage { Title = "Blazor" });
             tabs.Children.Add(new LocalHtml { Title = "Local" });
             tabs.Children.Add(new LocalHtmlBaseUrl { Title = "BaseUrl" });
             tabs.Children.Add(new WebPage { Title = "Web Page" });
             tabs.Children.Add(new WebAppPage { Title = "External" });
-            tabs.Children.Add(new BlazorPage { Title = "Blazor" });
 
             MainPage = tabs;
         }

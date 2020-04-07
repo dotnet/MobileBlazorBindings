@@ -3,6 +3,9 @@ using MtrDev.WebView2.Wpf;
 using MtrDev.WebView2.Wrapper;
 using System;
 using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using System.Windows.Threading;
@@ -16,8 +19,11 @@ using XamarinTest.WPF;
 
 namespace XamarinTest.WPF
 {
-    public class Webview2Renderer : ViewRenderer<ExtendedWebView, WebView2Control>, IWebViewDelegate
+	public class Webview2Renderer : ViewRenderer<ExtendedWebView, WebView2Control>, IWebViewDelegate
     {
+		[DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
+		static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
+
 		WebNavigationEvent _eventState;
 		bool _updating;
 
@@ -91,7 +97,30 @@ namespace XamarinTest.WPF
 
 		private void HandleWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
 		{
-			Console.WriteLine(e.Request.Uri);
+			var uri = new Uri(e.Request.Uri);
+			if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
+			{
+				var responseStream = handler(e.Request.Uri, out var responseContentType);
+				if (responseStream != null) // If null, the handler doesn't want to handle it
+				{
+
+					using var ms = new MemoryStream();
+					responseStream.CopyTo(ms);
+					var responseBytes = ms.ToArray();
+					var responseBytesHandle = GCHandle.Alloc(responseBytes, GCHandleType.Pinned);
+					try
+					{
+						var responseStreamCom = SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
+						var response = Control.WebView2Environment.CreateWebResourceResponse(
+							responseStreamCom, 200, "OK", $"Content-Type: {responseContentType}");
+						e.SetResponse(response);
+					}
+					finally
+					{
+						responseBytesHandle.Free();
+					}
+				}
+			}
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)

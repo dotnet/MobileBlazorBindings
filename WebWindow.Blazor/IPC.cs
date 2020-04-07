@@ -5,27 +5,28 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using WebWindows;
+using WebWindows.Blazor.XamarinForms;
 
 namespace WebWindows.Blazor
 {
     internal class IPC
     {
         private readonly Dictionary<string, List<Action<object>>> _registrations = new Dictionary<string, List<Action<object>>>();
-        private readonly WebWindow _webWindow;
+        private readonly ExtendedWebView _webView;
 
-        public IPC(WebWindow webWindow)
+        public IPC(ExtendedWebView webWindow)
         {
-            _webWindow = webWindow ?? throw new ArgumentNullException(nameof(webWindow));
-            _webWindow.OnWebMessageReceived += HandleScriptNotify;
+            _webView = webWindow ?? throw new ArgumentNullException(nameof(webWindow));
+            _webView.OnWebMessageReceived += HandleScriptNotify;
         }
 
         public void Send(string eventName, params object[] args)
         {
             try
             {
-                _webWindow.Invoke(() =>
+                _webView.Dispatcher.BeginInvokeOnMainThread(() =>
                 {
-                    _webWindow.SendMessage($"{eventName}:{JsonSerializer.Serialize(args)}");
+                    _webView.SendMessage($"{eventName}:{JsonSerializer.Serialize(args)}");
                 });
             }
             catch (Exception ex)

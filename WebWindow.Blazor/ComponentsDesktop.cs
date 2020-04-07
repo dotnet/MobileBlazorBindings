@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using WebWindows.Blazor.XamarinForms;
 
 namespace WebWindows.Blazor
 {
@@ -21,48 +22,43 @@ namespace WebWindows.Blazor
         internal static string BaseUriAbsolute { get; private set; }
         internal static DesktopJSRuntime DesktopJSRuntime { get; private set; }
         internal static DesktopRenderer DesktopRenderer { get; private set; }
-        internal static WebWindow WebWindow { get; private set; }
 
-        public static void Run<TStartup>(string windowTitle, string hostHtmlPath)
+        public static void Run(Type startupType, ExtendedWebView webView, string hostHtmlPath)
         {
             DesktopSynchronizationContext.UnhandledException += (sender, exception) =>
             {
                 UnhandledException(exception);
             };
 
-            WebWindow = new WebWindow(windowTitle, options =>
+            var contentRootAbsolute = Path.GetDirectoryName(Path.GetFullPath(hostHtmlPath));
+
+            webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
-                var contentRootAbsolute = Path.GetDirectoryName(Path.GetFullPath(hostHtmlPath));
-
-                options.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
+                // TODO: Only intercept for the hostname 'app' and passthrough for others
+                // TODO: Prevent directory traversal?
+                var appFile = Path.Combine(contentRootAbsolute, new Uri(url).AbsolutePath.Substring(1));
+                if (appFile == contentRootAbsolute)
                 {
-                    // TODO: Only intercept for the hostname 'app' and passthrough for others
-                    // TODO: Prevent directory traversal?
-                    var appFile = Path.Combine(contentRootAbsolute, new Uri(url).AbsolutePath.Substring(1));
-                    if (appFile == contentRootAbsolute)
-                    {
-                        appFile = hostHtmlPath;
-                    }
+                    appFile = hostHtmlPath;
+                }
 
-                    contentType = GetContentType(appFile);
-                    return File.Exists(appFile) ? File.OpenRead(appFile) : null;
-                });
-
-                // framework:// is resolved as embedded resources
-                options.SchemeHandlers.Add("framework", (string url, out string contentType) =>
-                {
-                    contentType = GetContentType(url);
-                    return SupplyFrameworkFile(url);
-                });
+                contentType = GetContentType(appFile);
+                return File.Exists(appFile) ? File.OpenRead(appFile) : null;
             });
 
-            CancellationTokenSource appLifetimeCts = new CancellationTokenSource();
+            // framework:// is resolved as embedded resources
+            webView.SchemeHandlers.Add("framework", (string url, out string contentType) =>
+            {
+                contentType = GetContentType(url);
+                return SupplyFrameworkFile(url);
+            });
+
             Task.Factory.StartNew(async () =>
             {
                 try
                 {
-                    var ipc = new IPC(WebWindow);
-                    await RunAsync<TStartup>(ipc, appLifetimeCts.Token);
+                    var ipc = new IPC(webView);
+                    await RunAsync(startupType, ipc);
                 }
                 catch (Exception ex)
                 {
@@ -71,15 +67,7 @@ namespace WebWindows.Blazor
                 }
             });
 
-            try
-            {
-                WebWindow.NavigateToUrl(BlazorAppScheme + "://app/");
-                WebWindow.WaitForExit();
-            }
-            finally
-            {
-                appLifetimeCts.Cancel();
-            }
+             webView.Source = BlazorAppScheme + "://app/";
         }
 
         private static string GetContentType(string url)
@@ -111,10 +99,10 @@ namespace WebWindows.Blazor
 
         private static void UnhandledException(Exception ex)
         {
-            WebWindow.ShowMessage("Error", $"{ex.Message}\n{ex.StackTrace}");
+            throw ex;
         }
 
-        private static async Task RunAsync<TStartup>(IPC ipc, CancellationToken appLifetime)
+        private static async Task RunAsync(Type startupType, IPC ipc)
         {
             var configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -122,7 +110,7 @@ namespace WebWindows.Blazor
 
             DesktopJSRuntime = new DesktopJSRuntime(ipc);
             await PerformHandshakeAsync(ipc);
-            AttachJsInterop(ipc, appLifetime);
+            AttachJsInterop(ipc);
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSingleton<IConfiguration>(configurationBuilder.Build());
@@ -130,9 +118,8 @@ namespace WebWindows.Blazor
             serviceCollection.AddSingleton<NavigationManager>(DesktopNavigationManager.Instance);
             serviceCollection.AddSingleton<IJSRuntime>(DesktopJSRuntime);
             serviceCollection.AddSingleton<INavigationInterception, DesktopNavigationInterception>();
-            serviceCollection.AddSingleton(WebWindow);
 
-            var startup = new ConventionBasedStartup(Activator.CreateInstance(typeof(TStartup)));
+            var startup = new ConventionBasedStartup(Activator.CreateInstance(startupType));
             startup.ConfigureServices(serviceCollection);
 
             var services = serviceCollection.BuildServiceProvider();
@@ -179,9 +166,9 @@ namespace WebWindows.Blazor
             await tcs.Task;
         }
 
-        private static void AttachJsInterop(IPC ipc, CancellationToken appLifetime)
+        private static void AttachJsInterop(IPC ipc)
         {
-            var desktopSynchronizationContext = new DesktopSynchronizationContext(appLifetime);
+            var desktopSynchronizationContext = new DesktopSynchronizationContext(CancellationToken.None);
             SynchronizationContext.SetSynchronizationContext(desktopSynchronizationContext);
 
             ipc.On("BeginInvokeDotNetFromJS", args =>

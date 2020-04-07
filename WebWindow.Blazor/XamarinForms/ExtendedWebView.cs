@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace WebWindows.Blazor.XamarinForms
@@ -7,6 +8,8 @@ namespace WebWindows.Blazor.XamarinForms
     {
         public EventHandler<string> OnWebMessageReceived { get; set; }
         public EventHandler<string> SendMessageFromJSToDotNetRequested { get; set; }
+        public IDictionary<string, ResolveWebResourceDelegate> SchemeHandlers { get; }
+            = new Dictionary<string, ResolveWebResourceDelegate>();
 
         public void HandleWebMessageReceived(string webMessageAsString)
         {
