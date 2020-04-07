@@ -21,9 +21,15 @@ namespace WebWindows.Blazor.XamarinForms
 
         class MyApp : ComponentBase
         {
+            private int count;
+
             protected override void BuildRenderTree(RenderTreeBuilder builder)
             {
-                builder.AddContent(0, "Hi from Blazor");
+                builder.AddContent(0, "Hi from Blazor with count " + count);
+                builder.OpenElement(1, "button");
+                builder.AddAttribute(2, "onclick", EventCallback.Factory.Create(this, () => count++));
+                builder.AddContent(3, "Increment");
+                builder.CloseElement();
             }
         }
 

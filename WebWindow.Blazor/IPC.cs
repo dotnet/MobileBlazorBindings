@@ -99,7 +99,10 @@ namespace WebWindows.Blazor
 
                     foreach (var callback in callbacksCopy)
                     {
-                        callback(args);
+                        _webView.Dispatcher.BeginInvokeOnMainThread(() =>
+                        {
+                            callback(args);
+                        });
                     }
                 }
             });

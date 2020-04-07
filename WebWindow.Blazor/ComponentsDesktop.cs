@@ -25,11 +25,6 @@ namespace WebWindows.Blazor
 
         public static void Run(Type startupType, ExtendedWebView webView, string hostHtmlPath)
         {
-            DesktopSynchronizationContext.UnhandledException += (sender, exception) =>
-            {
-                UnhandledException(exception);
-            };
-
             var contentRootAbsolute = Path.GetDirectoryName(Path.GetFullPath(hostHtmlPath));
 
             webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
@@ -53,19 +48,8 @@ namespace WebWindows.Blazor
                 return SupplyFrameworkFile(url);
             });
 
-            Task.Factory.StartNew(async () =>
-            {
-                try
-                {
-                    var ipc = new IPC(webView);
-                    await RunAsync(startupType, ipc);
-                }
-                catch (Exception ex)
-                {
-                    UnhandledException(ex);
-                    throw;
-                }
-            });
+            var ipc = new IPC(webView);
+            _ = RunAsync(startupType, ipc);
 
              webView.Source = BlazorAppScheme + "://app/";
         }
@@ -95,11 +79,6 @@ namespace WebWindows.Blazor
                     ? "http"
                     : "app";
             }
-        }
-
-        private static void UnhandledException(Exception ex)
-        {
-            throw ex;
         }
 
         private static async Task RunAsync(Type startupType, IPC ipc)
@@ -168,34 +147,25 @@ namespace WebWindows.Blazor
 
         private static void AttachJsInterop(IPC ipc)
         {
-            var desktopSynchronizationContext = new DesktopSynchronizationContext(CancellationToken.None);
-            SynchronizationContext.SetSynchronizationContext(desktopSynchronizationContext);
-
             ipc.On("BeginInvokeDotNetFromJS", args =>
             {
-                desktopSynchronizationContext.Send(state =>
-                {
-                    var argsArray = (object[])state;
-                    DotNetDispatcher.BeginInvokeDotNet(
-                        DesktopJSRuntime,
-                        new DotNetInvocationInfo(
-                            assemblyName: ((JsonElement)argsArray[1]).GetString(),
-                            methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
-                            dotNetObjectId: ((JsonElement)argsArray[3]).GetInt64(),
-                            callId: ((JsonElement)argsArray[0]).GetString()),
-                        ((JsonElement)argsArray[4]).GetString());
-                }, args);
+                var argsArray = (object[])args;
+                DotNetDispatcher.BeginInvokeDotNet(
+                    DesktopJSRuntime,
+                    new DotNetInvocationInfo(
+                        assemblyName: ((JsonElement)argsArray[1]).GetString(),
+                        methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
+                        dotNetObjectId: ((JsonElement)argsArray[3]).GetInt64(),
+                        callId: ((JsonElement)argsArray[0]).GetString()),
+                    ((JsonElement)argsArray[4]).GetString());
             });
 
             ipc.On("EndInvokeJSFromDotNet", args =>
             {
-                desktopSynchronizationContext.Send(state =>
-                {
-                    var argsArray = (object[])state;
-                    DotNetDispatcher.EndInvokeJS(
-                        DesktopJSRuntime,
-                        ((JsonElement)argsArray[2]).GetString());
-                }, args);
+                var argsArray = (object[])args;
+                DotNetDispatcher.EndInvokeJS(
+                    DesktopJSRuntime,
+                    ((JsonElement)argsArray[2]).GetString());
             });
         }
 
