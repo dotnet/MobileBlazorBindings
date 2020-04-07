@@ -110,7 +110,7 @@ namespace WebWindows.Blazor
             DesktopRenderer = new DesktopRenderer(services, ipc, loggerFactory);
             DesktopRenderer.UnhandledException += (sender, exception) =>
             {
-                Console.Error.WriteLine(exception);
+                throw exception;
             };
 
             foreach (var rootComponent in builder.Entries)
