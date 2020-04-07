@@ -14,6 +14,7 @@ namespace XamarinTest
             tabs.Children.Add(new LocalHtmlBaseUrl { Title = "BaseUrl" });
             tabs.Children.Add(new WebPage { Title = "Web Page" });
             tabs.Children.Add(new WebAppPage { Title = "External" });
+            tabs.Children.Add(new BlazorPage { Title = "Blazor" });
 
             MainPage = tabs;
         }
@@ -120,6 +121,15 @@ namespace XamarinTest
             var browser = new ExtendedWebView();
             browser.Source = "https://www.whatismybrowser.com/";
             Content = browser;
+        }
+    }
+
+    public class BlazorPage : ContentPage
+    {
+        public BlazorPage()
+        {
+            var child = new BlazorView();
+            Content = child;
         }
     }
 }
