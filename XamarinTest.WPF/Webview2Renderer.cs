@@ -1,4 +1,5 @@
-﻿using MtrDev.WebView2.Wpf;
+﻿using MtrDev.WebView2.Interop;
+using MtrDev.WebView2.Wpf;
 using MtrDev.WebView2.Wrapper;
 using System;
 using System.ComponentModel;
@@ -21,6 +22,11 @@ namespace XamarinTest.WPF
 
 		protected override void OnElementChanged(ElementChangedEventArgs<WebView> e)
 		{
+			_ = HandleElementChangedAsync(e);
+		}
+
+		private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebView> e)
+		{
 			if (e.OldElement != null) // Clear old element event
 			{
 				e.OldElement.EvalRequested -= OnEvalRequested;
@@ -35,8 +41,12 @@ namespace XamarinTest.WPF
 				if (Control == null) // construct and SetNativeControl and suscribe control event
 				{
 					SetNativeControl(new WebView2Control());
+					await WaitForBrowserCreatedAsync();
+
 					Control.NavigationCompleted += WebBrowserOnNavigated;
 					Control.NavigationStarting += WebBrowserOnNavigating;
+					Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
+					Control.WebResourceRequested += HandleWebResourceRequested;
 				}
 
 				// Update control property 
@@ -51,6 +61,21 @@ namespace XamarinTest.WPF
 			}
 
 			base.OnElementChanged(e);
+		}
+
+		private Task WaitForBrowserCreatedAsync()
+		{
+			var tcs = new TaskCompletionSource<bool>();
+			Control.BrowserCreated += (sender, args) =>
+			{
+				tcs.TrySetResult(true);
+			};
+			return tcs.Task;
+		}
+
+		private void HandleWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
+		{
+			Console.WriteLine(e.Request.Uri);
 		}
 
 		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -156,9 +181,9 @@ namespace XamarinTest.WPF
 
 		void WebBrowserOnNavigated(object sender, NavigationCompletedEventArgs navigationEventArgs)
 		{
-			if (navigationEventArgs.IsSuccess)
+			if (navigationEventArgs.IsSuccess && Element.Source is UrlWebViewSource urlWebViewSource)
 			{
-				SendNavigated(new UrlWebViewSource { Url = Control.Url }, _eventState, WebNavigationResult.Success);
+				SendNavigated(urlWebViewSource, _eventState, WebNavigationResult.Success);
 				UpdateCanGoBackForward();
 			}
 		}
@@ -200,6 +225,7 @@ namespace XamarinTest.WPF
 				{
 					Control.NavigationCompleted -= WebBrowserOnNavigated;
 					Control.NavigationStarting -= WebBrowserOnNavigating;
+					Control.WebResourceRequested -= HandleWebResourceRequested;
 					Control.Dispose();
 				}
 
