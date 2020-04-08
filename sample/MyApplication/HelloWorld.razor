@@ -1,12 +1,13 @@
 ﻿<ContentView>
     <StackLayout Margin="new Thickness(20)">
 
-        <Label Text="Hello, World!"
-               FontSize="40" />
+        <Label Text="Hello, World!" FontSize="40" />
 
         <Counter />
 
-        <WebView />
+        <WebView Source=@(new HtmlWebViewSource { Html = "<h1>Hey there</h1> This is great." }) />
+
+        <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
 
     </StackLayout>
 </ContentView>

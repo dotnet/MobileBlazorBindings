@@ -13,15 +13,22 @@ namespace BlazorDesktop.Elements.Handlers
             : base(renderer, control)
         {
             Control = control;
+        }
 
-            var htmlSource = new HtmlWebViewSource();
-            htmlSource.Html = @"<html><body>
-                                <h1>Trident</h1>
-                                <p>This is an IE11 control.</p>
-                                <script>document.write(navigator.userAgent);</script>
-                                </body>
-                                </html>";
-            control.Source = htmlSource;
+        public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        {
+            switch (attributeName)
+            {
+                case nameof(XF.HtmlWebViewSource):
+                    Control.Source = new XF.HtmlWebViewSource { Html = (string)attributeValue };
+                    break;
+                case nameof(XF.UrlWebViewSource):
+                    Control.Source = new XF.UrlWebViewSource { Url = (string)attributeValue };
+                    break;
+                default:
+                    base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
+                    break;
+            }
         }
     }
 }
