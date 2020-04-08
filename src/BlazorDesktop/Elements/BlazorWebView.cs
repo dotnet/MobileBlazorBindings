@@ -33,7 +33,7 @@ namespace BlazorDesktop.Elements
                     {
                         contentType = "text/html";
                         return new MemoryStream(Encoding.UTF8.GetBytes(@"
-                            Hello, this is from the BlazorWebView.
+                            <app>Loading...</app>
                             <script src='framework://blazor.desktop.js'></script>
                         "));
                     }
@@ -109,7 +109,7 @@ namespace BlazorDesktop.Elements
             });
 
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-            var desktopRenderer = new DesktopRenderer(ipc, services, loggerFactory, dispatcher);
+            var desktopRenderer = new DesktopRenderer(ipc, services, loggerFactory, jsRuntime, dispatcher);
 
             desktopRenderer.RootRenderHandle.Render(builder =>
             {
