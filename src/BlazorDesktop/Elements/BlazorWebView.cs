@@ -1,7 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop.Infrastructure;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using XF = Xamarin.Forms;
 
 namespace BlazorDesktop.Elements
@@ -9,6 +14,7 @@ namespace BlazorDesktop.Elements
     public class BlazorWebView : XF.ContentView
     {
         private readonly WebViewExtended _webView = new WebViewExtended();
+        private bool _hasInitialized;
 
         public BlazorWebView()
         {
@@ -48,15 +54,67 @@ namespace BlazorDesktop.Elements
                 contentType = GetContentType(url);
                 return SupplyFrameworkFile(url);
             });
+        }
 
-            // Wait for the JS-side code to connect
+        // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
+        // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
+        public void Init(IServiceProvider services, Dispatcher dispatcher)
+        {
+            if (_hasInitialized)
+            {
+                throw new InvalidOperationException($"This {GetType().FullName} instance has already initialized.");
+            }
+
+            _hasInitialized = true;
+            StartConnectionHandshake(services, dispatcher);
+            _webView.Source = new XF.UrlWebViewSource { Url = $"{BlazorAppScheme}://app/" };
+        }
+
+        private void StartConnectionHandshake(IServiceProvider services, Dispatcher dispatcher)
+        {
             var ipc = new IPC(_webView);
             ipc.Once("components:init", args =>
             {
+                var argsArray = (object[])args;
+                var initialUriAbsolute = ((JsonElement)argsArray[0]).GetString();
+                var baseUriAbsolute = ((JsonElement)argsArray[1]).GetString();
 
+                ContinueConnectionAfterHandshake(ipc, services, dispatcher);
+            });
+        }
+
+        private void ContinueConnectionAfterHandshake(IPC ipc, IServiceProvider services, Dispatcher dispatcher)
+        {
+            var jsRuntime = new DesktopJSRuntime(ipc);
+
+            ipc.On("BeginInvokeDotNetFromJS", args =>
+            {
+                var argsArray = (object[])args;
+                DotNetDispatcher.BeginInvokeDotNet(
+                    jsRuntime,
+                    new DotNetInvocationInfo(
+                        assemblyName: ((JsonElement)argsArray[1]).GetString(),
+                        methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
+                        dotNetObjectId: ((JsonElement)argsArray[3]).GetInt64(),
+                        callId: ((JsonElement)argsArray[0]).GetString()),
+                    ((JsonElement)argsArray[4]).GetString());
             });
 
-            _webView.Source = new XF.UrlWebViewSource { Url = $"{BlazorAppScheme}://app/" };
+            ipc.On("EndInvokeJSFromDotNet", args =>
+            {
+                var argsArray = (object[])args;
+                DotNetDispatcher.EndInvokeJS(
+                    jsRuntime,
+                    ((JsonElement)argsArray[2]).GetString());
+            });
+
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var desktopRenderer = new DesktopRenderer(ipc, services, loggerFactory, dispatcher);
+
+            desktopRenderer.RootRenderHandle.Render(builder =>
+            {
+                builder.AddContent(0, "This is technically a Blazor component");
+            });
         }
 
         private static string BlazorAppScheme
