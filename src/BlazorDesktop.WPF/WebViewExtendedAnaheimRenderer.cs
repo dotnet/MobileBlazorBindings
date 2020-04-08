@@ -48,7 +48,7 @@ namespace BlazorDesktop.WPF
 			{
 				if (Control == null) // construct and SetNativeControl and suscribe control event
 				{
-					SetNativeControl(new WebView2Control());
+					SetNativeControl(new WebView2Control { MinHeight = 200 });
 					await WaitForBrowserCreatedAsync();
 
 					Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
