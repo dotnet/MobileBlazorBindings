@@ -5,9 +5,13 @@
 
         <Counter />
 
+        @*
         <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
 
         <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
+        *@
+
+        <BlazorWebView />
 
     </StackLayout>
 </ContentView>
