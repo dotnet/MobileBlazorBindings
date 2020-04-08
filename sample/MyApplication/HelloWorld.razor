@@ -11,7 +11,10 @@
         <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
         *@
 
-        <BlazorWebView />
+        <BlazorWebView>
+            <h1>Web content</h1>
+            <p>This is web within native, all Blazor</p>
+        </BlazorWebView>
 
     </StackLayout>
 </ContentView>
