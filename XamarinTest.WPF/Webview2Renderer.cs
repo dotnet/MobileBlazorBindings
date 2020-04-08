@@ -272,7 +272,15 @@ namespace XamarinTest.WPF
 					Control.NavigationStarting -= WebBrowserOnNavigating;
 					Control.WebResourceRequested -= HandleWebResourceRequested;
 					Control.WebMessageRecieved -= HandleWebMessageReceived;
-					Control.Dispose();
+
+					// By waiting a bit before disposing, we can make switching between tabs much faster.
+					// If not, then it will tear down all the Edge child processes then has to start them back
+					// up immediately as the new tab content is built.
+					Task.Factory.StartNew(async () =>
+					{
+						await Task.Delay(1000);
+						Control.Dispatcher.Invoke(Control.Dispose);
+					});
 				}
 
 				if (Element != null)
