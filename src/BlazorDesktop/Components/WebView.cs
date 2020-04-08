@@ -1,17 +1,18 @@
-﻿using BlazorDesktop.Elements.Handlers;
+﻿using BlazorDesktop.Components.Handlers;
+using BlazorDesktop.Elements;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
 using XF = Xamarin.Forms;
 
-namespace BlazorDesktop.Elements
+namespace BlazorDesktop.Components
 {
     public class WebView : View
     {
         static WebView()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new XF.WebView()));
+                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new WebViewExtended()));
         }
 
         [Parameter] public XF.WebViewSource Source { get; set; }

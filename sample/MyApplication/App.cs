@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.MobileBlazorBindings;
-using Microsoft.Extensions.Hosting;
-using Xamarin.Essentials;
+﻿using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
 namespace MyApplication

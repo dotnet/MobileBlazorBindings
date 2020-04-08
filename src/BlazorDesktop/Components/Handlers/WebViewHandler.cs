@@ -1,15 +1,15 @@
-﻿using Microsoft.MobileBlazorBindings.Core;
+﻿using BlazorDesktop.Elements;
+using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using Xamarin.Forms;
 using XF = Xamarin.Forms;
 
-namespace BlazorDesktop.Elements.Handlers
+namespace BlazorDesktop.Components.Handlers
 {
-    internal class WebViewHandler : ViewHandler
+    public class WebViewHandler : ViewHandler
     {
-        public XF.WebView Control { get; }
+        public WebViewExtended Control { get; }
 
-        public WebViewHandler(NativeComponentRenderer renderer, XF.WebView control)
+        public WebViewHandler(NativeComponentRenderer renderer, WebViewExtended control)
             : base(renderer, control)
         {
             Control = control;

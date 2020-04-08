@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BlazorDesktop.Elements;
+using BlazorDesktop.WPF;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
@@ -16,6 +18,7 @@ namespace MyApplication.WPF
         public MainWindow()
         {
             Forms.Init();
+            BlazorDesktopWPF.Init();
             LoadApplication(new MyApplication.App());
         }
     }
