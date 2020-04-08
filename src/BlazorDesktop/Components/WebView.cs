@@ -20,6 +20,11 @@ namespace BlazorDesktop.Components
         [Parameter] public XF.WebViewSource Source { get; set; }
         [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
 
+        public void SendMessage(string message)
+        {
+            ((WebViewHandler)ElementHandler).Control.SendMessage(message);
+        }
+
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
