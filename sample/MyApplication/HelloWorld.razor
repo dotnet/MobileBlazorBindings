@@ -1,13 +1,34 @@
 ﻿<ContentView>
     <StackLayout Margin="new Thickness(20)">
 
-        <Label Text="Hello, World!" FontSize="40" />
+        <Label Text="@($"Hello, World! {count}")" FontSize="40" />
 
         <Counter />
 
-        <WebView Source=@(new HtmlWebViewSource { Html = "<h1>Hey there</h1> This is great." }) />
+        <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" />
 
         <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
 
     </StackLayout>
 </ContentView>
+
+
+@code {
+    int count;
+
+    string htmlSource = @"<html><body>
+        <p>Welcome to WebView.</p>
+        <button onclick=""window.external.sendMessage('blah😋')"">Invoke .NET</button>
+        <script>
+            window.external.receiveMessage(function (message) {
+                alert(message);
+            });
+        </script>
+        </body>
+        </html>";
+
+    void HandleWebMessage(string data)
+    {
+        count++;
+    }
+}

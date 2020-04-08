@@ -3,6 +3,8 @@ using BlazorDesktop.Elements;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
+using System;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace BlazorDesktop.Components
@@ -16,10 +18,13 @@ namespace BlazorDesktop.Components
         }
 
         [Parameter] public XF.WebViewSource Source { get; set; }
+        [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
+
+            builder.AddAttribute("onwebmessagereceived", EventCallback.Factory.Create<WebMessageEventArgs>(this, HandleOnWebMessageReceived));
 
             switch (Source)
             {
@@ -30,6 +35,14 @@ namespace BlazorDesktop.Components
                     builder.AddAttribute(nameof(XF.UrlWebViewSource), urlWebViewSource.Url);
                     break;
             }
+        }
+
+        private Task HandleOnWebMessageReceived(WebMessageEventArgs args)
+            => OnWebMessageReceived.InvokeAsync(args.Message);
+
+        internal class WebMessageEventArgs : EventArgs
+        {
+            public string Message { get; set; }
         }
     }
 }
