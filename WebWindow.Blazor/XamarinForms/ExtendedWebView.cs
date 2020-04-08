@@ -21,4 +21,8 @@ namespace WebWindows.Blazor.XamarinForms
             SendMessageFromJSToDotNetRequested?.Invoke(this, message);
         }
     }
+
+    public class SpartanWebView : WebView
+    {
+    }
 }

@@ -13,6 +13,8 @@ namespace XamarinTest
             tabs.Children.Add(new BlazorPage { Title = "Blazor" });
             tabs.Children.Add(new LocalHtml { Title = "Local" });
             tabs.Children.Add(new LocalHtmlBaseUrl { Title = "BaseUrl" });
+            tabs.Children.Add(new TridentPage { Title = "Trident" });
+            tabs.Children.Add(new SpartanPage { Title = "Spartan" });
             tabs.Children.Add(new WebPage { Title = "Web Page" });
             tabs.Children.Add(new WebAppPage { Title = "External" });
 
@@ -40,6 +42,42 @@ namespace XamarinTest
                                         alert(message);
                                     });
                                 </script>
+                                </body>
+                                </html>";
+            browser.Source = htmlSource;
+            Content = browser;
+        }
+    }
+
+    public class TridentPage : ContentPage
+    {
+        public TridentPage()
+        {
+            var browser = new WebView();
+
+            var htmlSource = new HtmlWebViewSource();
+            htmlSource.Html = @"<html><body>
+                                <h1>Trident</h1>
+                                <p>This is an IE11 control.</p>
+                                <script>document.write(navigator.userAgent);</script>
+                                </body>
+                                </html>";
+            browser.Source = htmlSource;
+            Content = browser;
+        }
+    }
+
+    public class SpartanPage : ContentPage
+    {
+        public SpartanPage()
+        {
+            var browser = new SpartanWebView();
+
+            var htmlSource = new HtmlWebViewSource();
+            htmlSource.Html = @"<html><body>
+                                <h1>Spartan</h1>
+                                <p>This is an Edge (pre-Chromium) control.</p>
+                                <script>document.write(navigator.userAgent);</script>
                                 </body>
                                 </html>";
             browser.Source = htmlSource;
