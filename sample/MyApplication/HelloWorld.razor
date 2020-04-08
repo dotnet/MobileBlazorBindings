@@ -3,7 +3,7 @@
 
         <Label Text="@($"Hello, World! {count}")" FontSize="40" />
 
-        <Counter />
+        <Button Text="Increment" OnClick="@IncrementCount" />
 
         @*
         <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
@@ -12,8 +12,9 @@
         *@
 
         <BlazorWebView>
-            <h1>Web content</h1>
+            <h1>Web content [@count]</h1>
             <p>This is web within native, all Blazor</p>
+            <button @onclick="@IncrementCount">Increment</button>
         </BlazorWebView>
 
     </StackLayout>
@@ -35,6 +36,11 @@
         </script>
         </body>
         </html>";
+
+    void IncrementCount()
+    {
+        count++;
+    }
 
     void HandleWebMessage(string data)
     {

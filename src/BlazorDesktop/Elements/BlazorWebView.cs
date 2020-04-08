@@ -17,8 +17,10 @@ namespace BlazorDesktop.Elements
     {
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
+        private readonly Task _attachInteropTask;
+        private readonly IPC _ipc;
+        private readonly JSRuntime _jsRuntime;
         private readonly static RenderFragment EmptyRenderFragment = builder => { };
-        private bool _hasInitialized;
         private DesktopRenderer _desktopRenderer;
 
         public BlazorWebView(Dispatcher dispatcher)
@@ -60,25 +62,19 @@ namespace BlazorDesktop.Elements
                 contentType = GetContentType(url);
                 return SupplyFrameworkFile(url);
             });
+
+            _ipc = new IPC(_webView);
+            _jsRuntime = new DesktopJSRuntime(_ipc);
+            _attachInteropTask = AttachInteropAsync();
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
         // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
         internal async Task InitAsync(IServiceProvider services)
         {
-            if (_hasInitialized)
-            {
-                throw new InvalidOperationException($"This {GetType().FullName} instance has already initialized.");
-            }
-
-            _hasInitialized = true;
-
-            var ipc = new IPC(_webView);
-            var jsRuntime = new DesktopJSRuntime(ipc);
-            await AttachInteropAsync(services, ipc, jsRuntime);
-
+            await _attachInteropTask;
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-            _desktopRenderer = new DesktopRenderer(ipc, services, loggerFactory, jsRuntime, _dispatcher);
+            _desktopRenderer = new DesktopRenderer(_ipc, services, loggerFactory, _jsRuntime, _dispatcher);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
@@ -93,10 +89,10 @@ namespace BlazorDesktop.Elements
             _desktopRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
         }
 
-        private Task AttachInteropAsync(IServiceProvider services, IPC ipc, JSRuntime jsRuntime)
+        private Task AttachInteropAsync()
         {
             var resultTcs = new TaskCompletionSource<bool>();
-            ipc.Once("components:init", args =>
+            _ipc.Once("components:init", args =>
             {
                 var argsArray = (object[])args;
                 var initialUriAbsolute = ((JsonElement)argsArray[0]).GetString();
@@ -104,11 +100,11 @@ namespace BlazorDesktop.Elements
                 resultTcs.TrySetResult(true);
             });
 
-            ipc.On("BeginInvokeDotNetFromJS", args =>
+            _ipc.On("BeginInvokeDotNetFromJS", args =>
             {
                 var argsArray = (object[])args;
                 DotNetDispatcher.BeginInvokeDotNet(
-                    jsRuntime,
+                    _jsRuntime,
                     new DotNetInvocationInfo(
                         assemblyName: ((JsonElement)argsArray[1]).GetString(),
                         methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
@@ -117,11 +113,11 @@ namespace BlazorDesktop.Elements
                     ((JsonElement)argsArray[4]).GetString());
             });
 
-            ipc.On("EndInvokeJSFromDotNet", args =>
+            _ipc.On("EndInvokeJSFromDotNet", args =>
             {
                 var argsArray = (object[])args;
                 DotNetDispatcher.EndInvokeJS(
-                    jsRuntime,
+                    _jsRuntime,
                     ((JsonElement)argsArray[2]).GetString());
             });
 
