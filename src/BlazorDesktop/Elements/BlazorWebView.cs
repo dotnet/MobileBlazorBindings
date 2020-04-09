@@ -37,10 +37,10 @@ namespace BlazorDesktop.Elements
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
                 var uri = new Uri(url);
-                if (uri.Host.Equals("app", StringComparison.Ordinal) && !string.IsNullOrEmpty(_contentRoot))
+                if (uri.Host.Equals("app", StringComparison.Ordinal))
                 {
                     // TODO: Prevent directory traversal?
-                    var contentRootAbsolute = Path.GetFullPath(_contentRoot);
+                    var contentRootAbsolute = Path.GetFullPath(_contentRoot ?? ".");
                     var appFile = Path.Combine(contentRootAbsolute, uri.AbsolutePath.Substring(1));
                     if (appFile == contentRootAbsolute)
                     {
@@ -48,7 +48,29 @@ namespace BlazorDesktop.Elements
                         var indexHtmlPath = Path.Combine(contentRootAbsolute, "index.html");
                         return File.Exists(indexHtmlPath)
                             ? (Stream)File.OpenRead(indexHtmlPath)
-                            : new MemoryStream(Encoding.UTF8.GetBytes($"No file found at {indexHtmlPath}"));
+                            // Use default HTML if none was provided in ContentRoot
+                            : new MemoryStream(Encoding.UTF8.GetBytes(@"<!DOCTYPE html>
+                                <html>
+                                <head>
+                                    <meta charset=""utf-8"" />
+                                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"" />
+                                    <base href=""/"" />
+                                    <style type=""text/css"">
+                                        #blazor-error-ui { background: lightyellow; bottom: 0; box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2); display: none; left: 0; padding: 0.6rem 1.25rem 0.7rem 1.25rem; position: fixed; width: 100%; z-index: 1000; }
+                                        #blazor-error-ui .dismiss { cursor: pointer; position: absolute; right: 0.75rem; top: 0.5rem; }
+                                    </style>
+                                </head>
+                                <body>
+                                    <app></app>
+                                    <div id=""blazor-error-ui"">
+                                        An unhandled error has occurred.
+                                        <a href="""" class=""reload"">Reload</a>
+                                        <a class=""dismiss"">🗙</a>
+                                    </div>
+                                    <script src=""framework://blazor.desktop.js""></script>
+                                </body>
+                                </html>
+                                "));
                     }
                     else if (File.Exists(appFile))
                     {
