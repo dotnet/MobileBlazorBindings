@@ -1,11 +1,11 @@
 ﻿<ContentView>
-    @*
-    <StackLayout Margin="new Thickness(20)">
+    <StackLayout>
+        <StackLayout Margin="new Thickness(20)" Orientation="StackOrientation.Horizontal">
+            <Label Text="@($"Hello, World! {count}")" FontSize="40" HorizontalOptions="LayoutOptions.StartAndExpand" />
+            <Button Text="Increment" OnClick="@IncrementCount" VerticalOptions="LayoutOptions.Center" Padding="10" />
+        </StackLayout>
 
-        <Label Text="@($"Hello, World! {count}")" FontSize="40" />
-
-        <Button Text="Increment" OnClick="@IncrementCount" />
-
+        @*
         <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
 
         <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
@@ -15,15 +15,15 @@
             <p>This is web within native, all Blazor</p>
             <button @onclick="@IncrementCount">Increment</button>
         </BlazorWebView>
+        *@
+
+        <BlazorWebView VerticalOptions="LayoutOptions.FillAndExpand">
+            <link rel="stylesheet" href="WebUI/wwwroot/css/bootstrap/bootstrap.min.css" />
+            <link rel="stylesheet" href="WebUI/wwwroot/css/app.css" />
+            <MyApplication.WebUI.App />
+        </BlazorWebView>
 
     </StackLayout>
-    *@
-
-    <BlazorWebView>
-        <link rel="stylesheet" href="WebUI/wwwroot/css/bootstrap/bootstrap.min.css" />
-        <link rel="stylesheet" href="WebUI/wwwroot/css/app.css" />
-        <MyApplication.WebUI.App />
-    </BlazorWebView>
 </ContentView>
 
 
