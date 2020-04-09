@@ -15,7 +15,7 @@ namespace MyApplication
                     services.AddBlazorDesktop();
 
                     // Register app-specific services
-                    //services.AddSingleton<AppState>();
+                    services.AddSingleton<CounterState>();
                 })
                 .Build();
 
