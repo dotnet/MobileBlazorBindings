@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
@@ -92,6 +95,13 @@ namespace BlazorDesktop.Elements
         private Task AttachInteropAsync()
         {
             var resultTcs = new TaskCompletionSource<bool>();
+
+            // These hacks can go away once there's a proper IPC channel for event notifications etc.
+            var selfAsDotNetObjectReference = DotNetObjectReference.Create(this);
+            var selfAsDotnetObjectReferenceId = (long)typeof(JSRuntime).GetMethod("TrackObjectReference", BindingFlags.NonPublic | BindingFlags.Instance)
+                .MakeGenericMethod(GetType())
+                .Invoke(_jsRuntime, new[] { selfAsDotNetObjectReference });
+
             _ipc.Once("components:init", args =>
             {
                 var argsArray = (object[])args;
@@ -103,14 +113,25 @@ namespace BlazorDesktop.Elements
             _ipc.On("BeginInvokeDotNetFromJS", args =>
             {
                 var argsArray = (object[])args;
+                var assemblyName = ((JsonElement)argsArray[1]).GetString();
+                var methodIdentifier = ((JsonElement)argsArray[2]).GetString();
+                var dotNetObjectId = ((JsonElement)argsArray[3]).GetInt64();
+                var callId = ((JsonElement)argsArray[0]).GetString();
+                var argsJson = ((JsonElement)argsArray[4]).GetString();
+
+                // As a temporary hack, intercept blazor.desktop.js's JS interop calls for event notifications,
+                // and direct them to our own instance. This is to avoid needing a static DesktopRenderer.Instance.
+                // TODO: Change blazor.desktop.js to use a dedicated IPC call for event notifications, not JS interop.
+                if (assemblyName == "WebWindow.Blazor" && methodIdentifier == "DispatchEvent")
+                {
+                    assemblyName = null;
+                    dotNetObjectId = selfAsDotnetObjectReferenceId;
+                }
+
                 DotNetDispatcher.BeginInvokeDotNet(
                     _jsRuntime,
-                    new DotNetInvocationInfo(
-                        assemblyName: ((JsonElement)argsArray[1]).GetString(),
-                        methodIdentifier: ((JsonElement)argsArray[2]).GetString(),
-                        dotNetObjectId: ((JsonElement)argsArray[3]).GetInt64(),
-                        callId: ((JsonElement)argsArray[0]).GetString()),
-                    ((JsonElement)argsArray[4]).GetString());
+                    new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
+                    argsJson);
             });
 
             _ipc.On("EndInvokeJSFromDotNet", args =>
@@ -124,6 +145,16 @@ namespace BlazorDesktop.Elements
             _webView.Source = new XF.UrlWebViewSource { Url = $"{BlazorAppScheme}://app/" };
 
             return resultTcs.Task;
+        }
+
+        [JSInvokable(nameof(DispatchEvent))]
+        public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
+        {
+            var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
+            await _desktopRenderer.DispatchEventAsync(
+                webEvent.EventHandlerId,
+                webEvent.EventFieldInfo,
+                webEvent.EventArgs);
         }
 
         private static string BlazorAppScheme
