@@ -4,6 +4,7 @@ using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace BlazorDesktop.Components
@@ -19,6 +20,7 @@ namespace BlazorDesktop.Components
         [Inject] internal IServiceProvider Services { get; private set; }
 
         [Parameter] public RenderFragment ChildContent { get; set; }
+        [Parameter] public string ContentRoot { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -26,7 +28,7 @@ namespace BlazorDesktop.Components
 
             if (firstRender)
             {
-                await element.InitAsync(Services);
+                await element.InitAsync(Services, ContentRoot);
             }
 
             element.Render(ChildContent);

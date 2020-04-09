@@ -20,20 +20,19 @@ namespace BlazorDesktop.Elements
     {
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
-        private readonly Task<InteropHandshakeResult> _attachInteropTask;
         private readonly IPC _ipc;
         private readonly JSRuntime _jsRuntime;
         private readonly static RenderFragment EmptyRenderFragment = builder => { };
+        private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
         private DesktopRenderer _desktopRenderer;
         private DesktopNavigationManager _navigationManager;
+        private string _contentRoot;
 
         public BlazorWebView(Dispatcher dispatcher)
         {
             Content = _webView = new WebViewExtended();
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-
-            var contentRootAbsolute = Path.GetFullPath(".");
 
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
@@ -41,30 +40,15 @@ namespace BlazorDesktop.Elements
                 if (uri.Host.Equals("app", StringComparison.Ordinal))
                 {
                     // TODO: Prevent directory traversal?
+                    var contentRootAbsolute = Path.GetFullPath(_contentRoot);
                     var appFile = Path.Combine(contentRootAbsolute, uri.AbsolutePath.Substring(1));
                     if (appFile == contentRootAbsolute)
                     {
                         contentType = "text/html";
-                        return new MemoryStream(Encoding.UTF8.GetBytes(@"
-                            <!DOCTYPE html>
-                            <html>
-                            <head>
-                                <meta charset=""utf-8"" />
-                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"" />
-                                <base href=""/"" />
-                            </head>
-                            <body>
-                                <app>Loading...</app>
-
-                                <div id=""blazor-error-ui"">
-                                    An unhandled error has occurred.
-                                    <a href="""" class=""reload"">Reload</a>
-                                    <a class=""dismiss"">🗙</a>
-                                </div>
-                                <script src='framework://blazor.desktop.js'></script>
-                            </body>
-                            </html>
-                        "));
+                        var indexHtmlPath = Path.Combine(contentRootAbsolute, "index.html");
+                        return File.Exists(indexHtmlPath)
+                            ? (Stream)File.OpenRead(indexHtmlPath)
+                            : new MemoryStream(Encoding.UTF8.GetBytes($"No file found at {indexHtmlPath}"));
                     }
                     else if (File.Exists(appFile))
                     {
@@ -86,13 +70,14 @@ namespace BlazorDesktop.Elements
 
             _ipc = new IPC(_webView);
             _jsRuntime = new DesktopJSRuntime(_ipc);
-            _attachInteropTask = AttachInteropAsync();
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
         // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
-        internal async Task InitAsync(IServiceProvider services)
+        internal async Task InitAsync(IServiceProvider services, string contentRoot)
         {
+            _contentRoot = contentRoot;
+            _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask;
 
             _serviceScope = services.CreateScope();
