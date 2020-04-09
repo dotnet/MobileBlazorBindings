@@ -37,7 +37,7 @@ namespace BlazorDesktop.Elements
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
                 var uri = new Uri(url);
-                if (uri.Host.Equals("app", StringComparison.Ordinal))
+                if (uri.Host.Equals("app", StringComparison.Ordinal) && !string.IsNullOrEmpty(_contentRoot))
                 {
                     // TODO: Prevent directory traversal?
                     var contentRootAbsolute = Path.GetFullPath(_contentRoot);
