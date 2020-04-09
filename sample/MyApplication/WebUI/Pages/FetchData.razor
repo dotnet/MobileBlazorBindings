@@ -1,5 +1,6 @@
 @page "/fetchdata"
-@inject HttpClient Http
+@using System.IO
+@using System.Text.Json
 
 <h1>Weather forecast</h1>
 
@@ -37,9 +38,10 @@ else
 @code {
     private WeatherForecast[] forecasts;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        var forecastsJson = File.ReadAllText("WebUI/wwwroot/weather.json");
+        forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(forecastsJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
     }
 
     public class WeatherForecast

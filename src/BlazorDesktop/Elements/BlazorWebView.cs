@@ -16,22 +16,24 @@ using XF = Xamarin.Forms;
 
 namespace BlazorDesktop.Elements
 {
-    public class BlazorWebView : XF.ContentView
+    public class BlazorWebView : XF.ContentView, IDisposable
     {
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
-        private readonly Task _attachInteropTask;
+        private readonly Task<InteropHandshakeResult> _attachInteropTask;
         private readonly IPC _ipc;
         private readonly JSRuntime _jsRuntime;
         private readonly static RenderFragment EmptyRenderFragment = builder => { };
+        private IServiceScope _serviceScope;
         private DesktopRenderer _desktopRenderer;
+        private DesktopNavigationManager _navigationManager;
 
         public BlazorWebView(Dispatcher dispatcher)
         {
             Content = _webView = new WebViewExtended();
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
-            var contentRootAbsolute = Path.GetDirectoryName(Path.GetFullPath("."));
+            var contentRootAbsolute = Path.GetFullPath(".");
 
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
@@ -44,8 +46,24 @@ namespace BlazorDesktop.Elements
                     {
                         contentType = "text/html";
                         return new MemoryStream(Encoding.UTF8.GetBytes(@"
-                            <app>Loading...</app>
-                            <script src='framework://blazor.desktop.js'></script>
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                                <meta charset=""utf-8"" />
+                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"" />
+                                <base href=""/"" />
+                            </head>
+                            <body>
+                                <app>Loading...</app>
+
+                                <div id=""blazor-error-ui"">
+                                    An unhandled error has occurred.
+                                    <a href="""" class=""reload"">Reload</a>
+                                    <a class=""dismiss"">🗙</a>
+                                </div>
+                                <script src='framework://blazor.desktop.js'></script>
+                            </body>
+                            </html>
                         "));
                     }
                     else if (File.Exists(appFile))
@@ -75,9 +93,15 @@ namespace BlazorDesktop.Elements
         // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
         internal async Task InitAsync(IServiceProvider services)
         {
-            await _attachInteropTask;
+            var handshakeResult = await _attachInteropTask;
+
+            _serviceScope = services.CreateScope();
+
+            var scopeServiceProvider = _serviceScope.ServiceProvider;
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-            _desktopRenderer = new DesktopRenderer(_ipc, services, loggerFactory, _jsRuntime, _dispatcher);
+            _navigationManager = (DesktopNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
+            _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
+            _desktopRenderer = new DesktopRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
@@ -92,9 +116,9 @@ namespace BlazorDesktop.Elements
             _desktopRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
         }
 
-        private Task AttachInteropAsync()
+        private Task<InteropHandshakeResult> AttachInteropAsync()
         {
-            var resultTcs = new TaskCompletionSource<bool>();
+            var resultTcs = new TaskCompletionSource<InteropHandshakeResult>();
 
             // These hacks can go away once there's a proper IPC channel for event notifications etc.
             var selfAsDotNetObjectReference = DotNetObjectReference.Create(this);
@@ -107,7 +131,7 @@ namespace BlazorDesktop.Elements
                 var argsArray = (object[])args;
                 var initialUriAbsolute = ((JsonElement)argsArray[0]).GetString();
                 var baseUriAbsolute = ((JsonElement)argsArray[1]).GetString();
-                resultTcs.TrySetResult(true);
+                resultTcs.TrySetResult(new InteropHandshakeResult(baseUriAbsolute, initialUriAbsolute));
             });
 
             _ipc.On("BeginInvokeDotNetFromJS", args =>
@@ -121,8 +145,9 @@ namespace BlazorDesktop.Elements
 
                 // As a temporary hack, intercept blazor.desktop.js's JS interop calls for event notifications,
                 // and direct them to our own instance. This is to avoid needing a static DesktopRenderer.Instance.
-                // TODO: Change blazor.desktop.js to use a dedicated IPC call for event notifications, not JS interop.
-                if (assemblyName == "WebWindow.Blazor" && methodIdentifier == "DispatchEvent")
+                // Similar temporary hack for navigation notifications
+                // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
+                if (assemblyName == "WebWindow.Blazor")
                 {
                     assemblyName = null;
                     dotNetObjectId = selfAsDotnetObjectReferenceId;
@@ -155,6 +180,12 @@ namespace BlazorDesktop.Elements
                 webEvent.EventHandlerId,
                 webEvent.EventFieldInfo,
                 webEvent.EventArgs);
+        }
+
+        [JSInvokable(nameof(NotifyLocationChanged))]
+        public void NotifyLocationChanged(string uri, bool isInterceptedLink)
+        {
+            _navigationManager.SetLocation(uri, isInterceptedLink);
         }
 
         private static string BlazorAppScheme
@@ -192,6 +223,23 @@ namespace BlazorDesktop.Elements
                     return typeof(BlazorWebView).Assembly.GetManifestResourceStream("BlazorDesktop.blazor.desktop.js");
                 default:
                     throw new ArgumentException($"Unknown framework file: {uri}");
+            }
+        }
+
+        public void Dispose()
+        {
+            _serviceScope.Dispose();
+        }
+
+        private class InteropHandshakeResult
+        {
+            public string BaseUri { get; }
+            public string InitialUri { get; }
+
+            public InteropHandshakeResult(string baseUri, string initialUri)
+            {
+                BaseUri = baseUri;
+                InitialUri = initialUri;
             }
         }
     }

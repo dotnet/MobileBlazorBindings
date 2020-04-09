@@ -15,4 +15,10 @@
     <ProjectReference Include="..\..\src\BlazorDesktop\BlazorDesktop.csproj" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.0-preview4.20177.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="WebUI\wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

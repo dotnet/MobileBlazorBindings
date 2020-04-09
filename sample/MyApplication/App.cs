@@ -1,4 +1,5 @@
-﻿using Microsoft.MobileBlazorBindings;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
 namespace MyApplication
@@ -10,6 +11,9 @@ namespace MyApplication
             var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    // Adds web-specific services such as NavigationManager
+                    services.AddBlazorDesktop();
+
                     // Register app-specific services
                     //services.AddSingleton<AppState>();
                 })

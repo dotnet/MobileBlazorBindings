@@ -1,15 +1,14 @@
 ﻿<ContentView>
+    @*
     <StackLayout Margin="new Thickness(20)">
 
         <Label Text="@($"Hello, World! {count}")" FontSize="40" />
 
         <Button Text="Increment" OnClick="@IncrementCount" />
 
-        @*
         <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
 
         <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
-        *@
 
         <BlazorWebView>
             <h1>Web content [@count]</h1>
@@ -18,6 +17,13 @@
         </BlazorWebView>
 
     </StackLayout>
+    *@
+
+    <BlazorWebView>
+        <link rel="stylesheet" href="WebUI/wwwroot/css/bootstrap/bootstrap.min.css" />
+        <link rel="stylesheet" href="WebUI/wwwroot/css/app.css" />
+        <MyApplication.WebUI.App />
+    </BlazorWebView>
 </ContentView>
 
 
