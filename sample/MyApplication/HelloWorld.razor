@@ -9,15 +9,15 @@
         </StackLayout>
 
         @*
-            <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
+        <WebView Source=@(new HtmlWebViewSource { Html = htmlSource }) OnWebMessageReceived="HandleWebMessage" @ref="myWebView" />
 
-            <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
+        <WebView Source=@(new UrlWebViewSource { Url = "https://en.wikipedia.org/wiki/HTML" }) VerticalOptions="LayoutOptions.FillAndExpand" />
 
-            <BlazorWebView>
-                <h1>Web content [@count]</h1>
-                <p>This is web within native, all Blazor</p>
-                <button @onclick="@IncrementCount">Increment</button>
-            </BlazorWebView>
+        <BlazorWebView>
+            <h1>Web content [@CounterState.CurrentCount]</h1>
+            <p>This is web within native, all Blazor</p>
+            <button @onclick="@IncrementCount">Increment</button>
+        </BlazorWebView>
         *@
 
         <BlazorWebView ContentRoot="WebUI/wwwroot" VerticalOptions="LayoutOptions.FillAndExpand">
@@ -39,8 +39,6 @@
         CounterState.StateChanged -= StateHasChanged;
     }
 
-    int count;
-
     BlazorDesktop.Components.WebView myWebView;
 
     string htmlSource = @"<html><body>
@@ -54,14 +52,8 @@
     </body>
     </html>";
 
-    void IncrementCount()
-    {
-        count++;
-    }
-
     void HandleWebMessage(string data)
     {
-        count++;
         myWebView.SendMessage($"Received: {data}");
     }
 }
