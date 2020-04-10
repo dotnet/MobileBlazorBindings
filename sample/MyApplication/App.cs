@@ -20,7 +20,7 @@ namespace MyApplication
                 .Build();
 
             MainPage = new ContentPage();
-            host.AddComponent<HelloWorld>(parent: MainPage);
+            host.AddComponent<Main>(parent: MainPage);
         }
 
         protected override void OnStart()
