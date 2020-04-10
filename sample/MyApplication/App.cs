@@ -19,7 +19,7 @@ namespace MyApplication
                 })
                 .Build();
 
-            MainPage = new ContentPage();
+            MainPage = new ContentPage { Title = "My Application" };
             host.AddComponent<Main>(parent: MainPage);
         }
 

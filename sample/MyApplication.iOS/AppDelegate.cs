@@ -4,6 +4,7 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using Xamarin.Forms;
 
 namespace MyApplication.iOS
 {
@@ -23,7 +24,12 @@ namespace MyApplication.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
-            LoadApplication(new App());
+
+            // For iOS, wrap inside a navigation page, otherwise the header looks wrong
+            var formsApp = new App();
+            formsApp.MainPage = new NavigationPage(formsApp.MainPage);
+
+            LoadApplication(formsApp);
 
             return base.FinishedLaunching(app, options);
         }
