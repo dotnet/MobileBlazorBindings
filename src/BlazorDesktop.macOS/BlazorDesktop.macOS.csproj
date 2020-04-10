@@ -57,7 +57,7 @@
   <ItemGroup>
     <PackageReference Include="System.Text.Encodings.Web" Version="4.7.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.3.0.908675" />
-    <PackageReference Include="System.Memory" Version="4.0.1.0"/>
+    <PackageReference Include="System.Memory" Version="4.0.1.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlazorDesktop\BlazorDesktop.csproj">
