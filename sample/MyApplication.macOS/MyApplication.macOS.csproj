@@ -100,4 +100,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+  <ItemGroup>
+    <!-- Workaround for Content not being copied to bundle -->
+    <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">
+      <Link>Resources\WebUI\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </BundleResource>
+  </ItemGroup>
 </Project>
