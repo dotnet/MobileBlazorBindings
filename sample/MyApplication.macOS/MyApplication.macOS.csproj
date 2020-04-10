@@ -92,6 +92,10 @@
       <Project>{671E0BC2-F069-4E03-91A6-85163C7245C9}</Project>
       <Name>MyApplication</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\BlazorDesktop.macOS\BlazorDesktop.macOS.csproj">
+      <Project>{5644B2A3-5B96-44D5-A244-4E7E450E2196}</Project>
+      <Name>BlazorDesktop.macOS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
 </Project>
