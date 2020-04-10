@@ -21,6 +21,7 @@ namespace BlazorDesktop.macOS
                 if (Control == null)
                 {
                     var config = new WKWebViewConfiguration();
+                    config.Preferences.SetValueForKey(FromObject(true), new NSString("developerExtrasEnabled"));
                     _wkWebView = new WKWebView(Frame, config);
                     SetNativeControl(_wkWebView);
                 }
