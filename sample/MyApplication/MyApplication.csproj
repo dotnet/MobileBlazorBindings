@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\BlazorDesktop\BlazorDesktop.csproj" />
-    <PackageReference Include="System.Net.Http.Json" Version="3.2.0-preview4.20177.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="3.2.0-preview3.20175.8" />
   </ItemGroup>
 
   <ItemGroup>
