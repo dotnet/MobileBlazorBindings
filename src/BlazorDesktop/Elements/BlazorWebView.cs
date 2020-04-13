@@ -37,7 +37,7 @@ namespace BlazorDesktop.Elements
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
                 var uri = new Uri(url);
-                if (uri.Host.Equals("app", StringComparison.Ordinal))
+                if (uri.Host.Equals("0.0.0.0", StringComparison.Ordinal))
                 {
                     // TODO: Prevent directory traversal?
                     var contentRootAbsolute = Path.GetFullPath(_contentRoot ?? ".");
@@ -174,7 +174,7 @@ namespace BlazorDesktop.Elements
                     ((JsonElement)argsArray[2]).GetString());
             });
 
-            _webView.Source = new XF.UrlWebViewSource { Url = $"{BlazorAppScheme}://app/" };
+            _webView.Source = new XF.UrlWebViewSource { Url = $"{BlazorAppScheme}://0.0.0.0/" };
 
             return resultTcs.Task;
         }
