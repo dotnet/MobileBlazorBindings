@@ -1,5 +1,5 @@
 ﻿using BlazorDesktop.Elements;
-using BlazorDesktop.WPF;
+using BlazorDesktop.Windows;
 using MtrDev.WebView2.Interop;
 using MtrDev.WebView2.Wpf;
 using MtrDev.WebView2.Wrapper;
@@ -17,7 +17,7 @@ using XF = Xamarin.Forms;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedAnaheimRenderer))]
 
-namespace BlazorDesktop.WPF
+namespace BlazorDesktop.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2Control>, XF.IWebViewDelegate
     {
