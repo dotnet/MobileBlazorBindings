@@ -4,7 +4,7 @@ using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
-namespace MyApplication.WPF
+namespace MyApplication.Windows
 {
     public class MainWindow : FormsApplicationPage
     {
