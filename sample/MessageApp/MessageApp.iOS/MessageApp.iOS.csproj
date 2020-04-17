@@ -147,7 +147,6 @@
       <Project>{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}</Project>
       <Name>BlazorDesktop.iOS</Name>
     </ProjectReference>
-  </ItemGroup>
     <!-- Workaround for Content not being copied to bundle -->
     <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">
       <Link>Resources\WebUI\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
