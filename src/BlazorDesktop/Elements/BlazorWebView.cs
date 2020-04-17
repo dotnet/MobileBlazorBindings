@@ -154,7 +154,7 @@ namespace BlazorDesktop.Elements
             _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask;
 
-            var services = Services ?? DefaultServices.Value;
+            var services = Services ?? BlazorDesktopDefaultServices.Instance ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
 
             var scopeServiceProvider = _serviceScope.ServiceProvider;

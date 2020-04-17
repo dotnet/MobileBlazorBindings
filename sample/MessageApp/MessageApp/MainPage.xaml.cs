@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BlazorDesktop;
+using MessageApp.Data;
+using Microsoft.Extensions.DependencyInjection;
 using Xamarin.Forms;
 
 namespace MessageApp
@@ -7,6 +9,12 @@ namespace MessageApp
     {
         public MainPage()
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddBlazorDesktop();
+            serviceCollection.AddLogging();
+            serviceCollection.AddSingleton<AppState>();
+            BlazorDesktopDefaultServices.Instance = serviceCollection.BuildServiceProvider();
+
             InitializeComponent();
         }
 

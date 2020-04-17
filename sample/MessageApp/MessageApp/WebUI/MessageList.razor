@@ -1,3 +1,5 @@
+@inject AppState AppState
+
 <table class="mails">
     <thead>
         <tr>
@@ -22,9 +24,13 @@
 
 @code {
     private MailFolder folder;
-    private string folderName = "Inbox";
 
     protected override void OnInitialized()
+    {
+        LoadFolder(AppState.CurrentFolder);
+    }
+
+    private void LoadFolder(string folderName)
     {
         var json = File.ReadAllText(Path.Combine("Storage", $"{folderName}.json"));
         folder = JsonSerializer.Deserialize<MailFolder>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
