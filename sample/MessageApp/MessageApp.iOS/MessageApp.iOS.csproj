@@ -140,7 +140,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MessageApp\MessageApp.csproj">
-      <Project>{BA085945-9D91-4520-B1CC-F615CA44B35A}</Project>
+      <Project>{3BF32231-DBD0-4BF6-A3A0-CF4F397BB29C}</Project>
       <Name>MessageApp</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\src\BlazorDesktop.iOS\BlazorDesktop.iOS.csproj">
