@@ -1,0 +1,22 @@
+@inject AppState AppState
+
+<div class="viewMail">
+    <div class="mailInfo">
+        <h1>@message.Subject</h1>
+        <p><label>From</label>: @message.From</p>
+        <p><label>To</label>: @message.To</p>
+        <p><label>Date</label>: @message.Date</p>
+    </div>
+    <p class="message">
+        TODO: Fetch message content
+    </p>
+</div>
+
+@code {
+    private Message message;
+
+    protected override void OnInitialized()
+    {
+        message = AppState.CurrentMessage;
+    }
+}

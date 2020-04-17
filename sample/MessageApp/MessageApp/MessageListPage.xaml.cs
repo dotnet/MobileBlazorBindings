@@ -1,4 +1,5 @@
 ﻿using BlazorDesktop;
+using BlazorDesktop.Elements;
 using MessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -10,17 +11,17 @@ namespace MessageApp
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MessageListPage : ContentPage
     {
-        readonly ContentPage subPage;
+        readonly ContentPage detailsPage = new ContentPage
+        {
+            Content = new BlazorWebView<WebUI.MessageDetails> { ContentRoot = "WebUI/wwwroot" }
+        };
+
         readonly AppState appState;
 
         public MessageListPage()
         {
             InitializeComponent();
             appState = BlazorDesktopDefaultServices.Instance.GetRequiredService<AppState>();
-
-            var subPageItems = new StackLayout();
-            subPageItems.Children.Add(new Label { Text = "This was generated programmatically" });
-            subPage = new ContentPage { Content = subPageItems };
         }
 
         protected override void OnAppearing()
@@ -48,8 +49,8 @@ namespace MessageApp
 
         private void NavigateToMessage(object sender, Message e)
         {
-            subPage.Title = e.Subject;
-            _ = Navigation.PushAsync(subPage);
+            detailsPage.Title = e.Subject;
+            _ = Navigation.PushAsync(detailsPage);
         }
     }
 }

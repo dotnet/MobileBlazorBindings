@@ -159,5 +159,14 @@ body {
     }
 
 .viewMail .message {
-    padding: 0 1.25em;
+    margin-top: 1rem;
+}
+
+.viewMail {
+    padding: 1rem;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 0;
 }
