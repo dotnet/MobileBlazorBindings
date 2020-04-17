@@ -14,6 +14,10 @@ namespace BlazorDesktop.Elements
         public IDictionary<string, ResolveWebResourceDelegate> SchemeHandlers { get; }
             = new Dictionary<string, ResolveWebResourceDelegate>();
 
+        // We can't destroy and recreate WebView instances because they hold nontrivial state
+        // The ability for XF.Element to retain renderers would be a good framework feature
+        public object RetainedNativeControl { get; set; }
+
         public void HandleWebMessageReceived(string webMessageAsString)
         {
             OnWebMessageReceived?.Invoke(this, webMessageAsString);

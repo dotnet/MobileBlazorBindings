@@ -9,10 +9,13 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.WPF;
+using Xamarin.Forms.Platform.WPF.Controls;
 using XF = Xamarin.Forms;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedAnaheimRenderer))]
@@ -34,45 +37,61 @@ namespace BlazorDesktop.Windows
 
 		private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebViewExtended> e)
 		{
-			if (e.OldElement != null) // Clear old element event
+			if (e.OldElement != null)
 			{
-				e.OldElement.EvalRequested -= OnEvalRequested;
-				e.OldElement.EvaluateJavaScriptRequested -= OnEvaluateJavaScriptRequested;
-				e.OldElement.GoBackRequested -= OnGoBackRequested;
-				e.OldElement.GoForwardRequested -= OnGoForwardRequested;
-				e.OldElement.ReloadRequested -= OnReloadRequested;
-				e.OldElement.SendMessageFromJSToDotNetRequested -= OnSendMessageFromJSToDotNetRequested;
+				throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
 			}
 
 			if (e.NewElement != null)
 			{
-				if (Control == null) // construct and SetNativeControl and suscribe control event
+				if (Control != null)
 				{
-					SetNativeControl(new WebView2Control { MinHeight = 200 });
+					throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
+				}
+
+				if (e.NewElement.RetainedNativeControl is WebView2Control retainedNativeControl)
+				{
+					SetNativeControl(retainedNativeControl);
+					SubscribeToControlEvents();
+				}
+				else
+				{
+					var nativeControl = new WebView2Control { MinHeight = 200 };
+					e.NewElement.RetainedNativeControl = nativeControl;
+					SetNativeControl(nativeControl);
 					await WaitForBrowserCreatedAsync();
 
 					Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
 
-					Control.WebMessageRecieved += HandleWebMessageReceived;
-					Control.NavigationCompleted += WebBrowserOnNavigated;
-					Control.NavigationStarting += WebBrowserOnNavigating;
-					Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
-					Control.WebResourceRequested += HandleWebResourceRequested;
+					SubscribeToControlEvents();
+
+					Load();
 				}
 
-				// Update control property 
-				Load();
-
-				// Suscribe element event
-				Element.EvalRequested += OnEvalRequested;
-				Element.EvaluateJavaScriptRequested += OnEvaluateJavaScriptRequested;
-				Element.GoBackRequested += OnGoBackRequested;
-				Element.GoForwardRequested += OnGoForwardRequested;
-				Element.ReloadRequested += OnReloadRequested;
-				Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
+				SubscribeToElementEvents();
 			}
 
 			base.OnElementChanged(e);
+		}
+
+		private void SubscribeToElementEvents()
+		{
+			// Suscribe element event
+			Element.EvalRequested += OnEvalRequested;
+			Element.EvaluateJavaScriptRequested += OnEvaluateJavaScriptRequested;
+			Element.GoBackRequested += OnGoBackRequested;
+			Element.GoForwardRequested += OnGoForwardRequested;
+			Element.ReloadRequested += OnReloadRequested;
+			Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
+		}
+
+		private void SubscribeToControlEvents()
+		{
+			Control.WebMessageRecieved += HandleWebMessageReceived;
+			Control.NavigationCompleted += WebBrowserOnNavigated;
+			Control.NavigationStarting += WebBrowserOnNavigating;
+			Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
+			Control.WebResourceRequested += HandleWebResourceRequested;
 		}
 
 		private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
@@ -273,14 +292,17 @@ namespace BlazorDesktop.Windows
 					Control.WebResourceRequested -= HandleWebResourceRequested;
 					Control.WebMessageRecieved -= HandleWebMessageReceived;
 
-					// By waiting a bit before disposing, we can make switching between tabs much faster.
-					// If not, then it will tear down all the Edge child processes then has to start them back
-					// up immediately as the new tab content is built.
-					Task.Factory.StartNew(async () =>
+					switch (Control.Parent)
 					{
-						await Task.Delay(1000);
-						Control.Dispatcher.Invoke(Control.Dispose);
-					});
+						case FormsPanel formsPanel:
+							formsPanel.Children.Remove(Control);
+							break;
+						case ContentControl contentControl:
+							contentControl.Content = null;
+							break;
+						default:
+							throw new NotImplementedException($"Don't know how to detach from a parent of type {Control.Parent.GetType().FullName}");
+					}
 				}
 
 				if (Element != null)
