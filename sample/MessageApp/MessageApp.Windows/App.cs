@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorDesktop.Windows;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
@@ -15,6 +16,7 @@ namespace MessageApp.Windows
 
         public MainWindow()
         {
+            BlazorDesktopWindows.Init();
             Forms.Init();
             LoadApplication(new MessageApp.MainPage());
         }

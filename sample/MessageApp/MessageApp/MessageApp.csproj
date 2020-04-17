@@ -16,17 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="MessageListPage.xaml.cs">
-      <DependentUpon>MessageListPage.xaml</DependentUpon>
-    </Compile>
+    <ProjectReference Include="..\..\..\src\BlazorDesktop\BlazorDesktop.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="MessageListPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>
