@@ -4,7 +4,28 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="MessageApp.App">
+             x:Class="MessageApp.MainPage"
+             xmlns:pages="clr-namespace:MessageApp">
+
+    <Application.MainPage>
+        <MasterDetailPage>
+
+            <MasterDetailPage.Master>
+                <ContentPage Title="My title" IconImageSource="tab_feed.png">
+                    <Label Text="Welcome to Xamarin.Forms!" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                </ContentPage>
+            </MasterDetailPage.Master>
+
+            <MasterDetailPage.Detail>
+                <NavigationPage>
+                    <x:Arguments>
+                        <pages:MessageListPage />
+                    </x:Arguments>
+                </NavigationPage>
+            </MasterDetailPage.Detail>
+
+        </MasterDetailPage>
+    </Application.MainPage>
 
     <Application.Resources>
         <ResourceDictionary>
@@ -16,5 +37,5 @@
             </Style>
         </ResourceDictionary>
     </Application.Resources>
-    
+
 </Application>

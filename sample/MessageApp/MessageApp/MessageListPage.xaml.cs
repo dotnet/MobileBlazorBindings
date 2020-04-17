@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace MessageApp
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MyRootMasterDetailPageDetail : ContentPage
+    public partial class MessageListPage : ContentPage
     {
         readonly ContentPage subPage;
 
-        public MyRootMasterDetailPageDetail()
+        public MessageListPage()
         {
             InitializeComponent();
 

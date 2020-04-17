@@ -16,7 +16,7 @@ namespace MessageApp.Windows
         public MainWindow()
         {
             Forms.Init();
-            LoadApplication(new MessageApp.App());
+            LoadApplication(new MessageApp.MainPage());
         }
     }
 }

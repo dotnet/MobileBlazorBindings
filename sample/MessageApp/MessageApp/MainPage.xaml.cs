@@ -1,16 +1,13 @@
 ﻿using System;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace MessageApp
 {
-    public partial class App : Application
+    public partial class MainPage : Application
     {
-
-        public App()
+        public MainPage()
         {
             InitializeComponent();
-            MainPage = new MyRootMasterDetailPage();
         }
 
         protected override void OnStart()
