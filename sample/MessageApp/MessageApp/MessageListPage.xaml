@@ -14,6 +14,7 @@
         <Button Text="Navigate in" Clicked="OnMyNavigateClicked" />
 
         <b:BlazorWebView x:TypeArguments="app:Test"
+                         ContentRoot="WebUI/wwwroot"
                          VerticalOptions="FillAndExpand" />
 
     </StackLayout>

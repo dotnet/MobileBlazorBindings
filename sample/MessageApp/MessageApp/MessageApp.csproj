@@ -19,5 +19,14 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\BlazorDesktop\BlazorDesktop.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="WebUI\wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <EmbeddedResource Update="WebUI\wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
 
 </Project>
