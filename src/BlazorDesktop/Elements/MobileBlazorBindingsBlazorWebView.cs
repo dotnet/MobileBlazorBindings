@@ -2,7 +2,7 @@
 
 namespace BlazorDesktop.Elements
 {
-    public class MobileBlazorBindingsBlazorWebView : BlazorWebView
+    public class MobileBlazorBindingsBlazorWebView : BlazorWebView<IComponent>
     {
         public MobileBlazorBindingsBlazorWebView(Dispatcher dispatcher)
             : base(dispatcher, initOnParentSet: false)

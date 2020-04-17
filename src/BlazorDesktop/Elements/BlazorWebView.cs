@@ -16,7 +16,7 @@ using XF = Xamarin.Forms;
 
 namespace BlazorDesktop.Elements
 {
-    public class BlazorWebView : XF.ContentView, IDisposable
+    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent: IComponent
     {
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
@@ -31,7 +31,6 @@ namespace BlazorDesktop.Elements
 
         public string ContentRoot { get; set; }
         public IServiceProvider Services { get; set; }
-        public Type ComponentType { get; set; }
 
         // Use this if no Services was supplied
         private static Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
@@ -68,19 +67,9 @@ namespace BlazorDesktop.Elements
                 {
                     await InitAsync();
 
-                    if (ComponentType == null)
-                    {
-                        throw new InvalidOperationException($"The property {nameof(ComponentType)} cannot be null.");
-                    }
-
-                    if (!typeof(IComponent).IsAssignableFrom(ComponentType))
-                    {
-                        throw new ArgumentException($"The type '{ComponentType.FullName}' does not implement '{typeof(IComponent).FullName}'.");
-                    }
-
                     Render(builder =>
                     {
-                        builder.OpenComponent(0, ComponentType);
+                        builder.OpenComponent<TComponent>(0);
                         builder.CloseComponent();
                     });
                 });
@@ -293,7 +282,7 @@ namespace BlazorDesktop.Elements
             switch (uri)
             {
                 case "framework://blazor.desktop.js":
-                    return typeof(BlazorWebView).Assembly.GetManifestResourceStream("BlazorDesktop.blazor.desktop.js");
+                    return typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("BlazorDesktop.blazor.desktop.js");
                 default:
                     throw new ArgumentException($"Unknown framework file: {uri}");
             }
