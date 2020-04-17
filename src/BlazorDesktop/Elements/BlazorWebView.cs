@@ -22,15 +22,74 @@ namespace BlazorDesktop.Elements
         private readonly WebViewExtended _webView;
         private readonly IPC _ipc;
         private readonly JSRuntime _jsRuntime;
+        private readonly bool _initOnParentSet;
         private readonly static RenderFragment EmptyRenderFragment = builder => { };
         private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
         private DesktopRenderer _desktopRenderer;
         private DesktopNavigationManager _navigationManager;
-        private string _contentRoot;
 
-        public BlazorWebView(Dispatcher dispatcher)
+        public string ContentRoot { get; set; }
+        public IServiceProvider Services { get; set; }
+        public string ComponentType { get; set; }
+
+        // Use this if no Services was supplied
+        private static Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging();
+            serviceCollection.AddBlazorDesktop();
+            return serviceCollection.BuildServiceProvider();
+        });
+
+        // This is the constructor used when created from XAML
+        // so we know we have to init as soon as the parent is set
+        public BlazorWebView()
+            : this(XamarinDeviceDispatcher.Instance, initOnParentSet: true)
+        {
+        }
+
+        protected override void OnParentSet()
+        {
+            base.OnParentSet();
+
+            if (_initOnParentSet)
+            {
+                // TODO: Report errors
+                _ = InitForXamlInstanceAsync();
+            }
+        }
+
+        private async Task InitForXamlInstanceAsync()
+        {
+            try
+            {
+                await XamarinDeviceDispatcher.Instance.InvokeAsync(async () =>
+                {
+                    await InitAsync();
+                    var componentType = Type.GetType(ComponentType, true);
+                    if (!typeof(IComponent).IsAssignableFrom(componentType))
+                    {
+                        throw new ArgumentException($"The type '{ComponentType}' does not implement '{typeof(IComponent).FullName}'.");
+                    }
+
+                    Render(builder =>
+                    {
+                        builder.OpenComponent(0, componentType);
+                        builder.CloseComponent();
+                    });
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
+        protected BlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
+        {
+            _initOnParentSet = initOnParentSet;
             Content = _webView = new WebViewExtended();
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
@@ -40,7 +99,7 @@ namespace BlazorDesktop.Elements
                 if (uri.Host.Equals("0.0.0.0", StringComparison.Ordinal))
                 {
                     // TODO: Prevent directory traversal?
-                    var contentRootAbsolute = Path.GetFullPath(_contentRoot ?? ".");
+                    var contentRootAbsolute = Path.GetFullPath(ContentRoot ?? ".");
                     var appFile = Path.Combine(contentRootAbsolute, uri.AbsolutePath.Substring(1));
                     if (appFile == contentRootAbsolute)
                     {
@@ -96,12 +155,12 @@ namespace BlazorDesktop.Elements
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
         // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
-        internal async Task InitAsync(IServiceProvider services, string contentRoot)
+        internal async Task InitAsync()
         {
-            _contentRoot = contentRoot;
             _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask;
 
+            var services = Services ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
 
             var scopeServiceProvider = _serviceScope.ServiceProvider;
@@ -128,7 +187,9 @@ namespace BlazorDesktop.Elements
             var resultTcs = new TaskCompletionSource<InteropHandshakeResult>();
 
             // These hacks can go away once there's a proper IPC channel for event notifications etc.
-            var selfAsDotNetObjectReference = DotNetObjectReference.Create(this);
+            var selfAsDotNetObjectReference = typeof(DotNetObjectReference).GetMethod(nameof(DotNetObjectReference.Create))
+                .MakeGenericMethod(GetType())
+                .Invoke(null, new[] { this });
             var selfAsDotnetObjectReferenceId = (long)typeof(JSRuntime).GetMethod("TrackObjectReference", BindingFlags.NonPublic | BindingFlags.Instance)
                 .MakeGenericMethod(GetType())
                 .Invoke(_jsRuntime, new[] { selfAsDotNetObjectReference });

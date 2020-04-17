@@ -14,7 +14,7 @@ namespace BlazorDesktop.Components
         static BlazorWebView()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<BlazorWebView>(renderer => new BlazorWebViewHandler(renderer, new Elements.BlazorWebView(renderer.Dispatcher)));
+                .RegisterElementHandler<BlazorWebView>(renderer => new BlazorWebViewHandler(renderer, new Elements.MobileBlazorBindingsBlazorWebView(renderer.Dispatcher)));
         }
 
         [Inject] internal IServiceProvider Services { get; private set; }
@@ -24,11 +24,13 @@ namespace BlazorDesktop.Components
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            var element = (Elements.BlazorWebView)NativeControl;
+            var element = (Elements.MobileBlazorBindingsBlazorWebView)NativeControl;
 
             if (firstRender)
             {
-                await element.InitAsync(Services, ContentRoot);
+                element.ContentRoot = ContentRoot;
+                element.Services = Services;
+                await element.InitAsync();
             }
 
             element.Render(ChildContent);

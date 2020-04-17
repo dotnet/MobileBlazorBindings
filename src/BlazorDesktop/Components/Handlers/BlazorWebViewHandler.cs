@@ -7,7 +7,7 @@ namespace BlazorDesktop.Components.Handlers
 {
     public class BlazorWebViewHandler : ViewHandler
     {
-        public BlazorWebViewHandler(NativeComponentRenderer renderer, Elements.BlazorWebView control)
+        public BlazorWebViewHandler(NativeComponentRenderer renderer, Elements.MobileBlazorBindingsBlazorWebView control)
             : base(renderer, control)
         {
         }
