@@ -6,6 +6,7 @@ namespace MessageApp.Data
 {
     public class AppState
     {
+        public List<string> Folders { get; } = new List<string> { "Inbox", "Archive", "Sent", "Junk" };
         public string CurrentFolder { get; } = "Inbox";
         public Message CurrentMessage { get; private set; }
 
