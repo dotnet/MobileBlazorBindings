@@ -10,13 +10,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var mail in folder.Mails)
+        @foreach (var message in folder.Mails)
         {
-            <tr>
-                <td>@mail.From</td>
-                <td>@mail.To</td>
-                <td>@mail.Subject</td>
-                <td>@mail.Date</td>
+            <tr @onclick="() => AppState.NavigateToMessage(message)">
+                <td>@message.From</td>
+                <td>@message.To</td>
+                <td>@message.Subject</td>
+                <td>@message.Date</td>
             </tr>
         }
     </tbody>

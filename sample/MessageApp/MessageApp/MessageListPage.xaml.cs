@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BlazorDesktop;
+using MessageApp.Data;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -8,25 +11,22 @@ namespace MessageApp
     public partial class MessageListPage : ContentPage
     {
         readonly ContentPage subPage;
+        readonly AppState appState;
 
         public MessageListPage()
         {
             InitializeComponent();
+            appState = BlazorDesktopDefaultServices.Instance.GetRequiredService<AppState>();
 
             var subPageItems = new StackLayout();
             subPageItems.Children.Add(new Label { Text = "This was generated programmatically" });
             subPage = new ContentPage { Content = subPageItems };
         }
 
-        private void OnMyNavigateClicked(object sender, EventArgs e)
-        {
-            subPage.Title = $"You clicked at {DateTime.Now.ToLongTimeString()}";
-            _ = this.Navigation.PushAsync(subPage);
-        }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            appState.CurrentMessageChanged += NavigateToMessage;
 
             // Workaround for "master" icon not appearing if you:
             //  1. Use portrait mode on tablet
@@ -38,6 +38,18 @@ namespace MessageApp
             var originalValue = master.IconImageSource;
             master.IconImageSource = "temp.png";
             master.IconImageSource = originalValue;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            appState.CurrentMessageChanged -= NavigateToMessage;
+        }
+
+        private void NavigateToMessage(object sender, Message e)
+        {
+            subPage.Title = e.Subject;
+            _ = Navigation.PushAsync(subPage);
         }
     }
 }

@@ -7,16 +7,9 @@
              xmlns:app="clr-namespace:MessageApp.WebUI"
              mc:Ignorable="d"
              x:Class="MessageApp.MessageListPage"
-             
-             Title="Detail">
-    <StackLayout Padding="10">
-        <Label Text="This is a detail page. To get the 'triple' line icon on each platform add a icon to each platform and update the 'Master' page with an Icon that references it."/>
-        <Button Text="Navigate in" Clicked="OnMyNavigateClicked" />
+             Title="Messages"
+             Padding="1">
 
-        <b:BlazorWebView x:TypeArguments="app:MessageList"
-                         ContentRoot="WebUI/wwwroot"
-                         VerticalOptions="FillAndExpand" />
-
-    </StackLayout>
+    <b:BlazorWebView x:TypeArguments="app:MessageList" ContentRoot="WebUI/wwwroot" />
 
 </ContentPage>
