@@ -1,6 +1,7 @@
 ﻿using BlazorDesktop;
 using MessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MessageApp
@@ -16,6 +17,23 @@ namespace MessageApp
             BlazorDesktopDefaultServices.Instance = serviceCollection.BuildServiceProvider();
 
             InitializeComponent();
+
+            MasterDetails.IsPresented = false;
+            WorkaroundDisplayIssue();
+        }
+
+        async void WorkaroundDisplayIssue()
+        {
+            await Task.Delay(1000);
+            Dispatcher.BeginInvokeOnMainThread(() =>
+            {
+                MasterDetails.IsPresented = false;
+            });
+            await Task.Delay(1);
+            Dispatcher.BeginInvokeOnMainThread(() =>
+            {
+                MasterDetails.IsPresented = true;
+            });
         }
 
         protected override void OnStart()

@@ -10,16 +10,12 @@
              xmlns:pages="clr-namespace:MessageApp">
 
     <Application.MainPage>
-        <MasterDetailPage>
+        <MasterDetailPage x:Name="MasterDetails">
 
             <MasterDetailPage.Master>
-                <NavigationPage Title="Folders">
-                    <x:Arguments>
-                        <ContentPage Title="Folders">
-                            <b:BlazorWebView x:TypeArguments="app:FolderList" ContentRoot="WebUI/wwwroot" VerticalOptions="FillAndExpand" />
-                        </ContentPage>
-                    </x:Arguments>
-                </NavigationPage>
+                <ContentPage Title="Folders">
+                    <b:BlazorWebView x:TypeArguments="app:FolderList" ContentRoot="WebUI/wwwroot" VerticalOptions="FillAndExpand" />
+                </ContentPage>
             </MasterDetailPage.Master>
 
             <MasterDetailPage.Detail>
