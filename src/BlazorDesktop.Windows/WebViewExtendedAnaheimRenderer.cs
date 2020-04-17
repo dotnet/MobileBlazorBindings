@@ -9,13 +9,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Navigation;
-using System.Windows.Threading;
-using Xamarin.Forms.Internals;
 using Xamarin.Forms.Platform.WPF;
-using Xamarin.Forms.Platform.WPF.Controls;
 using XF = Xamarin.Forms;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedAnaheimRenderer))]
@@ -24,299 +19,177 @@ namespace BlazorDesktop.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2Control>, XF.IWebViewDelegate
     {
-		[DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
-		static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
+        [DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
+        private static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
 
-		XF.WebNavigationEvent _eventState;
-		bool _updating;
+        protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
+        {
+            _ = HandleElementChangedAsync(e);
+        }
 
-		protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
-		{
-			_ = HandleElementChangedAsync(e);
-		}
+        private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebViewExtended> e)
+        {
+            if (e.OldElement != null)
+            {
+                throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
+            }
 
-		private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebViewExtended> e)
-		{
-			if (e.OldElement != null)
-			{
-				throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
-			}
+            if (e.NewElement != null)
+            {
+                if (Control != null)
+                {
+                    throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
+                }
 
-			if (e.NewElement != null)
-			{
-				if (Control != null)
-				{
-					throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
-				}
+                if (e.NewElement.RetainedNativeControl is WebView2Control retainedNativeControl)
+                {
+                    SetNativeControl(retainedNativeControl);
+                    SubscribeToControlEvents();
+                }
+                else
+                {
+                    var nativeControl = new WebView2Control { MinHeight = 200 };
+                    e.NewElement.RetainedNativeControl = nativeControl;
+                    SetNativeControl(nativeControl);
+                    await WaitForBrowserCreatedAsync();
 
-				if (e.NewElement.RetainedNativeControl is WebView2Control retainedNativeControl)
-				{
-					SetNativeControl(retainedNativeControl);
-					SubscribeToControlEvents();
-				}
-				else
-				{
-					var nativeControl = new WebView2Control { MinHeight = 200 };
-					e.NewElement.RetainedNativeControl = nativeControl;
-					SetNativeControl(nativeControl);
-					await WaitForBrowserCreatedAsync();
+                    Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
 
-					Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
+                    SubscribeToControlEvents();
 
-					SubscribeToControlEvents();
+                    Load();
+                }
 
-					Load();
-				}
+                SubscribeToElementEvents();
+            }
 
-				SubscribeToElementEvents();
-			}
+            base.OnElementChanged(e);
+        }
 
-			base.OnElementChanged(e);
-		}
+        private void SubscribeToElementEvents()
+        {
+            Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
+        }
 
-		private void SubscribeToElementEvents()
-		{
-			// Suscribe element event
-			Element.EvalRequested += OnEvalRequested;
-			Element.EvaluateJavaScriptRequested += OnEvaluateJavaScriptRequested;
-			Element.GoBackRequested += OnGoBackRequested;
-			Element.GoForwardRequested += OnGoForwardRequested;
-			Element.ReloadRequested += OnReloadRequested;
-			Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
-		}
+        private void SubscribeToControlEvents()
+        {
+            Control.WebMessageRecieved += HandleWebMessageReceived;
+            Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
+            Control.WebResourceRequested += HandleWebResourceRequested;
+        }
 
-		private void SubscribeToControlEvents()
-		{
-			Control.WebMessageRecieved += HandleWebMessageReceived;
-			Control.NavigationCompleted += WebBrowserOnNavigated;
-			Control.NavigationStarting += WebBrowserOnNavigating;
-			Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
-			Control.WebResourceRequested += HandleWebResourceRequested;
-		}
+        private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
+        {
+            Control.PostWebMessageAsString(message);
+        }
 
-		private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
-		{
-			Control.PostWebMessageAsString(message);
-		}
+        private void HandleWebMessageReceived(object sender, WebMessageReceivedEventArgs args)
+        {
+            Element.HandleWebMessageReceived(args.WebMessageAsString);
+        }
 
-		private void HandleWebMessageReceived(object sender, WebMessageReceivedEventArgs args)
-		{
-			Element.HandleWebMessageReceived(args.WebMessageAsString);
-		}
+        private Task WaitForBrowserCreatedAsync()
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            Control.BrowserCreated += (sender, args) =>
+            {
+                tcs.TrySetResult(true);
+            };
+            return tcs.Task;
+        }
 
-		private Task WaitForBrowserCreatedAsync()
-		{
-			var tcs = new TaskCompletionSource<bool>();
-			Control.BrowserCreated += (sender, args) =>
-			{
-				tcs.TrySetResult(true);
-			};
-			return tcs.Task;
-		}
+        private void HandleWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
+        {
+            var uri = new Uri(e.Request.Uri);
+            if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
+            {
+                var responseStream = handler(e.Request.Uri, out var responseContentType);
+                if (responseStream != null) // If null, the handler doesn't want to handle it
+                {
 
-		private void HandleWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
-		{
-			var uri = new Uri(e.Request.Uri);
-			if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
-			{
-				var responseStream = handler(e.Request.Uri, out var responseContentType);
-				if (responseStream != null) // If null, the handler doesn't want to handle it
-				{
+                    using var ms = new MemoryStream();
+                    responseStream.CopyTo(ms);
+                    var responseBytes = ms.ToArray();
+                    var responseBytesHandle = GCHandle.Alloc(responseBytes, GCHandleType.Pinned);
+                    try
+                    {
+                        var responseStreamCom = SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
+                        var response = Control.WebView2Environment.CreateWebResourceResponse(
+                            responseStreamCom, 200, "OK", $"Content-Type: {responseContentType}");
+                        e.SetResponse(response);
+                    }
+                    finally
+                    {
+                        responseBytesHandle.Free();
+                    }
+                }
+            }
+        }
 
-					using var ms = new MemoryStream();
-					responseStream.CopyTo(ms);
-					var responseBytes = ms.ToArray();
-					var responseBytesHandle = GCHandle.Alloc(responseBytes, GCHandleType.Pinned);
-					try
-					{
-						var responseStreamCom = SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
-						var response = Control.WebView2Environment.CreateWebResourceResponse(
-							responseStreamCom, 200, "OK", $"Content-Type: {responseContentType}");
-						e.SetResponse(response);
-					}
-					finally
-					{
-						responseBytesHandle.Free();
-					}
-				}
-			}
-		}
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            base.OnElementPropertyChanged(sender, e);
 
-		protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-		{
-			base.OnElementPropertyChanged(sender, e);
+            if (e.PropertyName == XF.WebView.SourceProperty.PropertyName)
+            {
+                Load();
+            }
+        }
 
-			if (e.PropertyName == XF.WebView.SourceProperty.PropertyName)
-			{
-				if (!_updating)
-					Load();
-			}
-		}
+        void Load()
+        {
+            if (Element.Source != null)
+            {
+                Element.Source.Load(this);
+            }
+        }
 
-		void Load()
-		{
-			if (Element.Source != null)
-				Element.Source.Load(this);
+        public void LoadHtml(string html, string baseUrl)
+        {
+            if (html != null)
+            {
+                Control.NavigateToString(html);
+            }
+        }
 
-			UpdateCanGoBackForward();
-		}
+        public void LoadUrl(string url)
+        {
+            if (url != null)
+            {
+                Control.Navigate(url);
+            }
+        }
 
-		public void LoadHtml(string html, string baseUrl)
-		{
-			if (html == null)
-				return;
+        bool _isDisposed;
 
-			Control.NavigateToString(html);
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (_isDisposed)
+                return;
 
-		public void LoadUrl(string url)
-		{
-			if (url == null)
-				return;
+            if (disposing)
+            {
+                if (Control != null)
+                {
+                    Control.WebResourceRequested -= HandleWebResourceRequested;
+                    Control.WebMessageRecieved -= HandleWebMessageReceived;
 
-			Control.Navigate(url);
-		}
+                    switch (Control.Parent)
+                    {
+                        case FormsPanel formsPanel:
+                            formsPanel.Children.Remove(Control);
+                            break;
+                        case ContentControl contentControl:
+                            contentControl.Content = null;
+                            break;
+                        default:
+                            throw new NotImplementedException($"Don't know how to detach from a parent of type {Control.Parent.GetType().FullName}");
+                    }
+                }
+            }
 
-
-		void OnEvalRequested(object sender, EvalRequested eventArg)
-		{
-			Control.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-				throw new NotImplementedException()));
-			//Control.InvokeScript("eval", eventArg.Script)););
-		}
-
-		async Task<string> OnEvaluateJavaScriptRequested(string script)
-		{
-			var tcr = new TaskCompletionSource<string>();
-			var task = tcr.Task;
-
-			XF.Device.BeginInvokeOnMainThread(() => {
-				throw new NotImplementedException();
-				//tcr.SetResult((string)Control.InvokeScript("eval", new[] { script }));
-			});
-
-			return await task.ConfigureAwait(false);
-		}
-
-		void OnGoBackRequested(object sender, EventArgs eventArgs)
-		{
-			if (Control.CanGoBack)
-			{
-				_eventState = XF.WebNavigationEvent.Back;
-				Control.GoBack();
-			}
-
-			UpdateCanGoBackForward();
-		}
-
-		void OnGoForwardRequested(object sender, EventArgs eventArgs)
-		{
-			if (Control.CanGoForward)
-			{
-				_eventState = XF.WebNavigationEvent.Forward;
-				Control.GoForward();
-			}
-			UpdateCanGoBackForward();
-		}
-
-		void OnReloadRequested(object sender, EventArgs eventArgs)
-		{
-			Control.Reload();
-		}
-
-		void SendNavigated(XF.UrlWebViewSource source, XF.WebNavigationEvent evnt, XF.WebNavigationResult result)
-		{
-			Console.WriteLine("SendNavigated : " + source.Url);
-			_updating = true;
-			((XF.IElementController)Element).SetValueFromRenderer(XF.WebView.SourceProperty, source);
-			_updating = false;
-
-			Element.SendNavigated(new XF.WebNavigatedEventArgs(evnt, source, source.Url, result));
-
-			UpdateCanGoBackForward();
-			_eventState = XF.WebNavigationEvent.NewPage;
-		}
-
-		void UpdateCanGoBackForward()
-		{
-			((XF.IWebViewController)Element).CanGoBack = Control.CanGoBack;
-			((XF.IWebViewController)Element).CanGoForward = Control.CanGoForward;
-		}
-
-		void WebBrowserOnNavigated(object sender, NavigationCompletedEventArgs navigationEventArgs)
-		{
-			if (navigationEventArgs.IsSuccess && Element.Source is XF.UrlWebViewSource urlWebViewSource)
-			{
-				SendNavigated(urlWebViewSource, _eventState, XF.WebNavigationResult.Success);
-				UpdateCanGoBackForward();
-			}
-		}
-
-		void WebBrowserOnNavigating(object sender, NavigationStartingEventArgs navigatingEventArgs)
-		{
-			if (navigatingEventArgs.Uri == null) return;
-
-			string url = navigatingEventArgs.Uri;
-			var args = new XF.WebNavigatingEventArgs(_eventState, new XF.UrlWebViewSource { Url = url }, url);
-
-			Element.SendNavigating(args);
-
-			navigatingEventArgs.Cancel = args.Cancel;
-
-			// reset in this case because this is the last event we will get
-			if (args.Cancel)
-				_eventState = XF.WebNavigationEvent.NewPage;
-		}
-
-		void WebBrowserOnNavigationFailed(object sender, NavigationFailedEventArgs navigationFailedEventArgs)
-		{
-			if (navigationFailedEventArgs.Uri == null) return;
-
-			string url = navigationFailedEventArgs.Uri.IsAbsoluteUri ? navigationFailedEventArgs.Uri.AbsoluteUri : navigationFailedEventArgs.Uri.OriginalString;
-			SendNavigated(new XF.UrlWebViewSource { Url = url }, _eventState, XF.WebNavigationResult.Failure);
-		}
-
-		bool _isDisposed;
-
-		protected override void Dispose(bool disposing)
-		{
-			if (_isDisposed)
-				return;
-
-			if (disposing)
-			{
-				if (Control != null)
-				{
-					Control.NavigationCompleted -= WebBrowserOnNavigated;
-					Control.NavigationStarting -= WebBrowserOnNavigating;
-					Control.WebResourceRequested -= HandleWebResourceRequested;
-					Control.WebMessageRecieved -= HandleWebMessageReceived;
-
-					switch (Control.Parent)
-					{
-						case FormsPanel formsPanel:
-							formsPanel.Children.Remove(Control);
-							break;
-						case ContentControl contentControl:
-							contentControl.Content = null;
-							break;
-						default:
-							throw new NotImplementedException($"Don't know how to detach from a parent of type {Control.Parent.GetType().FullName}");
-					}
-				}
-
-				if (Element != null)
-				{
-					Element.EvalRequested -= OnEvalRequested;
-					Element.EvaluateJavaScriptRequested -= OnEvaluateJavaScriptRequested;
-					Element.GoBackRequested -= OnGoBackRequested;
-					Element.GoForwardRequested -= OnGoForwardRequested;
-					Element.ReloadRequested -= OnReloadRequested;
-				}
-			}
-
-			_isDisposed = true;
-			base.Dispose(disposing);
-		}
-	}
+            _isDisposed = true;
+            base.Dispose(disposing);
+        }
+    }
 }
