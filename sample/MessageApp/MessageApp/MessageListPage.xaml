@@ -13,7 +13,7 @@
         <Label Text="This is a detail page. To get the 'triple' line icon on each platform add a icon to each platform and update the 'Master' page with an Icon that references it."/>
         <Button Text="Navigate in" Clicked="OnMyNavigateClicked" />
 
-        <b:BlazorWebView x:TypeArguments="app:Test"
+        <b:BlazorWebView x:TypeArguments="app:MessageList"
                          ContentRoot="WebUI/wwwroot"
                          VerticalOptions="FillAndExpand" />
 
