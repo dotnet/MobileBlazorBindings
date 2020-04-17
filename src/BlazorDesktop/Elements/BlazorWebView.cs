@@ -31,7 +31,7 @@ namespace BlazorDesktop.Elements
 
         public string ContentRoot { get; set; }
         public IServiceProvider Services { get; set; }
-        public string ComponentType { get; set; }
+        public Type ComponentType { get; set; }
 
         // Use this if no Services was supplied
         private static Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
@@ -67,15 +67,20 @@ namespace BlazorDesktop.Elements
                 await XamarinDeviceDispatcher.Instance.InvokeAsync(async () =>
                 {
                     await InitAsync();
-                    var componentType = Type.GetType(ComponentType, true);
-                    if (!typeof(IComponent).IsAssignableFrom(componentType))
+
+                    if (ComponentType == null)
                     {
-                        throw new ArgumentException($"The type '{ComponentType}' does not implement '{typeof(IComponent).FullName}'.");
+                        throw new InvalidOperationException($"The property {nameof(ComponentType)} cannot be null.");
+                    }
+
+                    if (!typeof(IComponent).IsAssignableFrom(ComponentType))
+                    {
+                        throw new ArgumentException($"The type '{ComponentType.FullName}' does not implement '{typeof(IComponent).FullName}'.");
                     }
 
                     Render(builder =>
                     {
-                        builder.OpenComponent(0, componentType);
+                        builder.OpenComponent(0, ComponentType);
                         builder.CloseComponent();
                     });
                 });
