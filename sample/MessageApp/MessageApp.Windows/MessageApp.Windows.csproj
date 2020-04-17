@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.529-pre3" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.529-pre3" NoWarn="NU1701" />
+    <ProjectReference Include="..\..\src\BlazorDesktop.Windows\BlazorDesktop.Windows.csproj" />
+    <ProjectReference Include="..\MessageApp\MessageApp.csproj" />
+  </ItemGroup>
+
+</Project>
