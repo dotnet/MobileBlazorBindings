@@ -3,6 +3,8 @@
 
 
 using Foundation;
+using System;
+using System.Reflection;
 using UIKit;
 
 namespace MobileBlazorBindingsWeather.iOS
@@ -22,6 +24,8 @@ namespace MobileBlazorBindingsWeather.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Type someXamFormsXamlType = typeof(Xamarin.Forms.Xaml.StyleSheetExtension);
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
