@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
+using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -23,6 +24,27 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
             MasterDetailPageControl.Master = new XF.Page() { Title = "Title" };
             MasterDetailPageControl.Detail = new XF.Page();
+        }
+
+        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            if (child is null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            if (child is MasterDetailMasterPageContentPage masterPage)
+            {
+                MasterDetailPageControl.Master = masterPage;
+            }
+            else if (child is MasterDetailDetailPageContentPage detailPage)
+            {
+                MasterDetailPageControl.Detail = detailPage;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unknown child type {child.GetType().FullName} being added to parent element type {GetType().FullName}.");
+            }
         }
     }
 }

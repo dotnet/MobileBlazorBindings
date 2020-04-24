@@ -10,7 +10,7 @@ ContentView
 #Element // Element is special so we don't generate it
 Entry
 FlyoutItem
-FormattedString
+#FormattedString // Not used anymore because Label directly contains Span elements
 Frame
 GestureElement
 #Grid // Temporary because we need a way to handle special Grid.Metadata property

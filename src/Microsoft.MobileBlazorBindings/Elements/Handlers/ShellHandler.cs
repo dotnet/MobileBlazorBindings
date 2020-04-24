@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
+using System;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -47,7 +48,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        internal bool ClearDummyChild()
+        private bool ClearDummyChild()
         {
             // Remove the dummy ShellContent if it's still there. This won't throw even if the item is already removed.
             return ShellControl.Items.Remove(_dummyShellContent);
@@ -55,5 +56,41 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public ulong NavigatedEventHandlerId { get; set; }
         public ulong NavigatingEventHandlerId { get; set; }
+
+        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            if (child is null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            var removedDummyChild = ClearDummyChild();
+            switch (child)
+            {
+                case XF.TemplatedPage childAsTemplatedPage:
+                    ShellControl.Items.Add(childAsTemplatedPage); // Implicit conversion
+                    break;
+                case XF.ShellContent childAsShellContent:
+                    ShellControl.Items.Add(childAsShellContent); // Implicit conversion
+                    break;
+                case XF.ShellSection childAsShellSection:
+                    ShellControl.Items.Add(childAsShellSection); // Implicit conversion
+                    break;
+                case XF.MenuItem childAsMenuItem:
+                    ShellControl.Items.Add(childAsMenuItem); // Implicit conversion
+                    break;
+                case XF.ShellItem childAsShellItem:
+                    ShellControl.Items.Add(childAsShellItem);
+                    break;
+                default:
+                    throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').");
+            }
+            // TODO: If this was the first item added, mark it as the current item
+            // But this code seems to cause a NullRef...
+            //if (removedDummyChild)
+            //{
+            //    ShellControl.CurrentItem = parentAsShell.Items[0];
+            //}       
+        }
     }
 }

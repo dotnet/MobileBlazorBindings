@@ -7,14 +7,14 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class GridCellHandler : IXamarinFormsElementHandler, IParentChildManagementRequired
+    public class GridCellHandler : IXamarinFormsElementHandler, INonChildContainerElement
     {
         public GridCellHandler(NativeComponentRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             GridCellPlaceholderElementControl = gridCellPlaceholderElementControl ?? throw new ArgumentNullException(nameof(gridCellPlaceholderElementControl));
 
-            ParentChildManager = new ParentChildManager<XF.Grid, XF.View>(AddChildViewToParentGrid);
+            _parentChildManager = new ParentChildManager<XF.Grid, XF.View>(AddChildViewToParentGrid);
         }
 
         public NativeComponentRenderer Renderer { get; }
@@ -27,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public int? Row { get; set; }
         public int? RowSpan { get; set; }
 
-        public IParentChildManager ParentChildManager { get; }
+        private readonly ParentChildManager<XF.Grid, XF.View> _parentChildManager;
 
         public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
@@ -50,6 +50,39 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            _parentChildManager.SetChild(child);
+        }
+
+        public int GetPhysicalSiblingIndex()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return 0;
+        }
+
+        public bool IsParented()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public bool IsParentedTo(XF.Element parent)
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public void SetParent(XF.Element parent)
+        {
+            // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
+            // in this class should get called.
+            throw new NotSupportedException();
+        }
+
         private void AddChildViewToParentGrid(ParentChildManager<XF.Grid, XF.View> parentChildManager)
         {
             parentChildManager.Parent.Children.Add(
@@ -58,6 +91,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 right: (Column ?? 0) + (ColumnSpan ?? 1),
                 top: (Row ?? 0),
                 bottom: (Row ?? 0) + (RowSpan ?? 1));
+        }
+
+        public void SetParent(object parentElement)
+        {
+            _parentChildManager.SetParent((XF.Element)parentElement);
         }
     }
 }

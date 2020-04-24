@@ -65,13 +65,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Parses the attribute value as a comma-separated string. Entries are trimmed and empty entries are removed.
+        /// Parses the attribute value as a space-separated string. Entries are trimmed and empty entries are removed.
         /// </summary>
         /// <param name="attributeValue"></param>
         /// <returns></returns>
         public static IList<string> GetStringList(object attributeValue)
         {
-            return ((string)attributeValue)?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+            return ((string)attributeValue)?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
         }
     }
 }

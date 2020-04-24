@@ -28,7 +28,8 @@ namespace MobileBlazorBindingsTodo
                 })
                 .Build();
 
-            AppHost.AddComponent<TodoApp>(parent: this);
+            MainPage = new TabbedPage();
+            AppHost.AddComponent<TodoApp>(parent: MainPage);
         }
 
         protected override void OnStart()

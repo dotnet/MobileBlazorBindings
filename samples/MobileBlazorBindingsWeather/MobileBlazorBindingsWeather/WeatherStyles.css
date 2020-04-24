@@ -1,8 +1,63 @@
 ﻿/*
     For additional style information, refer to:
-    https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/styles/css/
+    https://docs.microsoft.com/xamarin/xamarin-forms/user-interface/styles/css/
 */
 
 stepper {
     opacity: 0.6;
+}
+
+.largeText {
+    font-size: large;
+}
+
+.cityImage {
+    opacity: .8;
+    margin-bottom: -80;
+}
+
+.mainText {
+    color: white;
+    text-align: center;
+}
+
+.mainGrid {
+    padding-top: 44;
+    row-gap: 0;
+}
+
+.dataItemName {
+    font-weight: bold;
+    font-size: small;
+    color: white;
+    text-align: center;
+}
+
+.dataItemValue {
+    font-size: small;
+    color: white;
+    text-align: center;
+}
+
+.dataItemUnit {
+    font-size: micro;
+    color: white;
+    text-align: center;
+}
+
+.temperatureStyle {
+    font-size: 100;
+    color: white;
+    text-align: center;
+}
+
+.degreeStyle {
+    font-size: 100;
+    color: white;
+    text-align: left;
+}
+
+.dataItemMainStyle {
+    font-size: small;
+    color: white;
 }

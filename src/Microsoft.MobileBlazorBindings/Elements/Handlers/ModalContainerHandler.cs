@@ -7,7 +7,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ModalContainerHandler : IXamarinFormsElementHandler, INonChildContainerElement, IParentChildManagementRequired
+    public class ModalContainerHandler : IXamarinFormsElementHandler, INonChildContainerElement
     {
         public ModalContainerHandler(NativeComponentRenderer renderer, DummyElement modalContainerDummyControl)
         {
@@ -24,7 +24,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public object TargetElement => ElementControl;
 
         private readonly ParentChildManager<XF.NavigableElement, XF.Page> _parentChildManager;
-        public IParentChildManager ParentChildManager => _parentChildManager;
 
         private void OnParentChildManagerChildChanged(object sender, EventArgs e)
         {
@@ -73,6 +72,44 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 _parentChildManager.Parent.Navigation.PushModalAsync(_parentChildManager.Child);
             }
+        }
+
+        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        {
+            _parentChildManager.SetChild(child);
+        }
+
+        public bool IsParented()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public bool IsParentedTo(XF.Element parent)
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return false;
+        }
+
+        public void SetParent(XF.Element parent)
+        {
+            // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
+            // in this class should get called.
+            throw new NotSupportedException();
+        }
+
+        public int GetPhysicalSiblingIndex()
+        {
+            // Because this is a 'fake' element, all matters related to physical trees
+            // should be no-ops.
+            return 0;
+        }
+
+        public void SetParent(object parentElement)
+        {
+            _parentChildManager.SetParent((XF.Element)parentElement);
         }
     }
 }
