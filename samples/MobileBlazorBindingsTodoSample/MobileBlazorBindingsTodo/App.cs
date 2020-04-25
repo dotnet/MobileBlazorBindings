@@ -14,7 +14,7 @@ namespace MobileBlazorBindingsTodo
 
         public App(IServiceCollection additionalServices)
         {
-            AppHost = Host.CreateDefaultBuilder()
+            AppHost = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register backend-specific services (e.g. iOS, Android)
