@@ -13,6 +13,9 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+# Mono crash dumps
+*.blob
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
