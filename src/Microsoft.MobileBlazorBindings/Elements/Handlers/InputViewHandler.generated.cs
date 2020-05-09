@@ -24,6 +24,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.InputView.CharacterSpacing):
+                    InputViewControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue);
+                    break;
                 case nameof(XF.InputView.IsReadOnly):
                     InputViewControl.IsReadOnly = AttributeHelper.GetBool(attributeValue);
                     break;
@@ -32,6 +35,18 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.InputView.MaxLength):
                     InputViewControl.MaxLength = AttributeHelper.GetInt(attributeValue, int.MaxValue);
+                    break;
+                case nameof(XF.InputView.Placeholder):
+                    InputViewControl.Placeholder = (string)attributeValue;
+                    break;
+                case nameof(XF.InputView.PlaceholderColor):
+                    InputViewControl.PlaceholderColor = AttributeHelper.StringToColor((string)attributeValue);
+                    break;
+                case nameof(XF.InputView.Text):
+                    InputViewControl.Text = (string)attributeValue;
+                    break;
+                case nameof(XF.InputView.TextColor):
+                    InputViewControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

@@ -18,6 +18,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         [Parameter] public XF.Aspect? Aspect { get; set; }
+        [Parameter] public bool? IsAnimationPlaying { get; set; }
         [Parameter] public bool? IsOpaque { get; set; }
         [Parameter] public XF.ImageSource Source { get; set; }
 
@@ -30,6 +31,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (Aspect != null)
             {
                 builder.AddAttribute(nameof(Aspect), (int)Aspect.Value);
+            }
+            if (IsAnimationPlaying != null)
+            {
+                builder.AddAttribute(nameof(IsAnimationPlaying), IsAnimationPlaying.Value);
             }
             if (IsOpaque != null)
             {

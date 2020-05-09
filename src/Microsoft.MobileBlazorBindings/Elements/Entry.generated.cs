@@ -17,7 +17,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new EntryHandler(renderer, new XF.Entry()));
         }
 
-        [Parameter] public double? CharacterSpacing { get; set; }
         [Parameter] public XF.ClearButtonVisibility? ClearButtonVisibility { get; set; }
         [Parameter] public int? CursorPosition { get; set; }
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
@@ -26,12 +25,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
         [Parameter] public bool? IsPassword { get; set; }
         [Parameter] public bool? IsTextPredictionEnabled { get; set; }
-        [Parameter] public string Placeholder { get; set; }
-        [Parameter] public XF.Color? PlaceholderColor { get; set; }
         [Parameter] public XF.ReturnType? ReturnType { get; set; }
         [Parameter] public int? SelectionLength { get; set; }
-        [Parameter] public string Text { get; set; }
-        [Parameter] public XF.Color? TextColor { get; set; }
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
 
         public new XF.Entry NativeControl => ((EntryHandler)ElementHandler).EntryControl;
@@ -40,10 +35,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
-            if (CharacterSpacing != null)
-            {
-                builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
-            }
             if (ClearButtonVisibility != null)
             {
                 builder.AddAttribute(nameof(ClearButtonVisibility), (int)ClearButtonVisibility.Value);
@@ -76,14 +67,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(IsTextPredictionEnabled), IsTextPredictionEnabled.Value);
             }
-            if (Placeholder != null)
-            {
-                builder.AddAttribute(nameof(Placeholder), Placeholder);
-            }
-            if (PlaceholderColor != null)
-            {
-                builder.AddAttribute(nameof(PlaceholderColor), AttributeHelper.ColorToString(PlaceholderColor.Value));
-            }
             if (ReturnType != null)
             {
                 builder.AddAttribute(nameof(ReturnType), (int)ReturnType.Value);
@@ -91,14 +74,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (SelectionLength != null)
             {
                 builder.AddAttribute(nameof(SelectionLength), SelectionLength.Value);
-            }
-            if (Text != null)
-            {
-                builder.AddAttribute(nameof(Text), Text);
-            }
-            if (TextColor != null)
-            {
-                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
             if (VerticalTextAlignment != null)
             {

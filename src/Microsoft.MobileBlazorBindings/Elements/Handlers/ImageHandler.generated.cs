@@ -27,6 +27,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Image.Aspect):
                     ImageControl.Aspect = (XF.Aspect)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.Image.IsAnimationPlaying):
+                    ImageControl.IsAnimationPlaying = AttributeHelper.GetBool(attributeValue);
+                    break;
                 case nameof(XF.Image.IsOpaque):
                     ImageControl.IsOpaque = AttributeHelper.GetBool(attributeValue);
                     break;

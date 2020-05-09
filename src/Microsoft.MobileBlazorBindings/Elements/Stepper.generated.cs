@@ -20,6 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? Increment { get; set; }
         [Parameter] public double? Maximum { get; set; }
         [Parameter] public double? Minimum { get; set; }
+        [Parameter] public int? StepperPosition { get; set; }
         [Parameter] public double? Value { get; set; }
 
         public new XF.Stepper NativeControl => ((StepperHandler)ElementHandler).StepperControl;
@@ -39,6 +40,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (Minimum != null)
             {
                 builder.AddAttribute(nameof(Minimum), AttributeHelper.DoubleToString(Minimum.Value));
+            }
+            if (StepperPosition != null)
+            {
+                builder.AddAttribute(nameof(StepperPosition), StepperPosition.Value);
             }
             if (Value != null)
             {

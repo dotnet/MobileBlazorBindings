@@ -24,6 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
         [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
         [Parameter] public bool? FlyoutIsPresented { get; set; }
+        [Parameter] public XF.ScrollMode? FlyoutVerticalScrollMode { get; set; }
 
         public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
 
@@ -58,6 +59,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (FlyoutIsPresented != null)
             {
                 builder.AddAttribute(nameof(FlyoutIsPresented), FlyoutIsPresented.Value);
+            }
+            if (FlyoutVerticalScrollMode != null)
+            {
+                builder.AddAttribute(nameof(FlyoutVerticalScrollMode), (int)FlyoutVerticalScrollMode.Value);
             }
 
             RenderAdditionalAttributes(builder);

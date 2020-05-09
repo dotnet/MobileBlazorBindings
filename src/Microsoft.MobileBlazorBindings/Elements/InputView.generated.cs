@@ -12,9 +12,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
     public partial class InputView : View
     {
 
+        [Parameter] public double? CharacterSpacing { get; set; }
         [Parameter] public bool? IsReadOnly { get; set; }
         [Parameter] public bool? IsSpellCheckEnabled { get; set; }
         [Parameter] public int? MaxLength { get; set; }
+        [Parameter] public string Placeholder { get; set; }
+        [Parameter] public XF.Color? PlaceholderColor { get; set; }
+        [Parameter] public string Text { get; set; }
+        [Parameter] public XF.Color? TextColor { get; set; }
 
         public new XF.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;
 
@@ -22,6 +27,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
+            if (CharacterSpacing != null)
+            {
+                builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
+            }
             if (IsReadOnly != null)
             {
                 builder.AddAttribute(nameof(IsReadOnly), IsReadOnly.Value);
@@ -33,6 +42,22 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (MaxLength != null)
             {
                 builder.AddAttribute(nameof(MaxLength), MaxLength.Value);
+            }
+            if (Placeholder != null)
+            {
+                builder.AddAttribute(nameof(Placeholder), Placeholder);
+            }
+            if (PlaceholderColor != null)
+            {
+                builder.AddAttribute(nameof(PlaceholderColor), AttributeHelper.ColorToString(PlaceholderColor.Value));
+            }
+            if (Text != null)
+            {
+                builder.AddAttribute(nameof(Text), Text);
+            }
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
             }
 
             RenderAdditionalAttributes(builder);

@@ -45,6 +45,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Shell.FlyoutIsPresented):
                     ShellControl.FlyoutIsPresented = AttributeHelper.GetBool(attributeValue);
                     break;
+                case nameof(XF.Shell.FlyoutVerticalScrollMode):
+                    ShellControl.FlyoutVerticalScrollMode = (XF.ScrollMode)AttributeHelper.GetInt(attributeValue, (int)XF.ScrollMode.Auto);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

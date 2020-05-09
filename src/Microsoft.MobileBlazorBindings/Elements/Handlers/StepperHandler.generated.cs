@@ -33,6 +33,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Stepper.Minimum):
                     StepperControl.Minimum = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
+                case nameof(XF.Stepper.StepperPosition):
+                    StepperControl.StepperPosition = AttributeHelper.GetInt(attributeValue);
+                    break;
                 case nameof(XF.Stepper.Value):
                     StepperControl.Value = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
