@@ -1,0 +1,3 @@
+# Ignore default output folder of Component Generator Wrapper
+
+out/
