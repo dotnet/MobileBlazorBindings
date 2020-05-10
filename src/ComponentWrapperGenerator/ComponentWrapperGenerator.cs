@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Input;
+using System.Xml;
 using XF = Xamarin.Forms;
 
 namespace ComponentWrapperGenerator
@@ -24,17 +25,17 @@ namespace ComponentWrapperGenerator
 
         private GeneratorSettings Settings { get; }
 
-        public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
+        public void GenerateComponentWrapper(Type typeToGenerate, XmlDocument xmlDocs, string outputFolder)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
             var propertiesToGenerate = GetPropertiesToGenerate(typeToGenerate);
 
-            GenerateComponentFile(typeToGenerate, propertiesToGenerate, outputFolder);
+            GenerateComponentFile(typeToGenerate, propertiesToGenerate, xmlDocs, outputFolder);
             GenerateHandlerFile(typeToGenerate, propertiesToGenerate, outputFolder);
         }
 
-        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
+        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, XmlDocument xmlDocs, string outputFolder)
         {
             var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
@@ -70,7 +71,7 @@ namespace ComponentWrapperGenerator
             }
             foreach (var prop in propertiesToGenerate)
             {
-                propertyDeclarationBuilder.Append(GetPropertyDeclaration(prop, usings));
+                propertyDeclarationBuilder.Append(GetPropertyDeclaration(prop, usings, xmlDocs));
             }
             var propertyDeclarations = propertyDeclarationBuilder.ToString();
 
@@ -162,7 +163,7 @@ namespace {Settings.RootNamespace}
             typeof(XF.View),
         };
 
-        private static string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
+        private static string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings, XmlDocument xmlDocs)
         {
             var propertyType = prop.PropertyType;
             string propertyTypeName;
@@ -179,8 +180,51 @@ namespace {Settings.RootNamespace}
                     propertyTypeName += "?";
                 }
             }
-            return $@"        [Parameter] public {propertyTypeName} {GetIdentifierName(prop.Name)} {{ get; set; }}
+            const string indent = "        ";
+
+            var xmlDocContents = GetXmlDocContents(prop, xmlDocs, indent);
+
+            return $@"{xmlDocContents}{indent}[Parameter] public {propertyTypeName} {GetIdentifierName(prop.Name)} {{ get; set; }}
 ";
+        }
+
+        private static string GetXmlDocContents(PropertyInfo prop, XmlDocument xmlDocs, string indent)
+        {
+            var xmlDocContents = string.Empty;
+            // Format of XML docs we're looking for in a given property:
+            // <member name="P:Xamarin.Forms.ActivityIndicator.Color">
+            //     <summary>Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.</summary>
+            //     <value>A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.</value>
+            //     <remarks />
+            // </member>
+            var xmlDocNodeName = $"P:{prop.DeclaringType.Namespace}.{prop.DeclaringType.Name}.{prop.Name}";
+            var xmlDocNode = xmlDocs.SelectSingleNode($"//member[@name='{xmlDocNodeName}']");
+            if (xmlDocNode != null)
+            {
+                var summaryNode = xmlDocNode["summary"];
+                var summaryText = summaryNode?.InnerXml;
+                var valueNode = xmlDocNode["value"];
+                var valueText = valueNode?.InnerXml;
+                if (summaryText != null || valueText != null)
+                {
+                    var xmlDocContentBuilder = new StringBuilder();
+                    if (summaryText != null)
+                    {
+                        xmlDocContentBuilder.AppendLine($"{indent}/// <summary>");
+                        xmlDocContentBuilder.AppendLine($"{indent}/// {summaryText}");
+                        xmlDocContentBuilder.AppendLine($"{indent}/// </summary>");
+                    }
+                    if (valueText != null)
+                    {
+                        xmlDocContentBuilder.AppendLine($"{indent}/// <value>");
+                        xmlDocContentBuilder.AppendLine($"{indent}/// {valueText}");
+                        xmlDocContentBuilder.AppendLine($"{indent}/// </value>");
+                    }
+                    xmlDocContents = xmlDocContentBuilder.ToString();
+                }
+            }
+
+            return xmlDocContents;
         }
 
         private static string GetTypeNameAndAddNamespace(Type type, IList<UsingStatement> usings)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Xml;
 
 namespace ComponentWrapperGenerator
 {
@@ -8,15 +9,21 @@ namespace ComponentWrapperGenerator
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         internal static int Main(string[] args)
         {
-            if (args.Length != 2)
+            // Un-comment these lines for easier debugging
+            //if (args.Length == 0)
+            //{
+            //    args = new string[] { "TypesToGenerate.txt", ".", @"..\out" };
+            //}
+
+            if (args.Length != 3)
             {
-                Console.WriteLine("Usage: dotnet run FileWithOneTypePerLine.txt ..\\OutputFolder");
+                Console.WriteLine("Usage: dotnet run FileWithOneTypePerLine.txt XmlDocsFolder ..\\OutputFolder");
                 Console.WriteLine("    FileWithOneTypePerLine.txt must list types in the Xamarin.Forms namespace in the Xamarin.Forms assembly.");
                 return -1;
             }
 
-            var listOfTypeToGenerate = File.ReadAllLines(args[0]);
-            var outputFolder = args[1];
+            var listOfTypeNamesToGenerate = File.ReadAllLines(args[0]);
+            var outputFolder = args[2];
 
             var settings = new GeneratorSettings
             {
@@ -26,38 +33,47 @@ namespace ComponentWrapperGenerator
                 RootNamespace = "Microsoft.MobileBlazorBindings.Elements",
             };
 
-            foreach (var typeToGenerate in listOfTypeToGenerate)
+            var generator = new ComponentWrapperGenerator(settings);
+            var xmlDocs = new XmlDocument();
+            var xmlDocPath = Path.Combine(Directory.GetCurrentDirectory(), args[1], "Xamarin.Forms.Core.xml");
+            xmlDocs.Load(xmlDocPath);
+
+            foreach (var typeNameToGenerate in listOfTypeNamesToGenerate)
             {
-                if (string.IsNullOrWhiteSpace(typeToGenerate))
+                if (string.IsNullOrWhiteSpace(typeNameToGenerate))
                 {
                     continue;
                 }
-                if (typeToGenerate[0] == '#')
+                if (IsCommentLine(typeNameToGenerate))
                 {
-                    Console.WriteLine($"Skipping line: {typeToGenerate}");
+                    Console.WriteLine($"Skipping comment: {typeNameToGenerate}");
                     Console.WriteLine();
                     continue;
                 }
 
-                GenerateWrapperForType(typeToGenerate, settings, outputFolder);
+                if (!TryGetTypeToGenerate(typeNameToGenerate, out var typeToGenerate))
+                {
+                    Console.WriteLine($"WARNING: Couldn't find type {typeNameToGenerate}.");
+                    Console.WriteLine();
+                    continue;
+                }
+                generator.GenerateComponentWrapper(typeToGenerate, xmlDocs, outputFolder);
+                Console.WriteLine();
             }
 
             return 0;
         }
 
-        private static void GenerateWrapperForType(string typeName, GeneratorSettings settings, string outputFolder)
+        private static bool IsCommentLine(string typeNameToGenerate)
+        {
+            return typeNameToGenerate[0] == '#';
+        }
+
+        private static bool TryGetTypeToGenerate(string typeName, out Type typeToGenerate)
         {
             var fullTypeName = "Xamarin.Forms." + typeName;
-            var typeToGenerate = typeof(Xamarin.Forms.Element).Assembly.GetType(fullTypeName);
-            if (typeToGenerate == null)
-            {
-                Console.WriteLine($"WARNING: Couldn't find type {fullTypeName}.");
-                Console.WriteLine();
-                return;
-            }
-            var generator = new ComponentWrapperGenerator(settings);
-            generator.GenerateComponentWrapper(typeToGenerate, outputFolder);
-            Console.WriteLine();
+            typeToGenerate = typeof(Xamarin.Forms.Element).Assembly.GetType(fullTypeName);
+            return typeToGenerate != null;
         }
     }
 }

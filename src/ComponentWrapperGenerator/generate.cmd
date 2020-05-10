@@ -1,1 +1,1 @@
-dotnet run TypesToGenerate.txt ..\out
+dotnet run TypesToGenerate.txt bin\Debug\netcoreapp3.0 ..\out

@@ -9,11 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TypesToGenerate.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TypesToGenerate.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356" />
+    <PackageReference Include="Xamarin.Forms" Version="4.5.0.356">
+      <IncludeAssets></IncludeAssets>
+      <PrivateAssets></PrivateAssets>
+      <GeneratePathProperty>true</GeneratePathProperty>
+    </PackageReference>
   </ItemGroup>
 
+  <Target Name="CopyXamarinFormsXmlDocToOutput" AfterTargets="Build">
+    <Message Text="Xamarin.Forms package location: $(PkgXamarin_Forms)" />
+    <Copy SourceFiles="$(PkgXamarin_Forms)\lib\netstandard2.0\Xamarin.Forms.Core.xml" DestinationFolder="$(OutDir)" />
+  </Target>
 </Project>
