@@ -17,7 +17,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new StackLayoutHandler(renderer, new XF.StackLayout()));
         }
 
+        /// <summary>
+        /// Gets or sets the value which indicates the direction which child elements are positioned.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.StackOrientation" /> which indicates the direction children layouts flow. The default value is Vertical.
+        /// </value>
         [Parameter] public XF.StackOrientation? Orientation { get; set; }
+        /// <summary>
+        /// Gets or sets a value which indicates the amount of space between each child element.
+        /// </summary>
+        /// <value>
+        /// A value in device pixels which indicates the amount of space between each element. The default value is 6.0.
+        /// </value>
         [Parameter] public double? Spacing { get; set; }
 
         public new XF.StackLayout NativeControl => ((StackLayoutHandler)ElementHandler).StackLayoutControl;

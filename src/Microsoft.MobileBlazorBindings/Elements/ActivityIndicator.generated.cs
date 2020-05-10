@@ -17,7 +17,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ActivityIndicatorHandler(renderer, new XF.ActivityIndicator()));
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.
+        /// </value>
         [Parameter] public XF.Color? Color { get; set; }
+        /// <summary>
+        /// Gets or sets the value indicating if the ActivityIndicator is running. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:System.Boolean" /> indicating if the ActivityIndicator is running.
+        /// </value>
         [Parameter] public bool? IsRunning { get; set; }
 
         public new XF.ActivityIndicator NativeControl => ((ActivityIndicatorHandler)ElementHandler).ActivityIndicatorControl;

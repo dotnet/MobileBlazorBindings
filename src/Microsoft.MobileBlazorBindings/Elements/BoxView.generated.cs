@@ -17,7 +17,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new BoxViewHandler(renderer, new XF.BoxView()));
         }
 
+        /// <summary>
+        /// Gets or sets the color which will fill the rectangle. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The color that is used to fill the rectangle. The default is <see cref="P:Xamarin.Forms.Color.Default" />.
+        /// </value>
         [Parameter] public XF.Color? Color { get; set; }
+        /// <summary>
+        /// Gets or sets the corner radius for the box view.
+        /// </summary>
+        /// <value>
+        /// The corner radius for the box view.
+        /// </value>
         [Parameter] public XF.CornerRadius? CornerRadius { get; set; }
 
         public new XF.BoxView NativeControl => ((BoxViewHandler)ElementHandler).BoxViewControl;

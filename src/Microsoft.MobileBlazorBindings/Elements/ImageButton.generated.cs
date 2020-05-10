@@ -17,12 +17,54 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ImageButtonHandler(renderer, new XF.ImageButton()));
         }
 
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Aspect? Aspect { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Color? BorderColor { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public double? BorderWidth { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public int? CornerRadius { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? IsOpaque { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Thickness? Padding { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ImageSource Source { get; set; }
 
         public new XF.ImageButton NativeControl => ((ImageButtonHandler)ElementHandler).ImageButtonControl;

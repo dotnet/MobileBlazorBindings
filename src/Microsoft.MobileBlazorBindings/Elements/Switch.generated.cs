@@ -17,8 +17,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new SwitchHandler(renderer, new XF.Switch()));
         }
 
+        /// <summary>
+        /// Gets or sets a Boolean value that indicates whether this <see cref="T:Xamarin.Forms.Switch" /> element is toggled.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? IsToggled { get; set; }
+        /// <summary>
+        /// Gets or sets the color of the switch when it is in the "On" position.
+        /// </summary>
+        /// <value>
+        /// The color of the switch when it is in the "On" position.
+        /// </value>
         [Parameter] public XF.Color? OnColor { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Color? ThumbColor { get; set; }
 
         public new XF.Switch NativeControl => ((SwitchHandler)ElementHandler).SwitchControl;

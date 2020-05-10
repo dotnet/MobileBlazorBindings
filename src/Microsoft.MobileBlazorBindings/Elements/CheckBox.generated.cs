@@ -17,7 +17,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new CheckBoxHandler(renderer, new XF.CheckBox()));
         }
 
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Color? Color { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? IsChecked { get; set; }
 
         public new XF.CheckBox NativeControl => ((CheckBoxHandler)ElementHandler).CheckBoxControl;

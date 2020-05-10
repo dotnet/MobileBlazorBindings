@@ -17,8 +17,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new FrameHandler(renderer, new XF.Frame()));
         }
 
+        /// <summary>
+        /// Gets or sets the border color for the frame.
+        /// </summary>
+        /// <value>
+        /// The border color for the frame.
+        /// </value>
         [Parameter] public XF.Color? BorderColor { get; set; }
+        /// <summary>
+        /// Gets or sets the corner radius of the frame.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public float? CornerRadius { get; set; }
+        /// <summary>
+        /// Gets or sets a flag indicating if the Frame has a shadow displayed. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:System.Boolean" /> indicating whether or not the Frame has a shadow. Default is <see langword="true" />.
+        /// </value>
         [Parameter] public bool? HasShadow { get; set; }
 
         public new XF.Frame NativeControl => ((FrameHandler)ElementHandler).FrameControl;

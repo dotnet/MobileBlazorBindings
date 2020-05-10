@@ -17,16 +17,82 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ButtonHandler(renderer, new XF.Button()));
         }
 
+        /// <summary>
+        /// Gets or sets a color that describes the border stroke color of the button. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The color that is used as the border stroke color; the default is <see cref="P:Xamarin.Forms.Color.Default" />.
+        /// </value>
         [Parameter] public XF.Color? BorderColor { get; set; }
+        /// <summary>
+        /// Gets or sets the width of the border. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The width of the button border; the default is 0.
+        /// </value>
         [Parameter] public double? BorderWidth { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public double? CharacterSpacing { get; set; }
+        /// <summary>
+        /// Gets or sets the corner radius for the button, in device-independent units.
+        /// </summary>
+        /// <value>
+        /// The corner radius for the button, in device-independent units.
+        /// </value>
         [Parameter] public int? CornerRadius { get; set; }
+        /// <summary>
+        /// Gets a value that indicates whether the font for the button text is bold, italic, or neither.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        /// <summary>
+        /// Gets the font family to which the font for the button text belongs.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public string FontFamily { get; set; }
+        /// <summary>
+        /// Gets or sets the size of the font of the button text.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public double? FontSize { get; set; }
+        /// <summary>
+        /// Allows you to display a bitmap image on the Button.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ImageSource ImageSource { get; set; }
+        /// <summary>
+        /// Gets or sets the padding for the button.
+        /// </summary>
+        /// <value>
+        /// The padding for the button.
+        /// </value>
         [Parameter] public XF.Thickness? Padding { get; set; }
+        /// <summary>
+        /// Gets or sets the Text displayed as the content of the button. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The text displayed in the button. The default value is <see langword="null" />.
+        /// </value>
         [Parameter] public string Text { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the text of the button. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The <see cref="T:Xamarin.Forms.Color" /> value.
+        /// </value>
         [Parameter] public XF.Color? TextColor { get; set; }
 
         public new XF.Button NativeControl => ((ButtonHandler)ElementHandler).ButtonControl;

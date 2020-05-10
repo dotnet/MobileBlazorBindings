@@ -17,7 +17,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ProgressBarHandler(renderer, new XF.ProgressBar()));
         }
 
+        /// <summary>
+        /// Gets or sets the progress value.
+        /// </summary>
+        /// <value>
+        /// Gets or sets a value that specifies the fraction of the bar that is colored.
+        /// </value>
         [Parameter] public double? Progress { get; set; }
+        /// <summary>
+        /// Get or sets the color of the progress bar.
+        /// </summary>
+        /// <value>
+        /// The color of the progress bar.
+        /// </value>
         [Parameter] public XF.Color? ProgressColor { get; set; }
 
         public new XF.ProgressBar NativeControl => ((ProgressBarHandler)ElementHandler).ProgressBarControl;

@@ -17,12 +17,54 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new BaseShellItemHandler(renderer, new XF.BaseShellItem()));
         }
 
+        /// <summary>
+        /// The icon to use for the item. If this property is unset, it will fallback to using the <see cref="P:Xamarin.Forms.BaseShellItem.Icon" /> property value.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.ImageSource" /> that represents an icon.
+        /// </value>
         [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
+        /// <summary>
+        /// Defines the icon to display in parts of the chrome that are not the flyout.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.ImageSource" /> that represents an icon.
+        /// </value>
         [Parameter] public XF.ImageSource Icon { get; set; }
+        /// <summary>
+        /// Defines if the item is selectable in the chrome.
+        /// </summary>
+        /// <value>
+        /// <see langword="true" /> if the item is selectable in the chrome.
+        /// </value>
         [Parameter] public bool? IsEnabled { get; set; }
+        /// <summary>
+        /// Indicates whether a FlyoutItem is included in tab navigation.
+        /// </summary>
+        /// <value>
+        /// Default value is <see langword="true" />; when <see langword="false" />, the FlyoutItem is ignored by the tab-navigation infrastructure, irrespective if a TabIndex is set.
+        /// </value>
         [Parameter] public bool? IsTabStop { get; set; }
+        /// <summary>
+        /// The string used to address the item.
+        /// </summary>
+        /// <value>
+        /// A unique string that identifies the item.
+        /// </value>
         [Parameter] public string Route { get; set; }
+        /// <summary>
+        /// Indicates the order in which FlyoutItem objects receive focus when the user navigates through items by pressing the Tab key.
+        /// </summary>
+        /// <value>
+        /// Defaults to 0.
+        /// </value>
         [Parameter] public int? TabIndex { get; set; }
+        /// <summary>
+        /// Title to display in the UI.
+        /// </summary>
+        /// <value>
+        /// Title to display in the UI.
+        /// </value>
         [Parameter] public string Title { get; set; }
 
         public new XF.BaseShellItem NativeControl => ((BaseShellItemHandler)ElementHandler).BaseShellItemControl;

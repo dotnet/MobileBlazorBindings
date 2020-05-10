@@ -17,13 +17,61 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ShellHandler(renderer, new XF.Shell()));
         }
 
+        /// <summary>
+        /// Gets or sets the background color of the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ImageSource FlyoutBackgroundImage { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Aspect? FlyoutBackgroundImageAspect { get; set; }
+        /// <summary>
+        /// Setting the <see cref="T:Xamarin.Forms.FlyoutBehavior" /> property to Disabled hides the flyout, which is useful when you only have one ShellItem. The other valid FlyoutBehavior values are Flyout (default), and Locked.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.FlyoutBehavior? FlyoutBehavior { get; set; }
+        /// <summary>
+        /// Setting the FlyoutHeaderBehavior to CollapseOnScroll collapses the flyout as scrolling occurs. The other valid FlyoutHeaderBehavior values are Default, Fixed, and Scroll (scroll with the menu items).
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
+        /// <summary>
+        /// Gets or sets the icon that, when pressed, opens the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
+        /// </summary>
+        /// <value>
+        /// The default icon is a "hamburger" icon.
+        /// </value>
         [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
+        /// <summary>
+        /// Gets or sets the visible status of the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? FlyoutIsPresented { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ScrollMode? FlyoutVerticalScrollMode { get; set; }
 
         public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;

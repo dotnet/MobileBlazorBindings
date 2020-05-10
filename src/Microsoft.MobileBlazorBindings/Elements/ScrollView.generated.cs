@@ -17,8 +17,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new ScrollViewHandler(renderer, new XF.ScrollView()));
         }
 
+        /// <summary>
+        /// Gets or sets a value that controls when the horizontal scroll bar is visible.
+        /// </summary>
+        /// <value>
+        /// A value that controls when the horizontal scroll bar is visible.
+        /// </value>
         [Parameter] public XF.ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
+        /// <summary>
+        /// Gets or sets the scrolling direction of the ScrollView. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// 
+        /// </value>
         [Parameter] public XF.ScrollOrientation? Orientation { get; set; }
+        /// <summary>
+        /// Gets or sets a value that controls when the vertical scroll bar is visible.
+        /// </summary>
+        /// <value>
+        /// A value that controls when the vertical scroll bar is visible.
+        /// </value>
         [Parameter] public XF.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
         public new XF.ScrollView NativeControl => ((ScrollViewHandler)ElementHandler).ScrollViewControl;

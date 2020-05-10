@@ -12,8 +12,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
     public partial class View : VisualElement
     {
 
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.LayoutOptions" /> that define how the element gets laid in a layout cycle. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.LayoutOptions" /> which defines how to lay out the element. Default value is <see cref="F:Xamarin.Forms.LayoutOptions.Fill" /> unless otherwise documented.
+        /// </value>
         [Parameter] public XF.LayoutOptions? HorizontalOptions { get; set; }
+        /// <summary>
+        /// Gets or sets the margin for the view.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.Thickness? Margin { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.LayoutOptions" /> that define how the element gets laid in a layout cycle. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A <see cref="T:Xamarin.Forms.LayoutOptions" /> which defines how to lay out the element. Default value is <see cref="F:Xamarin.Forms.LayoutOptions.Fill" /> unless otherwise documented.
+        /// </value>
         [Parameter] public XF.LayoutOptions? VerticalOptions { get; set; }
 
         public new XF.View NativeControl => ((ViewHandler)ElementHandler).ViewControl;

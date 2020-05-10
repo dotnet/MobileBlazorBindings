@@ -17,9 +17,33 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new MenuItemHandler(renderer, new XF.MenuItem()));
         }
 
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ImageSource IconImageSource { get; set; }
+        /// <summary>
+        /// Gets or sets a value that indicates whether or not the menu item removes its associated UI element.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? IsDestructive { get; set; }
+        /// <summary>
+        /// For internal use by the Xamarin.Forms platform.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public bool? IsEnabled { get; set; }
+        /// <summary>
+        /// The text of the menu item.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public string Text { get; set; }
 
         public new XF.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;

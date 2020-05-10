@@ -17,12 +17,54 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new SliderHandler(renderer, new XF.Slider()));
         }
 
+        /// <summary>
+        /// Gets or sets the maximum selectable value for the Slider. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A double.
+        /// </value>
         [Parameter] public double? Maximum { get; set; }
+        /// <summary>
+        /// Gets or sets the color of the portion of the slider track that contains the maximum value of the slider.
+        /// </summary>
+        /// <value>
+        /// Thhe color of the portion of the slider track that contains the maximum value of the slider.
+        /// </value>
         [Parameter] public XF.Color? MaximumTrackColor { get; set; }
+        /// <summary>
+        /// Gets or sets the minimum selectable value for the Slider. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A double.
+        /// </value>
         [Parameter] public double? Minimum { get; set; }
+        /// <summary>
+        /// Gets or sets the color of the portion of the slider track that contains the minimum value of the slider.
+        /// </summary>
+        /// <value>
+        /// Thhe color of the portion of the slider track that contains the minimum value of the slider.
+        /// </value>
         [Parameter] public XF.Color? MinimumTrackColor { get; set; }
+        /// <summary>
+        /// Gets or sets the color of the slider thumb button.
+        /// </summary>
+        /// <value>
+        /// The color of the slider thumb button.
+        /// </value>
         [Parameter] public XF.Color? ThumbColor { get; set; }
+        /// <summary>
+        /// To be added.
+        /// </summary>
+        /// <value>
+        /// To be added.
+        /// </value>
         [Parameter] public XF.ImageSource ThumbImageSource { get; set; }
+        /// <summary>
+        /// Gets or sets the current value. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// A double.
+        /// </value>
         [Parameter] public double? Value { get; set; }
 
         public new XF.Slider NativeControl => ((SliderHandler)ElementHandler).SliderControl;
