@@ -188,6 +188,17 @@ namespace {Settings.RootNamespace}
 ";
         }
 
+        private static string GetXmlDocText(XmlElement xmlDocElement)
+        {
+            var allText = xmlDocElement?.InnerXml;
+            allText = allText.Replace("To be added.", string.Empty, StringComparison.Ordinal);
+            if (string.IsNullOrWhiteSpace(allText))
+            {
+                return null;
+            }
+            return allText;
+        }
+
         private static string GetXmlDocContents(PropertyInfo prop, XmlDocument xmlDocs, string indent)
         {
             var xmlDocContents = string.Empty;
@@ -201,10 +212,9 @@ namespace {Settings.RootNamespace}
             var xmlDocNode = xmlDocs.SelectSingleNode($"//member[@name='{xmlDocNodeName}']");
             if (xmlDocNode != null)
             {
-                var summaryNode = xmlDocNode["summary"];
-                var summaryText = summaryNode?.InnerXml;
-                var valueNode = xmlDocNode["value"];
-                var valueText = valueNode?.InnerXml;
+                var summaryText = GetXmlDocText(xmlDocNode["summary"]);
+                var valueText = GetXmlDocText(xmlDocNode["value"]);
+
                 if (summaryText != null || valueText != null)
                 {
                     var xmlDocContentBuilder = new StringBuilder();
