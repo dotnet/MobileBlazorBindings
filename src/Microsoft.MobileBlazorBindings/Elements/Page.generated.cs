@@ -17,19 +17,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new PageHandler(renderer, new XF.Page()));
         }
 
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.ImageSource BackgroundImageSource { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.ImageSource IconImageSource { get; set; }
         /// <summary>
         /// Marks the Page as busy. This will cause the platform specific global activity indicator to show a busy state.
@@ -41,16 +29,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// The space between the content of the <see cref="T:Xamarin.Forms.Page" /> and it's border.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Thickness? Padding { get; set; }
         /// <summary>
         /// The <see cref="T:Xamarin.Forms.Page" />'s title.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string Title { get; set; }
 
         public new XF.Page NativeControl => ((PageHandler)ElementHandler).PageControl;

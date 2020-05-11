@@ -64,9 +64,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the text color.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? TextColor { get; set; }
 
         public new XF.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;

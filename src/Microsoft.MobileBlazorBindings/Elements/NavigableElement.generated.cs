@@ -12,19 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
     public partial class NavigableElement : Element
     {
 
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string @class { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string StyleClass { get; set; }
 
         public new XF.NavigableElement NativeControl => ((NavigableElementHandler)ElementHandler).NavigableElementControl;

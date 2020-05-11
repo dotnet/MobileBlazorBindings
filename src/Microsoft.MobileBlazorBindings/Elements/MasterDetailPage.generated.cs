@@ -27,16 +27,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets a value that indicates whether or not the visual element that is represented by the <see cref="P:Xamarin.Forms.MasterDetailPage.Master" /> property is presented to the user.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public bool? IsPresented { get; set; }
         /// <summary>
         /// Gets or sets a value that indicates how detail content is displayed.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.MasterBehavior? MasterBehavior { get; set; }
 
         public new XF.MasterDetailPage NativeControl => ((MasterDetailPageHandler)ElementHandler).MasterDetailPageControl;

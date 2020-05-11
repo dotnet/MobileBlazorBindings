@@ -17,40 +17,22 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new LabelHandler(renderer, new XF.Label()));
         }
 
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? CharacterSpacing { get; set; }
         /// <summary>
         /// Gets a value that indicates whether the font for the label is bold, italic, or neither.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         /// <summary>
         /// Gets the font family to which the font for the label belongs.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string FontFamily { get; set; }
         /// <summary>
         /// Gets the size of the font for the label.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? FontSize { get; set; }
         /// <summary>
         /// Gets or sets the horizontal alignment of the Text property. This is a bindable property.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
         /// <summary>
         /// Gets or sets the LineBreakMode for the Label. This is a bindable property.
@@ -69,16 +51,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the maximum number of lines allowed in the <see cref="T:Xamarin.Forms.Label" />.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public int? MaxLines { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Thickness? Padding { get; set; }
         /// <summary>
         /// Gets or sets the text for the Label. This is a bindable property.
@@ -97,23 +70,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.TextDecorations" /> applied to <see cref="P:Xamarin.Forms.Label.Text" />.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextType? TextType { get; set; }
         /// <summary>
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
 
         public new XF.Label NativeControl => ((LabelHandler)ElementHandler).LabelControl;

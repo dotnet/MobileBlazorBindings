@@ -138,12 +138,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The scale value to apply to the Y direction.
         /// </value>
         [Parameter] public double? ScaleY { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public int? TabIndex { get; set; }
         /// <summary>
         /// Gets or sets the X translation delta of the element.

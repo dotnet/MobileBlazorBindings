@@ -22,9 +22,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the margin for the view.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Thickness? Margin { get; set; }
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.LayoutOptions" /> that define how the element gets laid in a layout cycle. This is a bindable property.

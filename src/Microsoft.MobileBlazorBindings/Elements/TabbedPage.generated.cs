@@ -31,19 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The color of text on the bar.
         /// </value>
         [Parameter] public XF.Color? BarTextColor { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? SelectedTabColor { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? UnselectedTabColor { get; set; }
 
         public new XF.TabbedPage NativeControl => ((TabbedPageHandler)ElementHandler).TabbedPageControl;

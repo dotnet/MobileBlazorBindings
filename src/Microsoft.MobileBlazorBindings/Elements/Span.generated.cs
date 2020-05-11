@@ -20,44 +20,23 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the Color of the span background.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? BackgroundColor { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? CharacterSpacing { get; set; }
         /// <summary>
         /// Gets a value that indicates whether the font for the span is bold, italic, or neither.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         /// <summary>
         /// Gets the font family to which the font for the text in the span belongs.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string FontFamily { get; set; }
         /// <summary>
         /// Gets the size of the font for the text in the span.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? FontSize { get; set; }
         /// <summary>
         /// Gets or sets the Color for the text in the span.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? ForegroundColor { get; set; }
         /// <summary>
         /// Gets or sets the multiplier to apply to the default line height when displaying text.
@@ -69,23 +48,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the text of the span.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string Text { get; set; }
         /// <summary>
         /// Gets or sets the text color.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.Color? TextColor { get; set; }
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.TextDecorations" /> applied to this span.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
 
         public new XF.Span NativeControl => ((SpanHandler)ElementHandler).SpanControl;

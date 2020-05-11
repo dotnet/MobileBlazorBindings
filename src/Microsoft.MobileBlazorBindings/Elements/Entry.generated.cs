@@ -17,12 +17,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new EntryHandler(renderer, new XF.Entry()));
         }
 
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.ClearButtonVisibility? ClearButtonVisibility { get; set; }
         /// <summary>
         /// Gets or sets the position of the cursor.
@@ -34,30 +28,18 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets a value that indicates whether the font for the Entry element text is bold, italic, or neither.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         /// <summary>
         /// Gets the font family for the Entry element text.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string FontFamily { get; set; }
         /// <summary>
         /// Gets the size of the font for the Entry element text.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? FontSize { get; set; }
         /// <summary>
         /// Gets or sets the horizontal text alignment.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
         /// <summary>
         /// Gets or sets a value that indicates if the entry should visually obscure typed text.
@@ -87,12 +69,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The length of the selection.
         /// </value>
         [Parameter] public int? SelectionLength { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
 
         public new XF.Entry NativeControl => ((EntryHandler)ElementHandler).EntryControl;

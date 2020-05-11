@@ -27,9 +27,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the corner radius of the frame.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public float? CornerRadius { get; set; }
         /// <summary>
         /// Gets or sets a flag indicating if the Frame has a shadow displayed. This is a bindable property.

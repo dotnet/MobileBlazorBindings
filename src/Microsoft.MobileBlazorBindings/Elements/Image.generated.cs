@@ -24,12 +24,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// A <see cref="T:Xamarin.Forms.Aspect" /> representing the scaling mode of the image. Default is <see cref="F:Xamarin.Forms.Aspect.AspectFit" />.
         /// </value>
         [Parameter] public XF.Aspect? Aspect { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public bool? IsAnimationPlaying { get; set; }
         /// <summary>
         /// Gets or sets a Boolean value that, if <see langword="true" /> hints to the rendering engine that it may safely omit drawing visual elements behind the image.

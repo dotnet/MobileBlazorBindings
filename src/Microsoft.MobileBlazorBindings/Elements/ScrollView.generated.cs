@@ -27,9 +27,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the scrolling direction of the ScrollView. This is a bindable property.
         /// </summary>
-        /// <value>
-        /// 
-        /// </value>
         [Parameter] public XF.ScrollOrientation? Orientation { get; set; }
         /// <summary>
         /// Gets or sets a value that controls when the vertical scroll bar is visible.

@@ -31,12 +31,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The width of the button border; the default is 0.
         /// </value>
         [Parameter] public double? BorderWidth { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? CharacterSpacing { get; set; }
         /// <summary>
         /// Gets or sets the corner radius for the button, in device-independent units.
@@ -48,30 +42,18 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets a value that indicates whether the font for the button text is bold, italic, or neither.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         /// <summary>
         /// Gets the font family to which the font for the button text belongs.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public string FontFamily { get; set; }
         /// <summary>
         /// Gets or sets the size of the font of the button text.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public double? FontSize { get; set; }
         /// <summary>
         /// Allows you to display a bitmap image on the Button.
         /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.ImageSource ImageSource { get; set; }
         /// <summary>
         /// Gets or sets the padding for the button.

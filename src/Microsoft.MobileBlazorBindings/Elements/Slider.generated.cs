@@ -52,12 +52,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The color of the slider thumb button.
         /// </value>
         [Parameter] public XF.Color? ThumbColor { get; set; }
-        /// <summary>
-        /// To be added.
-        /// </summary>
-        /// <value>
-        /// To be added.
-        /// </value>
         [Parameter] public XF.ImageSource ThumbImageSource { get; set; }
         /// <summary>
         /// Gets or sets the current value. This is a bindable property.
