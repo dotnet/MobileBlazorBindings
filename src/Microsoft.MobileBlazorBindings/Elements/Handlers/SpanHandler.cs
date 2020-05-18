@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SpanHandler : GestureElementHandler, IHandleChildContentText
     {
-        private readonly TextSpanContainer _textSpanContainer = new TextSpanContainer();
+        private readonly TextSpanContainer _textSpanContainer = new TextSpanContainer(trimWhitespace: false);
 
         public void HandleText(int index, string text)
         {

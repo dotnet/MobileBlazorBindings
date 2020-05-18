@@ -116,9 +116,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                         // A ScrollView can have only 1 child, so the child's index is always 0.
                         return 0;
                     }
-                case XF.Label _:
+                case XF.Label parentAsLabel:
                     {
-                        // A Label can have only 1 child, so the child's index is always 0.
+                        // There are two cases to consider:
+                        // 1. A Xamarin.Forms Label can have only 1 child (a FormattedString), so the child's index is always 0.
+                        // 2. But to simplify things, in MobileBlazorBindings a Label can contain a Span directly, so if the child
+                        //    is a Span, we have to compute its sibling index.
+                        if (nativeComponent is XF.Span childAsSpan)
+                        {
+                            return parentAsLabel.FormattedText?.Spans.IndexOf(childAsSpan) ?? 0;
+                        }
+
                         return 0;
                     }
                 case XF.FormattedString parentAsFormattedString:
