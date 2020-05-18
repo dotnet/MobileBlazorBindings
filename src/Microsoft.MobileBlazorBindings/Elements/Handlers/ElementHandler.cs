@@ -106,10 +106,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                         // A ContentPage can have only 1 child, so the child's index is always 0.
                         return 0;
                     }
-                case XF.TabbedPage tabbedPage:
+                case XF.TabbedPage parentAsTabbedPage:
                     {
                         var childAsPage = nativeComponent as XF.Page;
-                        return tabbedPage.Children.IndexOf(childAsPage);
+                        return parentAsTabbedPage.Children.IndexOf(childAsPage);
                     }
                 case XF.ScrollView _:
                     {
