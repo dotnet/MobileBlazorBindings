@@ -1,3 +1,4 @@
+# Xamarin.Forms components
 ActivityIndicator
 BaseMenuItem
 BaseShellItem
@@ -49,3 +50,6 @@ TemplatedPage
 TemplatedView
 View
 VisualElement
+
+# Xamarin.Forms.DualScreen components
+TwoPaneView

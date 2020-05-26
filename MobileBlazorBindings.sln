@@ -76,9 +76,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.Android", "src\Microsoft.MobileBlazorBindings.WebView.Android\Microsoft.MobileBlazorBindings.WebView.Android.csproj", "{4041365C-EC53-4D91-9D23-EA86B4778FF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.WebView.iOS", "src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj", "{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.iOS", "src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj", "{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.WebView.macOS", "src\Microsoft.MobileBlazorBindings.WebView.macOS\Microsoft.MobileBlazorBindings.WebView.macOS.csproj", "{5644B2A3-5B96-44D5-A244-4E7E450E2196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.macOS", "src\Microsoft.MobileBlazorBindings.WebView.macOS\Microsoft.MobileBlazorBindings.WebView.macOS.csproj", "{5644B2A3-5B96-44D5-A244-4E7E450E2196}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.Windows", "src\Microsoft.MobileBlazorBindings.WebView.Windows\Microsoft.MobileBlazorBindings.WebView.Windows.csproj", "{69571F1B-D2C2-4152-A15D-F753397AFC16}"
 EndProject
@@ -103,6 +103,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HybridMessageApp.Windows", "samples\HybridMessageApp\HybridMessageApp.Windows\HybridMessageApp.Windows.csproj", "{E94D9E33-867F-4D47-8FC5-52E1B0783D1C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridMessageApp.Android", "samples\HybridMessageApp\HybridMessageApp.Android\HybridMessageApp.Android.csproj", "{96B3AB56-0FBC-4E73-ABBA-7AFB204E3E76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.DualScreen", "src\Microsoft.MobileBlazorBindings.DualScreen\Microsoft.MobileBlazorBindings.DualScreen.csproj", "{CBE78113-CCF0-43DA-8461-787649DDB671}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -546,6 +548,18 @@ Global
 		{96B3AB56-0FBC-4E73-ABBA-7AFB204E3E76}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{96B3AB56-0FBC-4E73-ABBA-7AFB204E3E76}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{96B3AB56-0FBC-4E73-ABBA-7AFB204E3E76}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|iPhone.Build.0 = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{CBE78113-CCF0-43DA-8461-787649DDB671}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -591,6 +605,7 @@ Global
 		{067B3562-A60A-48CB-A917-4B7D9700120A} = {A1CEA2C3-9558-4578-B22E-09109111BE1A}
 		{E94D9E33-867F-4D47-8FC5-52E1B0783D1C} = {A1CEA2C3-9558-4578-B22E-09109111BE1A}
 		{96B3AB56-0FBC-4E73-ABBA-7AFB204E3E76} = {A1CEA2C3-9558-4578-B22E-09109111BE1A}
+		{CBE78113-CCF0-43DA-8461-787649DDB671} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A645A7FF-3F09-414D-A391-7E50C3597F05}
