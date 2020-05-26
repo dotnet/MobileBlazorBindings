@@ -25,10 +25,19 @@
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.6.0.800">
+      <IncludeAssets></IncludeAssets>
+      <PrivateAssets></PrivateAssets>
+      <GeneratePathProperty>true</GeneratePathProperty>
+    </PackageReference>
   </ItemGroup>
 
-  <Target Name="CopyXamarinFormsXmlDocToOutput" AfterTargets="Build">
+  <Target Name="CopyXmlDocsToOutput" AfterTargets="Build">
     <Message Text="Xamarin.Forms package location: $(PkgXamarin_Forms)" />
     <Copy SourceFiles="$(PkgXamarin_Forms)\lib\netstandard2.0\Xamarin.Forms.Core.xml" DestinationFolder="$(OutDir)" />
+    
+    <!-- Xamarin.Forms.DualScreen doesn't have any XML docs at this time -->
+    <!--<Message Text="Xamarin.Forms.DualScreen package location: $(PkgXamarin_Forms_DualScreen)" />
+    <Copy SourceFiles="$(PkgXamarin_Forms_DualScreen)\lib\netstandard2.0\Xamarin.Forms.DualScreen.xml" DestinationFolder="$(OutDir)" />-->
   </Target>
 </Project>

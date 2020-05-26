@@ -15,30 +15,32 @@ using XF = Xamarin.Forms;
 
 namespace ComponentWrapperGenerator
 {
-    // TODO: XML Doc Comments
-
 #pragma warning disable CA1724 // Type name conflicts with namespace name
     public class ComponentWrapperGenerator
 #pragma warning restore CA1724 // Type name conflicts with namespace name
     {
-        public ComponentWrapperGenerator(GeneratorSettings settings)
+        private GeneratorSettings Settings { get; }
+        private IList<XmlDocument> XmlDocs { get; }
+        private List<ComponentLocation> ComponentLocations { get; }
+
+        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs, List<ComponentLocation> componentLocations)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            XmlDocs = xmlDocs ?? throw new ArgumentNullException(nameof(xmlDocs));
+            ComponentLocations = componentLocations ?? throw new ArgumentNullException(nameof(componentLocations));
         }
 
-        private GeneratorSettings Settings { get; }
-
-        public void GenerateComponentWrapper(Type typeToGenerate, XmlDocument xmlDocs, string outputFolder)
+        public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
             var propertiesToGenerate = GetPropertiesToGenerate(typeToGenerate);
 
-            GenerateComponentFile(typeToGenerate, propertiesToGenerate, xmlDocs, outputFolder);
+            GenerateComponentFile(typeToGenerate, propertiesToGenerate, outputFolder);
             GenerateHandlerFile(typeToGenerate, propertiesToGenerate, outputFolder);
         }
 
-        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, XmlDocument xmlDocs, string outputFolder)
+        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
         {
             var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
@@ -59,12 +61,15 @@ namespace ComponentWrapperGenerator
             // usings
             var usings = new List<UsingStatement>
             {
-                new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core" },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers" },
-                new UsingStatement { Namespace = "System.Threading.Tasks" },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
+                new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, },
+                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
+                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers", IsUsed = true, },
+                new UsingStatement { Namespace = "System.Threading.Tasks", IsUsed = true, },
+                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
+                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
             };
+
+            var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
             // props
             var propertyDeclarationBuilder = new StringBuilder();
@@ -74,7 +79,7 @@ namespace ComponentWrapperGenerator
             }
             foreach (var prop in propertiesToGenerate)
             {
-                propertyDeclarationBuilder.Append(GetPropertyDeclaration(prop, usings, xmlDocs));
+                propertyDeclarationBuilder.Append(GetPropertyDeclaration(prop, usings));
             }
             var propertyDeclarations = propertyDeclarationBuilder.ToString();
 
@@ -91,6 +96,7 @@ namespace ComponentWrapperGenerator
                 usings
                     .Distinct()
                     .Where(u => u.Namespace != Settings.RootNamespace)
+                    .Where(u => u.IsUsed)
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
 
@@ -111,7 +117,7 @@ namespace ComponentWrapperGenerator
                 staticConstructor = $@"        static {componentName}()
         {{
             ElementHandlerRegistry.RegisterElementHandler<{componentName}>(
-                renderer => new {componentHandlerName}(renderer, new XF.{componentName}()));
+                renderer => new {componentHandlerName}(renderer, new {componentNamespacePrefix}{componentName}()));
         }}
 ";
             }
@@ -125,7 +131,7 @@ namespace {Settings.RootNamespace}
     public {classModifiers}partial class {componentName} : {componentBaseName}
     {{
 {staticConstructor}{propertyDeclarations}
-        public new XF.{componentName} NativeControl => (({componentHandlerName})ElementHandler).{componentName}Control;
+        public new {componentNamespacePrefix}{componentName} NativeControl => (({componentHandlerName})ElementHandler).{componentName}Control;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {{
@@ -141,6 +147,31 @@ namespace {Settings.RootNamespace}
 ");
 
             File.WriteAllText(fileName, outputBuilder.ToString());
+        }
+
+        private static string GetNamespacePrefix(Type type, List<UsingStatement> usings)
+        {
+            // Check if there's a 'using' already. If so, check if it has an alias. If not, add a new 'using'.
+            var namespaceAlias = string.Empty;
+
+            var existingUsing = usings.FirstOrDefault(u => u.Namespace == type.Namespace);
+            if (existingUsing == null)
+            {
+                usings.Add(new UsingStatement { Namespace = type.Namespace, IsUsed = true, });
+                return string.Empty;
+            }
+            else
+            {
+                existingUsing.IsUsed = true;
+                if (existingUsing.Alias != null)
+                {
+                    return existingUsing.Alias + ".";
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
         }
 
         private static readonly List<Type> DisallowedComponentPropertyTypes = new List<Type>
@@ -167,7 +198,7 @@ namespace {Settings.RootNamespace}
             typeof(XF.View),
         };
 
-        private static string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings, XmlDocument xmlDocs)
+        private string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
         {
             var propertyType = prop.PropertyType;
             string propertyTypeName;
@@ -186,7 +217,7 @@ namespace {Settings.RootNamespace}
             }
             const string indent = "        ";
 
-            var xmlDocContents = GetXmlDocContents(prop, xmlDocs, indent);
+            var xmlDocContents = GetXmlDocContents(prop, indent);
 
             return $@"{xmlDocContents}{indent}[Parameter] public {propertyTypeName} {GetIdentifierName(prop.Name)} {{ get; set; }}
 ";
@@ -203,42 +234,47 @@ namespace {Settings.RootNamespace}
             return allText;
         }
 
-        private static string GetXmlDocContents(PropertyInfo prop, XmlDocument xmlDocs, string indent)
+        private string GetXmlDocContents(PropertyInfo prop, string indent)
         {
-            var xmlDocContents = string.Empty;
-            // Format of XML docs we're looking for in a given property:
-            // <member name="P:Xamarin.Forms.ActivityIndicator.Color">
-            //     <summary>Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.</summary>
-            //     <value>A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.</value>
-            //     <remarks />
-            // </member>
-            var xmlDocNodeName = $"P:{prop.DeclaringType.Namespace}.{prop.DeclaringType.Name}.{prop.Name}";
-            var xmlDocNode = xmlDocs.SelectSingleNode($"//member[@name='{xmlDocNodeName}']");
-            if (xmlDocNode != null)
+            foreach (var xmlDoc in XmlDocs)
             {
-                var summaryText = GetXmlDocText(xmlDocNode["summary"]);
-                var valueText = GetXmlDocText(xmlDocNode["value"]);
 
-                if (summaryText != null || valueText != null)
+                var xmlDocContents = string.Empty;
+                // Format of XML docs we're looking for in a given property:
+                // <member name="P:Xamarin.Forms.ActivityIndicator.Color">
+                //     <summary>Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.</summary>
+                //     <value>A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.</value>
+                //     <remarks />
+                // </member>
+                var xmlDocNodeName = $"P:{prop.DeclaringType.Namespace}.{prop.DeclaringType.Name}.{prop.Name}";
+                var xmlDocNode = xmlDoc.SelectSingleNode($"//member[@name='{xmlDocNodeName}']");
+                if (xmlDocNode != null)
                 {
-                    var xmlDocContentBuilder = new StringBuilder();
-                    if (summaryText != null)
+                    var summaryText = GetXmlDocText(xmlDocNode["summary"]);
+                    var valueText = GetXmlDocText(xmlDocNode["value"]);
+
+                    if (summaryText != null || valueText != null)
                     {
-                        xmlDocContentBuilder.AppendLine($"{indent}/// <summary>");
-                        xmlDocContentBuilder.AppendLine($"{indent}/// {summaryText}");
-                        xmlDocContentBuilder.AppendLine($"{indent}/// </summary>");
+                        var xmlDocContentBuilder = new StringBuilder();
+                        if (summaryText != null)
+                        {
+                            xmlDocContentBuilder.AppendLine($"{indent}/// <summary>");
+                            xmlDocContentBuilder.AppendLine($"{indent}/// {summaryText}");
+                            xmlDocContentBuilder.AppendLine($"{indent}/// </summary>");
+                        }
+                        if (valueText != null)
+                        {
+                            xmlDocContentBuilder.AppendLine($"{indent}/// <value>");
+                            xmlDocContentBuilder.AppendLine($"{indent}/// {valueText}");
+                            xmlDocContentBuilder.AppendLine($"{indent}/// </value>");
+                        }
+                        xmlDocContents = xmlDocContentBuilder.ToString();
                     }
-                    if (valueText != null)
-                    {
-                        xmlDocContentBuilder.AppendLine($"{indent}/// <value>");
-                        xmlDocContentBuilder.AppendLine($"{indent}/// {valueText}");
-                        xmlDocContentBuilder.AppendLine($"{indent}/// </value>");
-                    }
-                    xmlDocContents = xmlDocContentBuilder.ToString();
+                    return xmlDocContents;
                 }
             }
 
-            return xmlDocContents;
+            return null;
         }
 
         private static string GetTypeNameAndAddNamespace(Type type, IList<UsingStatement> usings)
@@ -255,10 +291,11 @@ namespace {Settings.RootNamespace}
             var existingUsing = usings.FirstOrDefault(u => u.Namespace == type.Namespace);
             if (existingUsing == null)
             {
-                usings.Add(new UsingStatement { Namespace = type.Namespace });
+                usings.Add(new UsingStatement { Namespace = type.Namespace, IsUsed = true, });
             }
             else
             {
+                existingUsing.IsUsed = true;
                 if (existingUsing.Alias != null)
                 {
                     namespaceAlias = existingUsing.Alias + ".";
@@ -295,6 +332,7 @@ namespace {Settings.RootNamespace}
         {
             { typeof(XF.Color), propValue => $"AttributeHelper.ColorToString({propValue})" },
             { typeof(XF.CornerRadius), propValue => $"AttributeHelper.CornerRadiusToString({propValue})" },
+            { typeof(XF.GridLength), propValue => $"AttributeHelper.GridLengthToString({propValue})" },
             { typeof(XF.ImageSource), propValue => $"AttributeHelper.ImageSourceToString({propValue})" },
             { typeof(XF.LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
             { typeof(XF.Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
@@ -400,11 +438,14 @@ namespace {Settings.RootNamespace}
             // usings
             var usings = new List<UsingStatement>
             {
-                //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components" }, // Typically needed only when there are event handlers for the EventArgs types
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core" },
-                new UsingStatement { Namespace = "System" },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
+                //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, }, // Typically needed only when there are event handlers for the EventArgs types
+                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
+                new UsingStatement { Namespace = "System", IsUsed = true, },
+                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
+                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
             };
+
+            var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
             // props
             var propertySettersBuilder = new StringBuilder();
@@ -419,6 +460,7 @@ namespace {Settings.RootNamespace}
                 usings
                     .Distinct()
                     .Where(u => u.Namespace != Settings.RootNamespace)
+                    .Where(u => u.IsUsed)
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
 
@@ -453,7 +495,7 @@ namespace {Settings.RootNamespace}.Handlers
 {{
     public {classModifiers}partial class {componentHandlerName} : {componentHandlerBaseName}
     {{
-        public {componentName}Handler(NativeComponentRenderer renderer, XF.{componentName} {componentVarName}Control) : base(renderer, {componentVarName}Control)
+        public {componentName}Handler(NativeComponentRenderer renderer, {componentNamespacePrefix}{componentName} {componentVarName}Control) : base(renderer, {componentVarName}Control)
         {{
             {componentName}Control = {componentVarName}Control ?? throw new ArgumentNullException(nameof({componentVarName}Control));
 
@@ -462,7 +504,7 @@ namespace {Settings.RootNamespace}.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.{componentName} {componentName}Control {{ get; }}
+        public {componentNamespacePrefix}{componentName} {componentName}Control {{ get; }}
 {applyAttributesMethod}    }}
 }}
 ");
@@ -525,7 +567,7 @@ namespace {Settings.RootNamespace}.Handlers
                 Console.WriteLine($"WARNING: Couldn't generate property set for {prop.DeclaringType.Name}.{prop.Name}");
             }
 
-            return $@"                case nameof(XF.{prop.DeclaringType.Name}.{GetIdentifierName(prop.Name)}):
+            return $@"                case nameof({GetNamespacePrefix(prop.DeclaringType, usings)}{prop.DeclaringType.Name}.{GetIdentifierName(prop.Name)}):
                     {prop.DeclaringType.Name}Control.{GetIdentifierName(prop.Name)} = {formattedValue};
                     break;
 ";
@@ -545,17 +587,33 @@ namespace {Settings.RootNamespace}.Handlers
                 float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture) + "f", // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
                 double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
                 Enum enumValue => GetTypeNameAndAddNamespace(enumValue.GetType(), usings) + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue),
-                XF.LayoutOptions layoutOptionsValue => GetLayoutOptionsValueExpression(layoutOptionsValue),
+                XF.GridLength gridLengthValue => GetGridLengthValueExpression(gridLengthValue, usings),
+                XF.LayoutOptions layoutOptionsValue => GetLayoutOptionsValueExpression(layoutOptionsValue, usings),
                 string stringValue => $@"""{stringValue}""",
                 // TODO: More types here
                 _ => null,
             };
         }
 
-        private static string GetLayoutOptionsValueExpression(XF.LayoutOptions layoutOptionsValue)
+        private static string GetGridLengthValueExpression(XF.GridLength gridLengthValue, List<UsingStatement> usings)
         {
+            var namespacePrefix = GetNamespacePrefix(typeof(XF.GridUnitType), usings);
+
+            return gridLengthValue.GridUnitType switch
+            {
+                XF.GridUnitType.Absolute => string.Format(CultureInfo.InvariantCulture, "new {0}GridLength({1})", namespacePrefix, gridLengthValue.Value),
+                XF.GridUnitType.Star => $"{namespacePrefix}GridLength.Star",
+                XF.GridUnitType.Auto => $"{namespacePrefix}GridLength.Auto",
+                _ => null, // TODO: Error
+            };
+        }
+
+        private static string GetLayoutOptionsValueExpression(XF.LayoutOptions layoutOptionsValue, List<UsingStatement> usings)
+        {
+            var namespacePrefix = GetNamespacePrefix(typeof(XF.GridUnitType), usings);
+
             var expandSuffix = layoutOptionsValue.Expands ? "AndExpand" : string.Empty;
-            return $"XF.LayoutOptions.{layoutOptionsValue.Alignment}{expandSuffix}";
+            return $"{namespacePrefix}LayoutOptions.{layoutOptionsValue.Alignment}{expandSuffix}";
         }
 
         private static string GetIntValueExpression(int intValue)
@@ -591,6 +649,7 @@ namespace {Settings.RootNamespace}.Handlers
         {
             { typeof(XF.Color), "AttributeHelper.StringToColor((string)attributeValue{0})" },
             { typeof(XF.CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
+            { typeof(XF.GridLength), "AttributeHelper.StringToGridLength(attributeValue{0})" },
             { typeof(XF.ImageSource), "AttributeHelper.StringToImageSource(attributeValue{0})" },
             { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
             { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },

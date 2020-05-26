@@ -7,6 +7,7 @@ namespace ComponentWrapperGenerator
     {
         public string Alias { get; set; }
         public string Namespace { get; set; }
+        public bool IsUsed { get; set; }
 
         public string ComparableString => Alias?.ToUpperInvariant() ?? Namespace?.ToUpperInvariant();
 
