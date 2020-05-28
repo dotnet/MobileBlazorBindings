@@ -6,7 +6,7 @@ Here is a sample Counter component, which may look familiar to Blazor develo
 
 ```xml
 <StackLayout>
-    <Label FontSize="30">You pressed + @count + times </Label>
+    <Label FontSize="30">You pressed @count times </Label>
     <Button Text="+1" OnClick="@HandleClick" />
 </StackLayout>
 
