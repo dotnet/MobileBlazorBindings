@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.6.0.529-pre3" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.529-pre3" NoWarn="NU1701" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.800" NoWarn="NU1701" />
     <ProjectReference Include="..\..\..\src\BlazorDesktop.Windows\BlazorDesktop.Windows.csproj" />
     <ProjectReference Include="..\MessageApp\MessageApp.csproj" />
   </ItemGroup>
