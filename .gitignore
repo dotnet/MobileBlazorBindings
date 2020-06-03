@@ -2,3 +2,4 @@ bin/
 obj/
 *.csproj.user
 .vs/
+.DS_Store
