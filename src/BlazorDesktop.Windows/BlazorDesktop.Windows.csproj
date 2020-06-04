@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Web.WebView2" Version="0.9.488" />
-    <PackageReference Include="MtrDev.WebView2.Interop" Version="0.9.430.3" NoWarn="NU1701" />
-    <PackageReference Include="MtrDev.WebView2.Wpf" Version="0.9.430.4" NoWarn="NU1701" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="0.8.355" />
+    <PackageReference Include="MtrDev.WebView2.Interop" Version="0.8.355.3" NoWarn="NU1701" />
+    <PackageReference Include="MtrDev.WebView2.Wpf" Version="0.8.355.2" NoWarn="NU1701" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.800" NoWarn="NU1701" />
   </ItemGroup>
