@@ -49,6 +49,7 @@ namespace BlazorDesktop.Windows
                 else
                 {
                     var nativeControl = new WebView2Control { MinHeight = 200 };
+                    nativeControl.EnvironmentCreated += OnEnvironmentCreated;
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
                     await WaitForBrowserCreatedAsync();
@@ -64,6 +65,21 @@ namespace BlazorDesktop.Windows
             }
 
             base.OnElementChanged(e);
+        }
+
+        private void OnEnvironmentCreated(object sender, EnvironmentCreatedEventArgs e)
+        {
+            if (e.Result != 0)
+            {
+                if (e.Result == 2)
+                {
+                    throw new InvalidOperationException("Couldn't find Edge installation. Do you have a version installed that's compatible with this WebView2 SDK version?");
+                }
+                else
+                {
+                    throw new InvalidOperationException("Failed to create webview environment. Error: " + e.Result);
+                }
+            }
         }
 
         private void SubscribeToElementEvents()
