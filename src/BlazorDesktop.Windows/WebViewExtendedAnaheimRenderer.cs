@@ -27,6 +27,13 @@ namespace BlazorDesktop.Windows
             _ = HandleElementChangedAsync(e);
         }
 
+        private const string LoadBlazorJSScript =
+            "window.onload = (function blazorInitScript() {" +
+            "    var blazorScript = document.createElement('script');" +
+            "    blazorScript.src = 'framework://blazor.desktop.js';" +
+            "    document.head.appendChild(blazorScript);" +
+            "})";
+
         private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebViewExtended> e)
         {
             if (e.OldElement != null)
@@ -55,6 +62,7 @@ namespace BlazorDesktop.Windows
                     await WaitForBrowserCreatedAsync();
 
                     Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
+                    Control.AddScriptToExecuteOnDocumentCreated(LoadBlazorJSScript, callbackArgs => { });
 
                     SubscribeToControlEvents();
 

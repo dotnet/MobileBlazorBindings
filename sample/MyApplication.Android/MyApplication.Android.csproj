@@ -46,14 +46,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
+    <Reference Include="Mono.Android.Export" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="System.Text.Encodings.Web">
+      <Version>4.7.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
   </ItemGroup>
@@ -89,10 +90,22 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\BlazorDesktop.Android\BlazorDesktop.Android.csproj">
+      <Project>{4041365c-ec53-4d91-9d23-ea86b4778ff0}</Project>
+      <Name>BlazorDesktop.Android</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyApplication\MyApplication.csproj">
       <Project>{2C0BA59D-45E9-4610-B861-1E4D7FDB20BE}</Project>
       <Name>MyApplication</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <AndroidEnvironment Include="environment.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionMyApplicationAndroidHideInfoBar="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

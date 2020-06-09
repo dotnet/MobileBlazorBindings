@@ -25,14 +25,17 @@
 @code {
     private MailFolder folder;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        LoadFolder(AppState.CurrentFolder);
+        await LoadFolder(AppState.CurrentFolder);
     }
 
-    private void LoadFolder(string folderName)
+    private async Task LoadFolder(string folderName)
     {
-        var json = File.ReadAllText(Path.Combine("Storage", $"{folderName}.json"));
-        folder = JsonSerializer.Deserialize<MailFolder>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        var stream = GetType().Assembly.GetManifestResourceStream($"MessageApp.Storage.{folderName}.json");
+        if (stream != null)
+        {
+            folder = await JsonSerializer.DeserializeAsync<MailFolder>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
     }
 }

@@ -32,21 +32,28 @@ namespace BlazorDesktop.iOS
                     config.Preferences.SetValueForKey(FromObject(true), new NSString("developerExtrasEnabled"));
 
                     var initScriptSource = @"
-                        window.__receiveMessageCallbacks = [];
-			            window.__dispatchMessageCallback = function(message) {
-				            window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
-			            };
-			            window.external = {
-				            sendMessage: function(message) {
-					            window.webkit.messageHandlers.webwindowinterop.postMessage(message);
-				            },
-				            receiveMessage: function(callback) {
-					            window.__receiveMessageCallbacks.push(callback);
-				            }
-			            };";
-                    config.UserContentController.AddUserScript(new WKUserScript(
-                        new NSString(initScriptSource), WKUserScriptInjectionTime.AtDocumentStart, isForMainFrameOnly: true));
+                        window.onload = (function blazorInitScript() {
+                            window.__receiveMessageCallbacks = [];
+			                window.__dispatchMessageCallback = function(message) {
+				                window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
+			                };
+			                window.external = {
+				                sendMessage: function(message) {
+					                window.webkit.messageHandlers.webwindowinterop.postMessage(message);
+				                },
+				                receiveMessage: function(callback) {
+					                window.__receiveMessageCallbacks.push(callback);
+				                }
+			                };
+
+                            var blazorScript = document.createElement('script');
+                            blazorScript.src = 'framework://blazor.desktop.js';
+                            document.head.appendChild(blazorScript);
+                        });
+                    ";
                     config.UserContentController.AddScriptMessageHandler(this, "webwindowinterop");
+                    config.UserContentController.AddUserScript(new WKUserScript(
+                        new NSString(initScriptSource), WKUserScriptInjectionTime.AtDocumentStart, true));
 
                     foreach (var (scheme, handler) in Element.SchemeHandlers)
                     {

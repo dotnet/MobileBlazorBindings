@@ -16,7 +16,7 @@ using XF = Xamarin.Forms;
 
 namespace BlazorDesktop.Elements
 {
-    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent: IComponent
+    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
     {
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
@@ -98,11 +98,17 @@ namespace BlazorDesktop.Elements
                     if (appFile == contentRootAbsolute)
                     {
                         contentType = "text/html";
-                        var indexHtmlPath = Path.Combine(contentRootAbsolute, "index.html");
-                        return File.Exists(indexHtmlPath)
-                            ? (Stream)File.OpenRead(indexHtmlPath)
+                        const string IndexHtmlFilename = "index.html";
+                        var indexHtmlPath = Path.Combine(contentRootAbsolute, IndexHtmlFilename);
+
+                        if (BlazorDesktopHost.TryGetEmbeddedResourceFile(IndexHtmlFilename, out var fileStream))
+                        {
+                            return fileStream;
+                        }
+                        else
+                        {
                             // Use default HTML if none was provided in ContentRoot
-                            : new MemoryStream(Encoding.UTF8.GetBytes(@"<!DOCTYPE html>
+                            return new MemoryStream(Encoding.UTF8.GetBytes(@"<!DOCTYPE html>
                                 <html>
                                 <head>
                                     <meta charset=""utf-8"" />
@@ -120,15 +126,15 @@ namespace BlazorDesktop.Elements
                                         <a href="""" class=""reload"">Reload</a>
                                         <a class=""dismiss"">🗙</a>
                                     </div>
-                                    <script src=""framework://blazor.desktop.js""></script>
                                 </body>
                                 </html>
                                 "));
+                        }
                     }
-                    else if (File.Exists(appFile))
+                    else if (BlazorDesktopHost.TryGetEmbeddedResourceFile(uri.AbsolutePath.Substring(1), out var fileStream))
                     {
-                        contentType = GetContentType(appFile);
-                        return File.OpenRead(appFile);
+                        contentType = GetContentType(uri.AbsolutePath.Substring(1));
+                        return fileStream;
                     }
                 }
 

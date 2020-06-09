@@ -146,6 +146,8 @@
     <ProjectReference Include="..\..\..\src\BlazorDesktop.iOS\BlazorDesktop.iOS.csproj">
       <Project>{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}</Project>
       <Name>BlazorDesktop.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <!-- Workaround for Content not being copied to bundle -->
     <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">

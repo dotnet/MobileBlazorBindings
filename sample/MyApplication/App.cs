@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BlazorDesktop;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
@@ -8,6 +9,8 @@ namespace MyApplication
     {
         public App()
         {
+            BlazorDesktopHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
+
             var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {

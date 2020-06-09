@@ -10,6 +10,8 @@ namespace MessageApp
     {
         public MainPage()
         {
+            BlazorDesktopHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
+
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddBlazorDesktop();
             serviceCollection.AddLogging();

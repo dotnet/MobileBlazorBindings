@@ -1,5 +1,4 @@
 @page "/fetchdata"
-@using System.IO
 @using System.Text.Json
 
 <h1>Weather forecast</h1>
@@ -38,10 +37,12 @@ else
 @code {
     private WeatherForecast[] forecasts;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var forecastsJson = File.ReadAllText("WebUI/wwwroot/weather.json");
-        forecasts = JsonSerializer.Deserialize<WeatherForecast[]>(forecastsJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        if (BlazorDesktop.BlazorDesktopHost.TryGetEmbeddedResourceFile("weather.json", out var stream))
+        {
+            forecasts = await JsonSerializer.DeserializeAsync<WeatherForecast[]>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
     }
 
     public class WeatherForecast
