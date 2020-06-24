@@ -1,4 +1,4 @@
-﻿namespace BlazorDesktop.macOS
+﻿namespace Microsoft.MobileBlazorBindings.WebView.macOS
 {
     public static class BlazorDesktopMacOS
     {

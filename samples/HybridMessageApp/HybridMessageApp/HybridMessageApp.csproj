@@ -15,7 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\BlazorDesktop\BlazorDesktop.csproj" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.5" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
@@ -27,6 +26,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Storage\Inbox.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-﻿using BlazorDesktop;
+﻿using Microsoft.MobileBlazorBindings.WebView;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
-namespace MyApplication
+namespace HybridApp
 {
     public class App : Application
     {

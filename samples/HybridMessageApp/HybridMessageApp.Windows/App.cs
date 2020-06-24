@@ -1,9 +1,9 @@
-﻿using BlazorDesktop.Windows;
+﻿using Microsoft.MobileBlazorBindings.WebView.Windows;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
-namespace MessageApp.Windows
+namespace HybridMessageApp.Windows
 {
     public class MainWindow : FormsApplicationPage
     {
@@ -18,7 +18,7 @@ namespace MessageApp.Windows
         {
             BlazorDesktopWindows.Init();
             Forms.Init();
-            LoadApplication(new MessageApp.MainPage());
+            LoadApplication(new MainPage());
         }
     }
 }

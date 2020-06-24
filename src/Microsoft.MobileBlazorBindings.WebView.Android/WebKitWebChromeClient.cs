@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Xamarin.Forms.Internals;
 using Object = Java.Lang.Object;
 
-namespace BlazorDesktop.Android
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public class WebKitWebChromeClient : WebChromeClient
     {

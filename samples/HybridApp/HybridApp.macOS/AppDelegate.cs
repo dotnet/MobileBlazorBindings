@@ -1,7 +1,7 @@
 ﻿using AppKit;
 using Foundation;
 
-namespace MyApplication.macOS
+namespace HybridApp.macOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : Xamarin.Forms.Platform.MacOS.FormsApplicationDelegate
@@ -49,7 +49,7 @@ namespace MyApplication.macOS
             appMenu.AddItem(separator);
 
             // add quit menu item
-            string quitTitle = string.Format("Quit {0}", "MyApplication.macOS");
+            string quitTitle = string.Format("Quit {0}", "HybridApp.macOS");
             var quitMenuItem = new NSMenuItem(quitTitle, "q", delegate
             {
                 NSApplication.SharedApplication.Terminate(menubar);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace BlazorDesktop.Elements
+namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
     public class MobileBlazorBindingsBlazorWebView : BlazorWebView<IComponent>
     {

@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 using AWebView = Android.Webkit.WebView;
 
-namespace BlazorDesktop.Android
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public class WebKitWebViewClient : WebViewClient
     {

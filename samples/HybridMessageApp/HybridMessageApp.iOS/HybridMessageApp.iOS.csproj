@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{65C0771A-452F-423B-995C-F0AE46E643BA}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MessageApp.iOS</RootNamespace>
+    <RootNamespace>HybridMessageApp.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>MessageApp.iOS</AssemblyName>
+    <AssemblyName>HybridMessageApp.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <ProvisioningType>automatic</ProvisioningType>
@@ -139,19 +139,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\MessageApp\MessageApp.csproj">
-      <Project>{3BF32231-DBD0-4BF6-A3A0-CF4F397BB29C}</Project>
-      <Name>MessageApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\src\BlazorDesktop.iOS\BlazorDesktop.iOS.csproj">
-      <Project>{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}</Project>
-      <Name>BlazorDesktop.iOS</Name>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj">
+      <Project>{3cecadbb-3e56-4d47-a313-ce9e43dcab02}</Project>
+      <Name>Microsoft.MobileBlazorBindings.WebView.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-    <!-- Workaround for Content not being copied to bundle -->
-    <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">
-      <Link>Resources\WebUI\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </BundleResource>
+    <ProjectReference Include="..\HybridMessageApp\HybridMessageApp.csproj">
+      <Project>{623e9273-d3e7-452b-af15-0f2dfb20ecc2}</Project>
+      <Name>HybridMessageApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

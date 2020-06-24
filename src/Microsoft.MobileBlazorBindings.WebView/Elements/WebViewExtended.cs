@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using XF = Xamarin.Forms;
 
-namespace BlazorDesktop.Elements
+namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 

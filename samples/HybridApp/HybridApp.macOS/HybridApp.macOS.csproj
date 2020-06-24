@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -6,8 +6,8 @@
     <ProjectGuid>{FAFA9B0B-975F-4B2A-BE09-97386204399C}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MyApplication.macOS</RootNamespace>
-    <AssemblyName>MyApplication.macOS</AssemblyName>
+    <RootNamespace>HybridApp.macOS</RootNamespace>
+    <AssemblyName>HybridApp.macOS</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -28,16 +28,20 @@
     <IncludeMonoRuntime>false</IncludeMonoRuntime>
     <UseSGen>true</UseSGen>
     <UseRefCounting>true</UseRefCounting>
-    <HttpClientHandler></HttpClientHandler>
-    <LinkMode></LinkMode>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <LinkMode>
+    </LinkMode>
+    <XamMacArch>
+    </XamMacArch>
     <AOTMode>None</AOTMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <EnableCodeSigning>false</EnableCodeSigning>
@@ -48,8 +52,10 @@
     <UseRefCounting>true</UseRefCounting>
     <CodeSignEntitlements>Entitlements.plist</CodeSignEntitlements>
     <LinkMode>SdkOnly</LinkMode>
-    <HttpClientHandler></HttpClientHandler>
-    <XamMacArch></XamMacArch>
+    <HttpClientHandler>
+    </HttpClientHandler>
+    <XamMacArch>
+    </XamMacArch>
     <AOTMode>None</AOTMode>
   </PropertyGroup>
   <ItemGroup>
@@ -91,21 +97,15 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\MyApplication\MyApplication.csproj">
-      <Project>{671E0BC2-F069-4E03-91A6-85163C7245C9}</Project>
-      <Name>MyApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\BlazorDesktop.macOS\BlazorDesktop.macOS.csproj">
-      <Project>{5644B2A3-5B96-44D5-A244-4E7E450E2196}</Project>
-      <Name>BlazorDesktop.macOS</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
   <ItemGroup>
-    <!-- Workaround for Content not being copied to bundle -->
-    <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">
-      <Link>Resources\WebUI\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </BundleResource>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.macOS\Microsoft.MobileBlazorBindings.WebView.macOS.csproj">
+      <Project>{5644b2a3-5b96-44d5-a244-4e7e450e2196}</Project>
+      <Name>Microsoft.MobileBlazorBindings.WebView.macOS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HybridApp\HybridApp.csproj">
+      <Project>{de71f6d4-9950-472a-90b2-f4074810ae6d}</Project>
+      <Name>HybridApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

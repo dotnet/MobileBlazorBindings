@@ -1,4 +1,4 @@
-﻿namespace BlazorDesktop.Android
+﻿namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public static class BlazorDesktopAndroid
     {

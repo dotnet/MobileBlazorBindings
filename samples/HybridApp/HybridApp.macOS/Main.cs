@@ -1,7 +1,7 @@
 ﻿using AppKit;
-using BlazorDesktop.macOS;
+using Microsoft.MobileBlazorBindings.WebView.macOS;
 
-namespace MyApplication.macOS
+namespace HybridApp.macOS
 {
     static class MainClass
     {

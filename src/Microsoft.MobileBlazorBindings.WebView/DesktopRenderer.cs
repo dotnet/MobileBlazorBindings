@@ -8,7 +8,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace BlazorDesktop
+namespace Microsoft.MobileBlazorBindings.WebView
 {
 #pragma warning disable BL0006 // Do not use RenderTree types
     internal class DesktopRenderer : Renderer

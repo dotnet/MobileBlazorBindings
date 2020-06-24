@@ -14,7 +14,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
-namespace BlazorDesktop.Elements
+namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
     public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
     {
@@ -288,7 +288,7 @@ namespace BlazorDesktop.Elements
             switch (uri)
             {
                 case "framework://blazor.desktop.js":
-                    return typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("BlazorDesktop.blazor.desktop.js");
+                    return typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js");
                 default:
                     throw new ArgumentException($"Unknown framework file: {uri}");
             }

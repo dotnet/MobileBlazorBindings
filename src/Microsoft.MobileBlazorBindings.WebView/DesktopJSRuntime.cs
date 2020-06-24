@@ -3,7 +3,7 @@ using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.Threading.Tasks;
 
-namespace BlazorDesktop
+namespace Microsoft.MobileBlazorBindings.WebView
 {
     internal class DesktopJSRuntime : JSRuntime
     {

@@ -1,4 +1,4 @@
-﻿namespace BlazorDesktop
+﻿namespace Microsoft.MobileBlazorBindings.WebView
 {
     public static class BlazorDesktopDefaultServices
     {

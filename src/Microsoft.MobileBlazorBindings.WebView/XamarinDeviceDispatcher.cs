@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace BlazorDesktop
+namespace Microsoft.MobileBlazorBindings.WebView
 {
     /// <summary>
     /// Custom dispatcher for Xamarin.Forms apps to ensure all UI work is done on the UI (main) thread.

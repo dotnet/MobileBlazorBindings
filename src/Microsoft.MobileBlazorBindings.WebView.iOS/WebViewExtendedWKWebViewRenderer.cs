@@ -1,5 +1,5 @@
-﻿using BlazorDesktop.Elements;
-using BlazorDesktop.iOS;
+﻿using Microsoft.MobileBlazorBindings.WebView.Elements;
+using Microsoft.MobileBlazorBindings.WebView.iOS;
 using Foundation;
 using WebKit;
 using XF = Xamarin.Forms;
@@ -11,7 +11,7 @@ using System;
 
 [assembly: XF.ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedWKWebViewRenderer))]
 
-namespace BlazorDesktop.iOS
+namespace Microsoft.MobileBlazorBindings.WebView.iOS
 {
     public class WebViewExtendedWKWebViewRenderer : ViewRenderer<WebViewExtended, WKWebView>, XF.IWebViewDelegate, IWKScriptMessageHandler
     {

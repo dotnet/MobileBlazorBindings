@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BlazorDesktop.iOS;
+using Microsoft.MobileBlazorBindings.WebView.iOS;
 using Foundation;
 using UIKit;
 
-namespace MyApplication.iOS
+namespace HybridApp.iOS
 {
     public class Application
     {

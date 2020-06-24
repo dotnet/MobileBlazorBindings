@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{a52b8a63-bc84-4b47-910d-692533484892}</TemplateGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>BlazorDesktop.iOS</RootNamespace>
+    <RootNamespace>Microsoft.MobileBlazorBindings.WebView.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>BlazorDesktop.iOS</AssemblyName>
+    <AssemblyName>Microsoft.MobileBlazorBindings.WebView.iOS</AssemblyName>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -50,9 +50,9 @@
     <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlazorDesktop\BlazorDesktop.csproj">
-      <Project>{EE29C585-5FDA-49EA-A68E-54E0E2DDE078}</Project>
-      <Name>BlazorDesktop</Name>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj">
+      <Project>{aeb5e813-4663-4c5d-9911-f2b203886fa2}</Project>
+      <Name>Microsoft.MobileBlazorBindings.WebView</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

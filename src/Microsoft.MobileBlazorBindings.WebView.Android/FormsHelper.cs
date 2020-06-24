@@ -1,6 +1,6 @@
 ﻿using Android.OS;
 
-namespace BlazorDesktop.Android
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     internal static class FormsHelper
     {

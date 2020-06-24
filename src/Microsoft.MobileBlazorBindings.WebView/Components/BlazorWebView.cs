@@ -1,4 +1,4 @@
-﻿using BlazorDesktop.Components.Handlers;
+﻿using Microsoft.MobileBlazorBindings.WebView.Components.Handlers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BlazorDesktop.Components
+namespace Microsoft.MobileBlazorBindings.WebView.Components
 {
     public class BlazorWebView : View
     {

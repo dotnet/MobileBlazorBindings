@@ -1,10 +1,10 @@
-﻿using BlazorDesktop;
-using MessageApp.Data;
+﻿using Microsoft.MobileBlazorBindings.WebView;
+using HybridMessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace MessageApp
+namespace HybridMessageApp
 {
     public partial class MainPage : Application
     {

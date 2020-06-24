@@ -1,4 +1,4 @@
-﻿namespace MessageApp.Data
+﻿namespace HybridMessageApp.Data
 {
     public class MailFolder
     {

@@ -3,7 +3,7 @@
 using AppKit;
 using Foundation;
 
-namespace MyApplication.macOS
+namespace HybridApp.macOS
 {
     public partial class ViewController : NSViewController
     {

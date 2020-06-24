@@ -6,7 +6,7 @@
 //
 using Foundation;
 
-namespace MyApplication.macOS
+namespace HybridApp.macOS
 {
     [Register("ViewController")]
     partial class ViewController

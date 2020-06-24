@@ -9,9 +9,9 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{6143fdea-f3c2-4a09-aafa-6e230626515e}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MyApplication.iOS</RootNamespace>
+    <RootNamespace>HybridApp.iOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
-    <AssemblyName>MyApplication.iOS</AssemblyName>
+    <AssemblyName>HybridApp.iOS</AssemblyName>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -126,21 +126,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\MyApplication\MyApplication.csproj">
-      <Project>{671E0BC2-F069-4E03-91A6-85163C7245C9}</Project>
-      <Name>MyApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\BlazorDesktop.iOS\BlazorDesktop.iOS.csproj">
-      <Project>{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}</Project>
-      <Name>BlazorDesktop.iOS</Name>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj">
+      <Project>{3cecadbb-3e56-4d47-a313-ce9e43dcab02}</Project>
+      <Name>Microsoft.MobileBlazorBindings.WebView.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <!-- Workaround for Content not being copied to bundle -->
-    <BundleResource Include="..\MyApplication\WebUI\wwwroot\**\*.*">
-      <Link>Resources\WebUI\wwwroot\%(RecursiveDir)%(Filename)%(Extension)</Link>
-    </BundleResource>
+    <ProjectReference Include="..\HybridApp\HybridApp.csproj">
+      <Project>{de71f6d4-9950-472a-90b2-f4074810ae6d}</Project>
+      <Name>HybridApp</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

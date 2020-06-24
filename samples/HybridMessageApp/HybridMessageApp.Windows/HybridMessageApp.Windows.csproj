@@ -10,8 +10,11 @@
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.800" NoWarn="NU1701" />
-    <ProjectReference Include="..\..\..\src\BlazorDesktop.Windows\BlazorDesktop.Windows.csproj" />
-    <ProjectReference Include="..\MessageApp\MessageApp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\Microsoft.MobileBlazorBindings.WebView.Windows.csproj" />
+    <ProjectReference Include="..\HybridMessageApp\HybridMessageApp.csproj" />
   </ItemGroup>
 
 </Project>

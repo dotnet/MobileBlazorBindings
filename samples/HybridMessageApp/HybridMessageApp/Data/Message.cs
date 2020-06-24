@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MessageApp.Data
+namespace HybridMessageApp.Data
 {
     public class Message
     {

@@ -1,12 +1,12 @@
-﻿using BlazorDesktop;
-using BlazorDesktop.Elements;
-using MessageApp.Data;
+﻿using Microsoft.MobileBlazorBindings.WebView;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
+using HybridMessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace MessageApp
+namespace HybridMessageApp
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MessageListPage : ContentPage

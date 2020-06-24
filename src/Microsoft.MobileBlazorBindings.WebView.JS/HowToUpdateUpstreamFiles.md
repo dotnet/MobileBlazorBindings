@@ -11,7 +11,7 @@ Then, to update the contents of upstream/aspnetcore/web.js to the latest:
     cd <directory containing this .md file>
     git rm -rf upstream/aspnetcore
     git fetch --depth 1 aspnetcore
-    git read-tree --prefix=src/BlazorDesktop.JS/upstream/aspnetcore/web.js -u aspnetcore/master:src/Components/Web.JS
+    git read-tree --prefix=src/Microsoft.MobileBlazorBindings.WebView.JS/upstream/aspnetcore/web.js -u aspnetcore/master:src/Components/Web.JS
     git commit -m "Get Web.JS files from commit a294d64a45f"
 
 When using these commands, replace:

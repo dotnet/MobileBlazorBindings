@@ -10,8 +10,8 @@
     <TemplateGuid>{9ef11e43-1701-4396-8835-8392d57abb70}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BlazorDesktop.Android</RootNamespace>
-    <AssemblyName>BlazorDesktop.Android</AssemblyName>
+    <RootNamespace>Microsoft.MobileBlazorBindings.WebView.Android</RootNamespace>
+    <AssemblyName>Microsoft.MobileBlazorBindings.WebView.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <Deterministic>True</Deterministic>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -57,9 +57,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BlazorDesktop\BlazorDesktop.csproj">
-      <Project>{ee29c585-5fda-49ea-a68e-54e0e2dde078}</Project>
-      <Name>BlazorDesktop</Name>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj">
+      <Project>{aeb5e813-4663-4c5d-9911-f2b203886fa2}</Project>
+      <Name>Microsoft.MobileBlazorBindings.WebView</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

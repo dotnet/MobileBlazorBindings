@@ -1,10 +1,10 @@
-﻿using BlazorDesktop.Elements;
+﻿using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BlazorDesktop
+namespace Microsoft.MobileBlazorBindings.WebView
 {
     internal class IPC
     {

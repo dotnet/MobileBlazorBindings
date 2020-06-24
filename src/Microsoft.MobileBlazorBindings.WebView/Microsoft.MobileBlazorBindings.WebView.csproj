@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.MobileBlazorBindings" Version="0.3.26-preview" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.4" />
 
-    <EmbeddedResource Include="../BlazorDesktop.JS/dist/blazor.desktop.js" />
+    <EmbeddedResource Include="../Microsoft.MobileBlazorBindings.WebView.JS/dist/blazor.desktop.js" />
   </ItemGroup>
 
 </Project>

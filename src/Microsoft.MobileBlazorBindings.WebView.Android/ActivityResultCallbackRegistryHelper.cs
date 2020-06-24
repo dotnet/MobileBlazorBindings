@@ -3,7 +3,7 @@ using Android.Content;
 using System;
 using System.Collections.Concurrent;
 
-namespace BlazorDesktop.Android
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     internal static class ActivityResultCallbackRegistryHelper
     {

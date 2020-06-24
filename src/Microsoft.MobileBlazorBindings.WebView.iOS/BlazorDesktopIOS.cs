@@ -1,4 +1,4 @@
-﻿namespace BlazorDesktop.iOS
+﻿namespace Microsoft.MobileBlazorBindings.WebView.iOS
 {
     public static class BlazorDesktopIOS
     {

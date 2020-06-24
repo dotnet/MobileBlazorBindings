@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MessageApp.Data
+namespace HybridMessageApp.Data
 {
     public class AppState
     {

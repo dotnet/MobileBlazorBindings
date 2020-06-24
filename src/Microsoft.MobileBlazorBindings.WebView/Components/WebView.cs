@@ -1,5 +1,5 @@
-﻿using BlazorDesktop.Components.Handlers;
-using BlazorDesktop.Elements;
+﻿using Microsoft.MobileBlazorBindings.WebView.Components.Handlers;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
@@ -7,7 +7,7 @@ using System;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
-namespace BlazorDesktop.Components
+namespace Microsoft.MobileBlazorBindings.WebView.Components
 {
     public class WebView : View
     {

@@ -32,7 +32,7 @@
 
     private async Task LoadFolder(string folderName)
     {
-        var stream = GetType().Assembly.GetManifestResourceStream($"MessageApp.Storage.{folderName}.json");
+        var stream = GetType().Assembly.GetManifestResourceStream($"HybridMessageApp.Storage.{folderName}.json");
         if (stream != null)
         {
             folder = await JsonSerializer.DeserializeAsync<MailFolder>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

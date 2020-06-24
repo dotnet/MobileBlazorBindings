@@ -1,7 +1,7 @@
 ﻿using Android.Content;
 using Android.Webkit;
-using BlazorDesktop.Android;
-using BlazorDesktop.Elements;
+using Microsoft.MobileBlazorBindings.WebView.Android;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Java.Interop;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using MixedContentHandling = Android.Webkit.MixedContentHandling;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebKitWebViewRenderer))]
 
-namespace BlazorDesktop.Android
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public class WebKitWebViewRenderer : ViewRenderer<WebViewExtended, AWebView>, IWebViewDelegate
     {

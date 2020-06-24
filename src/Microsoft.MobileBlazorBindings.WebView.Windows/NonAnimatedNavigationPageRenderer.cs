@@ -1,11 +1,11 @@
-﻿using BlazorDesktop.Windows;
+﻿using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Xamarin.Forms.Platform.WPF;
 using Xamarin.Forms.Platform.WPF.Controls;
 using XF = Xamarin.Forms;
 
 [assembly: ExportRenderer(typeof(XF.NavigationPage), typeof(NonAnimatedNavigationPageRenderer))]
 
-namespace BlazorDesktop.Windows
+namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
 	// This is a workaround for WebView (like all other HwndHost-based controls) being incompatible
 	// with animated transitions. If we wanted the WebView to participate fully in WPF rendering to
