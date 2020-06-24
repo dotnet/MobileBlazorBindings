@@ -5,7 +5,7 @@ using BlazorDesktop.iOS;
 using Foundation;
 using UIKit;
 
-namespace MessageApp.iOS
+namespace MyApplication.iOS
 {
     public class Application
     {
