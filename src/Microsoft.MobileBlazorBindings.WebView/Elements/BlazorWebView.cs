@@ -154,8 +154,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
-        // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
-        internal async Task InitAsync()
+        // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
+        public async Task InitAsync()
         {
             _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask;
@@ -171,8 +171,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
-        // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
-        internal void Render(RenderFragment fragment)
+        // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
+        public void Render(RenderFragment fragment)
         {
             if (_blazorHybridRenderer == null)
             {

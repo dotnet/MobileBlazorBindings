@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.Temp\Microsoft.MobileBlazorBindings.Temp.csproj" />
   </ItemGroup>
 
 </Project>
