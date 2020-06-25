@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:b="clr-namespace:Microsoft.MobileBlazorBindings.WebView.Elements;assembly=Microsoft.MobileBlazorBindings.WebView"
+             xmlns:app="clr-namespace:HybridMessageApp.WebUI"
+             mc:Ignorable="d"
+             x:Class="HybridMessageApp.MainPage"
+             xmlns:pages="clr-namespace:HybridMessageApp">
+
+    <Application.MainPage>
+        <MasterDetailPage x:Name="MasterDetails">
+
+            <MasterDetailPage.Master>
+                <ContentPage Title="Folders">
+                    <b:BlazorWebView x:TypeArguments="app:FolderList" ContentRoot="WebUI/wwwroot" VerticalOptions="FillAndExpand" />
+                </ContentPage>
+            </MasterDetailPage.Master>
+
+            <MasterDetailPage.Detail>
+                <NavigationPage>
+                    <x:Arguments>
+                        <pages:MessageListPage />
+                    </x:Arguments>
+                </NavigationPage>
+            </MasterDetailPage.Detail>
+
+        </MasterDetailPage>
+    </Application.MainPage>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--Global Styles-->
+            <Color x:Key="NavigationPrimary">#2196F3</Color>
+            <Style TargetType="NavigationPage">
+                <Setter Property="BarBackgroundColor" Value="{StaticResource NavigationPrimary}" />
+                <Setter Property="BarTextColor" Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

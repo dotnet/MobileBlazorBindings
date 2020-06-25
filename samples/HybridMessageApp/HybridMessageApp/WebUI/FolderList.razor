@@ -1,0 +1,8 @@
+@inject AppState AppState
+
+<ul class="folders">
+    @foreach (var folderName in AppState.Folders)
+    {
+        <li>@folderName</li>
+    }
+</ul>

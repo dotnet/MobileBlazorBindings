@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.800" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.6.0.800" NoWarn="NU1701" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\Microsoft.MobileBlazorBindings.WebView.Windows.csproj" />
+    <ProjectReference Include="..\HybridApp\HybridApp.csproj" />
+  </ItemGroup>
+
+</Project>

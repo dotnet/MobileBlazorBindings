@@ -1,0 +1,41 @@
+@inject AppState AppState
+
+<table class="mails">
+    <thead>
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Subject</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var message in folder.Mails)
+        {
+            <tr @onclick="() => AppState.NavigateToMessage(message)">
+                <td>@message.From</td>
+                <td>@message.To</td>
+                <td>@message.Subject</td>
+                <td>@message.Date</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private MailFolder folder;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadFolder(AppState.CurrentFolder);
+    }
+
+    private async Task LoadFolder(string folderName)
+    {
+        var stream = GetType().Assembly.GetManifestResourceStream($"HybridMessageApp.Storage.{folderName}.json");
+        if (stream != null)
+        {
+            folder = await JsonSerializer.DeserializeAsync<MailFolder>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        }
+    }
+}

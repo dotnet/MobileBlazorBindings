@@ -1,0 +1,293 @@
+﻿{
+  "id": "Inbox",
+  "mails": [
+    {
+      "id": 1,
+      "from": "Abbot \u003coliver@smoke-stage.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 25, 2011",
+      "subject": "Booking confirmation #389629244",
+      "folder": "Inbox"
+    },
+    {
+      "id": 2,
+      "from": "Addison Begoat \u003cupton.oprdrusson@pear-income.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 7, 2011",
+      "subject": "FW: Associate advice",
+      "folder": "Inbox"
+    },
+    {
+      "id": 3,
+      "from": "Allistair \u003cleroy72@plane-railway.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Phone call tomorrow 5 o\u0027clock",
+      "folder": "Inbox"
+    },
+    {
+      "id": 4,
+      "from": "emmanuel26@ghost.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "Completing basketball project",
+      "folder": "Inbox"
+    },
+    {
+      "id": 5,
+      "from": "jamalia.alnismith1@twigdad.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 26, 2011",
+      "subject": "FW: Can you get DE to resubmit accounts?",
+      "folder": "Inbox"
+    },
+    {
+      "id": 6,
+      "from": "lionel.qugy@cribsmoke.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "RE: Catch up at 9:00 to finalise rain spec",
+      "folder": "Inbox"
+    },
+    {
+      "id": 7,
+      "from": "Madison Lalinesson \u003cmelinda.gofagy@wing-language2.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Pencil scenarios",
+      "folder": "Inbox"
+    },
+    {
+      "id": 8,
+      "from": "rajah.nukripyford@cast92.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 28, 2011",
+      "subject": "Flavor benefit gig",
+      "folder": "Inbox"
+    },
+    {
+      "id": 9,
+      "from": "Sandra Juanhison \u003cyoshi.mostaline72@facefruit.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Apparel5 network is back up",
+      "folder": "Inbox"
+    },
+    {
+      "id": 10,
+      "from": "Sylvester \u003crose.va@bunpig98.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 1, 2011",
+      "subject": "Feedback requested by Ayanna Nuyo",
+      "folder": "Inbox"
+    },
+    {
+      "id": 11,
+      "from": "veronica@heart.xyz",
+      "to": "steve@example.com",
+      "date": "May 4, 2011",
+      "subject": "Project Book starting 6pm",
+      "folder": "Inbox"
+    },
+    {
+      "id": 12,
+      "from": "XLN \u003cbasia@framehome.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Remember Whoopi\u0027s joke",
+      "folder": "Inbox"
+    },
+    {
+      "id": 1,
+      "from": "Abbot \u003coliver@smoke-stage.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 25, 2011",
+      "subject": "Booking confirmation #389629244",
+      "folder": "Inbox"
+    },
+    {
+      "id": 2,
+      "from": "Addison Begoat \u003cupton.oprdrusson@pear-income.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 7, 2011",
+      "subject": "FW: Associate advice",
+      "folder": "Inbox"
+    },
+    {
+      "id": 3,
+      "from": "Allistair \u003cleroy72@plane-railway.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Phone call tomorrow 5 o\u0027clock",
+      "folder": "Inbox"
+    },
+    {
+      "id": 4,
+      "from": "emmanuel26@ghost.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "Completing basketball project",
+      "folder": "Inbox"
+    },
+    {
+      "id": 5,
+      "from": "jamalia.alnismith1@twigdad.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 26, 2011",
+      "subject": "FW: Can you get DE to resubmit accounts?",
+      "folder": "Inbox"
+    },
+    {
+      "id": 6,
+      "from": "lionel.qugy@cribsmoke.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "RE: Catch up at 9:00 to finalise rain spec",
+      "folder": "Inbox"
+    },
+    {
+      "id": 7,
+      "from": "Madison Lalinesson \u003cmelinda.gofagy@wing-language2.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Pencil scenarios",
+      "folder": "Inbox"
+    },
+    {
+      "id": 8,
+      "from": "rajah.nukripyford@cast92.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 28, 2011",
+      "subject": "Flavor benefit gig",
+      "folder": "Inbox"
+    },
+    {
+      "id": 9,
+      "from": "Sandra Juanhison \u003cyoshi.mostaline72@facefruit.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Apparel5 network is back up",
+      "folder": "Inbox"
+    },
+    {
+      "id": 10,
+      "from": "Sylvester \u003crose.va@bunpig98.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 1, 2011",
+      "subject": "Feedback requested by Ayanna Nuyo",
+      "folder": "Inbox"
+    },
+    {
+      "id": 11,
+      "from": "veronica@heart.xyz",
+      "to": "steve@example.com",
+      "date": "May 4, 2011",
+      "subject": "Project Book starting 6pm",
+      "folder": "Inbox"
+    },
+    {
+      "id": 12,
+      "from": "XLN \u003cbasia@framehome.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Remember Whoopi\u0027s joke",
+      "folder": "Inbox"
+    },
+    {
+      "id": 1,
+      "from": "Abbot \u003coliver@smoke-stage.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 25, 2011",
+      "subject": "Booking confirmation #389629244",
+      "folder": "Inbox"
+    },
+    {
+      "id": 2,
+      "from": "Addison Begoat \u003cupton.oprdrusson@pear-income.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 7, 2011",
+      "subject": "FW: Associate advice",
+      "folder": "Inbox"
+    },
+    {
+      "id": 3,
+      "from": "Allistair \u003cleroy72@plane-railway.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Phone call tomorrow 5 o\u0027clock",
+      "folder": "Inbox"
+    },
+    {
+      "id": 4,
+      "from": "emmanuel26@ghost.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "Completing basketball project",
+      "folder": "Inbox"
+    },
+    {
+      "id": 5,
+      "from": "jamalia.alnismith1@twigdad.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 26, 2011",
+      "subject": "FW: Can you get DE to resubmit accounts?",
+      "folder": "Inbox"
+    },
+    {
+      "id": 6,
+      "from": "lionel.qugy@cribsmoke.xyz",
+      "to": "steve@example.com",
+      "date": "May 22, 2011",
+      "subject": "RE: Catch up at 9:00 to finalise rain spec",
+      "folder": "Inbox"
+    },
+    {
+      "id": 7,
+      "from": "Madison Lalinesson \u003cmelinda.gofagy@wing-language2.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 19, 2011",
+      "subject": "RE: Pencil scenarios",
+      "folder": "Inbox"
+    },
+    {
+      "id": 8,
+      "from": "rajah.nukripyford@cast92.xyz",
+      "to": "steve@example.com",
+      "date": "Apr 28, 2011",
+      "subject": "Flavor benefit gig",
+      "folder": "Inbox"
+    },
+    {
+      "id": 9,
+      "from": "Sandra Juanhison \u003cyoshi.mostaline72@facefruit.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Apparel5 network is back up",
+      "folder": "Inbox"
+    },
+    {
+      "id": 10,
+      "from": "Sylvester \u003crose.va@bunpig98.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 1, 2011",
+      "subject": "Feedback requested by Ayanna Nuyo",
+      "folder": "Inbox"
+    },
+    {
+      "id": 11,
+      "from": "veronica@heart.xyz",
+      "to": "steve@example.com",
+      "date": "May 4, 2011",
+      "subject": "Project Book starting 6pm",
+      "folder": "Inbox"
+    },
+    {
+      "id": 12,
+      "from": "XLN \u003cbasia@framehome.xyz\u003e",
+      "to": "steve@example.com",
+      "date": "May 8, 2011",
+      "subject": "RE: Remember Whoopi\u0027s joke",
+      "folder": "Inbox"
+    }
+  ]
+}
