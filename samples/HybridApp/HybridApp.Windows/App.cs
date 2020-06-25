@@ -17,7 +17,7 @@ namespace HybridApp.Windows
         public MainWindow()
         {
             Forms.Init();
-            BlazorDesktopWindows.Init();
+            BlazorHybridWindows.Init();
             LoadApplication(new App());
         }
     }

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    internal class DesktopNavigationInterception : INavigationInterception
+    internal class BlazorHybridNavigationInterception : INavigationInterception
     {
         public Task EnableNavigationInterceptionAsync()
         {

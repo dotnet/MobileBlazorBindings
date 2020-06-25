@@ -16,7 +16,7 @@ namespace HybridMessageApp.Windows
 
         public MainWindow()
         {
-            BlazorDesktopWindows.Init();
+            BlazorHybridWindows.Init();
             Forms.Init();
             LoadApplication(new MainPage());
         }

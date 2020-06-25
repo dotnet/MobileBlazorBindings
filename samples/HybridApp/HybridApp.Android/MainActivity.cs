@@ -15,7 +15,7 @@ namespace HybridApp.Droid
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            BlazorDesktopAndroid.Init();
+            BlazorHybridAndroid.Init();
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;

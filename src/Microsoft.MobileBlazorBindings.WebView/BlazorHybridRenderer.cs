@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Microsoft.MobileBlazorBindings.WebView
 {
 #pragma warning disable BL0006 // Do not use RenderTree types
-    internal class DesktopRenderer : Renderer
+    internal class BlazorHybridRenderer : Renderer
     {
         private static readonly Type _writer;
         private static readonly MethodInfo _writeMethod;
@@ -21,13 +21,13 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
 
-        static DesktopRenderer()
+        static BlazorHybridRenderer()
         {
             _writer = typeof(RenderBatchWriter);
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
         }
 
-        public DesktopRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher)
+        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher)
             : base(serviceProvider, loggerFactory)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));

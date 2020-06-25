@@ -9,13 +9,13 @@ namespace HybridApp
     {
         public App()
         {
-            BlazorDesktopHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
+            BlazorHybridHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
 
             var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Adds web-specific services such as NavigationManager
-                    services.AddBlazorDesktop();
+                    services.AddBlazorHybrid();
 
                     // Register app-specific services
                     services.AddSingleton<CounterState>();

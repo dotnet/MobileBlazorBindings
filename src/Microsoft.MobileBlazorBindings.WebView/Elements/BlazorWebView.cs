@@ -26,8 +26,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private readonly static RenderFragment EmptyRenderFragment = builder => { };
         private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
-        private DesktopRenderer _desktopRenderer;
-        private DesktopNavigationManager _navigationManager;
+        private BlazorHybridRenderer _blazorHybridRenderer;
+        private BlazorHybridNavigationManager _navigationManager;
 
         public string ContentRoot { get; set; }
         public IServiceProvider Services { get; set; }
@@ -37,7 +37,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging();
-            serviceCollection.AddBlazorDesktop();
+            serviceCollection.AddBlazorHybrid();
             return serviceCollection.BuildServiceProvider();
         });
 
@@ -101,7 +101,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                         const string IndexHtmlFilename = "index.html";
                         var indexHtmlPath = Path.Combine(contentRootAbsolute, IndexHtmlFilename);
 
-                        if (BlazorDesktopHost.TryGetEmbeddedResourceFile(IndexHtmlFilename, out var fileStream))
+                        if (BlazorHybridHost.TryGetEmbeddedResourceFile(IndexHtmlFilename, out var fileStream))
                         {
                             return fileStream;
                         }
@@ -131,7 +131,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                                 "));
                         }
                     }
-                    else if (BlazorDesktopHost.TryGetEmbeddedResourceFile(uri.AbsolutePath.Substring(1), out var fileStream))
+                    else if (BlazorHybridHost.TryGetEmbeddedResourceFile(uri.AbsolutePath.Substring(1), out var fileStream))
                     {
                         contentType = GetContentType(uri.AbsolutePath.Substring(1));
                         return fileStream;
@@ -150,7 +150,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             });
 
             _ipc = new IPC(_webView);
-            _jsRuntime = new DesktopJSRuntime(_ipc);
+            _jsRuntime = new BlazorHybridJSRuntime(_ipc);
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
@@ -160,26 +160,26 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask;
 
-            var services = Services ?? BlazorDesktopDefaultServices.Instance ?? DefaultServices.Value;
+            var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
 
             var scopeServiceProvider = _serviceScope.ServiceProvider;
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-            _navigationManager = (DesktopNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
+            _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
             _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
-            _desktopRenderer = new DesktopRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher);
+            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
         // BlazorWebView directly from Xamaring Forms XAML. It only works from MBB.
         internal void Render(RenderFragment fragment)
         {
-            if (_desktopRenderer == null)
+            if (_blazorHybridRenderer == null)
             {
                 throw new InvalidOperationException($"{nameof(Render)} was called before {nameof(InitAsync)}");
             }
 
-            _desktopRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
+            _blazorHybridRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
         }
 
         private Task<InteropHandshakeResult> AttachInteropAsync()
@@ -212,7 +212,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 var argsJson = ((JsonElement)argsArray[4]).GetString();
 
                 // As a temporary hack, intercept blazor.desktop.js's JS interop calls for event notifications,
-                // and direct them to our own instance. This is to avoid needing a static DesktopRenderer.Instance.
+                // and direct them to our own instance. This is to avoid needing a static BlazorHybridRenderer.Instance.
                 // Similar temporary hack for navigation notifications
                 // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
                 if (assemblyName == "WebWindow.Blazor")
@@ -244,7 +244,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
         {
             var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
-            await _desktopRenderer.DispatchEventAsync(
+            await _blazorHybridRenderer.DispatchEventAsync(
                 webEvent.EventHandlerId,
                 webEvent.EventFieldInfo,
                 webEvent.EventArgs);

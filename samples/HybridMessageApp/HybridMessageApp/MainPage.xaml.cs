@@ -10,13 +10,13 @@ namespace HybridMessageApp
     {
         public MainPage()
         {
-            BlazorDesktopHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
+            BlazorHybridHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
 
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddBlazorDesktop();
+            serviceCollection.AddBlazorHybrid();
             serviceCollection.AddLogging();
             serviceCollection.AddSingleton<AppState>();
-            BlazorDesktopDefaultServices.Instance = serviceCollection.BuildServiceProvider();
+            BlazorHybridDefaultServices.Instance = serviceCollection.BuildServiceProvider();
 
             InitializeComponent();
 

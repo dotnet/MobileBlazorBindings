@@ -21,7 +21,7 @@ namespace HybridMessageApp
         public MessageListPage()
         {
             InitializeComponent();
-            appState = BlazorDesktopDefaultServices.Instance.GetRequiredService<AppState>();
+            appState = BlazorHybridDefaultServices.Instance.GetRequiredService<AppState>();
         }
 
         protected override void OnAppearing()

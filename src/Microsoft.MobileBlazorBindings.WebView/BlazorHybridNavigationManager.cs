@@ -4,9 +4,9 @@ using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    internal class DesktopNavigationManager : NavigationManager
+    internal class BlazorHybridNavigationManager : NavigationManager
     {
-        public static readonly DesktopNavigationManager Instance = new DesktopNavigationManager();
+        public static readonly BlazorHybridNavigationManager Instance = new BlazorHybridNavigationManager();
 
         private static readonly string InteropPrefix = "Blazor._internal.navigationManager.";
         private static readonly string InteropNavigateTo = InteropPrefix + "navigateTo";
@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (!isInitialized)
             {
-                throw new InvalidOperationException($"Didn't receive any call to {nameof(DesktopNavigationManager)}.{nameof(Initialize)} in time.");
+                throw new InvalidOperationException($"Didn't receive any call to {nameof(BlazorHybridNavigationManager)}.{nameof(Initialize)} in time.");
             }
         }
 

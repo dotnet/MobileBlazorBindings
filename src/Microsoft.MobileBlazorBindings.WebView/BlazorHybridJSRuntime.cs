@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-    internal class DesktopJSRuntime : JSRuntime
+    internal class BlazorHybridJSRuntime : JSRuntime
     {
         private readonly IPC _ipc;
         private static Type VoidTaskResultType = typeof(Task).Assembly
             .GetType("System.Threading.Tasks.VoidTaskResult", true);
 
-        public DesktopJSRuntime(IPC ipc)
+        public BlazorHybridJSRuntime(IPC ipc)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
         }

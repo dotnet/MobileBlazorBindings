@@ -39,7 +39,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (Microsoft.MobileBlazorBindings.WebView.BlazorDesktopHost.TryGetEmbeddedResourceFile("weather.json", out var stream))
+        if (Microsoft.MobileBlazorBindings.WebView.BlazorHybridHost.TryGetEmbeddedResourceFile("weather.json", out var stream))
         {
             forecasts = await JsonSerializer.DeserializeAsync<WeatherForecast[]>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         }
