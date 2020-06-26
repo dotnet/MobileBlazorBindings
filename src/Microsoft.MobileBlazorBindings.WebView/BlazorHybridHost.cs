@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-    public class static BlazorHybridHost
+    public static class BlazorHybridHost
     {
         private static readonly List<Lazy<IFileProvider>> _resourceFileProviders = new List<Lazy<IFileProvider>>();
 
