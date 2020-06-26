@@ -6,11 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.MobileBlazorBindings" Version="0.3.26-preview" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
   </ItemGroup>
 
 </Project>

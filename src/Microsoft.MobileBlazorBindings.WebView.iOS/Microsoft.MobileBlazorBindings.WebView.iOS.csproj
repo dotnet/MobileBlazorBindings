@@ -37,10 +37,10 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Properties\" />
     <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlazorHybridIOS.cs" />
     <Compile Include="WebViewExtendedWKWebViewRenderer.cs" />
   </ItemGroup>

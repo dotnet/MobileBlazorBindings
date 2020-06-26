@@ -48,7 +48,6 @@
     <Compile Include="ActivityResultCallbackRegistryHelper.cs" />
     <Compile Include="BlazorHybridAndroid.cs" />
     <Compile Include="FormsHelper.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebKitWebChromeClient.cs" />
     <Compile Include="WebKitWebViewClient.cs" />
     <Compile Include="WebKitWebViewRenderer.cs" />
@@ -61,6 +60,9 @@
       <Project>{aeb5e813-4663-4c5d-9911-f2b203886fa2}</Project>
       <Name>Microsoft.MobileBlazorBindings.WebView</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
