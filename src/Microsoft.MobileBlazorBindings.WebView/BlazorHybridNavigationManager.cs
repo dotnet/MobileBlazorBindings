@@ -12,18 +12,18 @@ namespace Microsoft.Extensions.DependencyInjection
         private static readonly string InteropNavigateTo = InteropPrefix + "navigateTo";
 
         private IJSRuntime _jsRuntime;
-        private bool isInitialized;
+        private bool _isInitialized;
 
         public void Initialize(IJSRuntime jsRuntime, string baseUri, string initialUri)
         {
             Initialize(baseUri, initialUri);
             _jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
-            isInitialized = true;
+            _isInitialized = true;
         }
 
         protected override void EnsureInitialized()
         {
-            if (!isInitialized)
+            if (!_isInitialized)
             {
                 throw new InvalidOperationException($"Didn't receive any call to {nameof(BlazorHybridNavigationManager)}.{nameof(Initialize)} in time.");
             }

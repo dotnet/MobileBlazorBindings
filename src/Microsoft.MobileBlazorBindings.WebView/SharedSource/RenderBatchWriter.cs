@@ -30,7 +30,9 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
     ///    
     /// We don't have or need a .NET reader for this format. We only read it from JS code.
     /// </summary>
+#pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is used by type name
     internal class RenderBatchWriter : IDisposable
+#pragma warning restore CA1812 // Internal class that is apparently never instantiated
     {
         private readonly ArrayBuilder<string> _strings;
         private readonly Dictionary<string, int> _deduplicatedStringIndices;
@@ -237,9 +239,8 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             }
             else
             {
-                int stringIndex;
 
-                if (!allowDeduplication || !_deduplicatedStringIndices.TryGetValue(value, out stringIndex))
+                if (!allowDeduplication || !_deduplicatedStringIndices.TryGetValue(value, out var stringIndex))
                 {
                     stringIndex = _strings.Count;
                     _strings.Append(value);

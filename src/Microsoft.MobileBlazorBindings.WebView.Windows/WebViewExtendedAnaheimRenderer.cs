@@ -19,11 +19,19 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2Control>, XF.IWebViewDelegate
     {
-        [DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
-        private static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
+        private static class NativeMethods
+        {
+            [DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
+            public static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
+        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             _ = HandleElementChangedAsync(e);
         }
 
@@ -137,7 +145,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     var responseBytesHandle = GCHandle.Alloc(responseBytes, GCHandleType.Pinned);
                     try
                     {
-                        var responseStreamCom = SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
+                        var responseStreamCom = NativeMethods.SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
                         var response = Control.WebView2Environment.CreateWebResourceResponse(
                             responseStreamCom, 200, "OK", $"Content-Type: {responseContentType}");
                         e.SetResponse(response);
@@ -168,7 +176,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadHtml(string html, string baseUrl)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (html != null)
             {
@@ -176,7 +186,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadUrl(string url)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (url != null)
             {

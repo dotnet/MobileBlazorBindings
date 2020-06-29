@@ -207,7 +207,9 @@ namespace Microsoft.AspNetCore.Components.RenderTree
 
         private static void ThrowIndexOutOfBoundsException()
         {
+#pragma warning disable CA2208 // Instantiate argument exceptions correctly
             throw new ArgumentOutOfRangeException("index");
+#pragma warning restore CA2208 // Instantiate argument exceptions correctly
         }
 
         private static void ThrowObjectDisposedException()

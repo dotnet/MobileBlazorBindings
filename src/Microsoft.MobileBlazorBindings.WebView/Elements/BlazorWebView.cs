@@ -33,7 +33,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         public IServiceProvider Services { get; set; }
 
         // Use this if no Services was supplied
-        private static Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
+        private static readonly Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging();
@@ -243,6 +243,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         [JSInvokable(nameof(DispatchEvent))]
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
         {
+            if (eventDescriptor is null)
+            {
+                throw new ArgumentNullException(nameof(eventDescriptor));
+            }
+
             var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
             await _blazorHybridRenderer.DispatchEventAsync(
                 webEvent.EventHandlerId,
@@ -251,7 +256,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         }
 
         [JSInvokable(nameof(NotifyLocationChanged))]
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void NotifyLocationChanged(string uri, bool isInterceptedLink)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             _navigationManager.SetLocation(uri, isInterceptedLink);
         }
@@ -273,25 +280,23 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private static string GetContentType(string url)
         {
             var ext = Path.GetExtension(url);
-            switch (ext)
+            return ext switch
             {
-                case ".html": return "text/html";
-                case ".css": return "text/css";
-                case ".js": return "text/javascript";
-                case ".wasm": return "application/wasm";
-            }
-            return "application/octet-stream";
+                ".html" => "text/html",
+                ".css" => "text/css",
+                ".js" => "text/javascript",
+                ".wasm" => "application/wasm",
+                _ => "application/octet-stream",
+            };
         }
 
         private static Stream SupplyFrameworkFile(string uri)
         {
-            switch (uri)
+            return uri switch
             {
-                case "framework://blazor.desktop.js":
-                    return typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js");
-                default:
-                    throw new ArgumentException($"Unknown framework file: {uri}");
-            }
+                "framework://blazor.desktop.js" => typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js"),
+                _ => throw new ArgumentException($"Unknown framework file: {uri}"),
+            };
         }
 
         public void Dispose()

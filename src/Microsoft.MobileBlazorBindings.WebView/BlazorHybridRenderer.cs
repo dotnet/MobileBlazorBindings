@@ -21,7 +21,9 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
 
+#pragma warning disable CA1810 // Initialize reference type static fields inline
         static BlazorHybridRenderer()
+#pragma warning restore CA1810 // Initialize reference type static fields inline
         {
             _writer = typeof(RenderBatchWriter);
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
@@ -68,7 +70,9 @@ namespace Microsoft.MobileBlazorBindings.WebView
             {
                 await task;
             }
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 HandleException(ex);
             }

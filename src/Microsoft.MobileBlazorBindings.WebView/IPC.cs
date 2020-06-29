@@ -48,12 +48,11 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
         public void Once(string eventName, Action<object> callback)
         {
-            Action<object> callbackOnce = null;
-            callbackOnce = arg =>
+            void callbackOnce(object arg)
             {
                 Off(eventName, callbackOnce);
                 callback(arg);
-            };
+            }
 
             On(eventName, callbackOnce);
         }
@@ -76,7 +75,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             // Move off the browser UI thread
             Task.Factory.StartNew(() =>
             {
-                if (value.StartsWith("ipc:"))
+                if (value.StartsWith("ipc:", StringComparison.Ordinal))
                 {
                     var spacePos = value.IndexOf(' ');
                     var eventName = value.Substring(4, spacePos - 4);

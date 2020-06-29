@@ -34,7 +34,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
         /// <summary>
         /// Tries to load the given <paramref name="filename"/> from a registered resource assembly.
-        /// Resource assemblies are registered by calling <see cref="AddResourceAssembly(Assembly)"/>.
+        /// Resource assemblies are registered by calling <see cref="AddResourceAssembly(Assembly, string)"/>.
         /// </summary>
         /// <param name="filename">The filename of the resource to load. This is appended to the specified content root in a resource assembly to get the full path.</param>
         /// <param name="fileStream">A readable stream with the resource content. Only valid if the method call returns <c>true</c>.</param>

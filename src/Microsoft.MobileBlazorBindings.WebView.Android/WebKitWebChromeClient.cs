@@ -1,6 +1,7 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Webkit;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms.Internals;
 using Object = Java.Lang.Object;
@@ -14,6 +15,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         public override bool OnShowFileChooser(global::Android.Webkit.WebView webView, IValueCallback filePathCallback, FileChooserParams fileChooserParams)
         {
+            if (fileChooserParams is null)
+            {
+                throw new ArgumentNullException(nameof(fileChooserParams));
+            }
+
             base.OnShowFileChooser(webView, filePathCallback, fileChooserParams);
             return ChooseFile(filePathCallback, fileChooserParams.CreateIntent(), fileChooserParams.Title);
         }

@@ -17,7 +17,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         private string _lastUrlNavigatedCancel;
 
         public WebKitWebViewClient(WebKitWebViewRenderer renderer)
-            => _renderer = renderer ?? throw new ArgumentNullException("renderer");
+            => _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
 
         protected WebKitWebViewClient(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
@@ -31,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             {
                 var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
 
-                var reader = new StreamReader(contentStream);
+                using var reader = new StreamReader(contentStream);
                 var content = reader.ReadToEnd();
 
                 view.LoadDataWithBaseURL(
@@ -53,7 +53,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
                 if (contentStream != null)
                 {
-                    var reader = new StreamReader(contentStream);
+                    using var reader = new StreamReader(contentStream);
                     var content = reader.ReadToEnd();
                     contentStream = schemeHandler(request.Url.ToString(), out contentType);
                     return new WebResourceResponse(contentType, "UTF-8", contentStream);
