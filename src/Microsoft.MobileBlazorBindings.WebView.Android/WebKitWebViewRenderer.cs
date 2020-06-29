@@ -257,7 +257,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         private readonly HashSet<string> _loadedCookies = new HashSet<string>();
 
-        private Uri CreateUriForCookies(string url)
+        private static Uri CreateUriForCookies(string url)
         {
             if (url == null)
             {
