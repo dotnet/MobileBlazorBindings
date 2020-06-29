@@ -9,6 +9,8 @@
     
     <!-- VS's FastUpToDateCheck doesn't consider .ts file changes, so it's necessary to disable it to get incremental builds to work correctly (albeit not as fast as if FastUpToDateCheck did work for them) -->
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

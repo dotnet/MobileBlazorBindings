@@ -19,6 +19,8 @@
     <TargetFrameworkVersion>v9.0</TargetFrameworkVersion>
     <AndroidCommandLineToolsVersion>latest</AndroidCommandLineToolsVersion>
     <AndroidUseAapt2>true</AndroidUseAapt2>
+    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

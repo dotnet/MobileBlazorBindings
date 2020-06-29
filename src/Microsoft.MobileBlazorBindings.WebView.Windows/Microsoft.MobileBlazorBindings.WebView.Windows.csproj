@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
