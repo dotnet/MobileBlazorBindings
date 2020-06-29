@@ -67,6 +67,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{50192AAF-25B6-447A-99AA-BA8161DBB594}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView", "src\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj", "{A89F4F80-ACBD-4C4B-A764-4CE6E695F20B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C1156611-F47D-4014-9701-105A4D83FB47} = {C1156611-F47D-4014-9701-105A4D83FB47}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.JS", "src\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj", "{C1156611-F47D-4014-9701-105A4D83FB47}"
 EndProject
