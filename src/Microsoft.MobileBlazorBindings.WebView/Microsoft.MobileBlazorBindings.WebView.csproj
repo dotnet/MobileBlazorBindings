@@ -16,4 +16,8 @@
     <EmbeddedResource Include="../Microsoft.MobileBlazorBindings.WebView.JS/dist/blazor.desktop.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj" />
+  </ItemGroup>
+
 </Project>
