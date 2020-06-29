@@ -8,8 +8,8 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static readonly BlazorHybridNavigationManager Instance = new BlazorHybridNavigationManager();
 
-        private static readonly string InteropPrefix = "Blazor._internal.navigationManager.";
-        private static readonly string InteropNavigateTo = InteropPrefix + "navigateTo";
+        private const string InteropPrefix = "Blazor._internal.navigationManager.";
+        private const string InteropNavigateTo = InteropPrefix + "navigateTo";
 
         private IJSRuntime _jsRuntime;
         private bool _isInitialized;

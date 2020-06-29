@@ -37,7 +37,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 #pragma warning disable CA2000 // Dispose objects before losing scope
                     var config = new WKWebViewConfiguration();
 #pragma warning restore CA2000 // Dispose objects before losing scope
+#pragma warning disable CA2000 // Dispose objects before losing scope
                     config.Preferences.SetValueForKey(FromObject(true), new NSString("developerExtrasEnabled"));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
                     var initScriptSource = @"
                         window.onload = (function blazorInitScript() {
@@ -60,8 +62,10 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                         });
                     ";
                     config.UserContentController.AddScriptMessageHandler(this, "webwindowinterop");
+#pragma warning disable CA2000 // Dispose objects before losing scope
                     config.UserContentController.AddUserScript(new WKUserScript(
                         new NSString(initScriptSource), WKUserScriptInjectionTime.AtDocumentStart, true));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
                     foreach (var (scheme, handler) in Element.SchemeHandlers)
                     {
@@ -133,12 +137,17 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             Element.HandleWebMessageReceived(((NSString)message.Body).ToString());
         }
 
-        class SchemeHandler : NSObject, IWKUrlSchemeHandler
+        private class SchemeHandler : NSObject, IWKUrlSchemeHandler
         {
-            private ResolveWebResourceDelegate handler;
+            private readonly ResolveWebResourceDelegate handler;
 
             public SchemeHandler(ResolveWebResourceDelegate handler)
             {
@@ -148,7 +157,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
             [Export("webView:startURLSchemeTask:")]
             public void StartUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
             {
-                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, out var statusCode);
+                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, statusCode: out _);
                 using (var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null))
                 {
                     urlSchemeTask.DidReceiveResponse(response);
@@ -168,11 +177,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                 else
                 {
                     statusCode = 200;
-                    using (var ms = new MemoryStream())
-                    {
-                        responseStream.CopyTo(ms);
-                        return ms.ToArray();
-                    }
+                    using var ms = new MemoryStream();
+                    responseStream.CopyTo(ms);
+                    return ms.ToArray();
                 }
             }
 

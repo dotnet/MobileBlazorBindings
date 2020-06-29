@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
@@ -26,7 +27,10 @@ namespace Microsoft.MobileBlazorBindings.WebView
                     _webView.SendMessage($"{eventName}:{JsonSerializer.Serialize(args)}");
                 });
             }
+#pragma warning disable CA1031 // Do not catch general exception types
+            // TODO: Need to figure out if this is needed
             catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 Console.WriteLine(ex.Message);
             }
@@ -73,35 +77,39 @@ namespace Microsoft.MobileBlazorBindings.WebView
             var value = message;
 
             // Move off the browser UI thread
-            Task.Factory.StartNew(() =>
-            {
-                if (value.StartsWith("ipc:", StringComparison.Ordinal))
+            Task.Factory.StartNew(
+                () =>
                 {
-                    var spacePos = value.IndexOf(' ');
-                    var eventName = value.Substring(4, spacePos - 4);
-                    var argsJson = value.Substring(spacePos + 1);
-                    var args = JsonSerializer.Deserialize<object[]>(argsJson);
-
-                    Action<object>[] callbacksCopy;
-                    lock (_registrations)
+                    if (value.StartsWith("ipc:", StringComparison.Ordinal))
                     {
-                        if (!_registrations.TryGetValue(eventName, out var callbacks))
+                        var spacePos = value.IndexOf(' ');
+                        var eventName = value.Substring(4, spacePos - 4);
+                        var argsJson = value.Substring(spacePos + 1);
+                        var args = JsonSerializer.Deserialize<object[]>(argsJson);
+
+                        Action<object>[] callbacksCopy;
+                        lock (_registrations)
                         {
-                            return;
+                            if (!_registrations.TryGetValue(eventName, out var callbacks))
+                            {
+                                return;
+                            }
+
+                            callbacksCopy = callbacks.ToArray();
                         }
 
-                        callbacksCopy = callbacks.ToArray();
-                    }
-
-                    foreach (var callback in callbacksCopy)
-                    {
-                        _webView.Dispatcher.BeginInvokeOnMainThread(() =>
+                        foreach (var callback in callbacksCopy)
                         {
-                            callback(args);
-                        });
+                            _webView.Dispatcher.BeginInvokeOnMainThread(() =>
+                            {
+                                callback(args);
+                            });
+                        }
                     }
-                }
-            });
+                },
+                CancellationToken.None,
+                TaskCreationOptions.None,
+                TaskScheduler.Default);
         }
     }
 }

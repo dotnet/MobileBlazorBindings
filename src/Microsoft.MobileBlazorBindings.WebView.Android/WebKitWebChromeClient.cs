@@ -57,13 +57,15 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 filePathCallback.OnReceiveValue(result);
             }
 
-            _requestCodes = _requestCodes ?? new List<int>();
+            _requestCodes ??= new List<int>();
 
             var newRequestCode = ActivityResultCallbackRegistryHelper.RegisterActivityResultCallback(callback);
 
             _requestCodes.Add(newRequestCode);
 
+#pragma warning disable CA2000 // Dispose objects before losing scope
             _activity.StartActivityForResult(Intent.CreateChooser(intent, title), newRequestCode);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
             return true;
         }

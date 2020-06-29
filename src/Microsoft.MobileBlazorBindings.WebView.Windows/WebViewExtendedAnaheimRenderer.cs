@@ -67,7 +67,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     nativeControl.EnvironmentCreated += OnEnvironmentCreated;
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
-                    await WaitForBrowserCreatedAsync();
+                    await WaitForBrowserCreatedAsync().ConfigureAwait(false);
 
                     Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
                     Control.AddScriptToExecuteOnDocumentCreated(LoadBlazorJSScript, callbackArgs => { });
@@ -160,6 +160,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             base.OnElementPropertyChanged(sender, e);
 
             if (e.PropertyName == XF.WebView.SourceProperty.PropertyName)

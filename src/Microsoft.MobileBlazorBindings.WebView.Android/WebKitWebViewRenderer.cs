@@ -30,14 +30,19 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         private bool _isDisposed;
         protected internal IWebViewController ElementController => Element;
         protected internal bool IgnoreSourceChanges { get; set; }
+#pragma warning disable CA1056 // Uri properties should not be strings
         protected internal string UrlCanceled { get; set; }
+#pragma warning restore CA1056 // Uri properties should not be strings
+        private PostMessageJavaScriptInterface _postMessageJSInterface;
 
         public WebKitWebViewRenderer(Context context) : base(context)
         {
             AutoPackage = false;
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadHtml(string html, string baseUrl)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             _eventState = WebNavigationEvent.NewPage;
             Control.LoadDataWithBaseURL(
@@ -48,7 +53,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 historyUrl: null);
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadUrl(string url)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             LoadUrl(url, fireNavigatingCanceled: true);
         }
@@ -61,7 +68,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             {
                 var contentStream = schemeHandler(url, out var contentType);
 
-                var reader = new StreamReader(contentStream);
+                using var reader = new StreamReader(contentStream);
                 var content = reader.ReadToEnd();
                 Control.LoadDataWithBaseURL(
                     baseUrl: "app://0.0.0.0/",
@@ -80,7 +87,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             }
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         protected internal bool SendNavigatingCanceled(string url)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (Element == null || string.IsNullOrWhiteSpace(url))
             {
@@ -123,6 +132,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                     _webViewClient?.Dispose();
                     _webChromeClient?.Dispose();
                 }
+
+                _postMessageJSInterface?.Dispose();
             }
 
             base.Dispose(disposing);
@@ -160,6 +171,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             if (e.OldElement != null)
             {
                 e.OldElement.SendMessageFromJSToDotNetRequested -= OnSendMessageFromJSToDotNetRequested;
@@ -194,7 +210,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 // TODO: Eventually remove this
                 AWebView.SetWebContentsDebuggingEnabled(true);
 
-                webView.AddJavascriptInterface(new PostMessageJavaScriptInterface(PostMessageFromJS), name: "external");
+                _postMessageJSInterface = new PostMessageJavaScriptInterface(PostMessageFromJS);
+                webView.AddJavascriptInterface(_postMessageJSInterface, name: "external");
 
                 SetNativeControl(webView);
 
@@ -236,6 +253,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             base.OnElementPropertyChanged(sender, e);
 
             switch (e.PropertyName)
@@ -283,7 +305,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             return null;
         }
 
-        private CookieCollection GetCookiesFromNativeStore(string url)
+        private static CookieCollection GetCookiesFromNativeStore(string url)
         {
             var existingCookies = new CookieContainer();
             var cookieManager = CookieManager.Instance;
@@ -431,7 +453,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         private async Task<string> OnEvaluateJavaScriptRequested(string script)
         {
-            var jsr = new JavascriptResult();
+            using var jsr = new JavascriptResult();
 
             Control.EvaluateJavascript(script, jsr);
 
@@ -462,7 +484,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         private void OnReloadRequested(object sender, EventArgs eventArgs)
         {
-            SyncNativeCookies(Control.Url?.ToString());
+            SyncNativeCookies(Control.Url);
             _eventState = WebNavigationEvent.Refresh;
             Control.Reload();
         }

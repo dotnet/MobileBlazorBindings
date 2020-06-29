@@ -32,7 +32,9 @@
             if (value != Item.IsDone)
             {
                 Item.IsDone = value;
+#pragma warning disable 4014 // Task not awaited
                 AppState.TodoDatabase.SaveItemAsync(Item);
+#pragma warning restore 4014 // Task not awaited
             }
         }
     }

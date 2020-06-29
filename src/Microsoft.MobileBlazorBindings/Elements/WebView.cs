@@ -8,7 +8,9 @@ using Microsoft.MobileBlazorBindings.Elements.Handlers;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
+#pragma warning disable CA1724 // Type name conflicts with namespace
     public class WebView : View
+#pragma warning restore CA1724 // Type name conflicts with namespace
     {
         static WebView()
         {

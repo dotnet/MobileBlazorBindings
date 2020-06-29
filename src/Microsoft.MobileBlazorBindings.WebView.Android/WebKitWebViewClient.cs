@@ -27,6 +27,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         public override bool ShouldOverrideUrlLoading(AWebView view, IWebResourceRequest request)
         {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             if (_renderer.Element.SchemeHandlers.TryGetValue(request.Url.Scheme, out var schemeHandler))
             {
                 var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
@@ -43,11 +48,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
                 return true;
             }
-            return SendNavigatingCanceled(request?.Url?.ToString());
+            return SendNavigatingCanceled(request.Url?.ToString());
         }
 
         public override WebResourceResponse ShouldInterceptRequest(AWebView view, IWebResourceRequest request)
         {
+            if (request is null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
             if (_renderer.Element.SchemeHandlers.TryGetValue(request.Url.Scheme, out var schemeHandler))
             {
                 var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
@@ -65,6 +75,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         public override void OnPageStarted(AWebView view, string url, Bitmap favicon)
         {
+            if (view is null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+
             if (_renderer?.Element == null || string.IsNullOrWhiteSpace(url) || url == WebViewRenderer.AssetBaseUrl)
             {
                 return;
@@ -118,6 +133,15 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         public override void OnPageFinished(AWebView view, string url)
         {
+            if (view is null)
+            {
+                throw new ArgumentNullException(nameof(view));
+            }
+            if (string.IsNullOrEmpty(url))
+            {
+                throw new ArgumentException($"'{nameof(url)}' cannot be null or empty", nameof(url));
+            }
+
             if (_renderer?.Element == null || url == WebViewRenderer.AssetBaseUrl)
             {
                 return;
@@ -128,7 +152,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             _renderer.ElementController.SetValueFromRenderer(Xamarin.Forms.WebView.SourceProperty, source);
             _renderer.IgnoreSourceChanges = false;
 
-            var navigate = _navigationResult == WebNavigationResult.Failure ? !url.Equals(_lastUrlNavigatedCancel, StringComparison.OrdinalIgnoreCase) : true;
+            var navigate = _navigationResult != WebNavigationResult.Failure || !url.Equals(_lastUrlNavigatedCancel, StringComparison.OrdinalIgnoreCase);
             _lastUrlNavigatedCancel = _navigationResult == WebNavigationResult.Cancel ? url : null;
 
             if (navigate)
@@ -171,6 +195,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         public override void OnReceivedError(AWebView view, IWebResourceRequest request, WebResourceError error)
         {
+            if (error is null)
+            {
+                throw new ArgumentNullException(nameof(error));
+            }
+
             _navigationResult = WebNavigationResult.Failure;
             if (error.ErrorCode == ClientError.Timeout)
             {

@@ -30,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 element.ContentRoot = ContentRoot;
                 element.Services = Services;
-                await element.InitAsync();
+                await element.InitAsync().ConfigureAwait(false);
             }
 
             element.Render(ChildContent);

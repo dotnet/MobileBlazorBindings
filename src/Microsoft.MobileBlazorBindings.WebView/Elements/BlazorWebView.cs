@@ -65,14 +65,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             {
                 await XamarinDeviceDispatcher.Instance.InvokeAsync(async () =>
                 {
-                    await InitAsync();
+                    await InitAsync().ConfigureAwait(false);
 
                     Render(builder =>
                     {
                         builder.OpenComponent<TComponent>(0);
                         builder.CloseComponent();
                     });
-                });
+                }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -158,7 +158,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         public async Task InitAsync()
         {
             _attachInteropTask ??= AttachInteropAsync();
-            var handshakeResult = await _attachInteropTask;
+            var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
 
             var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
@@ -252,7 +252,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             await _blazorHybridRenderer.DispatchEventAsync(
                 webEvent.EventHandlerId,
                 webEvent.EventFieldInfo,
-                webEvent.EventArgs);
+                webEvent.EventArgs).ConfigureAwait(false);
         }
 
         [JSInvokable(nameof(NotifyLocationChanged))]
@@ -301,7 +301,17 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         public void Dispose()
         {
-            _serviceScope.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _blazorHybridRenderer?.Dispose();
+                _serviceScope.Dispose();
+            }
         }
 
         private class InteropHandshakeResult
