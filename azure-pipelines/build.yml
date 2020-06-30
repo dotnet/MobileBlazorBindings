@@ -44,18 +44,19 @@ jobs:
 #  - template: install-dependencies.yml
 #  - template: dotnet.yml
 
-#- job: macOS
-#  pool:
-#    vmImage: macOS 10.13
-#  steps:
-#  - checkout: self
-#    clean: true
-#  - template: install-dependencies.yml
-#  - template: dotnet.yml
+- job: macOS
+  pool:
+    vmImage: macOS 10.13
+  steps:
+  - checkout: self
+    clean: true
+  - template: install-dependencies.yml
+  - template: dotnet-mac.yml
 
 - job: WrapUp
   dependsOn:
   - Windows
+  - macOS
   pool: ${{ parameters.windowsPool }}
   condition: succeededOrFailed()
   steps:

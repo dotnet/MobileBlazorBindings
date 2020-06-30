@@ -79,4 +79,10 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
+
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.macOS.dll">
+          <Authenticode>Microsoft400</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>

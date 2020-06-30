@@ -58,4 +58,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.iOS.dll">
+          <Authenticode>Microsoft400</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>

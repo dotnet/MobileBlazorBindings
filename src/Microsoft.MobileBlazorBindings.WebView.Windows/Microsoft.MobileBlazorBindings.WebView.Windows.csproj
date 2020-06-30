@@ -20,4 +20,9 @@
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.Windows.dll">
+          <Authenticode>Microsoft400</Authenticode>
+      </FilesToSign>
+  </ItemGroup>
 </Project>
