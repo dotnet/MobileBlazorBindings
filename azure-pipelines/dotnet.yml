@@ -13,7 +13,11 @@ steps:
   displayName: 'Build src projects'
   inputs:
     msbuildArguments: /t:build /p:NoRestore=true
-    solution: 'src/**/*.csproj' 
+    solution: |
+      src/**/*.csproj
+      !**/*.Android.csproj
+      !**/*.iOS.csproj
+      !**/*.macOS.csproj
     configuration: '$(BuildConfiguration)'
     arguments: /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
 
@@ -21,21 +25,25 @@ steps:
   displayName: 'Pack src projects'
   inputs:
     msbuildArguments: /t:pack /p:NoBuild=true
-    solution: 'src/**/*.csproj' 
+    solution: |
+      src/**/*.csproj
+      !**/*.Android.csproj
+      !**/*.iOS.csproj
+      !**/*.macOS.csproj
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
   displayName: 'Prepare template project generated files'
   inputs:
     msbuildArguments: /t:SetNuGetPackageVersionInTemplateJson
-    solution: 'templates/*.csproj' 
+    solution: 'templates/*.csproj'
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
   displayName: 'Pack template projects'
   inputs:
     msbuildArguments: /t:pack
-    solution: 'templates/*.csproj' 
+    solution: 'templates/*.csproj'
     configuration: '$(BuildConfiguration)'
 
 - task: PowerShell@2
