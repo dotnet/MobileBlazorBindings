@@ -12,10 +12,9 @@ steps:
 - task: MSBuild@1
   displayName: 'Build src Windows projects'
   inputs:
-    msbuildArguments: /t:build /p:NoRestore=true
+    msbuildArguments: /t:build /p:NoRestore=true /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build-win.binlog"
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
-    arguments: /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
 
 - task: MSBuild@1
   displayName: 'Pack src Windows projects'
@@ -27,10 +26,9 @@ steps:
 - task: XamarinAndroid@1
   displayName: 'Android'
   inputs:
-    msbuildArguments: /t:build /p:NoRestore=true
-    solution: src/**/*.Android.csproj
+    msbuildArguments: /t:build /p:NoRestore=true /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build-android.binlog"
+    projectFile: src/**/*.Android.csproj
     configuration: '$(BuildConfiguration)'
-    arguments: /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build.binlog"
 
 - task: MSBuild@1
   displayName: 'Prepare template project generated files'
