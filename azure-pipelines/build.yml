@@ -51,6 +51,8 @@ jobs:
   - checkout: self
     clean: true
   - template: install-dependencies.yml
+    parameters:
+      initArgs: -NoRestore # Mac build restores its own projects so that Windows-only projects can be excluded
   - template: dotnet-mac.yml
 
 - job: WrapUp

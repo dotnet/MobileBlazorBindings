@@ -2,6 +2,14 @@ steps:
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
+  displayName: 'Restore src Mac projects'
+  inputs:
+    msbuildArguments: /t:restore
+    solution: CI/CI.Mac.proj
+    configuration: '$(BuildConfiguration)'
+    arguments: /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/restore.binlog"
+
+- task: MSBuild@1
   displayName: 'Build src Mac projects'
   inputs:
     msbuildArguments: /t:build /p:NoRestore=true
