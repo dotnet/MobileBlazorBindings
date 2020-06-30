@@ -12,7 +12,7 @@ steps:
 - task: MSBuild@1
   displayName: 'Build src Windows projects'
   inputs:
-    msbuildArguments: /t:build /p:NoRestore=true /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build-win.binlog"
+    msbuildArguments: /t:build /p:NoRestore=true
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
 
@@ -26,7 +26,7 @@ steps:
 - task: XamarinAndroid@1
   displayName: 'Android'
   inputs:
-    msbuildArguments: /t:build /p:NoRestore=true /v:diag /bl:"$(Build.ArtifactStagingDirectory)/build_logs/build-android.binlog"
+    msbuildArguments: /t:build /p:NoRestore=true
     projectFile: src/**/*.Android.csproj
     configuration: '$(BuildConfiguration)'
 
