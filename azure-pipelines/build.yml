@@ -1,5 +1,6 @@
 parameters:
   windowsPool: VSEng-MicroBuildVS2019
+  macPool: MicroBuildV2MacPool
 
 jobs:
 - job: Windows
@@ -45,8 +46,7 @@ jobs:
 #  - template: dotnet.yml
 
 - job: macOS
-  pool:
-    vmImage: macOS 10.13
+  pool: ${{ parameters.macPool }}
   steps:
   - checkout: self
     clean: true
