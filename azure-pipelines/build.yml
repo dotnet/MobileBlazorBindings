@@ -59,7 +59,7 @@ jobs:
 - job: WrapUp
   dependsOn:
   - Windows
-  - macOS
+#  - macOS
   pool: ${{ parameters.windowsPool }}
   condition: succeededOrFailed()
   steps:
