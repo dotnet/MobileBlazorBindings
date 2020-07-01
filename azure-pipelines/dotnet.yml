@@ -23,11 +23,11 @@ steps:
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
 
-- task: XamarinAndroid@1
+- task: MSBuild@1
   displayName: 'Android'
   inputs:
-    msbuildArguments: /t:build /p:NoRestore=true
-    projectFile: src/**/*.Android.csproj
+    msbuildArguments: /t:build
+    solution: src/**/*.Android.csproj
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
