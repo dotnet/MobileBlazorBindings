@@ -24,12 +24,12 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 
-# - task: XamarinAndroid@1
-#   displayName: 'Android'
-#   inputs:
-#     msbuildArguments: /t:build
-#     projectFile: src/**/*.Android.csproj
-#     configuration: '$(BuildConfiguration)'
+- task: XamarinAndroid@1
+  displayName: 'Build src Android projects'
+  inputs:
+    projectFile: src/**/*.Android.csproj
+    configuration: '$(BuildConfiguration)'
+    createAppPackage: false
 
 # - task: MSBuild@1
 #   displayName: 'Android'
