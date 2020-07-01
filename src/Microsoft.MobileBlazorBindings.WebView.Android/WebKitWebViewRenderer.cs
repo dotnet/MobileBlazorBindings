@@ -1,6 +1,5 @@
 ﻿using Android.Content;
 using Android.Webkit;
-using Microsoft.MobileBlazorBindings.WebView.Android;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Java.Interop;
 using System;
@@ -16,8 +15,6 @@ using Xamarin.Forms.Platform.Android;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using AWebView = Android.Webkit.WebView;
 using MixedContentHandling = Android.Webkit.MixedContentHandling;
-
-[assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebKitWebViewRenderer))]
 
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
