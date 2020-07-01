@@ -23,12 +23,21 @@ steps:
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
 
-- task: MSBuild@1
+
+- task: XamarinAndroid@1
   displayName: 'Android'
   inputs:
     msbuildArguments: /t:build
-    solution: src/**/*.Android.csproj
+    projectFile: src/**/*.Android.csproj
     configuration: '$(BuildConfiguration)'
+
+# - task: MSBuild@1
+#   displayName: 'Android'
+#   inputs:
+#     msbuildArguments: /t:build
+#     solution: src/**/*.Android.csproj
+#     configuration: '$(BuildConfiguration)'
+
 
 - task: MSBuild@1
   displayName: 'Prepare template project generated files'
