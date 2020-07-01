@@ -53,7 +53,11 @@
     <Compile Include="FormsHelper.cs" />
     <Compile Include="WebKitWebChromeClient.cs" />
     <Compile Include="WebKitWebViewClient.cs" />
+    <Compile Include="Exports.cs" />
     <Compile Include="WebKitWebViewRenderer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj">
@@ -72,10 +76,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.Android.dll">
-          <Authenticode>Microsoft400</Authenticode>
-      </FilesToSign>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.Android.dll">
+      <Authenticode>Microsoft400</Authenticode>
+    </FilesToSign>
   </ItemGroup>
 </Project>
