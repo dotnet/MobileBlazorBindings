@@ -36,15 +36,6 @@ jobs:
 
   - template: dotnet.yml
 
-#- job: Linux
-#  pool:
-#    vmImage: Ubuntu 16.04
-#  steps:
-#  - checkout: self
-#    clean: true
-#  - template: install-dependencies.yml
-#  - template: dotnet.yml
-
 # NOTE: This is disabled due to https://github.com/dotnet/Nerdbank.GitVersioning/issues/487
 # - job: macOS
 #   pool: ${{ parameters.macPool }}
