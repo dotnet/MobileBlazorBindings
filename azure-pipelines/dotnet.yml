@@ -10,18 +10,33 @@ steps:
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
-  displayName: 'Build src Windows/Android projects'
+  displayName: 'Build src Windows projects'
   inputs:
     msbuildArguments: /t:build /p:NoRestore=true
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
-  displayName: 'Pack src Windows/Android projects'
+  displayName: 'Pack src Windows projects'
   inputs:
     msbuildArguments: /t:pack /p:NoBuild=true
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
+
+- task: XamarinAndroid@1
+  displayName: 'Build src Android projects'
+  inputs:
+    projectFile: src/**/*.Android.csproj
+    configuration: '$(BuildConfiguration)'
+    createAppPackage: false
+
+- task: XamarinAndroid@1
+  displayName: 'Pack src Android projects'
+  inputs:
+    target: Pack
+    projectFile: src/**/*.Android.csproj
+    configuration: '$(BuildConfiguration)'
+    createAppPackage: false
 
 - task: MSBuild@1
   displayName: 'Prepare template project generated files'
