@@ -11,7 +11,7 @@ namespace Microsoft.MobileBlazorBindings.Core
     /// and returns the string represented by the contained text spans.
     /// </summary>
     public class TextSpanContainer
-    { 
+    {
         private readonly List<string> _textSpans = new List<string>();
 
         public TextSpanContainer(bool trimWhitespace = true)

@@ -1,22 +1,15 @@
-﻿using Microsoft.MobileBlazorBindings.WebView;
-using Microsoft.MobileBlazorBindings.WebView.Elements;
-using HybridMessageApp.Data;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using HybridMessageApp.Data;
 
 namespace HybridMessageApp
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MessageListPage : ContentPage
     {
-        readonly ContentPage detailsPage = new ContentPage
+        private readonly ContentPage detailsPage = new ContentPage
         {
             Content = new BlazorWebView<WebUI.MessageDetails> { ContentRoot = "WebUI/wwwroot" }
         };
-
-        readonly AppState appState;
+        private readonly AppState appState;
 
         public MessageListPage()
         {

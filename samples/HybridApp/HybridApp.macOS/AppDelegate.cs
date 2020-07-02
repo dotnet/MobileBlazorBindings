@@ -37,19 +37,19 @@ namespace HybridApp.macOS
         private NSMenu MakeMainMenu()
         {
             // top bar app menu
-            NSMenu menubar = new NSMenu();
-            NSMenuItem appMenuItem = new NSMenuItem();
+            var menubar = new NSMenu();
+            var appMenuItem = new NSMenuItem();
             menubar.AddItem(appMenuItem);
 
-            NSMenu appMenu = new NSMenu();
+            var appMenu = new NSMenu();
             appMenuItem.Submenu = appMenu;
 
             // add separator
-            NSMenuItem separator = NSMenuItem.SeparatorItem;
+            var separator = NSMenuItem.SeparatorItem;
             appMenu.AddItem(separator);
 
             // add quit menu item
-            string quitTitle = string.Format("Quit {0}", "HybridApp.macOS");
+            var quitTitle = string.Format("Quit {0}", "HybridApp.macOS");
             var quitMenuItem = new NSMenuItem(quitTitle, "q", delegate
             {
                 NSApplication.SharedApplication.Terminate(menubar);

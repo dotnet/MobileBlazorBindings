@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.Core;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -21,7 +21,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onwebmessagereceived",
                 setId: id => _onWebMessageReceivedEventHandlerId = id,
-                clearId: id => { if (_onWebMessageReceivedEventHandlerId == id) _onWebMessageReceivedEventHandlerId = 0; });
+                clearId: id => { if (_onWebMessageReceivedEventHandlerId == id) { _onWebMessageReceivedEventHandlerId = 0; } });
 
             Control.OnWebMessageReceived += (sender, message) =>
             {

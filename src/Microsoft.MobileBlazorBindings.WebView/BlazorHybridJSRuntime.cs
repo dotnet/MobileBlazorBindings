@@ -11,7 +11,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
     internal class BlazorHybridJSRuntime : JSRuntime
     {
         private readonly IPC _ipc;
-        private static Type VoidTaskResultType = typeof(Task).Assembly
+        private static readonly Type VoidTaskResultType = typeof(Task).Assembly
             .GetType("System.Threading.Tasks.VoidTaskResult", true);
 
         public BlazorHybridJSRuntime(IPC ipc)

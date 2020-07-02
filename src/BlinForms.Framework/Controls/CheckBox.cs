@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -102,11 +102,11 @@ namespace BlinForms.Framework.Controls
                         ThreeState = AttributeHelper.GetBool(attributeValue);
                         break;
                     case "oncheckedchanged":
-                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (CheckedChangedEventHandlerId == id) CheckedChangedEventHandlerId = 0; });
+                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (CheckedChangedEventHandlerId == id) { CheckedChangedEventHandlerId = 0; } });
                         CheckedChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     case "oncheckstatechanged":
-                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (CheckStateChangedEventHandlerId == id) CheckStateChangedEventHandlerId = 0; });
+                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (CheckStateChangedEventHandlerId == id) { CheckStateChangedEventHandlerId = 0; } });
                         CheckStateChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

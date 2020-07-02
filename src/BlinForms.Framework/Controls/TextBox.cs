@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -96,7 +96,7 @@ namespace BlinForms.Framework.Controls
                         ScrollBars = (ScrollBars)AttributeHelper.GetInt(attributeValue);
                         break;
                     case "ontextchanged":
-                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (TextChangedEventHandlerId == id) TextChangedEventHandlerId = 0; });
+                        Renderer.RegisterEvent(attributeEventHandlerId, id => { if (TextChangedEventHandlerId == id) { TextChangedEventHandlerId = 0; } });
                         TextChangedEventHandlerId = attributeEventHandlerId;
                         break;
                     default:

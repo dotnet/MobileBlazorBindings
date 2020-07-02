@@ -25,7 +25,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Helper method to serialize <see cref="System.Double" /> objects.
+        /// Helper method to serialize <see cref="double" /> objects.
         /// </summary>
         public static string DoubleToString(double color)
         {
@@ -33,7 +33,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Helper method to deserialize <see cref="System.Double" /> objects.
+        /// Helper method to deserialize <see cref="double" /> objects.
         /// </summary>
         public static double StringToDouble(string doubleString, double defaultValueIfNull = default)
         {
@@ -45,7 +45,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Helper method to serialize <see cref="System.Single" /> objects.
+        /// Helper method to serialize <see cref="float" /> objects.
         /// </summary>
         public static string SingleToString(float color)
         {
@@ -53,7 +53,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Helper method to deserialize <see cref="System.Single" /> objects.
+        /// Helper method to deserialize <see cref="float" /> objects.
         /// </summary>
         public static float StringToSingle(string singleString, float defaultValueIfNull = default)
         {

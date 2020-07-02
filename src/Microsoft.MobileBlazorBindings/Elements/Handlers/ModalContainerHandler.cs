@@ -58,7 +58,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     }
                     break;
                 case "onclosed":
-                    Renderer.RegisterEvent(attributeEventHandlerId, id => { if (ClosedEventHandlerId == id) ClosedEventHandlerId = 0; });
+                    Renderer.RegisterEvent(attributeEventHandlerId, id => { if (ClosedEventHandlerId == id) { ClosedEventHandlerId = 0; } });
                     ClosedEventHandlerId = attributeEventHandlerId;
                     break;
                 default:

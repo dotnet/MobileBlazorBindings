@@ -176,7 +176,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
-        void Load()
+        private void Load()
         {
             if (Element.Source != null)
             {
@@ -204,12 +204,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
-        bool _isDisposed;
+        private bool _isDisposed;
 
         protected override void Dispose(bool disposing)
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

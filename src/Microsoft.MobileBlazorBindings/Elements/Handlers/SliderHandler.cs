@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "ondragcompleted",
                 setId: id => DragCompletedEventHandlerId = id,
-                clearId: id => { if (DragCompletedEventHandlerId == id) DragCompletedEventHandlerId = 0; });
+                clearId: id => { if (DragCompletedEventHandlerId == id) { DragCompletedEventHandlerId = 0; } });
             SliderControl.DragCompleted += (s, e) =>
             {
                 if (DragCompletedEventHandlerId != default)
@@ -25,7 +25,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "ondragstarted",
                 setId: id => DragStartedEventHandlerId = id,
-                clearId: id => { if (DragStartedEventHandlerId == id) DragStartedEventHandlerId = 0; });
+                clearId: id => { if (DragStartedEventHandlerId == id) { DragStartedEventHandlerId = 0; } });
             SliderControl.DragStarted += (s, e) =>
             {
                 if (DragStartedEventHandlerId != default)
@@ -37,7 +37,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onvaluechanged",
                 setId: id => ValueChangedEventHandlerId = id,
-                clearId: id => { if (ValueChangedEventHandlerId == id) ValueChangedEventHandlerId = 0; });
+                clearId: id => { if (ValueChangedEventHandlerId == id) { ValueChangedEventHandlerId = 0; } });
             SliderControl.ValueChanged += (s, e) =>
             {
                 if (ValueChangedEventHandlerId != default)

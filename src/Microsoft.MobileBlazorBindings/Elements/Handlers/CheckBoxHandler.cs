@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onischeckedchanged",
                 setId: id => IsCheckedChangedEventHandlerId = id,
-                clearId: id => { if (IsCheckedChangedEventHandlerId == id) IsCheckedChangedEventHandlerId = 0; });
+                clearId: id => { if (IsCheckedChangedEventHandlerId == id) { IsCheckedChangedEventHandlerId = 0; } });
             CheckBoxControl.CheckedChanged += (s, e) =>
             {
                 if (IsCheckedChangedEventHandlerId != default)

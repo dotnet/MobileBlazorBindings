@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onclick",
                 setId: id => ClickEventHandlerId = id,
-                clearId: id => { if (ClickEventHandlerId == id) ClickEventHandlerId = 0; });
+                clearId: id => { if (ClickEventHandlerId == id) { ClickEventHandlerId = 0; } });
             MenuItemControl.Clicked += (s, e) =>
             {
                 if (ClickEventHandlerId != default)

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onvaluechanged",
                 setId: id => ValueChangedEventHandlerId = id,
-                clearId: id => { if (ValueChangedEventHandlerId == id) ValueChangedEventHandlerId = 0; });
+                clearId: id => { if (ValueChangedEventHandlerId == id) { ValueChangedEventHandlerId = 0; } });
             StepperControl.ValueChanged += (s, e) =>
             {
                 if (ValueChangedEventHandlerId != default)

@@ -22,7 +22,7 @@ namespace BlinForms.Framework.Controls
         }
 
         /// <summary>
-        /// Helper method to serialize <see cref="System.Double" /> objects.
+        /// Helper method to serialize <see cref="double" /> objects.
         /// </summary>
         public static string DoubleToString(double color)
         {
@@ -30,7 +30,7 @@ namespace BlinForms.Framework.Controls
         }
 
         /// <summary>
-        /// Helper method to deserialize <see cref="System.Double" /> objects.
+        /// Helper method to deserialize <see cref="double" /> objects.
         /// </summary>
         public static double StringToDouble(string doubleString)
         {

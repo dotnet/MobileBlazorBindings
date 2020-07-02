@@ -58,50 +58,52 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
-        void Element_InsertPageBeforeRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
+        private void Element_InsertPageBeforeRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
         {
             Control?.InsertPageBefore(e.Page, e.BeforePage);
         }
 
-        void Element_RemovePageRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
+        private void Element_RemovePageRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
         {
             Control?.RemovePage(e.Page);
         }
 
-        void Element_PopToRootRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
+        private void Element_PopToRootRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
         {
             e.Animated = false;
             Control?.PopToRoot(e.Animated);
         }
 
-        void Element_PopRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
+        private void Element_PopRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
         {
             e.Animated = false;
             Control?.Pop(e.Animated);
         }
 
-        void Element_PushRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
+        private void Element_PushRequested(object sender, XF.Internals.NavigationRequestedEventArgs e)
         {
             e.Animated = false;
             Control?.Push(e.Page, e.Animated);
         }
 
-        void UpdateBarBackgroundColor()
+        private void UpdateBarBackgroundColor()
         {
             Control.UpdateDependencyColor(FormsNavigationPage.TitleBarBackgroundColorProperty, Element.BarBackgroundColor);
         }
 
-        void UpdateBarTextColor()
+        private void UpdateBarTextColor()
         {
             Control.UpdateDependencyColor(FormsNavigationPage.TitleBarTextColorProperty, Element.BarTextColor);
         }
 
-        bool _isDisposed;
+        private bool _isDisposed;
 
         protected override void Dispose(bool disposing)
         {
             if (_isDisposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

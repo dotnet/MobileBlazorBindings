@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.AspNetCore.Components.RenderTree;
 using System;
 using System.Text.Json;
-using Microsoft.AspNetCore.Components.RenderTree;
 
 namespace Microsoft.AspNetCore.Components.Web
 {

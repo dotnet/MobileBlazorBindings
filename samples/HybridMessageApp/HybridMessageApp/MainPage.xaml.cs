@@ -1,8 +1,4 @@
-﻿using Microsoft.MobileBlazorBindings.WebView;
-using HybridMessageApp.Data;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using HybridMessageApp.Data;
 
 namespace HybridMessageApp
 {
@@ -24,7 +20,7 @@ namespace HybridMessageApp
             WorkaroundDisplayIssue();
         }
 
-        async void WorkaroundDisplayIssue()
+        private async void WorkaroundDisplayIssue()
         {
             await Task.Delay(1000);
             Dispatcher.BeginInvokeOnMainThread(() =>

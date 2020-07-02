@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.Extensions.Logging;
+using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Windows.Forms;
 

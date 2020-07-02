@@ -3,9 +3,6 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {

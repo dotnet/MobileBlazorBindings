@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onfocused",
                 setId: id => FocusedEventHandlerId = id,
-                clearId: id => { if (FocusedEventHandlerId == id) FocusedEventHandlerId = 0; });
+                clearId: id => { if (FocusedEventHandlerId == id) { FocusedEventHandlerId = 0; } });
             VisualElementControl.Focused += (s, e) =>
             {
                 if (FocusedEventHandlerId != default)
@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onsizechanged",
                 setId: id => SizeChangedEventHandlerId = id,
-                clearId: id => { if (SizeChangedEventHandlerId == id) SizeChangedEventHandlerId = 0; });
+                clearId: id => { if (SizeChangedEventHandlerId == id) { SizeChangedEventHandlerId = 0; } });
             VisualElementControl.SizeChanged += (s, e) =>
             {
                 if (SizeChangedEventHandlerId != default)
@@ -34,7 +34,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onunfocused",
                 setId: id => UnfocusedEventHandlerId = id,
-                clearId: id => { if (UnfocusedEventHandlerId == id) UnfocusedEventHandlerId = 0; });
+                clearId: id => { if (UnfocusedEventHandlerId == id) { UnfocusedEventHandlerId = 0; } });
             VisualElementControl.Unfocused += (s, e) =>
             {
                 if (UnfocusedEventHandlerId != default)

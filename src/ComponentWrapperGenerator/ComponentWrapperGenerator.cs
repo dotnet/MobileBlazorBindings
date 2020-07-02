@@ -277,7 +277,7 @@ namespace {Settings.RootNamespace}
             typeNameBuilder.Append(type.Name.Substring(0, type.Name.IndexOf('`', StringComparison.Ordinal)));
             typeNameBuilder.Append("<");
             var genericArgs = type.GetGenericArguments();
-            for (int i = 0; i < genericArgs.Length; i++)
+            for (var i = 0; i < genericArgs.Length; i++)
             {
                 if (i > 0)
                 {

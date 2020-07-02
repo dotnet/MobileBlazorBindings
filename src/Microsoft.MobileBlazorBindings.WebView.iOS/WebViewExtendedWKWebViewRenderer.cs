@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Foundation;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.iOS;
-using Foundation;
-using WebKit;
-using XF = Xamarin.Forms;
-using Xamarin.Forms.Platform.iOS;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Encodings.Web;
-using System;
+using WebKit;
+using Xamarin.Forms.Platform.iOS;
+using XF = Xamarin.Forms;
 
 [assembly: XF.ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedWKWebViewRenderer))]
 
@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 #pragma warning restore CA1710 // Identifiers should have correct suffix
 #pragma warning restore CA1010 // Collections should implement generic interface
     {
-        WKWebView _wkWebView;
+        private WKWebView _wkWebView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
@@ -107,7 +107,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
             }
         }
 
-        void Load()
+        private void Load()
         {
             if (Element.Source != null)
             {
@@ -120,7 +120,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (html == null)
+            {
                 return;
+            }
 
             using var baseNSUrl = new NSUrl(baseUrl ?? "about:blank");
             Control.LoadHtmlString(html, baseNSUrl);
@@ -131,7 +133,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (url == null)
+            {
                 return;
+            }
 
             using var nsUrl = new NSUrl(url);
             using var request = new NSUrlRequest(nsUrl);

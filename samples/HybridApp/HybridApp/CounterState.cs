@@ -2,7 +2,7 @@
 
 namespace HybridApp
 {
-    class CounterState
+    internal class CounterState
     {
         public int CurrentCount { get; private set; }
 

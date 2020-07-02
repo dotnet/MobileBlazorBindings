@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onistoggledchanged",
                 setId: id => IsToggledChangedEventHandlerId = id,
-                clearId: id => { if (IsToggledChangedEventHandlerId == id) IsToggledChangedEventHandlerId = 0; });
+                clearId: id => { if (IsToggledChangedEventHandlerId == id) { IsToggledChangedEventHandlerId = 0; } });
             SwitchControl.Toggled += (s, e) =>
             {
                 if (IsToggledChangedEventHandlerId != default)

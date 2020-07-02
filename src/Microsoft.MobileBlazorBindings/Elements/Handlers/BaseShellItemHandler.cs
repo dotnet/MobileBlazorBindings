@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onappearing",
                 setId: id => AppearingEventHandlerId = id,
-                clearId: id => { if (AppearingEventHandlerId == id) AppearingEventHandlerId = 0; });
+                clearId: id => { if (AppearingEventHandlerId == id) { AppearingEventHandlerId = 0; } });
             BaseShellItemControl.Appearing += (s, e) =>
             {
                 if (AppearingEventHandlerId != default)
@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "ondisappearing",
                 setId: id => DisappearingEventHandlerId = id,
-                clearId: id => { if (DisappearingEventHandlerId == id) DisappearingEventHandlerId = 0; });
+                clearId: id => { if (DisappearingEventHandlerId == id) { DisappearingEventHandlerId = 0; } });
             BaseShellItemControl.Disappearing += (s, e) =>
             {
                 if (DisappearingEventHandlerId != default)

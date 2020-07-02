@@ -86,7 +86,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             string base64;
             using (var memoryStream = new MemoryStream())
             {
-                object renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
+                var renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
                 using (renderBatchWriter as IDisposable)
                 {
                     _writeMethod.Invoke(renderBatchWriter, new object[] { renderBatch });
@@ -105,7 +105,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             return Task.CompletedTask;
         }
 
-        class RenderFragmentComponent : IComponent
+        private class RenderFragmentComponent : IComponent
         {
             public RenderHandle RenderHandle { get; private set; }
 

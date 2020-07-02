@@ -1,6 +1,6 @@
-﻿using Microsoft.MobileBlazorBindings.WebView;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings;
+using Microsoft.MobileBlazorBindings.WebView;
 using Xamarin.Forms;
 
 namespace HybridApp

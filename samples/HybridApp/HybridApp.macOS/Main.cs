@@ -3,9 +3,9 @@ using Microsoft.MobileBlazorBindings.WebView.macOS;
 
 namespace HybridApp.macOS
 {
-    static class MainClass
+    internal static class MainClass
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             BlazorHybridMacOS.Init();
             NSApplication.Init();

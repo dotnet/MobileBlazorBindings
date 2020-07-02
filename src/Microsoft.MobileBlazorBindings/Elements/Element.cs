@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements

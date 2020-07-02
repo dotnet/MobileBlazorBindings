@@ -3,8 +3,8 @@
 
 using Android.Content;
 using Android.Webkit;
-using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Java.Interop;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

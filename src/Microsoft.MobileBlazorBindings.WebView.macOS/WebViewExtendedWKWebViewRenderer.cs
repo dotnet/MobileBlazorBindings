@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Foundation;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.macOS;
-using Foundation;
-using WebKit;
-using XF = Xamarin.Forms;
-using Xamarin.Forms.Platform.MacOS;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Encodings.Web;
-using System;
+using WebKit;
+using Xamarin.Forms.Platform.MacOS;
+using XF = Xamarin.Forms;
 
 [assembly: XF.ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedWKWebViewRenderer))]
 
@@ -18,7 +18,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
 {
     public class WebViewExtendedWKWebViewRenderer : ViewRenderer<WebViewExtended, WKWebView>, XF.IWebViewDelegate, IWKScriptMessageHandler
     {
-        WKWebView _wkWebView;
+        private WKWebView _wkWebView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
@@ -91,7 +91,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             }
         }
 
-        void Load()
+        private void Load()
         {
             if (Element.Source != null)
             {
@@ -102,7 +102,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
         public void LoadHtml(string html, string baseUrl)
         {
             if (html == null)
+            {
                 return;
+            }
 
             Control.LoadHtmlString(html, new NSUrl(baseUrl ?? "about:blank"));
         }
@@ -110,7 +112,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
         public void LoadUrl(string url)
         {
             if (url == null)
+            {
                 return;
+            }
 
             Control.LoadRequest(new NSUrlRequest(new NSUrl(url)));
         }
@@ -120,9 +124,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             Element.HandleWebMessageReceived(((NSString)message.Body).ToString());
         }
 
-        class SchemeHandler : NSObject, IWKUrlSchemeHandler
+        private class SchemeHandler : NSObject, IWKUrlSchemeHandler
         {
-            private ResolveWebResourceDelegate handler;
+            private readonly ResolveWebResourceDelegate handler;
 
             public SchemeHandler(ResolveWebResourceDelegate handler)
             {

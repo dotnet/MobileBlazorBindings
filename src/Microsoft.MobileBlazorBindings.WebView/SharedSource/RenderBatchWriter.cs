@@ -60,7 +60,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             _binaryWriter.Write(stringTableOffset);
         }
 
-        int Write(in ArrayRange<RenderTreeDiff> diffs)
+        private int Write(in ArrayRange<RenderTreeDiff> diffs)
         {
             var count = diffs.Count;
             var diffsIndexes = new int[count];
@@ -83,7 +83,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             return tableStartPos;
         }
 
-        void Write(in RenderTreeDiff diff)
+        private void Write(in RenderTreeDiff diff)
         {
             _binaryWriter.Write(diff.ComponentId);
 
@@ -98,7 +98,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             }
         }
 
-        void Write(in RenderTreeEdit edit)
+        private void Write(in RenderTreeEdit edit)
         {
             // We want all RenderTreeEdit outputs to be of the same length, so that
             // the recipient can index into the array directly without walking it.
@@ -114,7 +114,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             WriteString(edit.RemovedAttributeName, allowDeduplication: true);
         }
 
-        int Write(in ArrayRange<RenderTreeFrame> frames)
+        private int Write(in ArrayRange<RenderTreeFrame> frames)
         {
             var startPos = (int)_binaryWriter.BaseStream.Position;
 
@@ -129,7 +129,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             return startPos;
         }
 
-        void Write(in RenderTreeFrame frame)
+        private void Write(in RenderTreeFrame frame)
         {
             // TODO: Change this to write as a short, saving 2 bytes per frame
             _binaryWriter.Write((int)frame.FrameType);
@@ -201,7 +201,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             }
         }
 
-        int Write(in ArrayRange<int> numbers)
+        private int Write(in ArrayRange<int> numbers)
         {
             var startPos = (int)_binaryWriter.BaseStream.Position;
             _binaryWriter.Write(numbers.Count);
@@ -216,7 +216,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             return startPos;
         }
 
-        int Write(in ArrayRange<ulong> numbers)
+        private int Write(in ArrayRange<ulong> numbers)
         {
             var startPos = (int)_binaryWriter.BaseStream.Position;
             _binaryWriter.Write(numbers.Count);
@@ -231,7 +231,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             return startPos;
         }
 
-        void WriteString(string value, bool allowDeduplication)
+        private void WriteString(string value, bool allowDeduplication)
         {
             if (value == null)
             {
@@ -255,7 +255,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             }
         }
 
-        int WriteStringTable()
+        private int WriteStringTable()
         {
             // Capture the locations of each string
             var stringsCount = _strings.Count;
@@ -278,7 +278,7 @@ namespace Microsoft.AspNetCore.Components.Server.Circuits
             return locationsStartPos;
         }
 
-        static void WritePadding(BinaryWriter writer, int numBytes)
+        private static void WritePadding(BinaryWriter writer, int numBytes)
         {
             while (numBytes >= 4)
             {

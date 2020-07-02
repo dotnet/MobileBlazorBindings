@@ -14,7 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onclick",
                 setId: id => ClickEventHandlerId = id,
-                clearId: id => { if (ClickEventHandlerId == id) ClickEventHandlerId = 0; });
+                clearId: id => { if (ClickEventHandlerId == id) { ClickEventHandlerId = 0; } });
             ButtonControl.Clicked += (s, e) =>
             {
                 if (ClickEventHandlerId != default)
@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onpress",
                 setId: id => PressEventHandlerId = id,
-                clearId: id => { if (PressEventHandlerId == id) PressEventHandlerId = 0; });
+                clearId: id => { if (PressEventHandlerId == id) { PressEventHandlerId = 0; } });
             ButtonControl.Pressed += (s, e) =>
             {
                 if (PressEventHandlerId != default)
@@ -38,7 +38,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onrelease",
                 setId: id => ReleaseEventHandlerId = id,
-                clearId: id => { if (ReleaseEventHandlerId == id) ReleaseEventHandlerId = 0; });
+                clearId: id => { if (ReleaseEventHandlerId == id) { ReleaseEventHandlerId = 0; } });
             ButtonControl.Released += (s, e) =>
             {
                 if (ReleaseEventHandlerId != default)

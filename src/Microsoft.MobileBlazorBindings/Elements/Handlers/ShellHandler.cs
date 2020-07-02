@@ -27,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onnavigated",
                 setId: id => NavigatedEventHandlerId = id,
-                clearId: id => { if (NavigatedEventHandlerId == id) NavigatedEventHandlerId = 0; });
+                clearId: id => { if (NavigatedEventHandlerId == id) { NavigatedEventHandlerId = 0; } });
             ShellControl.Navigated += (s, e) =>
             {
                 if (NavigatedEventHandlerId != default)
@@ -38,7 +38,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "onnavigating",
                 setId: id => NavigatingEventHandlerId = id,
-                clearId: id => { if (NavigatingEventHandlerId == id) NavigatingEventHandlerId = 0; });
+                clearId: id => { if (NavigatingEventHandlerId == id) { NavigatingEventHandlerId = 0; } });
             ShellControl.Navigating += (s, e) =>
             {
                 if (NavigatingEventHandlerId != default)

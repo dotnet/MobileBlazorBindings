@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.MobileBlazorBindings.WebView.iOS;
-using Foundation;
+﻿using Microsoft.MobileBlazorBindings.WebView.iOS;
 using UIKit;
 
 namespace HybridMessageApp.iOS
@@ -10,7 +6,7 @@ namespace HybridMessageApp.iOS
     public class Application
     {
         // This is the main entry point of the application.
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             BlazorHybridIOS.Init();
 

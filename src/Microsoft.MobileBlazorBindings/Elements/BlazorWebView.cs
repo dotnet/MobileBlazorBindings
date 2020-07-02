@@ -3,10 +3,10 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
-using System;
-using System.Threading.Tasks;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
+using System;
+using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {

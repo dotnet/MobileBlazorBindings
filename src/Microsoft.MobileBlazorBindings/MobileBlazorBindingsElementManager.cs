@@ -2,9 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
-using System.Diagnostics;
 using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings

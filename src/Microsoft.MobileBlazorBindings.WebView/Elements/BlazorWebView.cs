@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private readonly IPC _ipc;
         private readonly JSRuntime _jsRuntime;
         private readonly bool _initOnParentSet;
-        private readonly static RenderFragment EmptyRenderFragment = builder => { };
+        private static readonly RenderFragment EmptyRenderFragment = builder => { };
         private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
         private BlazorHybridRenderer _blazorHybridRenderer;

@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "oncompleted",
                 setId: id => CompletedEventHandlerId = id,
-                clearId: id => { if (CompletedEventHandlerId == id) CompletedEventHandlerId = 0; });
+                clearId: id => { if (CompletedEventHandlerId == id) { CompletedEventHandlerId = 0; } });
             EntryControl.Completed += (s, e) =>
             {
                 if (CompletedEventHandlerId != default)
@@ -24,7 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             RegisterEvent(
                 eventName: "ontextchanged",
                 setId: id => TextChangedEventHandlerId = id,
-                clearId: id => { if (TextChangedEventHandlerId == id) TextChangedEventHandlerId = 0; });
+                clearId: id => { if (TextChangedEventHandlerId == id) { TextChangedEventHandlerId = 0; } });
             EntryControl.TextChanged += (s, e) =>
             {
                 if (TextChangedEventHandlerId != default)
