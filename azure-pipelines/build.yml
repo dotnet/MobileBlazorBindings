@@ -38,7 +38,7 @@ jobs:
   - template: dotnet.yml
 
 
-- job: Android (on Windows)
+- job: AndroidOnWindows
   pool: ${{ parameters.androidPool }}
   steps:
   - checkout: self
