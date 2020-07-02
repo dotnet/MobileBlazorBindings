@@ -86,13 +86,13 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "XamarinFormsVersion",
-            "defaultValue": "4.5.0.356"
+            "defaultValue": "4.7.0.968"
         },
         "XamarinEssentialsSdk": {
             "type": "parameter",
             "dataType": "string",
             "replaces": "XamarinEssentialsVersion",
-            "defaultValue": "1.5.0"
+            "defaultValue": "1.5.3.2"
         },
         // Project Symbols
         "CreateiOSProject": {
