@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.WebView.Android
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public static class BlazorHybridAndroid
     {

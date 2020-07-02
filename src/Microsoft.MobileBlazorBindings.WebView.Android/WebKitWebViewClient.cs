@@ -1,4 +1,7 @@
-﻿using Android.Graphics;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Android.Graphics;
 using Android.Runtime;
 using Android.Webkit;
 using System;

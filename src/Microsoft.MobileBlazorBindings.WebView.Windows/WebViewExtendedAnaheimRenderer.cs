@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings.WebView.Elements;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.Windows;
 using MtrDev.WebView2.Interop;
 using MtrDev.WebView2.Wpf;

@@ -1,4 +1,7 @@
-﻿using Android.Content;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Android.Content;
 using Android.Webkit;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Java.Interop;

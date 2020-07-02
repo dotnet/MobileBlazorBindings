@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings.WebView.Windows;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Xamarin.Forms.Platform.WPF;
 using Xamarin.Forms.Platform.WPF.Controls;
 using XF = Xamarin.Forms;

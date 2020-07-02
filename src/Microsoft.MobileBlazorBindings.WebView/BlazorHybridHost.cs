@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.Extensions.FileProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;

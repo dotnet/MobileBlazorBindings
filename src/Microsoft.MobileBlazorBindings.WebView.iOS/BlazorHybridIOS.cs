@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.WebView.iOS
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.WebView.iOS
 {
     public static class BlazorHybridIOS
     {

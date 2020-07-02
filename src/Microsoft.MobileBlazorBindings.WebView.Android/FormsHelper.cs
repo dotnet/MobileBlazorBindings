@@ -1,4 +1,7 @@
-﻿using Android.OS;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Android.OS;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {

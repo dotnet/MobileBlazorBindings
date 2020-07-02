@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.Routing;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components.Routing;
 using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection

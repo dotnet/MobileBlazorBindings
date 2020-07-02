@@ -1,4 +1,7 @@
-﻿using Microsoft.JSInterop;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.Threading.Tasks;

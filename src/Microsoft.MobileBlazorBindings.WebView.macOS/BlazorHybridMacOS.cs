@@ -1,4 +1,7 @@
-﻿namespace Microsoft.MobileBlazorBindings.WebView.macOS
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace Microsoft.MobileBlazorBindings.WebView.macOS
 {
     public static class BlazorHybridMacOS
     {
