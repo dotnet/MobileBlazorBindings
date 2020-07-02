@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <NoWarn>$(NoWarn);NU1701</NoWarn>
+
+    <Title>Windows (WPF) WebView component for hosting Blazor components in hybrid (native+web) applications.</Title>
+    <Description>Xamarin.Forms Windows (WPF) WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

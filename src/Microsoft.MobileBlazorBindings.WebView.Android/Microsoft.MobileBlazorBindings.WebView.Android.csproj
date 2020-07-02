@@ -4,13 +4,11 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>Microsoft.MobileBlazorBindings.WebView.Android</AssemblyName>
-    <RootNamespace>Microsoft.MobileBlazorBindings.WebView.Android</RootNamespace>
-    <Description>Microsoft.MobileBlazorBindings.WebView.Android is a great library.
-
-Check it out!</Description>
-    <PackageId>Microsoft.MobileBlazorBindings.WebView.Android</PackageId>
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+
+    <Title>Android WebView component for hosting Blazor components in hybrid (native+web) applications.</Title>
+    <Description>Xamarin.Forms Android WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">

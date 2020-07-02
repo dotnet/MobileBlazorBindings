@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+
+    <Title>WebView component for hosting Blazor components in hybrid (native+web) applications.</Title>
+    <Description>Xamarin.Forms WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
