@@ -16,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets a value that controls whether child elements inherit the input transparency of <see langword="this" /> layout when the tranparency is <see langword="true" />.
         /// </summary>
         /// <value>
-        /// <see langword="true" /> to cause child elememts to inherit the input transparency of <see langword="this" /> layout, when <see langword="this" /> layout's <see cref="P:Xamarin.Forms.VisualElement.InputTransparent" /> is true. <see langword="false" /> to cause child elements to ignore the input tranparency of <see langword="this" /> layout.
+        /// <see langword="true" /> to cause child elements to inherit the input transparency of <see langword="this" /> layout, when <see langword="this" /> layout's <see cref="P:Xamarin.Forms.VisualElement.InputTransparent" /> is true. <see langword="false" /> to cause child elements to ignore the input tranparency of <see langword="this" /> layout.
         /// </value>
         [Parameter] public bool? CascadeInputTransparent { get; set; }
         /// <summary>

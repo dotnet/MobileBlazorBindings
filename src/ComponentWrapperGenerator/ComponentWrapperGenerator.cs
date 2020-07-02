@@ -152,6 +152,7 @@ namespace {Settings.RootNamespace}
             typeof(XF.Element),
             typeof(XF.Font), // TODO: This is temporary; should be possible to add support later
             typeof(XF.FormattedString),
+            typeof(XF.Shapes.Geometry),
             typeof(ICommand),
             typeof(XF.Keyboard), // TODO: This is temporary; should be possible to add support later
             typeof(object),

@@ -24,6 +24,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(XF.MenuItem.@class):
+                    MenuItemControl.@class = AttributeHelper.GetStringList(attributeValue);
+                    break;
                 case nameof(XF.MenuItem.IconImageSource):
                     MenuItemControl.IconImageSource = AttributeHelper.StringToImageSource(attributeValue);
                     break;
@@ -32,6 +35,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.MenuItem.IsEnabled):
                     MenuItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue, true);
+                    break;
+                case nameof(XF.MenuItem.StyleClass):
+                    MenuItemControl.StyleClass = AttributeHelper.GetStringList(attributeValue);
                     break;
                 case nameof(XF.MenuItem.Text):
                     MenuItemControl.Text = (string)attributeValue;
