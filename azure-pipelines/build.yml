@@ -1,6 +1,5 @@
 parameters:
   windowsPool: VSEng-MicroBuildVS2019
-  androidPool: windows-2019
   macPool: MicroBuildV2MacPool
 
 jobs:
@@ -36,15 +35,6 @@ jobs:
     displayName: Set build number
 
   - template: dotnet.yml
-
-
-- job: AndroidOnWindows
-  pool: ${{ parameters.androidPool }}
-  steps:
-  - checkout: self
-    clean: true
-  - template: install-dependencies.yml
-  - template: dotnet-android.yml
 
 #- job: Linux
 #  pool:
