@@ -5,9 +5,6 @@
     <Title>Experimental Forms binding for Blazor</Title>
     <Description>Experimental Mobile Blazor Bindings enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
-
-    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

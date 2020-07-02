@@ -13,8 +13,6 @@
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Microsoft.MobileBlazorBindings.WebView.iOS</AssemblyName>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

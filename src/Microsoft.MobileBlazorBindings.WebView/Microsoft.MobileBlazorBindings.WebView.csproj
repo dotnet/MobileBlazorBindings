@@ -3,8 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,9 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-
-    <!-- Don't strong-name sign this assembly because Xamarin.Forms is not strong-name signed -->
-    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
