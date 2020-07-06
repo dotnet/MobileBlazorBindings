@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\Directory.Build.targets = src\Directory.Build.targets
 		global.json = global.json
 		nuget.config = nuget.config
+		pack.cmd = pack.cmd
 		Readme.md = Readme.md
 		THIRD-PARTY-NOTICES.txt = THIRD-PARTY-NOTICES.txt
 		version.json = version.json
@@ -73,7 +74,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.JS", "src\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj", "{C1156611-F47D-4014-9701-105A4D83FB47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.WebView.Android", "src\Microsoft.MobileBlazorBindings.WebView.Android\Microsoft.MobileBlazorBindings.WebView.Android.csproj", "{4041365C-EC53-4D91-9D23-EA86B4778FF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WebView.Android", "src\Microsoft.MobileBlazorBindings.WebView.Android\Microsoft.MobileBlazorBindings.WebView.Android.csproj", "{4041365C-EC53-4D91-9D23-EA86B4778FF0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.WebView.iOS", "src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj", "{3CECADBB-3E56-4D47-A313-CE9E43DCAB02}"
 EndProject
