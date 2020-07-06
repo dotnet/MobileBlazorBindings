@@ -70,11 +70,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 {
                     await InitAsync().ConfigureAwait(false);
 
-                    Render(builder =>
+                    await Render(builder =>
                     {
                         builder.OpenComponent<TComponent>(0);
                         builder.CloseComponent();
-                    });
+                    }).ConfigureAwait(false);
                 }).ConfigureAwait(false);
             }
             catch (Exception ex)
@@ -175,14 +175,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
-        public void Render(RenderFragment fragment)
+        public async Task Render(RenderFragment fragment)
         {
             if (_blazorHybridRenderer == null)
             {
                 throw new InvalidOperationException($"{nameof(Render)} was called before {nameof(InitAsync)}");
             }
 
-            _blazorHybridRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
+            await _blazorHybridRenderer.Dispatcher.InvokeAsync(() => _blazorHybridRenderer.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 
         private Task<InteropHandshakeResult> AttachInteropAsync()
