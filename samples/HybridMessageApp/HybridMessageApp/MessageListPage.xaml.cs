@@ -1,4 +1,9 @@
 ﻿using HybridMessageApp.Data;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.MobileBlazorBindings.WebView;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
+using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace HybridMessageApp
 {

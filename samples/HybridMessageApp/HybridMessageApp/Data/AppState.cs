@@ -1,4 +1,7 @@
-﻿namespace HybridMessageApp.Data
+﻿using System;
+using System.Collections.Generic;
+
+namespace HybridMessageApp.Data
 {
     public class AppState
     {
