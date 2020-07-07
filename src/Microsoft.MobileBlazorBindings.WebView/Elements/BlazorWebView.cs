@@ -298,7 +298,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             return uri switch
             {
                 "framework://blazor.desktop.js" => typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js"),
-                "framework://blazor.desktop.js/" => typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js"),
                 _ => throw new ArgumentException($"Unknown framework file: {uri}"),
             };
         }

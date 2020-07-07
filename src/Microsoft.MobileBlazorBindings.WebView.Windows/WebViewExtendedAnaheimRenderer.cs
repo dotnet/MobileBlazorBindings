@@ -3,19 +3,16 @@
 
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.Windows;
+using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
-using Microsoft.Web.WebView2.Core.Raw;
 using System;
-using System.ComponentModel;
-using System.IO;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using Xamarin.Forms.Platform.WPF;
 using XF = Xamarin.Forms;
-using Microsoft.Web.WebView2.Core;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedAnaheimRenderer))]
 
@@ -23,12 +20,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
-        private static class NativeMethods
-        {
-            [DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
-            public static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
-        }
-
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
             if (e is null)
@@ -94,7 +85,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         private void SubscribeToControlEvents()
         {
             Control.WebMessageReceived += HandleWebMessageReceived;
-            Control.CoreWebView2.AddWebResourceRequestedFilter("*", Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+            Control.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
             Control.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
         }
 
@@ -103,33 +94,39 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             Control.CoreWebView2.PostWebMessageAsString(message);
         }
 
-        private void HandleWebMessageReceived(object sender, Web.WebView2.Core.CoreWebView2WebMessageReceivedEventArgs args)
+        private void HandleWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
             Element.HandleWebMessageReceived(args.TryGetWebMessageAsString());
         }
 
-        private void HandleWebResourceRequested(object sender, Web.WebView2.Core.CoreWebView2WebResourceRequestedEventArgs e)
+        private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
         {
-            var eventType = e.GetType();
+            // TODO: we have to resort to reflection here because of two issues:
+            //
+            // 1) The Uri for the framework resource has a custom scheme and HttpRequestMessage does not respond
+            //    non http schemes: 
+            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L89-L92
+            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L188-L191
+            //    So we have to take the Uri string from the native ICoreWebView2WebResourceRequest and create an
+            //    Uri from it ourselves.
+            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/325
+            // 2) There is a null reference exception that occurs in WebView2 when trying to set the response on the event
+            //    argument. 
+            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/219
+
+            var eventType = args.GetType();
             var field = eventType.GetField("_nativeCoreWebView2WebResourceRequestedEventArgs", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var nativeArgs = field.GetValue(e);
+            var nativeArgs = field.GetValue(args);
+            
             var requestProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Request");
             var nativeRequest = requestProperty.GetValue(nativeArgs);
             var uriProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequest").GetProperty("Uri");
-
-            Uri uri;
-            try
-            {
-                uri = new Uri((string)uriProperty.GetValue(nativeRequest));
-            } 
-            catch
-            {
-                return;
-            }
-
+            var uriString = (string)uriProperty.GetValue(nativeRequest);
+            var uri = new Uri(uriString);
+           
             if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
             {
-                var responseStream = handler(uri.ToString(), out var responseContentType);
+                var responseStream = handler(uriString, out var responseContentType);
                 if (responseStream != null) // If null, the handler doesn't want to handle it
                 {
                     responseStream.Position = 0;
@@ -144,8 +141,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                         new object[] { responseStream }, 
                         null);
 
-                    var method = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse");
-                    var response = method.Invoke(nativeEnvironment, new object[] { managedStream, 200, "OK", $"Content-Type: {responseContentType}" });
+                    var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse");
+                    var response = createWebSourceResponseMethod.Invoke(nativeEnvironment, new object[] { managedStream, 200, "OK", $"Content-Type: {responseContentType}" });
 
                     var responseProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Response");
                     responseProperty.SetValue(nativeArgs, response);
@@ -195,6 +192,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 if (Control != null)
                 {
                     Control.CoreWebView2.WebResourceRequested -= HandleWebResourceRequested;
+                    Control.CoreWebView2.RemoveWebResourceRequestedFilter("*", Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                     Control.WebMessageReceived -= HandleWebMessageReceived;
 
                     switch (Control.Parent)
