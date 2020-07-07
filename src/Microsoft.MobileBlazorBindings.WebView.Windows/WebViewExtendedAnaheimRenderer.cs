@@ -141,7 +141,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                         new object[] { responseStream }, 
                         null);
 
-                    var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse");
+                    var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse", new Type[] { Type.GetType("System.Runtime.InteropServices.ComTypes.IStream"), typeof(int), typeof(string), typeof(string) });
                     var response = createWebSourceResponseMethod.Invoke(nativeEnvironment, new object[] { managedStream, 200, "OK", $"Content-Type: {responseContentType}" });
 
                     var responseProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Response");
