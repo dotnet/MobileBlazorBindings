@@ -3,15 +3,13 @@
 
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.Windows;
-using MtrDev.WebView2.Interop;
-using MtrDev.WebView2.Wpf;
-using MtrDev.WebView2.Wrapper;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 using System;
-using System.ComponentModel;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using Xamarin.Forms.Platform.WPF;
 using XF = Xamarin.Forms;
@@ -20,14 +18,8 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
-    public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2Control>, XF.IWebViewDelegate
+    public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
-        private static class NativeMethods
-        {
-            [DllImport("Shlwapi.dll", SetLastError = false, ExactSpelling = true)]
-            public static extern IStream SHCreateMemStream(IntPtr pInit, uint cbInit);
-        }
-
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
             if (e is null)
@@ -43,7 +35,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             "    var blazorScript = document.createElement('script');" +
             "    blazorScript.src = 'framework://blazor.desktop.js';" +
             "    document.head.appendChild(blazorScript);" +
-            "})";
+            "});";
 
         private async Task HandleElementChangedAsync(ElementChangedEventArgs<WebViewExtended> e)
         {
@@ -59,21 +51,20 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
                 }
 
-                if (e.NewElement.RetainedNativeControl is WebView2Control retainedNativeControl)
+                if (e.NewElement.RetainedNativeControl is WebView2 retainedNativeControl)
                 {
                     SetNativeControl(retainedNativeControl);
                     SubscribeToControlEvents();
                 }
                 else
                 {
-                    var nativeControl = new WebView2Control { MinHeight = 200 };
-                    nativeControl.EnvironmentCreated += OnEnvironmentCreated;
+                    var nativeControl = new WebView2() { MinHeight = 200 };
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
-                    await WaitForBrowserCreatedAsync().ConfigureAwait(false);
+                    await nativeControl.EnsureCoreWebView2Async().ConfigureAwait(true);
 
-                    Control.AddScriptToExecuteOnDocumentCreated("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };", callbackArgs => { });
-                    Control.AddScriptToExecuteOnDocumentCreated(LoadBlazorJSScript, callbackArgs => { });
+                    await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
+                    await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
 
                     SubscribeToControlEvents();
 
@@ -86,21 +77,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             base.OnElementChanged(e);
         }
 
-        private void OnEnvironmentCreated(object sender, EnvironmentCreatedEventArgs e)
-        {
-            if (e.Result != 0)
-            {
-                if (e.Result == 2)
-                {
-                    throw new InvalidOperationException("Couldn't find Edge installation. Do you have a version installed that's compatible with this WebView2 SDK version?");
-                }
-                else
-                {
-                    throw new InvalidOperationException("Failed to create webview environment. Error: " + e.Result);
-                }
-            }
-        }
-
         private void SubscribeToElementEvents()
         {
             Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
@@ -108,71 +84,69 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 
         private void SubscribeToControlEvents()
         {
-            Control.WebMessageRecieved += HandleWebMessageReceived;
-            Control.AddWebResourceRequestedFilter("*", WEBVIEW2_WEB_RESOURCE_CONTEXT.WEBVIEW2_WEB_RESOURCE_CONTEXT_ALL);
-            Control.WebResourceRequested += HandleWebResourceRequested;
+            Control.WebMessageReceived += HandleWebMessageReceived;
+            Control.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
+            Control.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
         }
 
         private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
         {
-            Control.PostWebMessageAsString(message);
+            Control.CoreWebView2.PostWebMessageAsString(message);
         }
 
-        private void HandleWebMessageReceived(object sender, WebMessageReceivedEventArgs args)
+        private void HandleWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs args)
         {
-            Element.HandleWebMessageReceived(args.WebMessageAsString);
+            Element.HandleWebMessageReceived(args.TryGetWebMessageAsString());
         }
 
-        private Task WaitForBrowserCreatedAsync()
+        private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
         {
-            var tcs = new TaskCompletionSource<bool>();
-            Control.BrowserCreated += (sender, args) =>
-            {
-                tcs.TrySetResult(true);
-            };
-            return tcs.Task;
-        }
+            // TODO: we have to resort to reflection here because of two issues:
+            //
+            // 1) The Uri for the framework resource has a custom scheme and HttpRequestMessage does not respond
+            //    non http schemes: 
+            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L89-L92
+            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L188-L191
+            //    So we have to take the Uri string from the native ICoreWebView2WebResourceRequest and create an
+            //    Uri from it ourselves.
+            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/325
+            // 2) There is a null reference exception that occurs in WebView2 when trying to set the response on the event
+            //    argument. 
+            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/219
 
-        private void HandleWebResourceRequested(object sender, WebResourceRequestedEventArgs e)
-        {
-            var uri = new Uri(e.Request.Uri);
+            var eventType = args.GetType();
+            var field = eventType.GetField("_nativeCoreWebView2WebResourceRequestedEventArgs", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var nativeArgs = field.GetValue(args);
+            
+            var requestProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Request");
+            var nativeRequest = requestProperty.GetValue(nativeArgs);
+            var uriProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequest").GetProperty("Uri");
+            var uriString = (string)uriProperty.GetValue(nativeRequest);
+            var uri = new Uri(uriString);
+           
             if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
             {
-                var responseStream = handler(e.Request.Uri, out var responseContentType);
+                var responseStream = handler(uriString, out var responseContentType);
                 if (responseStream != null) // If null, the handler doesn't want to handle it
                 {
+                    responseStream.Position = 0;
 
-                    using var ms = new MemoryStream();
-                    responseStream.CopyTo(ms);
-                    var responseBytes = ms.ToArray();
-                    var responseBytesHandle = GCHandle.Alloc(responseBytes, GCHandleType.Pinned);
-                    try
-                    {
-                        var responseStreamCom = NativeMethods.SHCreateMemStream(responseBytesHandle.AddrOfPinnedObject(), (uint)responseBytes.Length);
-                        var response = Control.WebView2Environment.CreateWebResourceResponse(
-                            responseStreamCom, 200, "OK", $"Content-Type: {responseContentType}");
-                        e.SetResponse(response);
-                    }
-                    finally
-                    {
-                        responseBytesHandle.Free();
-                    }
+                    var environment = (CoreWebView2Environment)Control.GetType().GetProperty("Environment", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Control);
+                    field = environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    var nativeEnvironment = field.GetValue(environment);
+
+                    var managedStream = Activator.CreateInstance(eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.ManagedIStream"),
+                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
+                        null, 
+                        new object[] { responseStream }, 
+                        null);
+
+                    var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse", new Type[] { Type.GetType("System.Runtime.InteropServices.ComTypes.IStream"), typeof(int), typeof(string), typeof(string) });
+                    var response = createWebSourceResponseMethod.Invoke(nativeEnvironment, new object[] { managedStream, 200, "OK", $"Content-Type: {responseContentType}" });
+
+                    var responseProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Response");
+                    responseProperty.SetValue(nativeArgs, response);
                 }
-            }
-        }
-
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            base.OnElementPropertyChanged(sender, e);
-
-            if (e.PropertyName == XF.WebView.SourceProperty.PropertyName)
-            {
-                Load();
             }
         }
 
@@ -200,7 +174,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         {
             if (url != null)
             {
-                Control.Navigate(url);
+                Control.CoreWebView2.Navigate(url);
             }
         }
 
@@ -217,8 +191,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             {
                 if (Control != null)
                 {
-                    Control.WebResourceRequested -= HandleWebResourceRequested;
-                    Control.WebMessageRecieved -= HandleWebMessageReceived;
+                    Control.CoreWebView2.WebResourceRequested -= HandleWebResourceRequested;
+                    Control.CoreWebView2.RemoveWebResourceRequestedFilter("*", Web.WebView2.Core.CoreWebView2WebResourceContext.All);
+                    Control.WebMessageReceived -= HandleWebMessageReceived;
 
                     switch (Control.Parent)
                     {

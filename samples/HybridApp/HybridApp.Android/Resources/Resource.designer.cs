@@ -1231,6 +1231,7 @@ namespace HybridApp.Droid
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.fragment_container_view_tag = global::HybridApp.Droid.Resource.Id.fragment_container_view_tag;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.FUNCTION = global::HybridApp.Droid.Resource.Id.FUNCTION;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.ghost_view = global::HybridApp.Droid.Resource.Id.ghost_view;
+			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.ghost_view_holder = global::HybridApp.Droid.Resource.Id.ghost_view_holder;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.group_divider = global::HybridApp.Droid.Resource.Id.group_divider;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.home = global::HybridApp.Droid.Resource.Id.home;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.homeAsUp = global::HybridApp.Droid.Resource.Id.homeAsUp;
@@ -1284,6 +1285,7 @@ namespace HybridApp.Droid
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.right_icon = global::HybridApp.Droid.Resource.Id.right_icon;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.right_side = global::HybridApp.Droid.Resource.Id.right_side;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.save_non_transition_alpha = global::HybridApp.Droid.Resource.Id.save_non_transition_alpha;
+			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.save_overlay_view = global::HybridApp.Droid.Resource.Id.save_overlay_view;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.screen = global::HybridApp.Droid.Resource.Id.screen;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.scroll = global::HybridApp.Droid.Resource.Id.scroll;
 			global::Microsoft.MobileBlazorBindings.WebView.Android.Resource.Id.scrollable = global::HybridApp.Droid.Resource.Id.scrollable;
