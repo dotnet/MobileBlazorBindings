@@ -336,3 +336,6 @@ ASALocalRun/
 
 # Local History for Visual Studio
 .localhistory/
+
+# Xamarin auto-generated Android resources
+Resource.designer.cs
