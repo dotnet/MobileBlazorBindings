@@ -11,9 +11,7 @@
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
-  <ItemGroup Condition=" $(TargetFramework.StartsWith('monoandroid')) ">
-    <Compile Include="Platforms\Android\**\*.cs" />
-    <Compile Include="Platforms\Xamarin\**\*.cs" />
+  <ItemGroup>
     <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
 
     <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.1.0.1" />
