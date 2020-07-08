@@ -208,7 +208,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _ipc.On("BeginInvokeDotNetFromJS", args =>
             {
                 var argsArray = (object[])args;
-                var assemblyName = ((JsonElement)argsArray[1]).GetString();
+                var assemblyName = argsArray[1] != null ? ((JsonElement)argsArray[1]).GetString() : null;
                 var methodIdentifier = ((JsonElement)argsArray[2]).GetString();
                 var dotNetObjectId = ((JsonElement)argsArray[3]).GetInt64();
                 var callId = ((JsonElement)argsArray[0]).GetString();
@@ -218,7 +218,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 // and direct them to our own instance. This is to avoid needing a static BlazorHybridRenderer.Instance.
                 // Similar temporary hack for navigation notifications
                 // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
-                if (assemblyName == "WebWindow.Blazor")
+                if (assemblyName == "Microsoft.MobileBlazorBindings.WebView")
                 {
                     assemblyName = null;
                     dotNetObjectId = selfAsDotnetObjectReferenceId;
