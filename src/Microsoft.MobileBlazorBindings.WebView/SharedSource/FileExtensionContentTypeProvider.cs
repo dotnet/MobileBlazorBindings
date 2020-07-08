@@ -9,7 +9,7 @@ namespace Microsoft.AspNetCore.StaticFiles
     /// <summary>
     /// Provides a mapping between file extensions and MIME types.
     /// </summary>
-    public class FileExtensionContentTypeProvider : IContentTypeProvider
+    internal class FileExtensionContentTypeProvider : IContentTypeProvider
     {
         // Notes:
         // - This table was initially copied from IIS and has many legacy entries we will maintain for backwards compatibility.

@@ -6,7 +6,7 @@ namespace Microsoft.AspNetCore.StaticFiles
     /// <summary>
     /// Used to look up MIME types given a file path
     /// </summary>
-    public interface IContentTypeProvider
+    internal interface IContentTypeProvider
     {
         /// <summary>
         /// Given a file path, determine the MIME type
