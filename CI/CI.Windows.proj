@@ -1,21 +1,27 @@
 <Project>
+  <PropertyGroup>
+    <AdditionalProperties>SkipMacBuild=true</AdditionalProperties>
+  </PropertyGroup>
+
   <Target Name="Restore">
-    <MSBuild Projects="@(ProjectToBuild)" Targets="Restore" />
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Restore" Properties="$(AdditionalProperties)" />
   </Target>
   <Target Name="Build">
-    <MSBuild Projects="@(ProjectToBuild)" Targets="Build" />
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Build" Properties="$(AdditionalProperties)" />
   </Target>
   <Target Name="Clean">
-    <MSBuild Projects="@(ProjectToBuild)"  Targets="Clean" />
+    <MSBuild Projects="@(ProjectToBuild)"  Targets="Clean" Properties="$(AdditionalProperties)" />
   </Target>
   <Target Name="Pack">
-    <MSBuild Projects="@(ProjectToBuild)"  Targets="Pack" />
+    <MSBuild Projects="@(ProjectToBuild)"  Targets="Pack" Properties="$(AdditionalProperties)" />
   </Target>
+
   <ItemGroup>
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.Windows\Microsoft.MobileBlazorBindings.WebView.Windows.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.Android\Microsoft.MobileBlazorBindings.WebView.Android.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
     <ProjectToBuild Include="..\src\ComponentWrapperGenerator\ComponentWrapperGenerator.csproj" />

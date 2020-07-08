@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Inspired by https://stackoverflow.com/a/47182083 from Tore Østergaard -->
+  <Target Name="_SayHello">
+    <Message Text="INFO: This would have been MSBuild warning VSX1000, but it has been ignored by importing this targets file." />
+  </Target>
+  <Target Name="_SayGoodbye">
+  </Target>
+  <Target Name="_DetectSdkLocations">
+  </Target>
+  <Target Name="_CollectBundleResources">
+  </Target>
+  <Target Name="_PackLibraryResources">
+  </Target>
+  <Target Name="CopyFilesToMacOutputDirectory">
+  </Target>
+	<Target Name="_VerifyBuildSignature">
+  </Target>
+	<Target Name="_VerifyXcodeVersion">
+  </Target>
+</Project>
