@@ -33,7 +33,7 @@ function boot() {
     DotNet.jsCallDispatcher.endInvokeDotNetFromJS(callId, success, resultOrError);
   });
 
-    ipc.on('JS.RenderBatch', (batchId, batchBase64) => {
+  ipc.on('JS.RenderBatch', (batchId, batchBase64) => {
     var batchData = new Uint8Array(decode(batchBase64));
     renderQueue.processBatch(batchId, batchData);
   });

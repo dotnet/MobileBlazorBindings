@@ -52,10 +52,6 @@ export class RenderQueue {
         }
     }
 
-    public getLastBatchid(): number {
-        return this.nextBatchId - 1;
-    }
-
     private async completeBatch(batchId: number): Promise<void> {
         try {
             await DotNet.invokeMethodAsync('Microsoft.MobileBlazorBindings.WebView', 'OnRenderCompleted', batchId, null);

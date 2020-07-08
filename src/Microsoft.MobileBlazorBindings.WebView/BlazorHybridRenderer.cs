@@ -66,13 +66,13 @@ namespace Microsoft.MobileBlazorBindings.WebView
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         public Task OnRenderCompletedAsync(long incomingBatchId, string errorMessageOrNull)
         {
-            if (this._disposing)
+            if (_disposing)
             {
                 // Disposing so don't do work.
                 return Task.CompletedTask;
             }
 
-            if (!this._unacknowledgedRenderBatches.TryPeek(out var nextUnacknowledgedBatch) || incomingBatchId < nextUnacknowledgedBatch.BatchId)
+            if (!_unacknowledgedRenderBatches.TryPeek(out var nextUnacknowledgedBatch) || incomingBatchId < nextUnacknowledgedBatch.BatchId)
             {
                 // TODO: Log duplicated batch ack.
                 return Task.CompletedTask;
@@ -82,13 +82,13 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 var lastBatchId = nextUnacknowledgedBatch.BatchId;
 
                 // Order is important here so that we don't prematurely dequeue the last nextUnacknowledgedBatch
-                while (this._unacknowledgedRenderBatches.TryPeek(out nextUnacknowledgedBatch) && nextUnacknowledgedBatch.BatchId <= incomingBatchId)
+                while (_unacknowledgedRenderBatches.TryPeek(out nextUnacknowledgedBatch) && nextUnacknowledgedBatch.BatchId <= incomingBatchId)
                 {
                     lastBatchId = nextUnacknowledgedBatch.BatchId;
 
                     // At this point the queue is definitely not full, we have at least emptied one slot, so we allow a further
                     // full queue log entry the next time it fills up.
-                    this._unacknowledgedRenderBatches.TryDequeue(out _);
+                    _unacknowledgedRenderBatches.TryDequeue(out _);
                     ProcessPendingBatch(errorMessageOrNull, nextUnacknowledgedBatch);
                 }
 
@@ -105,13 +105,13 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 // missing.
 
                 // We return the task in here, but the caller doesn't await it.
-                return this.Dispatcher.InvokeAsync(() =>
+                return Dispatcher.InvokeAsync(() =>
                 {
                     // Now we're on the sync context, check again whether we got disposed since this
                     // work item was queued. If so there's nothing to do.
-                    if (!this._disposing)
+                    if (!_disposing)
                     {
-                        this.ProcessPendingRender();
+                        ProcessPendingRender();
                     }
                 });
             }
@@ -181,8 +181,8 @@ namespace Microsoft.MobileBlazorBindings.WebView
         /// <param name="disposing">true if this method is being invoked by System.IDisposable.Dispose, otherwise false.</param>
         protected override void Dispose(bool disposing)
         {
-            this._disposing = true;
-            while (this._unacknowledgedRenderBatches.TryDequeue(out var entry))
+            _disposing = true;
+            while (_unacknowledgedRenderBatches.TryDequeue(out var entry))
             {
                 entry.CompletionSource.TrySetCanceled();
             }
@@ -197,7 +197,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         protected override Task UpdateDisplayAsync(in RenderBatch batch)
         {
-            if (this._disposing)
+            if (_disposing)
             {
                 // We are being disposed, so do no work.
                 return _canceledTask;
@@ -217,7 +217,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 base64 = Convert.ToBase64String(batchBytes);
             }
 
-            var renderId = Interlocked.Increment(ref this._nextRenderId);
+            var renderId = Interlocked.Increment(ref _nextRenderId);
 
             var pendingRender = new UnacknowledgedRenderBatch(
                 renderId,
@@ -225,9 +225,9 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
             // Buffer the rendered batches no matter what. We'll send it down immediately when the client
             // is connected or right after the client reconnects.
-            this._unacknowledgedRenderBatches.Enqueue(pendingRender);
+            _unacknowledgedRenderBatches.Enqueue(pendingRender);
 
-            this._ipc.Send("JS.RenderBatch", renderId, base64);
+            _ipc.Send("JS.RenderBatch", renderId, base64);
 
             return pendingRender.CompletionSource.Task;
         }
@@ -255,8 +255,8 @@ namespace Microsoft.MobileBlazorBindings.WebView
             /// <param name="completionSource">The completion source.</param>
             public UnacknowledgedRenderBatch(long batchId, TaskCompletionSource<object> completionSource)
             {
-                this.BatchId = batchId;
-                this.CompletionSource = completionSource;
+                BatchId = batchId;
+                CompletionSource = completionSource;
             }
 
             /// <summary>
