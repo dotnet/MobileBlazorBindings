@@ -8,9 +8,9 @@ import { decode } from 'base64-arraybuffer';
 import * as ipc from './IPC';
 
 function boot() {
-  setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('WebWindow.Blazor', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
+  setEventDispatcher((eventDescriptor, eventArgs) => DotNet.invokeMethodAsync('Microsoft.MobileBlazorBindings.WebView', 'DispatchEvent', eventDescriptor, JSON.stringify(eventArgs)));
   navigationManagerFunctions.listenForNavigationEvents((uri: string, intercepted: boolean) => {
-    return DotNet.invokeMethodAsync('WebWindow.Blazor', 'NotifyLocationChanged', uri, intercepted);
+    return DotNet.invokeMethodAsync('Microsoft.MobileBlazorBindings.WebView', 'NotifyLocationChanged', uri, intercepted);
   });
 
   // Configure the mechanism for JS<->NET calls
