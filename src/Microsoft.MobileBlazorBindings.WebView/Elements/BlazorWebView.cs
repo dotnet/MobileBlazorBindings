@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
@@ -21,6 +22,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
     public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
     {
+        private static readonly FileExtensionContentTypeProvider _fileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
+
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
         private readonly IPC _ipc;
@@ -280,17 +283,19 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             }
         }
 
+        /// <summary>
+        /// Gets the content type for the url.
+        /// </summary>
+        /// <param name="url">The url to use.</param>
+        /// <returns>The content type.</returns>
         private static string GetContentType(string url)
         {
-            var ext = Path.GetExtension(url);
-            return ext switch
+            if (_fileExtensionContentTypeProvider.TryGetContentType(url, out string result))
             {
-                ".html" => "text/html",
-                ".css" => "text/css",
-                ".js" => "text/javascript",
-                ".wasm" => "application/wasm",
-                _ => "application/octet-stream",
-            };
+                return result;
+            }
+
+            return "application/octet-stream";
         }
 
         private static Stream SupplyFrameworkFile(string uri)
