@@ -4,7 +4,7 @@ import { OutOfProcessRenderBatch } from '@browserjs/Rendering/RenderBatch/OutOfP
 
 export class RenderQueue {
     private static instance: RenderQueue;
-
+    // We start at Batch Id 1, so next is 2.
     private nextBatchId = 2;
 
     private fatalError?: string;
