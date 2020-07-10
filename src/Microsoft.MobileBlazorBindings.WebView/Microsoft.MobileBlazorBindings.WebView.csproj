@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj" />
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

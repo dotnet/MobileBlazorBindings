@@ -3,12 +3,13 @@
     "author": "Microsoft",
     "classifications": [
         "Blazor",
-        "Xamarin.Forms"
+        "Xamarin.Forms",
+        "Web"
     ],
-    "name": "Experimental Mobile Blazor Bindings App",
-    "groupIdentity": "Microsoft.MobileBlazorBindings.App",
-    "identity": "Microsoft.MobileBlazorBindings.App.CSharp",
-    "shortName": "mobileblazorbindings",
+    "name": "Experimental Mobile Blazor Bindings Hybrid App",
+    "groupIdentity": "Microsoft.MobileBlazorBindings.HybridApp",
+    "identity": "Microsoft.MobileBlazorBindings.HybridApp.CSharp",
+    "shortName": "blazorhybrid",
     "tags": {
         "language": "C#",
         "type": "project"
