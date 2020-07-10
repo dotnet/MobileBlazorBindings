@@ -269,6 +269,12 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _navigationManager.SetLocation(uri, isInterceptedLink);
         }
 
+        [JSInvokable(nameof(OnRenderCompleted))]
+        public async Task OnRenderCompleted(long renderId, string errorMessageOrNull)
+        {
+            await _blazorHybridRenderer.OnRenderCompletedAsync(renderId, errorMessageOrNull).ConfigureAwait(false);
+        }
+
         private static string BlazorAppScheme
         {
             get

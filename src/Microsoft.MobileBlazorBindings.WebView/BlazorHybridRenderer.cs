@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
@@ -18,11 +20,16 @@ namespace Microsoft.MobileBlazorBindings.WebView
     {
         private static readonly Type _writer;
         private static readonly MethodInfo _writeMethod;
+        private static readonly Task _canceledTask = Task.FromCanceled(new CancellationToken(canceled: true));
 
         private readonly int _rendererId = 0; // No need for more than one renderer per webview
         private readonly IPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
+        private readonly ConcurrentQueue<UnacknowledgedRenderBatch> _unacknowledgedRenderBatches = new ConcurrentQueue<UnacknowledgedRenderBatch>();
+        private bool _disposing = false;
+        private long _nextRenderId = 1;
+
 
 #pragma warning disable CA1810 // Initialize reference type static fields inline
         static BlazorHybridRenderer()
@@ -49,6 +56,65 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 rootComponentId,
                 _rendererId);
             CaptureAsyncExceptions(initTask);
+        }
+
+        /// <summary>
+        /// Signals that a render batch has completed.
+        /// </summary>
+        /// <param name="incomingBatchId">The render batch id.</param>
+        /// <param name="errorMessageOrNull">The error message or null.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public Task OnRenderCompletedAsync(long incomingBatchId, string errorMessageOrNull)
+        {
+            if (_disposing)
+            {
+                // Disposing so don't do work.
+                return Task.CompletedTask;
+            }
+
+            if (!_unacknowledgedRenderBatches.TryPeek(out var nextUnacknowledgedBatch) || incomingBatchId < nextUnacknowledgedBatch.BatchId)
+            {
+                // TODO: Log duplicated batch ack.
+                return Task.CompletedTask;
+            }
+            else
+            {
+                var lastBatchId = nextUnacknowledgedBatch.BatchId;
+
+                // Order is important here so that we don't prematurely dequeue the last nextUnacknowledgedBatch
+                while (_unacknowledgedRenderBatches.TryPeek(out nextUnacknowledgedBatch) && nextUnacknowledgedBatch.BatchId <= incomingBatchId)
+                {
+                    lastBatchId = nextUnacknowledgedBatch.BatchId;
+
+                    // At this point the queue is definitely not full, we have at least emptied one slot, so we allow a further
+                    // full queue log entry the next time it fills up.
+                    _unacknowledgedRenderBatches.TryDequeue(out _);
+                    ProcessPendingBatch(errorMessageOrNull, nextUnacknowledgedBatch);
+                }
+
+                if (lastBatchId < incomingBatchId)
+                {
+                    // This exception is due to a bad client input, so we mark it as such to prevent logging it as a warning and
+                    // flooding the logs with warnings.
+                    throw new InvalidOperationException($"Received an acknowledgement for batch with id '{incomingBatchId}' when the last batch produced was '{lastBatchId}'.");
+                }
+
+                // Normally we will not have pending renders, but it might happen that we reached the limit of
+                // available buffered renders and new renders got queued.
+                // Invoke ProcessBufferedRenderRequests so that we might produce any additional batch that is
+                // missing.
+
+                // We return the task in here, but the caller doesn't await it.
+                return Dispatcher.InvokeAsync(() =>
+                {
+                    // Now we're on the sync context, check again whether we got disposed since this
+                    // work item was queued. If so there's nothing to do.
+                    if (!_disposing)
+                    {
+                        ProcessPendingRender();
+                    }
+                });
+            }
         }
 
         public RenderHandle RootRenderHandle { get; }
@@ -81,30 +147,91 @@ namespace Microsoft.MobileBlazorBindings.WebView
             }
         }
 
-        protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
+
+        /// <summary>
+        /// Processes a pending batch.
+        /// </summary>
+        /// <param name="errorMessageOrNull">The error message or null.</param>
+        /// <param name="entry">The entry to process.</param>
+        private static void ProcessPendingBatch(string errorMessageOrNull, UnacknowledgedRenderBatch entry)
         {
+            CompleteRender(entry.CompletionSource, errorMessageOrNull);
+        }
+
+        /// <summary>
+        /// Completes a render pass.
+        /// </summary>
+        /// <param name="pendingRenderInfo">The pending render info.</param>
+        /// <param name="errorMessageOrNull">The error message.</param>
+        private static void CompleteRender(TaskCompletionSource<object> pendingRenderInfo, string errorMessageOrNull)
+        {
+            if (errorMessageOrNull == null)
+            {
+                pendingRenderInfo.TrySetResult(null);
+            }
+            else
+            {
+                pendingRenderInfo.TrySetException(new InvalidOperationException(errorMessageOrNull));
+            }
+        }
+
+        /// <summary>
+        /// Releases all resources currently used by this <see cref="BlazorHybridRenderer"/> instance.
+        /// </summary>
+        /// <param name="disposing">true if this method is being invoked by System.IDisposable.Dispose, otherwise false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            _disposing = true;
+            while (_unacknowledgedRenderBatches.TryDequeue(out var entry))
+            {
+                entry.CompletionSource.TrySetCanceled();
+            }
+
+            base.Dispose(true);
+        }
+
+        /// <summary>
+        /// Updates the visible part of the UI.
+        /// </summary>
+        /// <param name="batch">The batch to render.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected override Task UpdateDisplayAsync(in RenderBatch batch)
+        {
+            if (_disposing)
+            {
+                // We are being disposed, so do no work.
+                return _canceledTask;
+            }
+
             string base64;
             using (var memoryStream = new MemoryStream())
             {
-                var renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
+                object renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
                 using (renderBatchWriter as IDisposable)
                 {
-                    _writeMethod.Invoke(renderBatchWriter, new object[] { renderBatch });
+                    // TODO: use delegate instead of reflection for more performance.
+                    _writeMethod.Invoke(renderBatchWriter, new object[] { batch });
                 }
 
                 var batchBytes = memoryStream.ToArray();
                 base64 = Convert.ToBase64String(batchBytes);
             }
 
-            _ipc.Send("JS.RenderBatch", _rendererId, base64);
+            var renderId = Interlocked.Increment(ref _nextRenderId);
 
-            // TODO: Consider finding a way to get back a completion message from the Desktop side
-            // in case there was an error. We don't really need to wait for anything to happen, since
-            // this is not prerendering and we don't care how quickly the UI is updated, but it would
-            // be desirable to flow back errors.
-            return Task.CompletedTask;
+            var pendingRender = new UnacknowledgedRenderBatch(
+                renderId,
+                new TaskCompletionSource<object>());
+
+            // Buffer the rendered batches no matter what. We'll send it down immediately when the client
+            // is connected or right after the client reconnects.
+            _unacknowledgedRenderBatches.Enqueue(pendingRender);
+
+            _ipc.Send("JS.RenderBatch", renderId, base64);
+
+            return pendingRender.CompletionSource.Task;
         }
-
+        
         private class RenderFragmentComponent : IComponent
         {
             public RenderHandle RenderHandle { get; private set; }
@@ -114,6 +241,33 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
             public Task SetParametersAsync(ParameterView parameters)
                 => Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// A struct representing an unacknowledged render batch.
+        /// </summary>
+        internal readonly struct UnacknowledgedRenderBatch
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="UnacknowledgedRenderBatch"/> struct.
+            /// </summary>
+            /// <param name="batchId">The batch id.</param>
+            /// <param name="completionSource">The completion source.</param>
+            public UnacknowledgedRenderBatch(long batchId, TaskCompletionSource<object> completionSource)
+            {
+                BatchId = batchId;
+                CompletionSource = completionSource;
+            }
+
+            /// <summary>
+            /// Gets the batch id.
+            /// </summary>
+            public long BatchId { get; }
+
+            /// <summary>
+            /// Gets the completion source.
+            /// </summary>
+            public TaskCompletionSource<object> CompletionSource { get; }
         }
     }
 #pragma warning restore BL0006 // Do not use RenderTree types
