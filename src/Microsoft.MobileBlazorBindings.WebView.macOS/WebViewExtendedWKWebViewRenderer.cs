@@ -22,7 +22,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
+#pragma warning disable CA1062 // Validate arguments of public methods
             if (e.OldElement != null)
+#pragma warning restore CA1062 // Validate arguments of public methods
             {
                 e.OldElement.SendMessageFromJSToDotNetRequested -= OnSendMessageFromJSToDotNetRequested;
             }
@@ -31,8 +33,12 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             {
                 if (Control == null)
                 {
+#pragma warning disable CA2000 // Dispose objects before losing scope
                     var config = new WKWebViewConfiguration();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+#pragma warning disable CA2000 // Dispose objects before losing scope
                     config.Preferences.SetValueForKey(FromObject(true), new NSString("developerExtrasEnabled"));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
                     var initScriptSource = @"
                         window.onload = (function blazorInitScript() {
@@ -55,12 +61,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
                         });
                     ";
                     config.UserContentController.AddScriptMessageHandler(this, "webwindowinterop");
+#pragma warning disable CA2000 // Dispose objects before losing scope
                     config.UserContentController.AddUserScript(new WKUserScript(
                         new NSString(initScriptSource), WKUserScriptInjectionTime.AtDocumentStart, true));
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
                     foreach (var (scheme, handler) in Element.SchemeHandlers)
                     {
+#pragma warning disable CA2000 // Dispose objects before losing scope
                         config.SetUrlSchemeHandler(new SchemeHandler(handler), scheme);
+#pragma warning restore CA2000 // Dispose objects before losing scope
                     }
 
                     _wkWebView = new WKWebView(Frame, config);
@@ -85,7 +95,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
         {
             base.OnElementPropertyChanged(sender, e);
 
+#pragma warning disable CA1062 // Validate arguments of public methods
             if (e.PropertyName == XF.WebView.SourceProperty.PropertyName)
+#pragma warning restore CA1062 // Validate arguments of public methods
             {
                 Load();
             }
@@ -99,28 +111,40 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             }
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadHtml(string html, string baseUrl)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (html == null)
             {
                 return;
             }
 
-            Control.LoadHtmlString(html, new NSUrl(baseUrl ?? "about:blank"));
+            using var baseNSUrl = new NSUrl(baseUrl ?? "about:blank");
+            Control.LoadHtmlString(html, baseNSUrl);
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void LoadUrl(string url)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (url == null)
             {
                 return;
             }
 
-            Control.LoadRequest(new NSUrlRequest(new NSUrl(url)));
+            using var nsUrl = new NSUrl(url);
+            using var request = new NSUrlRequest(nsUrl);
+            Control.LoadRequest(request);
         }
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             Element.HandleWebMessageReceived(((NSString)message.Body).ToString());
         }
 
@@ -136,9 +160,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             [Export("webView:startURLSchemeTask:")]
             public void StartUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
             {
-                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, out var statusCode);
-                var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null);
-                urlSchemeTask.DidReceiveResponse(response);
+                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, statusCode: out _);
+                using (var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null))
+                {
+                    urlSchemeTask.DidReceiveResponse(response);
+                }
                 urlSchemeTask.DidReceiveData(NSData.FromArray(responseBytes));
                 urlSchemeTask.DidFinish();
             }
@@ -154,7 +180,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
                 else
                 {
                     statusCode = 200;
-                    var ms = new MemoryStream();
+                    using var ms = new MemoryStream();
                     responseStream.CopyTo(ms);
                     return ms.ToArray();
                 }
