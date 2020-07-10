@@ -3,5 +3,5 @@ setlocal
 
 set THIS_DIR=%~dp0
 
-echo --- Packing all the things! ---
-msbuild /t:pack %* %THIS_DIR%\CI\CI.Windows.proj
+echo --- Building and packing all the things! ---
+msbuild /t:clean;restore;build;pack %* %THIS_DIR%\CI\CI.Windows.proj
