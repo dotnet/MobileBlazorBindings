@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
 using System;
@@ -17,6 +18,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         public BlazorHybridJSRuntime(IPC ipc)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
+            JsonSerializerOptions.Converters.Add(new ElementReferenceJsonConverter());
         }
 
         protected override void BeginInvokeJS(long asyncHandle, string identifier, string argsJson)
