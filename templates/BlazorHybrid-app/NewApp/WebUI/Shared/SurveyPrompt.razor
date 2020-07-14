@@ -4,7 +4,7 @@
 
     <span class="text-nowrap">
         Please take our
-        <a target="_blank" class="font-weight-bold" href="https://go.microsoft.com/fwlink/?linkid=2121313">brief survey</a>
+        <button class="btn btn-link font-weight-bold" @onclick="LaunchSurvey">brief survey</button>
     </span>
     and tell us what you think.
 </div>
@@ -13,4 +13,9 @@
     // Demonstrates how a parent component can supply parameters
     [Parameter]
     public string Title { get; set; }
+
+    async Task LaunchSurvey()
+    {
+        await Launcher.OpenAsync("https://go.microsoft.com/fwlink/?linkid=2121313");
+    }
 }
