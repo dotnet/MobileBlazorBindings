@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
@@ -27,7 +27,7 @@
     <PackageType>Template</PackageType>
     <PackageId>Microsoft.MobileBlazorBindings.Templates</PackageId>
     <Title>Experimental Mobile Blazor Bindings Templates</Title>
-    <Description>Templates to use when creating apps with Experimental Mobile Blazor Bindings.</Description>
+    <Description>Templates to use when creating apps and hybrid apps with Experimental Mobile Blazor Bindings for iOS, Android, WPF, and macOS.</Description>
     <PackageTags>dotnet-new;templates;blazor;mobileblazorbindings</PackageTags>
     <NoWarn>$(NoWarn);NU5128</NoWarn>
 
@@ -39,17 +39,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="MobileBlazorBindings-app\**\*" Exclude="
-            MobileBlazorBindings-app\**\bin\**;
-            MobileBlazorBindings-app\**\obj\**;
-            **\template.in.json;
-            **\.gitignore" />
+    <Content Include="
+             BlazorHybrid-app\**\*;
+             MobileBlazorBindings-app\**\*;
+             "
+             Exclude="
+             **\bin\**;
+             **\obj\**;
+             **\template.in.json;
+             **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
   <Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion" BeforeTargets="CopyFilesToOutputDirectory">
     <Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
 
+    <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\BlazorHybrid-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\BlazorHybrid-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
     <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
 
     <Message Importance="High" Text="PATHPATH OutDir = $(OutDir)" />
@@ -65,10 +70,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="MobileBlazorBindings-app\.template.config\template.in.json" />
+    <None Include="BlazorHybrid-app\.template.config\template.in.json" />
+    <None Include="MobileBlazorBindings-app\.template.config\template.in.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="BlazorHybrid-app\.template.config\.gitignore" />
     <None Include="MobileBlazorBindings-app\.template.config\.gitignore" />
   </ItemGroup>
 

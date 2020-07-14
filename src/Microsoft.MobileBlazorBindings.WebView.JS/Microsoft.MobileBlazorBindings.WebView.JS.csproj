@@ -7,6 +7,15 @@
     <DefaultItemExcludes>${DefaultItemExcludes};node_modules\**</DefaultItemExcludes>
     <IsPackable>false</IsPackable>
 
+    <!--
+      Disable C# default compilation features/warnings because this project doesn't use C#.
+      These were problematic when trying to run multiple MSBuild targets at once even though
+      the same targets work when run individually. By disabling these unused features,
+      everything now works.
+    -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>$(NOWARN);CS2008;CS8021</NoWarn>
+
     <!-- VS's FastUpToDateCheck doesn't consider .ts file changes, so it's necessary to disable it to get incremental builds to work correctly (albeit not as fast as if FastUpToDateCheck did work for them) -->
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
   </PropertyGroup>
