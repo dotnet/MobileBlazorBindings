@@ -36,6 +36,12 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
+
+    <!--
+      Disable C# default compilation features/warnings because this project doesn't use C#.
+    -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NoWarn>$(NOWARN);CS2008;CS8021</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -77,6 +83,13 @@
   <ItemGroup>
     <None Include="BlazorHybrid-app\.template.config\.gitignore" />
     <None Include="MobileBlazorBindings-app\.template.config\.gitignore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
+      <Pack>true</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
