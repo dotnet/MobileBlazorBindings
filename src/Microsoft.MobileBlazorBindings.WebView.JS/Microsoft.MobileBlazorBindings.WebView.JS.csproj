@@ -5,6 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <DefaultItemExcludes>${DefaultItemExcludes};node_modules\**</DefaultItemExcludes>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
     <IsPackable>false</IsPackable>
 
     <!--
@@ -21,11 +22,37 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <WebpackInputs Include="**\*.ts" Exclude="node_modules\**" />
+    <Compile Remove="**\*" />
+    <None Remove="**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="dist\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="src\**" />
+    <None Include="upstream\**" Exclude="upstream\aspnetcore\web.js\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WebpackInputs Include="**\*.ts" Exclude="node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="package-lock.json" />
+    <Content Include="package.json" />
+    <Content Include="tsconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="HowToUpdateUpstreamFiles.md" />
+    <None Include="webpack.config.js" />
   </ItemGroup>
 
   <Target Name="EnsureNpmRestored" Condition="!Exists('node_modules')">
