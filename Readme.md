@@ -1,6 +1,6 @@
 # Experimental Mobile Blazor Bindings
 
-Mobile Blazor Bindings enable developers to build native mobile apps using C# and .NET for iOS and Android using familiar web programming patterns. This means you can use the Blazor programming model and Razor syntax to define UI components and behaviors of an application. The UI components that are included are based on Xamarin.Forms native UI controls, which results in beautiful native mobile apps.
+Mobile Blazor Bindings enable developers to build native and hybrid mobile apps using C# and .NET for Android, iOS, Windows, and macOS using familiar web programming patterns. This means you can use the Blazor programming model and Razor syntax to define UI components and behaviors of an application. The UI components that are included are based on Xamarin.Forms native UI controls, which results in beautiful native mobile apps. In hybrid apps you can embed Blazor web UI directly in the app in any composition, all running in the same app process. No web servers.
 
 Here is a sample Counter component, which may look familiar to Blazor developers, that increments a value on each button press:
 
@@ -20,7 +20,7 @@ Here is a sample Counter component, which may look familiar to Blazor develo
 }
 ```
 
-Notice that the Blazor model is present with code sitting side by side the user interface markup that leverages Razor syntax with mobile specific components. This will feel very natural for any web developer that has ever used Razor syntax in the past. Now with the Experimental Mobile Blazor Bindings you can leverage your existing web skills and knowledge to build native iOS and Android apps powered by .NET.
+Notice that the Blazor model is present with code sitting side by side the user interface markup that leverages Razor syntax with mobile specific components. This will feel very natural for any web developer that has ever used Razor syntax in the past. Now with the Experimental Mobile Blazor Bindings you can leverage your existing web skills and knowledge to build native and hybrid mobile apps using C# and .NET for Android, iOS, Windows, and macOS.
 
 Here is the code above running in the Android Emulator:
 
@@ -28,10 +28,9 @@ Here is the code above running in the Android Emulator:
 
 ## Get started with Mobile Blazor Bindings
 
-To get started, all you need is the [.NET Core 3.0 or 3.1 SDK][1], Visual Studio or Visual Studio for Mac, and the ASP.NET and web development and Mobile development with .NET (Xamarin.Forms) workloads installed.
+To get started, all you need is the [.NET Core 3.1 SDK][1], Visual Studio or Visual Studio for Mac, and the ASP.NET and web development and Mobile development with .NET (Xamarin.Forms) workloads installed.
 
 Get started by reading the Getting Started section in the [docs](https://docs.microsoft.com/mobile-blazor-bindings/) and read through the related walkthroughs.
-
 
 ## Contributing
 
@@ -39,4 +38,4 @@ As an experimental project, there are several active areas of development and we
 
 Thank you!
 
- [1]: https://dotnet.microsoft.com/download
+ [1]: https://dotnet.microsoft.com/download/dotnet-core/3.1
