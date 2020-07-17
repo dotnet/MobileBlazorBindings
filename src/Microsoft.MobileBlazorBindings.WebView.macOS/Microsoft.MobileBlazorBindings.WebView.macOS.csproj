@@ -15,6 +15,10 @@
     <Reference Include="netstandard" />
 
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
