@@ -94,7 +94,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     {
                         throw new InvalidOperationException($"Specifying a '{nameof(Resource)}' property value '{Resource}' requires also specifying the '{nameof(Assembly)}' property to indicate the assembly containing the resource.");
                     }
-                    var styleSheet = XFS.StyleSheet.FromResource(resourcePath: Resource, assembly: Assembly);
+                    var styleSheet = XFS.StyleSheet.FromAssemblyResource(Assembly, $"{Assembly.GetName().Name}.{Resource}");
                     _parentVisualElement.Resources.Add(styleSheet);
                 }
                 if (Text != null)
