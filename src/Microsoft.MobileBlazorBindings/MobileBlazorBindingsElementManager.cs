@@ -31,20 +31,14 @@ namespace Microsoft.MobileBlazorBindings
 
             if (parentHandler.ElementControl is Application parentAsApp)
             {
-                if (parentAsApp.MainPage != null)
+                if (childHandler.ElementControl is Page childControlAsPage)
                 {
-                    throw new InvalidOperationException($"Application already has MainPage set; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childHandler.ElementControl.GetType().FullName}");
+                    //MainPage may already be set, but it is safe to replace it.
+                    parentAsApp.MainPage = childControlAsPage;
                 }
                 else
                 {
-                    if (childHandler.ElementControl is Page childControlAsPage)
-                    {
-                        parentAsApp.MainPage = childControlAsPage;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childHandler.ElementControl.GetType().FullName}");
-                    }
+                    throw new InvalidOperationException($"Application MainPage must be a Page; cannot set {parentAsApp.GetType().FullName}'s MainPage to {childHandler.ElementControl.GetType().FullName}");
                 }
                 return;
             }
