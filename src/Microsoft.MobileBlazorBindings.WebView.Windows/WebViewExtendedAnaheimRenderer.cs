@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
-        private CoreWebView2Environment _coreWebView2Environment = null;
+        private CoreWebView2Environment _coreWebView2Environment;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
