@@ -6,6 +6,8 @@ using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
@@ -20,6 +22,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
+        private CoreWebView2Environment _coreWebView2Environment;
+
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
             if (e is null)
@@ -61,7 +65,10 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     var nativeControl = new WebView2() { MinHeight = 200 };
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
-                    await nativeControl.EnsureCoreWebView2Async().ConfigureAwait(true);
+
+                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+
+                    await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
 
                     await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
                     await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
@@ -75,6 +82,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
 
             base.OnElementChanged(e);
+
+            // There is a weird bug in WebView2 where on 200% DPI it does not redraw the WebView2 until you
+            // send a WM_WINDOWPOSCHANGING message to the child window that serves as a host for WebView2.
+            // this sends the required message.
+            Control.UpdateWindowPos();
         }
 
         private void SubscribeToElementEvents()
@@ -131,9 +143,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 {
                     responseStream.Position = 0;
 
-                    var environment = (CoreWebView2Environment)Control.GetType().GetProperty("Environment", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Control);
-                    field = environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    var nativeEnvironment = field.GetValue(environment);
+                    field = _coreWebView2Environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    var nativeEnvironment = field.GetValue(_coreWebView2Environment);
 
                     var managedStream = Activator.CreateInstance(eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.ManagedIStream"),
                         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
