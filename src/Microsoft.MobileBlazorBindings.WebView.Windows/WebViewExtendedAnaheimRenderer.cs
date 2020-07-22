@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
-        private CoreWebView2Environment coreWebView2Environment = null;
+        private CoreWebView2Environment _coreWebView2Environment = null;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
@@ -66,9 +66,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
 
-                    coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
 
-                    await nativeControl.EnsureCoreWebView2Async(coreWebView2Environment).ConfigureAwait(true);
+                    await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
 
                     await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
                     await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
@@ -143,8 +143,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 {
                     responseStream.Position = 0;
 
-                    field = coreWebView2Environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    var nativeEnvironment = field.GetValue(coreWebView2Environment);
+                    field = _coreWebView2Environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                    var nativeEnvironment = field.GetValue(_coreWebView2Environment);
 
                     var managedStream = Activator.CreateInstance(eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.ManagedIStream"),
                         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
