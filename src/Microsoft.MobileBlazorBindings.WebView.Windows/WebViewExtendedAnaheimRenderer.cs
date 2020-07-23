@@ -79,14 +79,15 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 }
 
                 SubscribeToElementEvents();
+
+                // There is a weird bug in WebView2 where on 200% DPI it does not redraw the WebView2 until you
+                // send a WM_WINDOWPOSCHANGING message to the child window that serves as a host for WebView2.
+                // this sends the required message.
+                Control.UpdateWindowPos();
             }
 
             base.OnElementChanged(e);
 
-            // There is a weird bug in WebView2 where on 200% DPI it does not redraw the WebView2 until you
-            // send a WM_WINDOWPOSCHANGING message to the child window that serves as a host for WebView2.
-            // this sends the required message.
-            Control.UpdateWindowPos();
         }
 
         private void SubscribeToElementEvents()
