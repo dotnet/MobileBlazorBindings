@@ -1,4 +1,6 @@
-﻿<Shell OnNavigated="OnNavigated"
+﻿@using System.Diagnostics
+
+<Shell OnNavigated="OnNavigated"
        OnNavigating="OnNavigating"
        FlyoutBackgroundImage="@(new FileImageSource { File = "photo.jpg" })"
        FlyoutBackgroundImageAspect="Aspect.AspectFill"
@@ -38,12 +40,12 @@
                           Icon="@(new FileImageSource { File="elephant.png" })">
                 <ElephantsPage />
             </ShellContent>
-
             <ShellContent Route="bears"
                           Title="Bears"
                           Icon="@(new FileImageSource { File="bear.png" })">
-                <BearsPage />
+                <ElephantsPage />
             </ShellContent>
+
         </FlyoutItem>
 
         <ShellContent Route="about"
@@ -65,10 +67,12 @@
 {
     void OnNavigated(ShellNavigatedEventArgs e)
     {
+        Debug.WriteLine($"Shell Navigated {e}");
     }
 
     void OnNavigating(ShellNavigatingEventArgs e)
     {
+        Debug.WriteLine($"Shell Navigating {e}");
     }
 
     protected override void OnInitialized()

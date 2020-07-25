@@ -1,10 +1,25 @@
-﻿<ContentPage>
+﻿@inject ShellPageNavigationManager NavigationManager
+
+<ContentPage>
     <ScrollView>
         <StackLayout>
             @foreach (var animal in MobileBlazorBindingsXaminals.Data.BearData.Bears)
             {
-                <AnimalTemplate Animal="animal" />
+                <AnimalTemplate OnClicked="Clicked" Animal="animal" />
             }
         </StackLayout>
     </ScrollView>
 </ContentPage>
+
+
+@code {
+    void AnimalClicked()
+    {
+        NavigationManager.NavigateTo("/beardetails");
+    }
+
+    public void Clicked()
+    {
+        System.Diagnostics.Debug.WriteLine($"Clicked page");
+    }
+}

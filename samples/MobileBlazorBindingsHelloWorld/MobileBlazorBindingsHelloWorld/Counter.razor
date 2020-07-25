@@ -2,7 +2,14 @@
 
     <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
 
-        <Button OnClick="IncrementCount">Increment</Button>
+        <Button 
+                FontSize="50"
+                BackgroundColor="Color.Red"
+
+                OnClick="IncrementCount">Increment</Button>
+        <BoxView
+                 BackgroundColor="Color.Red"
+                 ></BoxView>
 
         <Label Text="@("The button was clicked " + count + " times")"
                FontAttributes="FontAttributes.Bold"

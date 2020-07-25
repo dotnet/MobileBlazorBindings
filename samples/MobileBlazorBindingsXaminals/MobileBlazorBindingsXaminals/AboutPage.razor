@@ -1,4 +1,5 @@
-﻿<ContentPage Title="About">
+﻿@inject ShellPageNavigationManager NavigationManager
+<ContentPage Title="About">
     <ScrollView>
         <Grid>
             <Layout>
@@ -56,6 +57,7 @@
                                     TextColor="Color.White">
                                 Learn more
                             </Button>
+                            <Button OnClick="Navigate" Text="Navigate"></Button>
                         </StackLayout>
                     </ScrollView>
                 </GridCell>
@@ -72,5 +74,10 @@
     async Task OpenWeb()
     {
         await Launcher.OpenAsync(new Uri("https://docs.microsoft.com/en-us/xamarin/xamarin-forms/"));
+    }
+
+    async Task Navigate()
+    {
+        await NavigationManager.NavigateToAsync("/beardetails");
     }
 }

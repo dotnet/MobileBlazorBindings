@@ -4,6 +4,7 @@
         <RowDefinition GridUnitType="GridUnitType.Auto" />
         <ColumnDefinition GridUnitType="GridUnitType.Auto" />
         <ColumnDefinition GridUnitType="GridUnitType.Auto" />
+        <ColumnDefinition GridUnitType="GridUnitType.Auto" />
     </Layout>
     <Contents>
         <GridCell RowSpan="2">
@@ -23,6 +24,12 @@
                    FontAttributes="FontAttributes.Italic"
                    VerticalOptions="LayoutOptions.End" />
         </GridCell>
+        <GridCell Row="1" Column="2">
+            <Button Text="Animal Details"
+                    OnClick="Details"
+                   VerticalOptions="LayoutOptions.End" />
+        </GridCell>
+
     </Contents>
 </Grid>
 
@@ -30,4 +37,10 @@
 @code
 {
     [Parameter] public Animal Animal { get; set; }
+    [Parameter] public EventCallback OnClicked {get; set; }
+    void Details()
+    {
+        System.Diagnostics.Debug.WriteLine($"{Animal} clicked");
+        OnClicked.InvokeAsync(null);
+    }
 }

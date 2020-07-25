@@ -18,6 +18,7 @@ namespace MobileBlazorBindingsXaminals
                 {
                     // Register app-specific services
                     //services.AddSingleton<AppState>();
+                    services.AddShellPageNavigation();
                 })
                 .Build();
 
