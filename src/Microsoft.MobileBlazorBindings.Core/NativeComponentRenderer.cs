@@ -53,11 +53,12 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// <param name="componentType"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public async Task AddComponent(Type componentType, IElementHandler parent)
+        public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent)
         {
+            IComponent component = null;
             await Dispatcher.InvokeAsync(async () =>
             {
-                var component = InstantiateComponent(componentType);
+                component = InstantiateComponent(componentType);
                 var componentId = AssignRootComponentId(component);
 
                 var rootAdapter = new NativeComponentAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
@@ -69,6 +70,7 @@ namespace Microsoft.MobileBlazorBindings.Core
 
                 await RenderRootComponentAsync(componentId).ConfigureAwait(false);
             }).ConfigureAwait(false);
+            return component;
         }
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)

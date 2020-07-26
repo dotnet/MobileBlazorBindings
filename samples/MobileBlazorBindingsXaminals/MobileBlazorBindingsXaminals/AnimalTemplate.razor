@@ -3,8 +3,8 @@
         <RowDefinition GridUnitType="GridUnitType.Auto" />
         <RowDefinition GridUnitType="GridUnitType.Auto" />
         <ColumnDefinition GridUnitType="GridUnitType.Auto" />
-        <ColumnDefinition GridUnitType="GridUnitType.Auto" />
-        <ColumnDefinition GridUnitType="GridUnitType.Auto" />
+        <ColumnDefinition GridUnitType="GridUnitType.Star" />
+        <ColumnDefinition GridUnitType="GridUnitType.Star" />
     </Layout>
     <Contents>
         <GridCell RowSpan="2">
@@ -37,10 +37,11 @@
 @code
 {
     [Parameter] public Animal Animal { get; set; }
-    [Parameter] public EventCallback OnClicked {get; set; }
+    [Parameter] public EventCallback<Animal> OnClick {get; set; }
     void Details()
     {
         System.Diagnostics.Debug.WriteLine($"{Animal} clicked");
-        OnClicked.InvokeAsync(null);
+        if(OnClick.HasDelegate)
+            OnClick.InvokeAsync(Animal);
     }
 }

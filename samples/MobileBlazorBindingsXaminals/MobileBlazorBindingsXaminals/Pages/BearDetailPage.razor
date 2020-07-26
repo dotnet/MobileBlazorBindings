@@ -1,12 +1,34 @@
 ﻿@page "/beardetails"
+@page "/beardetails/{Id}"
 
 <ContentView>
     <StackLayout>
-        <Label Text="BearDetailPage" ></Label>
+        <Label Text="BearDetailPage"></Label>
+        @if (string.IsNullOrEmpty(Id))
+        {
+            <Label Text="Bear not found"></Label>
+        }
+        else
+        {
+            <Label Text="@Id"></Label>
+        }
+
+        <Button Text="Check Bear" OnClick="CheckBear"></Button>
     </StackLayout>
 </ContentView>
 
 
 @code {
+    [Parameter] public string Id { get; set; }
+
+    void CheckBear()
+    {
+        System.Diagnostics.Debug.WriteLine($"bear Id = {Id}");
+
+        Id = "teadfsgadsgrr";
+
+        StateHasChanged();
+    }
+
 
 }

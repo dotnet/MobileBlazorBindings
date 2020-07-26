@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings
         //The above methos only needs host for it's services so it could be refactored.
         //The above method only needs <t> so it can be used as a type in an overload of the method it calls, so deleting the method above and always calling this is probably smart
         //The only downside is you can't have design/compiletime type safety
-        public static async Task AddComponent(this IServiceProvider services, XF.Element parent, Type type)
+        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type)
         {
             if (services is null)
             {
@@ -69,7 +69,7 @@ namespace Microsoft.MobileBlazorBindings
 
             using var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
 
-            await renderer.AddComponent(type, CreateHandler(parent, renderer)).ConfigureAwait(false);
+            return await renderer.AddComponent(type, CreateHandler(parent, renderer)).ConfigureAwait(false);
         }
 
         private static ElementHandler CreateHandler(XF.Element parent, MobileBlazorBindingsRenderer renderer)

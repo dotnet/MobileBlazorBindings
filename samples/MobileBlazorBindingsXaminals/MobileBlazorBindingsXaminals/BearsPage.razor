@@ -5,7 +5,7 @@
         <StackLayout>
             @foreach (var animal in MobileBlazorBindingsXaminals.Data.BearData.Bears)
             {
-                <AnimalTemplate OnClicked="Clicked" Animal="animal" />
+                <AnimalTemplate Animal="animal" OnClick="AnimalClicked"></AnimalTemplate>
             }
         </StackLayout>
     </ScrollView>
@@ -13,13 +13,9 @@
 
 
 @code {
-    void AnimalClicked()
+    async Task AnimalClicked(Animal animal)
     {
-        NavigationManager.NavigateTo("/beardetails");
-    }
-
-    public void Clicked()
-    {
-        System.Diagnostics.Debug.WriteLine($"Clicked page");
+        System.Diagnostics.Debug.WriteLine($"Open details for {animal.Id}");
+        NavigationManager.NavigateTo($"/beardetails/{animal.Id}");
     }
 }

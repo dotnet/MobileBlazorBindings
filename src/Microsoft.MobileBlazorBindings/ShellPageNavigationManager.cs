@@ -18,10 +18,13 @@ namespace Microsoft.MobileBlazorBindings
     public class ShellPageNavigationManager //: NavigationManager I would have liked to inherit from NavigationManager but I can't work out what URIs to initialize it with
     {
         //Flip this to change between Shell.Navigation.Push() and Shell.Goto()
-        public bool UseShellRoutes = true;
+        public bool UseShellRoutes = false;
 
         static XF.Shell Shell => XF.Shell.Current;
         internal static Dictionary<string, Type> Routes = new Dictionary<string, Type>();
+
+        private static string CurrentParameter;
+
 
         public static IServiceProvider Services;
 
@@ -79,6 +82,7 @@ namespace Microsoft.MobileBlazorBindings
 
         public Task NavigateToAsync(string uri)
         {
+            Debug.WriteLine($"OPening {uri}");
             if (UseShellRoutes)
                 return GoToAsync(uri);
             else
@@ -88,9 +92,38 @@ namespace Microsoft.MobileBlazorBindings
 
         private async Task GoToAsync(string uri)
         {
+            //Checks with routing if this is a registered route
+            //If it is, create the content using the factory below
+            //This is a very ineficient way to check if the route is registered
+            //But it works
+            var routeValid = Routing.GetOrCreateContent(uri);
 
-            await Shell.GoToAsync(uri);
+            if(routeValid == null)
+            {
+                Debug.WriteLine("invalid route");
+
+                var newUri = "/beardetails";
+                var routePieces = uri.Split('/');
+                CurrentParameter = routePieces.LastOrDefault();
+
+                await GoToAsync(newUri);//Recursiong
+                CurrentParameter = null;
+            }
+            else
+            {
+                Debug.WriteLine("valid route");
+                await Shell.GoToAsync(uri);
+            }
+
+
         }
+
+        public static async Task SetCurrentNavigationProperties(IComponent component, Type type)
+        {
+            type.GetProperty("Id").SetValue(component, CurrentParameter);
+        }
+
+
 
         //This version work, but no parameters yet
         //Uses stack navigation which isn't really what I want
@@ -136,12 +169,22 @@ namespace Microsoft.MobileBlazorBindings
         public override XF.Element GetOrCreate()
         {
             var page = new XF.ContentPage();
-            
+
             //Fire and forget is not ideal, but atelast this method returns a page instantly, and then adds it's content later.
-            _ = ShellPageNavigationManager.Services.AddComponent(page, _type);
+            _ = BuildPage(page);
 
             return page;
         }
+
+        private async Task BuildPage(XF.ContentPage page)
+        {
+            var component = await ShellPageNavigationManager.Services.AddComponent(page, _type);
+
+            await ShellPageNavigationManager.SetCurrentNavigationProperties(component, _type);
+
+
+        }
+
         public override bool Equals(object obj)
         {
             if ((obj is MBBRouteFactory routeFactory))
