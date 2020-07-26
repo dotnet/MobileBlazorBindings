@@ -46,8 +46,10 @@ namespace Microsoft.MobileBlazorBindings
 
         //Slight tweak on the above method to make it async and allow use with a serviceProvider instead of a host, and with a type argument instead of generic argument so it can be called at run time
         //The above methos only needs host for it's services so it could be refactored.
-        //The above method only needs <t> so it can be used as a type in an overload of the method it calls, so deleting the method above and always calling this is probably smart
+        //The above method only needs <t> so it can be used as a type in an overload of the method it calls.
+        //This version also allows an optional set of parameters
         //The only downside is you can't have design/compiletime type safety
+        //There's a lot of duplicate code between the two, can probably refactor the core of the method into a separate method that they both call
         public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type, System.Collections.Generic.Dictionary<string,string> parameters = null)
         {
             if (services is null)

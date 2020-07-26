@@ -12,30 +12,17 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
     public class MBBRouteFactory : XF.RouteFactory
     {
         readonly Type _type;
+        readonly ShellNavigationManager _navigationManager;
 
-        public MBBRouteFactory(Type type)
+        public MBBRouteFactory(Type type, ShellNavigationManager navigationManager)
         {
             _type = type;
+            _navigationManager = navigationManager;
         }
 
         public override XF.Element GetOrCreate()
         {
-            //Creates an empty content page, that can safely be returned imediately even if it has no contents.
-            var page = new XF.ContentPage();
-
-            //Populates content page. Not ideal to have it in a fire and forget but also not a major issue.
-            _ = BuildPage(page);
-
-            return page;
-        }
-
-        private async Task BuildPage(XF.ContentPage page)
-        {
-            //This adds a comoponent to a page and renders the component
-
-            var route = ShellNavigationManager.Current.GetNavigationParameters(_type);
-
-            await ShellNavigationManager.Services.AddComponent(page, _type, route.Parameters).ConfigureAwait(false);
+            return _navigationManager.BuildPage(_type);// new XF.ContentPage();
         }
 
         public override bool Equals(object obj)

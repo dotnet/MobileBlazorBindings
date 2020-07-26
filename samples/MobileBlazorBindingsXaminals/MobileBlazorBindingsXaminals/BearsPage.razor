@@ -15,7 +15,6 @@
 @code {
     async Task AnimalClicked(Animal animal)
     {
-        System.Diagnostics.Debug.WriteLine($"Open details for {animal.Id}");
         await NavigationManager.NavigateToAsync($"/beardetails/{animal.Id}");
     }
 }

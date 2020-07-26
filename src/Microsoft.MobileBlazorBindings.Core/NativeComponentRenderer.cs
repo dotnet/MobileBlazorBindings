@@ -57,12 +57,8 @@ namespace Microsoft.MobileBlazorBindings.Core
         {
             IComponent component = null;
 
-            //I think only a few lines of this need to happen inside the dispatcher
-            //should some bits be brought out?
-            //TODO: Try setting configurea awail false, this may open up options for calling this sync/async on startup
             await Dispatcher.InvokeAsync(async () =>
             {
-                //This is where we create the component
                 component = InstantiateComponent(componentType);
                 var componentId = AssignRootComponentId(component);
 
@@ -77,6 +73,10 @@ namespace Microsoft.MobileBlazorBindings.Core
                 {
                     foreach (var parameter in parameters)
                     {
+                        //TODO: This needs a little bit of cleaning up
+                        //Issues:
+                        //  This will set a value on a property even if it isn't marked as a parameter
+                        //  This doesn't check types, so far we just assume everything is a string.
                         //Think about the parameter attribute, this will set any property even if not marked
                         var prop = component.GetType().GetProperty(parameter.Key);
 
@@ -94,10 +94,6 @@ namespace Microsoft.MobileBlazorBindings.Core
                     }
                 }
                 
-                
-
-
-                //This is where we render the component, parameters need to be set befiore this
                 await RenderRootComponentAsync(componentId).ConfigureAwait(false);
             }).ConfigureAwait(false);
             return component;
