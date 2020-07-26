@@ -53,11 +53,16 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// <param name="componentType"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent)
+        public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent, Dictionary<string, string> parameters = null)
         {
             IComponent component = null;
+
+            //I think only a few lines of this need to happen inside the dispatcher
+            //should some bits be brought out?
+            //TODO: Try setting configurea awail false, this may open up options for calling this sync/async on startup
             await Dispatcher.InvokeAsync(async () =>
             {
+                //This is where we create the component
                 component = InstantiateComponent(componentType);
                 var componentId = AssignRootComponentId(component);
 
@@ -67,7 +72,32 @@ namespace Microsoft.MobileBlazorBindings.Core
                 };
 
                 _componentIdToAdapter[componentId] = rootAdapter;
+                
+                if (parameters != null)
+                {
+                    foreach (var parameter in parameters)
+                    {
+                        //Think about the parameter attribute, this will set any property even if not marked
+                        var prop = component.GetType().GetProperty(parameter.Key);
 
+                        if (prop != null)
+                        {
+                            try
+                            {
+                                prop.SetValue(component, parameter.Value);
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"failed to set parameter {ex} \n{ex.StackTrace}");
+                            }
+                        }
+                    }
+                }
+                
+                
+
+
+                //This is where we render the component, parameters need to be set befiore this
                 await RenderRootComponentAsync(componentId).ConfigureAwait(false);
             }).ConfigureAwait(false);
             return component;

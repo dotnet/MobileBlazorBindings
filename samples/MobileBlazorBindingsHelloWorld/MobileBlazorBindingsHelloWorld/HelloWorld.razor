@@ -1,10 +1,22 @@
-﻿<ContentView>
+﻿@inject PageNavigationManager NavigationManager
+@inject IServiceProvider ServiceProvider
+
+<ContentView>
     <StackLayout Margin="new Thickness(20)">
 
         <Label Text="Hello, World!"
                FontSize="40" />
 
         <Counter />
+        <Button Text="Nav" OnClick="OnClick"></Button>
 
     </StackLayout>
 </ContentView>
+
+@code {
+    void OnClick()
+    {
+        //   NavigationManager.NavigateToAsync(typeof(Counter));
+        NavigationManager.NavigatToAsync<Counter>(App.Host);
+    }
+}

@@ -33,6 +33,7 @@ namespace Microsoft.MobileBlazorBindings
             }
 
             var services = host.Services;
+
 #pragma warning disable CA2000 // Dispose objects before losing scope
             var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
 #pragma warning restore CA2000 // Dispose objects before losing scope
@@ -47,7 +48,7 @@ namespace Microsoft.MobileBlazorBindings
         //The above methos only needs host for it's services so it could be refactored.
         //The above method only needs <t> so it can be used as a type in an overload of the method it calls, so deleting the method above and always calling this is probably smart
         //The only downside is you can't have design/compiletime type safety
-        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type)
+        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type, System.Collections.Generic.Dictionary<string,string> parameters = null)
         {
             if (services is null)
             {
@@ -67,9 +68,13 @@ namespace Microsoft.MobileBlazorBindings
                 throw new InvalidOperationException($"Cannot add {type.Name} to {parent.GetType().Name}. {type.Name} is not an IComponent. If you are trying to add an XF type, try adding the MobileBlazorBindings equivalent instead");
             }
 
-            using var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
+            //NOTE: do not add a using to dispose of this. If you do the page will look like it works but can't be updated after initial render.
+            //TODO: Investigate if we should dispose of this renderer when the XF page dissapears
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
-            return await renderer.AddComponent(type, CreateHandler(parent, renderer)).ConfigureAwait(false);
+            return await renderer.AddComponent(type, CreateHandler(parent, renderer), parameters).ConfigureAwait(false);
         }
 
         private static ElementHandler CreateHandler(XF.Element parent, MobileBlazorBindingsRenderer renderer)

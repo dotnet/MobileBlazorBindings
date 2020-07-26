@@ -1,4 +1,4 @@
-﻿@inject ShellPageNavigationManager NavigationManager
+﻿@inject ShellNavigationManager NavigationManager
 
 <ContentPage>
     <ScrollView>
@@ -16,6 +16,6 @@
     async Task AnimalClicked(Animal animal)
     {
         System.Diagnostics.Debug.WriteLine($"Open details for {animal.Id}");
-        NavigationManager.NavigateTo($"/beardetails/{animal.Id}");
+        await NavigationManager.NavigateToAsync($"/beardetails/{animal.Id}");
     }
 }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings;
 using Xamarin.Forms;
 
@@ -8,6 +9,7 @@ namespace MobileBlazorBindingsHelloWorld
 {
     public class App : Application
     {
+        public static Microsoft.Extensions.Hosting.IHost Host;
         public App()
         {
             var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
@@ -15,11 +17,15 @@ namespace MobileBlazorBindingsHelloWorld
                 {
                     // Register app-specific services
                     //services.AddSingleton<AppState>();
+                    services.AddSingleton<PageNavigationManager>();
                 })
                 .Build();
 
-            MainPage = new ContentPage();
-            host.AddComponent<HelloWorld>(parent: MainPage);
+            var page = new ContentPage();
+            MainPage = new NavigationPage(page);
+
+            host.AddComponent<HelloWorld>(parent: page);
+            Host = host;
         }
 
         protected override void OnStart()
