@@ -57,7 +57,11 @@
                                     TextColor="Color.White">
                                 Learn more
                             </Button>
-                            <Button OnClick="Navigate" Text="Navigate"></Button>
+                            <Button OnClick="@(() => Navigate("/beardetails"))" Text="Navigate no params"></Button>
+                            <Button OnClick="@(() => Navigate("/beardetails/123"))" Text="Navigate one params"></Button>
+                            <Button OnClick="@(() => Navigate("/beardetails/123/red"))" Text="Navigate 2 params"></Button>
+                            <Button OnClick="@(() => Navigate("/beardetails/123/pooh"))" Text="Navigate 3 params"></Button>
+                            <Button OnClick="@(() => Navigate("/beardetails/123/pooh/chicken"))" Text="Navigate 4 params"></Button>
                         </StackLayout>
                     </ScrollView>
                 </GridCell>
@@ -76,8 +80,9 @@
         await Launcher.OpenAsync(new Uri("https://docs.microsoft.com/en-us/xamarin/xamarin-forms/"));
     }
 
-    async Task Navigate()
+    async Task Navigate(string  uri)
     {
-        await NavigationManager.NavigateToAsync("/counter");
+        
+        await NavigationManager.NavigateToAsync(uri);
     }
 }

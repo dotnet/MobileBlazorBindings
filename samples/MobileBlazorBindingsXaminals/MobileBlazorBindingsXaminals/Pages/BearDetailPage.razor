@@ -1,17 +1,18 @@
 ﻿@page "/beardetails"
 @page "/beardetails/{Id}"
+@page "/beardetails/{Id}/{color}"
+@page "/beardetails/{Id}/{color}/{name}"
+@page "/beardetails/{Id}/{color}/{name}/{thing}"
+@page "/beardetails/{Id}/{color}/{name}/{thing}/{legs}"
 
 <ContentView>
     <StackLayout>
         <Label Text="BearDetailPage"></Label>
-        @if (string.IsNullOrEmpty(Id))
-        {
-            <Label Text="Bear not found"></Label>
-        }
-        else
-        {
             <Label Text="@Id"></Label>
-        }
+            <Label Text="@color"></Label>
+            <Label Text="@name"></Label>
+            <Label Text="@thing"></Label>
+            <Label Text="@legs"></Label>
 
         <Button Text="Check Bear" OnClick="CheckBear"></Button>
     </StackLayout>
@@ -19,7 +20,11 @@
 
 
 @code {
-    [Parameter] public string Id { get; set; }
+    [Parameter] public string Id { get; set; } = "Id not passed";
+    [Parameter] public string color { get; set; } = "color not passed";
+    [Parameter] public string name { get; set; } = "name not passed";
+    [Parameter] public string thing { get; set; } = "thing not passed";
+    [Parameter] public string legs { get; set; } = "legs not passed";
 
     void CheckBear()
     {

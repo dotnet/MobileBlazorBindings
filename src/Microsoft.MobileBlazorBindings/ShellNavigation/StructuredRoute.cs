@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,14 +14,18 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
         public string BaseUri { get; }//The route with all the parameters chopped off
         public int ParameterCount => ParameterKeys == null ? 0 : ParameterKeys.Count;
 
-
-        public List<string> ParameterKeys { get; set; } = new List<string>();
+        public List<string> ParameterKeys { get; } = new List<string>();
 
 
         public Type Type { get; }
 
         public StructuredRoute(string originalRoute, Type type)
         {
+            if(originalRoute == null)
+            {
+                throw new ArgumentNullException(nameof(originalRoute));
+            }
+
             OriginalUri = originalRoute;
             Type = type;
             var allRouteSegments = originalRoute.Split('/');
@@ -44,17 +49,25 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
                 return new StructuredRouteResult(match);
 
             var pieces = uri.Split('/').ToList();
-            var parameter = pieces.LastOrDefault();
-            pieces.Remove(parameter);
 
-            //TODO:This is the bit that needs modifitying to allow multiple parameters
-            //Assume 1 parameter
-            //Update later to allow two 
-            var uriWithoutParameter = string.Join("/", pieces);
+            var reversedPieces = pieces.Where(x => !string.IsNullOrEmpty(x)).ToList();//make a new copy
+            reversedPieces.Reverse();
+            var parameters = new List<string>();
 
-            match = routes.FirstOrDefault(x => x.BaseUri == uriWithoutParameter &&   x.ParameterCount == 1);
+            var parameterCount = 1;
+            foreach (var piece in reversedPieces)
+            {
+                uri = uri.Substring(0, uri.Length - piece.Length);
+                uri = uri.TrimEnd('/');
+                match = routes.FirstOrDefault(x => x.BaseUri == uri && x.ParameterCount == parameterCount);
+                parameters.Add(piece);
+                if (match != null)
+                    break;
+                parameterCount++;
+            }
 
-            return new StructuredRouteResult(match, new List<string> { parameter });
+            parameters.Reverse();
+            return new StructuredRouteResult(match,parameters);
         }
     }
 
@@ -76,7 +89,5 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
                 Parameters[match.ParameterKeys[i]] = parameters.ElementAtOrDefault(i);
             }
         }
-
-
     }
 }
