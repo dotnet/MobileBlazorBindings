@@ -1,29 +1,21 @@
-﻿<Grid Padding="new Thickness(10)">
-    <Layout>
-        <RowDefinition GridUnitType="GridUnitType.Auto" />
-        <RowDefinition GridUnitType="GridUnitType.Auto" />
-        <ColumnDefinition GridUnitType="GridUnitType.Auto" />
-        <ColumnDefinition GridUnitType="GridUnitType.Auto" />
-    </Layout>
-    <Contents>
-        <GridCell RowSpan="2">
-            <Image Source="new UriImageSource { Uri=new Uri(Animal.ImageUrl) }"
-                   Aspect="Aspect.AspectFill"
-                   HeightRequest="60"
-                   WidthRequest="60" />
-        </GridCell>
+﻿<Grid Padding="new Thickness(10)" RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
+    <GridCell RowSpan="2">
+        <Image Source="new UriImageSource { Uri=new Uri(Animal.ImageUrl) }"
+               Aspect="Aspect.AspectFill"
+               HeightRequest="60"
+               WidthRequest="60" />
+    </GridCell>
 
-        <GridCell Column="1">
-            <Label Text="@Animal.Name"
-                   FontAttributes="FontAttributes.Bold" />
-        </GridCell>
+    <GridCell Column="1">
+        <Label Text="@Animal.Name"
+               FontAttributes="FontAttributes.Bold" />
+    </GridCell>
 
-        <GridCell Row="1" Column="1">
-            <Label Text="@Animal.Location"
-                   FontAttributes="FontAttributes.Italic"
-                   VerticalOptions="LayoutOptions.End" />
-        </GridCell>
-    </Contents>
+    <GridCell Row="1" Column="1">
+        <Label Text="@Animal.Location"
+               FontAttributes="FontAttributes.Italic"
+               VerticalOptions="LayoutOptions.End" />
+    </GridCell>
 </Grid>
 
 

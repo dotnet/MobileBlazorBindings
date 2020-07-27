@@ -4,105 +4,86 @@
     <StyleSheet Resource="WeatherStyles.css" Assembly="GetType().Assembly"></StyleSheet>
     <PancakeView BackgroundGradientStartColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: true)"
                  BackgroundGradientEndColor="BackgroundColorConverter.GetColor(CurrentWeather.Temperature, isStart: false)">
-        <Grid class="mainGrid">
-            <Layout>
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Star" />
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-            </Layout>
-            <Contents>
-                <GridCell Row="0">
-                    <Label class="largeText mainText"
-                           Text="SEATTLE" />
-                </GridCell>
+        <Grid class="mainGrid" RowDefinitions="Auto, *, Auto, Auto, Auto, Auto, Auto">
+            <GridCell Row="0">
+                <Label class="largeText mainText"
+                       Text="SEATTLE" />
+            </GridCell>
 
-                <GridCell Row="1">
-                    <Image class="cityImage"
-                           HorizontalOptions="LayoutOptions.FillAndExpand"
-                           VerticalOptions="LayoutOptions.FillAndExpand"
-                           Source="@(new FileImageSource { File = "spaceneedle.png" })" />
-                </GridCell>
+            <GridCell Row="1">
+                <Image class="cityImage"
+                       HorizontalOptions="LayoutOptions.FillAndExpand"
+                       VerticalOptions="LayoutOptions.FillAndExpand"
+                       Source="@(new FileImageSource { File = "spaceneedle.png" })" />
+            </GridCell>
 
-                <GridCell Row="2">
-                    <Grid>
-                        <Layout>
-                            <ColumnDefinition GridUnitType="GridUnitType.Star" />
-                            <ColumnDefinition GridUnitType="GridUnitType.Auto" />
-                            <ColumnDefinition GridUnitType="GridUnitType.Star" />
-                        </Layout>
-                        <Contents>
-                            <GridCell Column="1">
-                                <Label class="temperatureStyle"
-                                       Text="@CurrentWeather.Temperature.ToString()" />
-                            </GridCell>
+            <GridCell Row="2">
+                <Grid ColumnDefinitions="*, Auto, *">
+                    <GridCell Column="1">
+                        <Label class="temperatureStyle"
+                               Text="@CurrentWeather.Temperature.ToString()" />
+                    </GridCell>
 
-                            <GridCell Column="2">
-                                <Label class="degreeStyle"
-                                       Text="°F" />
-                            </GridCell>
-                        </Contents>
-                    </Grid>
-                </GridCell>
+                    <GridCell Column="2">
+                        <Label class="degreeStyle"
+                               Text="°F" />
+                    </GridCell>
+                </Grid>
+            </GridCell>
 
-                <GridCell Row="3">
-                    <Label class="mainText"
-                           Text="SUNNY"
-                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Large)" />
-                </GridCell>
+            <GridCell Row="3">
+                <Label class="mainText"
+                       Text="SUNNY"
+                       FontSize="FontSizeUtility.GetFontSize(NamedSize.Large)" />
+            </GridCell>
 
-                <GridCell Row="4">
-                    <Label class="mainText"
-                           Text="FRIDAY, SEPTEMBER 13"
-                           FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)" />
-                </GridCell>
+            <GridCell Row="4">
+                <Label class="mainText"
+                       Text="FRIDAY, SEPTEMBER 13"
+                       FontSize="FontSizeUtility.GetFontSize(NamedSize.Small)" />
+            </GridCell>
 
-                <GridCell Row="5">
-                    <ScrollView Orientation="ScrollOrientation.Horizontal">
-                        <StackLayout Orientation="StackOrientation.Horizontal">
-                            @foreach (var weatherDataItem in CurrentWeather.DataItems)
-                            {
-                                <PancakeView CornerRadius="new CornerRadius(20, 20, 20, 0)"
-                                             Padding="8"
-                                             BackgroundGradientStartColor="@Color.FromHex("#98FFFFFF")"
-                                             BackgroundGradientEndColor="@Color.FromHex("#60FFFFFF")"
-                                             BackgroundGradientAngle="315">
-                                    <StackLayout Spacing="0"
-                                                 VerticalOptions="LayoutOptions.Center">
-                                        <Label class="dataItemName"
-                                               Text="@weatherDataItem.Name" />
-                                        <StackLayout Orientation="StackOrientation.Horizontal">
-                                            <Label class="dataItemValue"
-                                                   Text="@weatherDataItem.Value.ToString()" />
-                                            @if (weatherDataItem.Unit != null)
-                                            {
-                                                <Label class="dataItemUnit"
-                                                       Text="@weatherDataItem.Unit" />
-                                            }
-                                        </StackLayout>
+            <GridCell Row="5">
+                <ScrollView Orientation="ScrollOrientation.Horizontal">
+                    <StackLayout Orientation="StackOrientation.Horizontal">
+                        @foreach (var weatherDataItem in CurrentWeather.DataItems)
+                        {
+                            <PancakeView CornerRadius="new CornerRadius(20, 20, 20, 0)"
+                                         Padding="8"
+                                         BackgroundGradientStartColor="@Color.FromHex("#98FFFFFF")"
+                                         BackgroundGradientEndColor="@Color.FromHex("#60FFFFFF")"
+                                         BackgroundGradientAngle="315">
+                                <StackLayout Spacing="0"
+                                             VerticalOptions="LayoutOptions.Center">
+                                    <Label class="dataItemName"
+                                           Text="@weatherDataItem.Name" />
+                                    <StackLayout Orientation="StackOrientation.Horizontal">
+                                        <Label class="dataItemValue"
+                                               Text="@weatherDataItem.Value.ToString()" />
+                                        @if (weatherDataItem.Unit != null)
+                                        {
+                                            <Label class="dataItemUnit"
+                                                   Text="@weatherDataItem.Unit" />
+                                        }
                                     </StackLayout>
-                                </PancakeView>
-                            }
-                        </StackLayout>
-                    </ScrollView>
-                </GridCell>
-
-                <GridCell Row="6">
-                    <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
-                        <Label Text="I'm feeling too hot/cold!"
-                               VerticalOptions="LayoutOptions.Center" />
-                        <Stepper @bind-Value="Temperature"
-                                 Minimum="0"
-                                 Maximum="120"
-                                 Increment="3"
-                                 VerticalOptions="LayoutOptions.Center" />
+                                </StackLayout>
+                            </PancakeView>
+                        }
                     </StackLayout>
-                </GridCell>
+                </ScrollView>
+            </GridCell>
 
-            </Contents>
+            <GridCell Row="6">
+                <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
+                    <Label Text="I'm feeling too hot/cold!"
+                           VerticalOptions="LayoutOptions.Center" />
+                    <Stepper @bind-Value="Temperature"
+                             Minimum="0"
+                             Maximum="120"
+                             Increment="3"
+                             VerticalOptions="LayoutOptions.Center" />
+                </StackLayout>
+            </GridCell>
         </Grid>
     </PancakeView>
 </ContentView>
