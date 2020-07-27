@@ -336,6 +336,8 @@ namespace {Settings.RootNamespace}
             { typeof(XF.ImageSource), propValue => $"AttributeHelper.ImageSourceToString({propValue})" },
             { typeof(XF.LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
             { typeof(XF.Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
+            { typeof(DateTime), propValue => $"AttributeHelper.DateTimeToString({propValue})" },
+            { typeof(TimeSpan), propValue => $"AttributeHelper.TimeSpanToString({propValue})" },
             { typeof(bool), propValue => $"{propValue}" },
             { typeof(double), propValue => $"AttributeHelper.DoubleToString({propValue})" },
             { typeof(float), propValue => $"AttributeHelper.SingleToString({propValue})" },
@@ -584,12 +586,14 @@ namespace {Settings.RootNamespace}.Handlers
             {
                 bool boolValue => boolValue ? "true" : "false",
                 int intValue => GetIntValueExpression(intValue),
-                float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture) + "f", // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
-                double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
+                float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture) + "f", // "Fixed-Point": https://docs.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
+                double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
                 Enum enumValue => GetTypeNameAndAddNamespace(enumValue.GetType(), usings) + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue),
                 XF.GridLength gridLengthValue => GetGridLengthValueExpression(gridLengthValue, usings),
                 XF.LayoutOptions layoutOptionsValue => GetLayoutOptionsValueExpression(layoutOptionsValue, usings),
                 string stringValue => $@"""{stringValue}""",
+                DateTime dateTimeValue => $"global::System.DateTime.Parse(\"{dateTimeValue.ToString("o", CultureInfo.InvariantCulture)}\", null, global::System.Globalization.DateTimeStyles.RoundtripKind)", // "Round-trip": https://docs.microsoft.com/dotnet/standard/base-types/how-to-round-trip-date-and-time-values
+                TimeSpan timeSpanValue => timeSpanValue.Ticks.ToString(CultureInfo.InvariantCulture),
                 // TODO: More types here
                 _ => null,
             };
@@ -653,6 +657,8 @@ namespace {Settings.RootNamespace}.Handlers
             { typeof(XF.ImageSource), "AttributeHelper.StringToImageSource(attributeValue{0})" },
             { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
             { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
+            { typeof(DateTime), "AttributeHelper.StringToDateTime(attributeValue{0})" },
+            { typeof(TimeSpan), "AttributeHelper.StringToTimeSpan(attributeValue{0})" },
             { typeof(bool), "AttributeHelper.GetBool(attributeValue{0})" },
             { typeof(double), "AttributeHelper.StringToDouble((string)attributeValue{0})" },
             { typeof(float), "AttributeHelper.StringToSingle((string)attributeValue{0})" },
