@@ -48,10 +48,11 @@ namespace Microsoft.MobileBlazorBindings.Core
         }
 
         /// <summary>
-        /// Creates a component of type <paramref name="componentType"/> and adds it as a child of <paramref name="parent"/>.
+        /// Creates a component of type <paramref name="componentType"/> and adds it as a child of <paramref name="parent"/>. If parameters are provided they will be set on the component.
         /// </summary>
         /// <param name="componentType"></param>
         /// <param name="parent"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
         public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent, Dictionary<string, string> parameters = null)
         {
@@ -68,32 +69,9 @@ namespace Microsoft.MobileBlazorBindings.Core
                 };
 
                 _componentIdToAdapter[componentId] = rootAdapter;
-                
-                if (parameters != null)
-                {
-                    foreach (var parameter in parameters)
-                    {
-                        //TODO: This needs a little bit of cleaning up
-                        //Issues:
-                        //  This will set a value on a property even if it isn't marked as a parameter
-                        //  This doesn't check types, so far we just assume everything is a string.
-                        //Think about the parameter attribute, this will set any property even if not marked
-                        var prop = component.GetType().GetProperty(parameter.Key);
 
-                        if (prop != null)
-                        {
-                            try
-                            {
-                                prop.SetValue(component, parameter.Value);
-                            }
-                            catch (Exception ex)
-                            {
-                                System.Diagnostics.Debug.WriteLine($"failed to set parameter {ex} \n{ex.StackTrace}");
-                            }
-                        }
-                    }
-                }
-                
+                component.SetNavigationParameters(parameters);
+
                 await RenderRootComponentAsync(componentId).ConfigureAwait(false);
             }).ConfigureAwait(false);
             return component;

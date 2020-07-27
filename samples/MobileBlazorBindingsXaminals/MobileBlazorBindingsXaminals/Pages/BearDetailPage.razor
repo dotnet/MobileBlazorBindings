@@ -2,8 +2,8 @@
 @page "/beardetails/{Id}"
 @page "/beardetails/{Id}/{color}"
 @page "/beardetails/{Id}/{color}/{name}"
-@page "/beardetails/{Id}/{color}/{name}/{thing}"
-@page "/beardetails/{Id}/{color}/{name}/{thing}/{legs}"
+@page "/beardetails/{Id}/{color}/{name}/{age}"
+@page "/beardetails/{Id}/{color}/{name}/{age}/{birthday}"
 
 <ContentView>
     <StackLayout>
@@ -11,8 +11,8 @@
             <Label Text="@Id"></Label>
             <Label Text="@color"></Label>
             <Label Text="@name"></Label>
-            <Label Text="@thing"></Label>
-            <Label Text="@legs"></Label>
+            <Label Text="@age.ToString()"></Label>
+            <Label Text="@Birthday.ToString()"></Label>
 
         <Button Text="Check Bear" OnClick="CheckBear"></Button>
     </StackLayout>
@@ -23,8 +23,8 @@
     [Parameter] public string Id { get; set; } = "Id not passed";
     [Parameter] public string color { get; set; } = "color not passed";
     [Parameter] public string name { get; set; } = "name not passed";
-    [Parameter] public string thing { get; set; } = "thing not passed";
-    [Parameter] public string legs { get; set; } = "legs not passed";
+    [Parameter] public int age { get; set; } = 5;
+    [Parameter] public DateTime Birthday { get; set; } = DateTime.UtcNow.AddDays(-20);
 
     void CheckBear()
     {
