@@ -55,7 +55,7 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// <param name="s"></param>
         /// <param name="result">The parsed object of the type specified. This will be null if conversion failed.</param>
         /// <returns>True if s was converted successfully, otherwise false</returns>
-        static bool TryParse(this Type type, string s, out object result)
+        public static bool TryParse(this Type type, string s, out object result)
         {
             //On all happy paths we set the result to something usefule
             //This is here for if the value can not be parsed.
