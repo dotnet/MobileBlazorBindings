@@ -3,6 +3,7 @@ using Microsoft.MobileBlazorBindings;
 using Microsoft.Extensions.Hosting;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ControlGallery
 {
@@ -15,11 +16,12 @@ namespace ControlGallery
                 {
                     // Register app-specific services
                     //services.AddSingleton<AppState>();
+                    services.AddSingleton<ShellNavigationManager>();
                 })
                 .Build();
 
             MainPage = new ContentPage();
-            host.AddComponent<HelloWorld>(parent: MainPage);
+            host.AddComponent<AppShell>(this);
         }
 
         protected override void OnStart()

@@ -1,0 +1,79 @@
+﻿@inject ShellNavigationManager NavigationManager
+
+<ContentPage>
+    <ScrollView>
+        <StackLayout>
+            <Button Text="Navigate with no parameters" OnClick="NavigateNoParameter"></Button>
+            <Button Text="Navigate with name string" OnClick="NavigateWithName"></Button>
+            <Button Text="Navigate with name string and version int" OnClick="NavigateWithNameAndVersion"></Button>
+            <Button Text="Navigate with name, version, date" OnClick="NavigateWithNameVersionDate"></Button>
+            <Button Text="Navigate with Long" OnClick="NavigateWithLong"></Button>
+            <Button Text="Navigate with double" OnClick="NavigateWithDouble"></Button>
+            <Button Text="Navigate with float" OnClick="NavigateWithFloat"></Button>
+            <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
+            <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
+            <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code 
+{
+    async Task NavigateNoParameter()
+    {
+        await NavigationManager.NavigateToAsync("/target");
+    }
+
+    async Task NavigateWithName()
+    {
+        await NavigationManager.NavigateToAsync("/target/xamarin");
+    }
+
+    async Task NavigateWithNameAndVersion()
+    {
+        await NavigationManager.NavigateToAsync("/target/xamarin/5");
+    }
+
+    async Task NavigateWithNameVersionDate()
+    {
+        await NavigationManager.NavigateToAsync("/target/xamarin/5/2020-09-12");
+    }
+
+    async Task NavigateWithLong()
+    {
+        long lon = 55;
+        await NavigationManager.NavigateToAsync($"/long/{lon}");
+    }
+
+    async Task NavigateWithDouble()
+    {
+        Double d = 55.43;
+        await NavigationManager.NavigateToAsync($"/double/{d}");
+    }
+
+    async Task NavigateWithFloat()
+    {
+        float f = 55.43f;
+        await NavigationManager.NavigateToAsync($"/float/{f}");
+    }
+
+    async Task NavigateWithDecimal()
+    {
+        Decimal d = 55.43m;
+        await NavigationManager.NavigateToAsync($"/decimal/{d}");
+    }
+
+
+    async Task NavigateWithGuid()
+    {
+        Guid g = Guid.NewGuid();
+        await NavigationManager.NavigateToAsync($"/guid/{g}");
+    }
+
+
+    async Task NavigateWithBool()
+    {
+        bool b = true;
+        await NavigationManager.NavigateToAsync($"/bool/{b}");
+    }
+}

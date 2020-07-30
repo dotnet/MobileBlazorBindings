@@ -1,0 +1,43 @@
+﻿@page "/target"
+@page "/target/{Name}"
+@page "/target/{Name}/{Version}"
+@page "/target/{Name}/{Version}/{ReleaseDate}"
+@page "/long/{Long}"
+@page "/double/{Double}"
+@page "/float/{Float}"
+@page "/decimal/{Decimal}"
+@page "/guid/{Guid}"
+@page "/bool/{Bool}"
+
+<ContentView>
+    <StackLayout>
+        <Label Text="Successfully navigated using Shell"></Label>
+        @if (Name != null)
+        {
+            <Label Text="@($"Name = {Name}")"></Label>
+        }
+        <Label Text="@($"Version = {Version}")"></Label>
+        <Label Text="@($"Release Date = {ReleaseDate}")"></Label>
+        <Label Text="@($"Long = {Long}")"></Label>
+        <Label Text="@($"Double = {Double}")"></Label>
+        <Label Text="@($"Float = {Float}")"></Label>
+        <Label Text="@($"Decimal = {Decimal}")"></Label>
+        <Label Text="@($"Guid = {Guid}")"></Label>
+        <Label Text="@($"Bool = {Bool}")"></Label>
+    </StackLayout>
+</ContentView>
+
+@code {
+
+    [Parameter] public string Name { get; set; }
+    [Parameter] public int Version { get; set; }
+    [Parameter] public DateTime ReleaseDate { get; set; }
+    [Parameter] public long Long { get; set; }
+    [Parameter] public double Double { get; set; }
+    [Parameter] public float Float { get; set; }
+    [Parameter] public decimal Decimal { get; set; }
+    [Parameter] public Guid Guid { get; set; }
+    [Parameter] public bool Bool { get; set; }
+
+
+}
