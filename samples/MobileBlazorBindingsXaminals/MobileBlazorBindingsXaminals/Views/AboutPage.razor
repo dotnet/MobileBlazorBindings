@@ -1,65 +1,59 @@
 ﻿<ContentPage Title="About">
     <ScrollView>
-        <Grid>
-            <Layout>
-                <RowDefinition GridUnitType="GridUnitType.Auto" />
-                <RowDefinition GridUnitType="GridUnitType.Star" />
-            </Layout>
-            <Contents>
-                <GridCell>
-                    <StackLayout BackgroundColor="primaryColor"
-                                 VerticalOptions="LayoutOptions.FillAndExpand"
-                                 HorizontalOptions="LayoutOptions.Fill">
-                        <StackLayout Orientation="StackOrientation.Horizontal"
-                                     HorizontalOptions="LayoutOptions.Center"
-                                     VerticalOptions="LayoutOptions.Center">
-                            <ContentView Padding="new Thickness(0,40,0,40)"
-                                         VerticalOptions="LayoutOptions.FillAndExpand">
-                                <Image Source="@(new FileImageSource{File = "xamarin_logo.png"})"
-                                       VerticalOptions="LayoutOptions.Center"
-                                       HeightRequest="64" />
-                            </ContentView>
-                        </StackLayout>
+        <Grid RowDefinitions="Auto, *">
+            <GridCell>
+                <StackLayout BackgroundColor="primaryColor"
+                             VerticalOptions="LayoutOptions.FillAndExpand"
+                             HorizontalOptions="LayoutOptions.Fill">
+                    <StackLayout Orientation="StackOrientation.Horizontal"
+                                 HorizontalOptions="LayoutOptions.Center"
+                                 VerticalOptions="LayoutOptions.Center">
+                        <ContentView Padding="new Thickness(0,40,0,40)"
+                                     VerticalOptions="LayoutOptions.FillAndExpand">
+                            <Image Source="@(new FileImageSource{File = "xamarin_logo.png"})"
+                                   VerticalOptions="LayoutOptions.Center"
+                                   HeightRequest="64" />
+                        </ContentView>
                     </StackLayout>
-                </GridCell>
+                </StackLayout>
+            </GridCell>
 
-                <GridCell Row="1">
-                    <ScrollView>
-                        <StackLayout Orientation="StackOrientation.Vertical"
-                                     Padding="new Thickness(16,40,16,40)"
-                                     Spacing="10">
-                            <Label FontSize="22">
-                                <Span FontAttributes="FontAttributes.Bold"
-                                      FontSize="22">Xamarin Animals</Span>
-                                <Span> </Span>
-                                <Span TextColor="lightTextColor">1.0</Span>
-                            </Label>
-                            @*
-                                // TODO: Figure out how to do this for the underlined <Span> below
-                                <Span.GestureRecognizers>
-                                    <TapGestureRecognizer
-                                        Command="{Binding TapCommand, Mode=OneWay}"
-                                        CommandParameter="https://docs.microsoft.com/en-us/xamarin/xamarin-forms/" />
-                                </Span.GestureRecognizers>
+            <GridCell Row="1">
+                <ScrollView>
+                    <StackLayout Orientation="StackOrientation.Vertical"
+                                 Padding="new Thickness(16,40,16,40)"
+                                 Spacing="10">
+                        <Label FontSize="22">
+                            <Span FontAttributes="FontAttributes.Bold"
+                                  FontSize="22">Xamarin Animals</Span>
+                            <Span> </Span>
+                            <Span TextColor="lightTextColor">1.0</Span>
+                        </Label>
+                        @*
+                            // TODO: Figure out how to do this for the underlined <Span> below
+                            <Span.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding TapCommand, Mode=OneWay}"
+                                    CommandParameter="https://docs.microsoft.com/en-us/xamarin/xamarin-forms/" />
+                            </Span.GestureRecognizers>
 
-                            *@
-                            <Label>
-                                <Span>This app is written in XAML and C# with the </Span>
-                                <Span FontAttributes="FontAttributes.Bold"
-                                      TextColor="Color.Blue"
-                                      TextDecorations="TextDecorations.Underline">Xamarin Platform</Span>
-                                <Span>.</Span>
-                            </Label>
-                            <Button Margin="new Thickness(0,10,0,0)"
-                                    OnClick="OpenWeb"
-                                    BackgroundColor="primaryColor"
-                                    TextColor="Color.White">
-                                Learn more
-                            </Button>
-                        </StackLayout>
-                    </ScrollView>
-                </GridCell>
-            </Contents>
+                        *@
+                        <Label>
+                            <Span>This app is written in XAML and C# with the </Span>
+                            <Span FontAttributes="FontAttributes.Bold"
+                                  TextColor="Color.Blue"
+                                  TextDecorations="TextDecorations.Underline">Xamarin Platform</Span>
+                            <Span>.</Span>
+                        </Label>
+                        <Button Margin="new Thickness(0,10,0,0)"
+                                OnClick="OpenWeb"
+                                BackgroundColor="primaryColor"
+                                TextColor="Color.White">
+                            Learn more
+                        </Button>
+                    </StackLayout>
+                </ScrollView>
+            </GridCell>
         </Grid>
     </ScrollView>
 </ContentPage>

@@ -35,17 +35,23 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Grid.RowSpacing):
                     GridControl.RowSpacing = AttributeHelper.StringToDouble((string)attributeValue);
                     break;
-                case nameof(GridInternals.GridMetadata):
-                    // TODO: Need a better long-term solution to this because this isn't compatible with generated code
-                    ApplyGridMetadata(attributeValue);
+
+                // TODO: Need a better long-term solution to this because this isn't compatible with generated code
+                case nameof(Grid.ColumnDefinitions):
+                    ApplyColumnDefinitions(attributeValue);
                     break;
+                case nameof(Grid.RowDefinitions):
+                    ApplyRowDefinitions(attributeValue);
+                    break;
+
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
 
-        partial void ApplyGridMetadata(object attributeValue);
+        partial void ApplyColumnDefinitions(object attributeValue);
+        partial void ApplyRowDefinitions(object attributeValue);
 
         partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }

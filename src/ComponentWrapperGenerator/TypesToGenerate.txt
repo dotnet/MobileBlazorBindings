@@ -8,6 +8,7 @@ CheckBox
 #ColumnDefinition // Not based on real XF type
 ContentPage
 ContentView
+DatePicker
 #Element // Element is special so we don't generate it
 Entry
 FlyoutItem
@@ -48,6 +49,7 @@ TabBar
 TabbedPage
 TemplatedPage
 TemplatedView
+TimePicker
 View
 VisualElement
 

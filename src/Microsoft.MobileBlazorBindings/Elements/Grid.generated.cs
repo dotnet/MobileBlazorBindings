@@ -3,7 +3,6 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.AspNetCore.Components;
-using Microsoft.MobileBlazorBindings.Elements.GridInternals;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
 using XF = Xamarin.Forms;
