@@ -13,11 +13,6 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         {
         }
 
-        [Test]
-        public void TestPass()
-        {
-            Assert.Pass();
-        }
 
         [Test]
         public void ParseValidString()
@@ -44,6 +39,46 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         {
             var s = "I'm not an int";
             var type = typeof(int);
+            var convertedSuccessfully = type.TryParse(s, out object result);
+
+            Assert.IsFalse(convertedSuccessfully);
+        }
+
+        [Test]
+        public void ParseValidDate()
+        {
+            var s = "2020-01-22";
+            var type = typeof(DateTime);
+            var convertedSuccessfully = type.TryParse(s, out object result);
+
+            Assert.IsTrue(convertedSuccessfully);
+        }
+
+        [Test]
+        public void ParseInvalidDate()
+        {
+            var s = "202s-01-22";
+            var type = typeof(DateTime);
+            var convertedSuccessfully = type.TryParse(s, out object result);
+
+            Assert.IsFalse(convertedSuccessfully);
+        }
+
+        [Test]
+        public void ParseValidGuid()
+        {
+            var s = Guid.NewGuid().ToString();
+            var type = typeof(Guid);
+            var convertedSuccessfully = type.TryParse(s, out object result);
+
+            Assert.IsTrue(convertedSuccessfully);
+        }
+
+        [Test]
+        public void ParseInvalidGuid()
+        {
+            var s = "202s-01-22";
+            var type = typeof(Guid);
             var convertedSuccessfully = type.TryParse(s, out object result);
 
             Assert.IsFalse(convertedSuccessfully);

@@ -8,7 +8,7 @@ namespace Microsoft.MobileBlazorBindings.Core
 {
     public static class ComponentExtensions
     {
-        internal static void SetNavigationParameters(this IComponent component, Dictionary<string, string> parameters)
+        public static void SetNavigationParameters(this IComponent component, Dictionary<string, string> parameters)
         {
             if(component == null)
             {
@@ -29,15 +29,18 @@ namespace Microsoft.MobileBlazorBindings.Core
                     var parameterAttribute = prop.GetCustomAttribute(typeof(ParameterAttribute));
                     if(parameterAttribute == null)
                     {
-                        //Found the property, but it's not marked as a parameter. I think this throws an exception in Web Blazor
-                        //Look up blazor and make it consistent
-                        //For now I'm going to continue which would fail to set the parameter but allow other properly formed parameters to set
-                        continue;
+                        //I considered setting the property anyway even if it wasn't marked as a parameter but throwing exception is consistent with web Blazor
+                        throw new InvalidOperationException($"Object of type '{component.GetType()}' has a property matching the name '{parameter.Key}', but it does not have [ParameterAttribute] or [CascadingParameterAttribute] applied.");
                     }
 
                     if(prop.PropertyType.TryParse(parameter.Value, out object result))
                     { 
                         prop.SetValue(component, result);
+                    }
+                    else
+                    {
+                        //Exception is consistent with web blazor
+                        throw new InvalidCastException($"Unable to set property {parameter.Key} on object of type '{component.GetType()}' The error was: Specified cast is not valid. ");
                     }
                 }
             }
