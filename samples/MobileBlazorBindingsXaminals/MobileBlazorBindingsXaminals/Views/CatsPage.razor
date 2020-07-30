@@ -2,7 +2,7 @@
 <ContentPage>
     <ScrollView>
         <StackLayout>
-            @foreach (var animal in MobileBlazorBindingsXaminals.Data.CatData.Cats)
+            @foreach (var animal in CatData.Cats)
             {
                 <AnimalTemplate Animal="animal" OnClick="AnimalClicked" />
             }
