@@ -1,0 +1,23 @@
+﻿<Frame CornerRadius="10" BackgroundColor="Color.LightBlue">
+
+    <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
+
+        <Button OnClick="@IncrementCount">Increment</Button>
+
+        <Label Text="@("The button was clicked " + count + " times")"
+               FontAttributes="FontAttributes.Bold"
+               VerticalTextAlignment="TextAlignment.Center" />
+
+    </StackLayout>
+
+</Frame>
+
+@code
+{
+    int count;
+
+    void IncrementCount()
+    {
+        count++;
+    }
+}
