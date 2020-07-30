@@ -23,10 +23,7 @@ namespace MobileBlazorBindingsXaminals
                 })
                 .Build();
 
-            //We have to set a placeholder MainPage here, because setting it in AddComponent happens after it returns.
-            //This causes iOS to kill the app because iOS thinks we never set a page.
             MainPage = new ContentPage();
-            
             AppHost.AddComponent<AppShell>(parent: this);
         }
 

@@ -29,6 +29,7 @@ namespace Microsoft.MobileBlazorBindings
         }
 
 
+        //TODO This route matching could be better. Can we use the ASPNEt version?
         void FindRoutes()
         {
             var assembly = XF.Application.Current.GetType().Assembly;
@@ -57,7 +58,6 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-        [Obsolete("Please use NavigateToAsync if possible. This method is only here for consistency with NavigationManager")]
         public void NavigateTo(string uri)
         {
             _ = NavigateToAsync(uri);

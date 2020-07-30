@@ -1,0 +1,24 @@
+﻿@page "/elephantdetails/{Name}"
+
+<ContentView>
+    <ScrollView>
+        <StackLayout>
+            <Label Text="@Elephant.Name"></Label>
+            <Label Text="@Elephant.Location"></Label>
+            <Image Source="@Elephant.ImageUrl"></Image>
+            <Label Text="@Elephant.Details"></Label>
+        </StackLayout>
+    </ScrollView>
+</ContentView>
+@code {
+    Animal Elephant;
+
+    [Parameter]
+    public string Name
+    {
+        set
+        {
+            Elephant = ElephantData.Elephants.FirstOrDefault(m => m.Name == Uri.UnescapeDataString(value));
+        }
+    }
+}

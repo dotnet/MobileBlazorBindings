@@ -3,18 +3,17 @@
 <ContentPage>
     <ScrollView>
         <StackLayout>
-            @foreach (var animal in MobileBlazorBindingsXaminals.Data.BearData.Bears)
+            @foreach (var animal in MobileBlazorBindingsXaminals.Data.ElephantData.Elephants)
             {
-                <AnimalTemplate Animal="animal" OnClick="AnimalClicked"></AnimalTemplate>
+                <AnimalTemplate Animal="animal" OnClick="AnimalClicked" />
             }
         </StackLayout>
     </ScrollView>
 </ContentPage>
 
-
 @code {
     async Task AnimalClicked(Animal animal)
     {
-        await NavigationManager.NavigateToAsync($"/beardetails/{animal.Id}");
+        await NavigationManager.NavigateToAsync($"/elephantdetails/{animal.Name}");
     }
 }

@@ -4,7 +4,6 @@
         <RowDefinition GridUnitType="GridUnitType.Auto" />
         <ColumnDefinition GridUnitType="GridUnitType.Auto" />
         <ColumnDefinition GridUnitType="GridUnitType.Star" />
-        <ColumnDefinition GridUnitType="GridUnitType.Star" />
     </Layout>
     <Contents>
         <GridCell RowSpan="2">
@@ -24,8 +23,9 @@
                    FontAttributes="FontAttributes.Italic"
                    VerticalOptions="LayoutOptions.End" />
         </GridCell>
-        <GridCell Row="1" Column="2">
-            <Button Text="Animal Details"
+        <GridCell RowSpan="2" ColumnSpan="2">
+            <Button Text=" "
+                    BackgroundColor="Color.Transparent"
                     OnClick="Details"
                    VerticalOptions="LayoutOptions.End" />
         </GridCell>
