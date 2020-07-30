@@ -13,7 +13,6 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         {
         }
 
-
         [Test]
         public void ParseValidString()
         {

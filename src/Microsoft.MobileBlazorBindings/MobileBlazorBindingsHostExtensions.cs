@@ -56,7 +56,6 @@ namespace Microsoft.MobileBlazorBindings
             {
                 throw new ArgumentNullException(nameof(services));
             }
-
             if (parent is null)
             {
                 throw new ArgumentNullException(nameof(parent));
@@ -70,7 +69,7 @@ namespace Microsoft.MobileBlazorBindings
                 throw new InvalidOperationException($"Cannot add {type.Name} to {parent.GetType().Name}. {type.Name} is not an IComponent. If you are trying to add an XF type, try adding the MobileBlazorBindings equivalent instead");
             }
 
-            //NOTE: do not add a using to dispose of this. If you do the page will look like it works but can't be updated after initial render.
+            //NOTE: Do not add a using to dispose of this. If you do the page will look like it works but can't be updated after initial render.
             //TODO: Investigate if we should dispose of this renderer when the XF page dissapears
 #pragma warning disable CA2000 // Dispose objects before losing scope
             var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
@@ -96,6 +95,5 @@ namespace Microsoft.MobileBlazorBindings
                 _ => new ElementHandler(renderer, parent),
             };
         }
-
     }
 }

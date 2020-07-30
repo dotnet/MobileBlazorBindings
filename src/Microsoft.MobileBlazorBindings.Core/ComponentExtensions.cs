@@ -46,9 +46,6 @@ namespace Microsoft.MobileBlazorBindings.Core
             }
         }
 
-
-
-
         /// <summary>
         /// Converts a string into the specified type. If conversion was successful, parsed property will be of the correct type and method will return true.
         /// If conversion fails it will return false and parsed property will be null.
@@ -131,6 +128,5 @@ namespace Microsoft.MobileBlazorBindings.Core
 
             return false;
         }
-
     }
 }

@@ -40,7 +40,6 @@
     [Parameter] public EventCallback<Animal> OnClick {get; set; }
     void Details()
     {
-        System.Diagnostics.Debug.WriteLine($"{Animal} clicked");
         if(OnClick.HasDelegate)
             OnClick.InvokeAsync(Animal);
     }
