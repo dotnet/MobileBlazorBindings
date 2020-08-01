@@ -4,7 +4,7 @@
         <StackLayout>
             @foreach (var animal in MonkeyData.Monkeys)
             {
-                <AnimalTemplate Animal="animal" />
+                <AnimalTemplate Animal="animal" OnClick="AnimalClicked" />
             }
         </StackLayout>
     </ScrollView>
@@ -13,6 +13,6 @@
 @code {
     async Task AnimalClicked(Animal animal)
     {
-        await NavigationManager.NavigateToAsync($"/elephantdetails/{animal.Name}");
+        await NavigationManager.NavigateToAsync($"/monkeydetails/{animal.Name}");
     }
 }
