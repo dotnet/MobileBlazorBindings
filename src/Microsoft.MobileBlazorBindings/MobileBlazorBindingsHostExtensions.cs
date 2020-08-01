@@ -62,7 +62,7 @@ namespace Microsoft.MobileBlazorBindings
             }
             if (type is null)
             {
-                throw new ArgumentNullException(nameof(parent));
+                throw new ArgumentNullException(nameof(type));
             }
             if(!typeof(IComponent).IsAssignableFrom(type))
             {

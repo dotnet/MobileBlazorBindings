@@ -19,61 +19,14 @@
 
 @code 
 {
-    async Task NavigateNoParameter()
-    {
-        await NavigationManager.NavigateToAsync("/target");
-    }
-
-    async Task NavigateWithName()
-    {
-        await NavigationManager.NavigateToAsync("/target/xamarin");
-    }
-
-    async Task NavigateWithNameAndVersion()
-    {
-        await NavigationManager.NavigateToAsync("/target/xamarin/5");
-    }
-
-    async Task NavigateWithNameVersionDate()
-    {
-        await NavigationManager.NavigateToAsync("/target/xamarin/5/2020-09-12");
-    }
-
-    async Task NavigateWithLong()
-    {
-        long lon = 55;
-        await NavigationManager.NavigateToAsync($"/long/{lon}");
-    }
-
-    async Task NavigateWithDouble()
-    {
-        Double d = 55.43;
-        await NavigationManager.NavigateToAsync($"/double/{d}");
-    }
-
-    async Task NavigateWithFloat()
-    {
-        float f = 55.43f;
-        await NavigationManager.NavigateToAsync($"/float/{f}");
-    }
-
-    async Task NavigateWithDecimal()
-    {
-        Decimal d = 55.43m;
-        await NavigationManager.NavigateToAsync($"/decimal/{d}");
-    }
-
-
-    async Task NavigateWithGuid()
-    {
-        Guid g = Guid.NewGuid();
-        await NavigationManager.NavigateToAsync($"/guid/{g}");
-    }
-
-
-    async Task NavigateWithBool()
-    {
-        bool b = true;
-        await NavigationManager.NavigateToAsync($"/bool/{b}");
-    }
+    async Task NavigateNoParameter() => await NavigationManager.NavigateToAsync("/target");
+    async Task NavigateWithName() => await NavigationManager.NavigateToAsync("/target/xamarin");
+    async Task NavigateWithNameAndVersion() => await NavigationManager.NavigateToAsync("/target/xamarin/5");
+    async Task NavigateWithNameVersionDate() => await NavigationManager.NavigateToAsync("/target/xamarin/5/2020-09-12");
+    async Task NavigateWithLong() => await NavigationManager.NavigateToAsync("/long/55");
+    async Task NavigateWithDouble() => await NavigationManager.NavigateToAsync("/double/55.43");
+    async Task NavigateWithFloat() => await NavigationManager.NavigateToAsync("/float/55.43");
+    async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
+    async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
+    async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
 }

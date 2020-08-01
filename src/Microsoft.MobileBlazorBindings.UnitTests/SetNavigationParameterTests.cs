@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             var expected = "TestValue";
 
             var parameters = new Dictionary<string, string> {  { "StringParameter", expected } };
-            component.SetNavigationParameters(parameters);
+            NativeComponentRenderer.SetNavigationParameters(component, parameters);
 
             Assert.AreEqual(expected, component.StringParameter);
         }
@@ -35,7 +35,8 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             var expected = 5;
 
             var parameters = new Dictionary<string, string> { { "IntParameter", expected.ToString() } };
-            component.SetNavigationParameters(parameters);
+            NativeComponentRenderer.SetNavigationParameters(component, parameters);
+
 
             Assert.AreEqual(expected, component.IntParameter);
         }
@@ -47,7 +48,8 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             var expected = "NotAnInt";
 
             var parameters = new Dictionary<string, string> { { "IntParameter", expected } };
-            Assert.Throws<InvalidCastException>(() => component.SetNavigationParameters(parameters));
+            Assert.Throws<InvalidCastException>(() => NativeComponentRenderer.SetNavigationParameters(component, parameters));
+
         }
 
         [Test]
@@ -57,7 +59,7 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             var expected = "NonParameter";
 
             var parameters = new Dictionary<string, string> { { "NonParameter", expected } };
-            Assert.Throws<InvalidOperationException>(() => component.SetNavigationParameters(parameters));
+            Assert.Throws<InvalidOperationException>(() => NativeComponentRenderer.SetNavigationParameters(component, parameters));
         }
     }
 }
