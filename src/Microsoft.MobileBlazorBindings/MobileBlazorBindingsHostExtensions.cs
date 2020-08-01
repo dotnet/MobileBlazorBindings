@@ -66,7 +66,7 @@ namespace Microsoft.MobileBlazorBindings
             }
             if(!typeof(IComponent).IsAssignableFrom(type))
             {
-                throw new InvalidOperationException($"Cannot add {type.Name} to {parent.GetType().Name}. {type.Name} is not an IComponent. If you are trying to add an XF type, try adding the MobileBlazorBindings equivalent instead");
+                throw new InvalidOperationException($"Cannot add {type.Name} to {parent.GetType().Name}. {type.Name} is not an IComponent. If you are trying to add a Xamarin.Forms type, try adding the Mobile Blazor Bindings equivalent instead.");
             }
 
 #pragma warning disable CA2000 // Dispose objects before losing scope
