@@ -27,6 +27,7 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
                 yield return new TestCaseData("invalid text", typeof(DateTime), new DateTime(), false).SetName("Parse invalid date");
                 yield return new TestCaseData(testGuid.ToString(), typeof(Guid), testGuid, true).SetName("Parse valid GUID");
                 yield return new TestCaseData("invalid text", typeof(Guid), new Guid(), false).SetName("Parse invalid GUID");
+                yield return new TestCaseData("{'value': '5'}", typeof(object), null, false).SetName("Parse POCO should find null operation");
             }
         }
 
@@ -75,7 +76,7 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             var expected = "NotAnInt";
 
             var parameters = new Dictionary<string, string> { { "IntParameter", expected } };
-            Assert.Throws<InvalidCastException>(() => NativeComponentRenderer.SetNavigationParameters(component, parameters));
+            Assert.Throws<InvalidOperationException>(() => NativeComponentRenderer.SetNavigationParameters(component, parameters));
         }
 
         [Test]

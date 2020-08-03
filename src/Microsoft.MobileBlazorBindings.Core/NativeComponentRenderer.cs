@@ -166,7 +166,7 @@ namespace Microsoft.MobileBlazorBindings.Core
                     }
                     else
                     {
-                        throw new InvalidCastException($"Unable to set property {parameter.Key} on object of type '{component.GetType()}' The error was: Specified cast is not valid. ");
+                        throw new InvalidOperationException($"Unable to set property {parameter.Key} on object of type '{component.GetType()}'.The value {parameter.Value}. can not be converted to a {prop.PropertyType.Name}");
                     }
                 }
                 else
@@ -236,7 +236,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             }
             else
             {
-                result = 5;
+                result = null;
                 success = false;
             }
             return success;
