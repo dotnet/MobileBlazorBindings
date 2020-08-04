@@ -8,11 +8,17 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public static partial class AttributeHelper
     {
+        private const string DefaultColorString = "default";
+
         /// <summary>
         /// Helper method to serialize <see cref="Color" /> objects.
         /// </summary>
         public static string ColorToString(Color color)
         {
+            if (color.IsDefault)
+            {
+                return DefaultColorString;
+            }
             var red = (uint)(color.R * 255);
             var green = (uint)(color.G * 255);
             var blue = (uint)(color.B * 255);
@@ -33,9 +39,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 throw new ArgumentException("Expected parameter instance to be a string.", nameof(colorString));
             }
-            if (colorAsString?.Length != 8)
+            if (colorAsString?.Length != 8 && colorAsString?.Length != DefaultColorString.Length)
             {
-                throw new ArgumentException($"Invalid color string '{colorString}'. Expected a hex color in the form 'AARRGGBB'.", nameof(colorString));
+                throw new ArgumentException($"Invalid color string '{colorString}'. Expected a hex color in the form 'AARRGGBB' or '{DefaultColorString}'.", nameof(colorString));
+            }
+            if (colorAsString == DefaultColorString)
+            {
+                return Color.Default;
             }
             return FromHex(colorAsString);
         }
