@@ -1,0 +1,24 @@
+﻿@page "/catdetails/{Name}"
+
+<ContentView>
+    <ScrollView>
+        <StackLayout>
+            <Label Text="@Cat.Name"></Label>
+            <Label Text="@Cat.Location"></Label>
+            <Image Source="@Cat.ImageUrl"></Image>
+            <Label Text="@Cat.Details"></Label>
+        </StackLayout>
+    </ScrollView>
+</ContentView>
+@code {
+    Animal Cat;
+
+    [Parameter]
+    public string Name
+    {
+        set
+        {
+            Cat = CatData.Cats.FirstOrDefault(m => m.Name == Uri.UnescapeDataString(value));
+        }
+    }
+}

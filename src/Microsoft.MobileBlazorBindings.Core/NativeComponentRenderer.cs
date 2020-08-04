@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Core
@@ -48,14 +49,15 @@ namespace Microsoft.MobileBlazorBindings.Core
         }
 
         /// <summary>
-        /// Creates a component of type <paramref name="componentType"/> and adds it as a child of <paramref name="parent"/>.
+        /// Creates a component of type <paramref name="componentType"/> and adds it as a child of <paramref name="parent"/>. If parameters are provided they will be set on the component.
         /// </summary>
         /// <param name="componentType"></param>
         /// <param name="parent"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        public async Task AddComponent(Type componentType, IElementHandler parent)
+        public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent, Dictionary<string, string> parameters = null)
         {
-            await Dispatcher.InvokeAsync(async () =>
+            return await Dispatcher.InvokeAsync(async () =>
             {
                 var component = InstantiateComponent(componentType);
                 var componentId = AssignRootComponentId(component);
@@ -67,7 +69,10 @@ namespace Microsoft.MobileBlazorBindings.Core
 
                 _componentIdToAdapter[componentId] = rootAdapter;
 
+                SetNavigationParameters(component, parameters);
+
                 await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+                return component;
             }).ConfigureAwait(false);
         }
 
@@ -129,6 +134,112 @@ namespace Microsoft.MobileBlazorBindings.Core
             var result = new NativeComponentAdapter(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
+        }
+
+        public static void SetNavigationParameters(IComponent component, Dictionary<string, string> parameters)
+        {
+            if (component == null)
+            {
+                throw new ArgumentNullException(nameof(component));
+            }
+            if (parameters == null || parameters.Count == 0)
+            {
+                //parameters will often be null. e.g. if you navigate with no parameters or when creating a root component.
+                return;
+            }
+
+            foreach (var parameter in parameters)
+            {
+                var prop = component.GetType().GetProperty(parameter.Key);
+
+                if (prop != null)
+                {
+                    var parameterAttribute = prop.GetCustomAttribute(typeof(ParameterAttribute));
+                    if (parameterAttribute == null)
+                    {
+                        throw new InvalidOperationException($"Object of type '{component.GetType()}' has a property matching the name '{parameter.Key}', but it does not have [ParameterAttribute] or [CascadingParameterAttribute] applied.");
+                    }
+
+                    if (TryParse(prop.PropertyType, parameter.Value, out object result))
+                    {
+                        prop.SetValue(component, result);
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException($"Unable to set property {parameter.Key} on object of type '{component.GetType()}'.The value {parameter.Value}. can not be converted to a {prop.PropertyType.Name}");
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Object of type '{component.GetType()}' does not have a property matching the name '{parameter.Key}'.");
+                }
+            }
+        }
+
+         /// <summary>
+        /// Converts a string into the specified type. If conversion was successful, parsed property will be of the correct type and method will return true.
+        /// If conversion fails it will return false and parsed property will be null.
+        /// This method supports the 8 data types that are valid navigation parameters in Blazor. Passing a string is also safe but will be returned as is because no conversion is neccessary.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="s"></param>
+        /// <param name="result">The parsed object of the type specified. This will be null if conversion failed.</param>
+        /// <returns>True if s was converted successfully, otherwise false</returns>
+        public static bool TryParse(Type type, string s, out object result)
+        {
+            bool success;
+            
+            if (type == typeof(string))
+            {
+                result = s;
+                success = true;
+            }
+            else if(type == typeof(int))
+            {
+                success = int.TryParse(s, out int parsed);
+                result = parsed;
+            }
+            else if(type == typeof(Guid))
+            {
+                success = Guid.TryParse(s, out Guid parsed);
+                result = parsed;
+            }
+            else if (type == typeof(bool))
+            {
+                success = bool.TryParse(s, out bool parsed);
+                result = parsed;
+            }
+            else if (type == typeof(DateTime))
+            {
+                success = DateTime.TryParse(s, out DateTime parsed);
+                result = parsed;
+            }
+            else if (type == typeof(decimal))
+            {
+                success = decimal.TryParse(s, out decimal parsed);
+                result = parsed;
+            }
+            else if (type == typeof(double))
+            {
+                success = double.TryParse(s, out double parsed);
+                result = parsed;
+            }
+            else if (type == typeof(float))
+            {
+                success = float.TryParse(s, out float parsed);
+                result = parsed;
+            }
+            else if (type == typeof(long))
+            {
+                success = long.TryParse(s, out long parsed);
+                result = parsed;
+            }
+            else
+            {
+                result = null;
+                success = false;
+            }
+            return success;
         }
     }
 }

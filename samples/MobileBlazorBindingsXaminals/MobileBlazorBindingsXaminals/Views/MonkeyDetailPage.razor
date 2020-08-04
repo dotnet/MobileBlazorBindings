@@ -1,0 +1,24 @@
+﻿@page "/monkeydetails/{Name}"
+
+<ContentView>
+    <ScrollView>
+        <StackLayout>
+            <Label Text="@Monkey.Name"></Label>
+            <Label Text="@Monkey.Location"></Label>
+            <Image Source="@Monkey.ImageUrl"></Image>
+            <Label Text="@Monkey.Details"></Label>
+        </StackLayout>
+    </ScrollView>
+</ContentView>
+@code {
+    Animal Monkey;
+
+    [Parameter]
+    public string Name
+    {
+        set
+        {
+            Monkey = MonkeyData.Monkeys.FirstOrDefault(m => m.Name == Uri.UnescapeDataString(value));
+        }
+    }
+}

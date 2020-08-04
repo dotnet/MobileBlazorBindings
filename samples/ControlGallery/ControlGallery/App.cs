@@ -1,20 +1,17 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using System;
 using Microsoft.MobileBlazorBindings;
+using Microsoft.Extensions.Hosting;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace MobileBlazorBindingsXaminals
+namespace ControlGallery
 {
     public class App : Application
     {
-        public IHost AppHost { get; }
-
         public App()
         {
-            AppHost = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services
@@ -24,22 +21,19 @@ namespace MobileBlazorBindingsXaminals
                 .Build();
 
             MainPage = new ContentPage();
-            AppHost.AddComponent<AppShell>(parent: this);
+            host.AddComponent<AppShell>(this);
         }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
         }
 
         protected override void OnResume()
         {
-            // Handle when your app resumes
         }
     }
 }

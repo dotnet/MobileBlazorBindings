@@ -1,0 +1,18 @@
+﻿@inject ShellNavigationManager NavigationManager
+<ContentPage>
+    <ScrollView>
+        <StackLayout>
+            @foreach (var animal in DogData.Dogs)
+            {
+                <AnimalTemplate Animal="animal" OnClick="AnimalClicked" />
+            }
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    async Task AnimalClicked(Animal animal)
+    {
+        await NavigationManager.NavigateToAsync($"/dogdetails/{animal.Name}");
+    }
+}

@@ -1,0 +1,32 @@
+﻿@inject ShellNavigationManager NavigationManager
+
+<ContentPage>
+    <ScrollView>
+        <StackLayout>
+            <Button Text="Navigate with no parameters" OnClick="NavigateNoParameter"></Button>
+            <Button Text="Navigate with name string" OnClick="NavigateWithName"></Button>
+            <Button Text="Navigate with name string and version int" OnClick="NavigateWithNameAndVersion"></Button>
+            <Button Text="Navigate with name, version, date" OnClick="NavigateWithNameVersionDate"></Button>
+            <Button Text="Navigate with Long" OnClick="NavigateWithLong"></Button>
+            <Button Text="Navigate with double" OnClick="NavigateWithDouble"></Button>
+            <Button Text="Navigate with float" OnClick="NavigateWithFloat"></Button>
+            <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
+            <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
+            <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code 
+{
+    async Task NavigateNoParameter() => await NavigationManager.NavigateToAsync("/target");
+    async Task NavigateWithName() => await NavigationManager.NavigateToAsync("/target/xamarin");
+    async Task NavigateWithNameAndVersion() => await NavigationManager.NavigateToAsync("/target/xamarin/5");
+    async Task NavigateWithNameVersionDate() => await NavigationManager.NavigateToAsync("/target/xamarin/5/2020-09-12");
+    async Task NavigateWithLong() => await NavigationManager.NavigateToAsync("/long/55");
+    async Task NavigateWithDouble() => await NavigationManager.NavigateToAsync("/double/55.43");
+    async Task NavigateWithFloat() => await NavigationManager.NavigateToAsync("/float/55.43");
+    async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
+    async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
+    async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
+}
