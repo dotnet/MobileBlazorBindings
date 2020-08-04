@@ -14,7 +14,7 @@ steps:
   condition: and(succeeded(), ne(variables['ci_feed'], ''), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: NuGetCommand@2
-  displayName: Push packages to GitHub Packages public feed
+  displayName: Push packages to MyGet public feed
   inputs:
     command: 'push'
     packagesToPush: $(Pipeline.Workspace)/SignedPackages/*.nupkg
