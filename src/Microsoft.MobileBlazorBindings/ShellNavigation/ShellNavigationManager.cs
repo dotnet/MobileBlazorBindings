@@ -58,12 +58,16 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public void NavigateTo(string uri)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             _ = NavigateToAsync(uri);
         }
 
+#pragma warning disable CA1054 // Uri parameters should not be strings
         public async Task NavigateToAsync(string uri)
+#pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (uri is null)
             {

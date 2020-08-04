@@ -10,8 +10,12 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
     //Used to map blazor route syntax to forms query syntax
     public class StructuredRoute
     {
+#pragma warning disable CA1056 // Uri properties should not be strings
         public string OriginalUri { get; }//Full route as it is registered in the razor component
+#pragma warning restore CA1056 // Uri properties should not be strings
+#pragma warning disable CA1056 // Uri properties should not be strings
         public string BaseUri { get; }//The route with all the parameters chopped off
+#pragma warning restore CA1056 // Uri properties should not be strings
         public int ParameterCount => ParameterKeys == null ? 0 : ParameterKeys.Count;
 
         public List<string> ParameterKeys { get; } = new List<string>();
@@ -21,7 +25,7 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
 
         public StructuredRoute(string originalRoute, Type type)
         {
-            if(originalRoute == null)
+            if (originalRoute == null)
             {
                 throw new ArgumentNullException(nameof(originalRoute));
             }
@@ -36,7 +40,7 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
             var baseRoute = string.Join("/", constantSegments);
 
             BaseUri = baseRoute;
-            if(parameterKeys.Any())
+            if (parameterKeys.Any())
             {
                 ParameterKeys = parameterKeys.Select(x => x.Trim('{').Trim('}')).ToList();
             }
@@ -67,11 +71,11 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
             }
 
             parameters.Reverse();
-            return new StructuredRouteResult(match,parameters);
+            return new StructuredRouteResult(match, parameters);
         }
     }
 
-    public class StructuredRouteResult 
+    public class StructuredRouteResult
     {
         public StructuredRoute Route { get; }
         public Dictionary<string, string> Parameters { get; } = new Dictionary<string, string>();
@@ -83,8 +87,8 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
 
         public StructuredRouteResult(StructuredRoute match, List<string> parameters)
         {
-            Route = match;
-            for (int i =0; i < match.ParameterKeys.Count; i++)
+            Route = match ?? throw new ArgumentNullException(nameof(match));
+            for (int i = 0; i < match.ParameterKeys.Count; i++)
             {
                 Parameters[match.ParameterKeys[i]] = parameters.ElementAtOrDefault(i);
             }
