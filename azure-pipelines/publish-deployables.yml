@@ -21,12 +21,3 @@ steps:
     nuGetFeedType: 'external'
     publishFeedCredentials: 'MobileBlazorBindings-Packages-nightly'
   condition: and(succeeded(), ne(variables['ci_feed'], ''), ne(variables['Build.Reason'], 'PullRequest'))
-
-- task: NuGetCommand@2
-  displayName: Push packages to MyGet public feed
-  inputs:
-    command: 'push'
-    packagesToPush: $(Pipeline.Workspace)/SignedPackages/*.nupkg
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'MobileBlazorBindings-MyGet'
-  condition: and(succeeded(), ne(variables['ci_feed'], ''), ne(variables['Build.Reason'], 'PullRequest'))
