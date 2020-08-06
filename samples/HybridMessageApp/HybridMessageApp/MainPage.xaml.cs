@@ -1,4 +1,7 @@
-﻿using HybridMessageApp.Data;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using HybridMessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings.WebView;
 using System.Threading.Tasks;

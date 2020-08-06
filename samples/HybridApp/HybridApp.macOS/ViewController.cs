@@ -1,4 +1,7 @@
-﻿using AppKit;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using AppKit;
 using Foundation;
 using System;
 

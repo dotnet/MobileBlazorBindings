@@ -1,4 +1,7 @@
-﻿namespace HybridMessageApp.Data
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace HybridMessageApp.Data
 {
     public class Message
     {

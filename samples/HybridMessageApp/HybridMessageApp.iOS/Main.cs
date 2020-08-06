@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings.WebView.iOS;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings.WebView.iOS;
 using UIKit;
 
 namespace HybridMessageApp.iOS

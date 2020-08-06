@@ -1,4 +1,7 @@
-﻿using AppKit;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using AppKit;
 using Microsoft.MobileBlazorBindings.WebView.macOS;
 
 namespace HybridApp.macOS
