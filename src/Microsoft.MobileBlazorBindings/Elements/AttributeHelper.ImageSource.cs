@@ -3,7 +3,6 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.Serialization;
 using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements

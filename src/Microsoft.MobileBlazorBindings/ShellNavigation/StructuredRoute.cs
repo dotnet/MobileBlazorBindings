@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace MobileBlazorBindingsXaminals.ShellNavigation
 {
@@ -53,7 +50,9 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
         {
             var match = routes.FirstOrDefault(x => x.BaseUri == uri);
             if (match != null && match.ParameterCount == 0)
+            {
                 return new StructuredRouteResult(match);
+            }
 
             var pieces = uri.Split('/').ToList();
 
@@ -69,7 +68,10 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
                 match = routes.FirstOrDefault(x => x.BaseUri == uri && x.ParameterCount == parameterCount);
                 parameters.Add(piece);
                 if (match != null)
+                {
                     break;
+                }
+
                 parameterCount++;
             }
 
@@ -91,7 +93,7 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
         public StructuredRouteResult(StructuredRoute match, List<string> parameters)
         {
             Route = match ?? throw new ArgumentNullException(nameof(match));
-            for (int i = 0; i < match.ParameterKeys.Count; i++)
+            for (var i = 0; i < match.ParameterKeys.Count; i++)
             {
                 Parameters[match.ParameterKeys[i]] = parameters.ElementAtOrDefault(i);
             }

@@ -6,12 +6,7 @@ using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using Xamarin.Forms.Platform.WPF;
 using XF = Xamarin.Forms;
@@ -130,13 +125,13 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             var eventType = args.GetType();
             var field = eventType.GetField("_nativeCoreWebView2WebResourceRequestedEventArgs", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             var nativeArgs = field.GetValue(args);
-            
+
             var requestProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Request");
             var nativeRequest = requestProperty.GetValue(nativeArgs);
             var uriProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequest").GetProperty("Uri");
             var uriString = (string)uriProperty.GetValue(nativeRequest);
             var uri = new Uri(uriString);
-           
+
             if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
             {
                 var responseStream = handler(uriString, out var responseContentType);
@@ -149,8 +144,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 
                     var managedStream = Activator.CreateInstance(eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.ManagedIStream"),
                         System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
-                        null, 
-                        new object[] { responseStream }, 
+                        null,
+                        new object[] { responseStream },
                         null);
 
                     var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse", new Type[] { Type.GetType("System.Runtime.InteropServices.ComTypes.IStream"), typeof(int), typeof(string), typeof(string) });

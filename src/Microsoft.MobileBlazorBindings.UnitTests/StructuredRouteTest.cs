@@ -4,10 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using MobileBlazorBindingsXaminals.ShellNavigation;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Microsoft.MobileBlazorBindings.UnitTests
 {

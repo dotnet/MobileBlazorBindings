@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.AspNetCore.Components;
+using Microsoft.MobileBlazorBindings.Core;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.AspNetCore.Components;
 using System.Linq;
 
 namespace Microsoft.MobileBlazorBindings.UnitTests
@@ -22,11 +21,11 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         public static IEnumerable<TestCaseData> TryParseTestData
         {
             get
-            { 
+            {
                 yield return new TestCaseData("s", typeof(string), "s", true).SetName("Parse valid string");
                 yield return new TestCaseData("5", typeof(int), 5, true).SetName("Parse valid int");
                 yield return new TestCaseData("invalid text", typeof(int), 0, false).SetName("Parse invalid int");
-                yield return new TestCaseData("2020-05-20", typeof(DateTime), new DateTime(2020,05,20), true).SetName("Parse valid date");
+                yield return new TestCaseData("2020-05-20", typeof(DateTime), new DateTime(2020, 05, 20), true).SetName("Parse valid date");
                 yield return new TestCaseData("invalid text", typeof(DateTime), new DateTime(), false).SetName("Parse invalid date");
                 yield return new TestCaseData(testGuid.ToString(), typeof(Guid), testGuid, true).SetName("Parse valid GUID");
                 yield return new TestCaseData("invalid text", typeof(Guid), new Guid(), false).SetName("Parse invalid GUID");
@@ -37,7 +36,7 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         [TestCaseSource(typeof(NativeComponentRendererTests), nameof(TryParseTestData))]
         public void TryParseTest(string s, Type type, object expectedResult, bool expectedSuccess)
         {
-            var success = NativeComponentRenderer.TryParse(type, s, out object result);
+            var success = NativeComponentRenderer.TryParse(type, s, out var result);
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedResult, result);
@@ -56,13 +55,13 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
         {
             get
             {
-                yield return new TestCaseData(new Dictionary<string, string> {  { "StringParameter", "paravalue" } }, "paravalue").SetName("Set string parameter");
-                yield return new TestCaseData(new Dictionary<string, string> {  { "IntParameter", "5" } }, 5).SetName("Set int parameter");
+                yield return new TestCaseData(new Dictionary<string, string> { { "StringParameter", "paravalue" } }, "paravalue").SetName("Set string parameter");
+                yield return new TestCaseData(new Dictionary<string, string> { { "IntParameter", "5" } }, 5).SetName("Set int parameter");
             }
         }
 
         [TestCaseSource(typeof(NativeComponentRendererTests), nameof(SetParameterTestData))]
-        public void SetParameterTest(Dictionary<string,string> parameters, object expected)
+        public void SetParameterTest(Dictionary<string, string> parameters, object expected)
         {
             var component = new TestComponent();
             NativeComponentRenderer.SetNavigationParameters(component, parameters);

@@ -206,7 +206,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             string base64;
             using (var memoryStream = new MemoryStream())
             {
-                object renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
+                var renderBatchWriter = Activator.CreateInstance(_writer, new object[] { memoryStream, false });
                 using (renderBatchWriter as IDisposable)
                 {
                     // TODO: use delegate instead of reflection for more performance.
@@ -231,7 +231,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
             return pendingRender.CompletionSource.Task;
         }
-        
+
         private class RenderFragmentComponent : IComponent
         {
             public RenderHandle RenderHandle { get; private set; }

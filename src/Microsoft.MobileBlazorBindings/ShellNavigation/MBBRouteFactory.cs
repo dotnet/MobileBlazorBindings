@@ -3,9 +3,6 @@
 
 using Microsoft.MobileBlazorBindings;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 
@@ -14,8 +11,8 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
     //Based on the forms TypeRouteFactory https://github.com/xamarin/Xamarin.Forms/blob/9fd882e6c598a51bffbbb2f4de72c3bd9023ab41/Xamarin.Forms.Core/Routing.cs
     public class MBBRouteFactory : XF.RouteFactory
     {
-        readonly Type _type;
-        readonly ShellNavigationManager _navigationManager;
+        private readonly Type _type;
+        private readonly ShellNavigationManager _navigationManager;
 
         public MBBRouteFactory(Type type, ShellNavigationManager navigationManager)
         {
@@ -31,7 +28,9 @@ namespace MobileBlazorBindingsXaminals.ShellNavigation
         public override bool Equals(object obj)
         {
             if ((obj is MBBRouteFactory routeFactory))
+            {
                 return routeFactory._type == _type;
+            }
 
             return false;
         }

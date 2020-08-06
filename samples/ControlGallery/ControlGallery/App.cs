@@ -1,12 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using System;
-using Microsoft.MobileBlazorBindings;
-using Microsoft.Extensions.Hosting;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.MobileBlazorBindings;
+using Xamarin.Forms;
 
 namespace ControlGallery
 {

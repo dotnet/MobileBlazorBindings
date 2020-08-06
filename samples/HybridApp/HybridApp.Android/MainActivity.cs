@@ -3,8 +3,8 @@
 
 using Android.App;
 using Android.Content.PM;
-using Android.Runtime;
 using Android.OS;
+using Android.Runtime;
 using Microsoft.MobileBlazorBindings.WebView.Android;
 
 namespace HybridApp.Droid

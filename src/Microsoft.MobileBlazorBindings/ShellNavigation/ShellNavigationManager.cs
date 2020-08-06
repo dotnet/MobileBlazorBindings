@@ -1,29 +1,23 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.Hosting;
-using MBB = Microsoft.MobileBlazorBindings.Elements;
+using Microsoft.AspNetCore.Components;
+using MobileBlazorBindingsXaminals.ShellNavigation;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using XF = Xamarin.Forms;
-using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using System.Linq;
-using Microsoft.AspNetCore.Components;
-using Microsoft.MobileBlazorBindings.Elements;
+using System.Reflection;
+using System.Threading.Tasks;
 using Xamarin.Forms;
-using System.Diagnostics;
-using MobileBlazorBindingsXaminals.ShellNavigation;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {
     public class ShellNavigationManager //: NavigationManager I would have liked to inherit from NavigationManager but I can't work out what URIs to initialize it with
     {
-        IServiceProvider _services;
-        List<StructuredRoute> Routes = new List<StructuredRoute>();
-        Dictionary<Type, StructuredRouteResult> NavigationParameters = new Dictionary<Type, StructuredRouteResult>();
+        private readonly IServiceProvider _services;
+        private readonly List<StructuredRoute> Routes = new List<StructuredRoute>();
+        private readonly Dictionary<Type, StructuredRouteResult> NavigationParameters = new Dictionary<Type, StructuredRouteResult>();
 
         public ShellNavigationManager(IServiceProvider services)
         {
@@ -33,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings
 
 
         //TODO This route matching could be better. Can we use the ASPNEt version?
-        void FindRoutes()
+        private void FindRoutes()
         {
             var assembly = XF.Application.Current.GetType().Assembly;
             var pages = assembly.GetTypes().Where(x => x.GetCustomAttributes<RouteAttribute>().Any());//TODO: Could this be more efficient if it only looked for classes that are razor components? Or maybe thats an extra step that would slow things down. Profiler required.
@@ -49,7 +43,7 @@ namespace Microsoft.MobileBlazorBindings
 
                         //Register with XamarinForms so it can handle Navigation.
                         Routing.RegisterRoute(structuredRoute.BaseUri, new MBBRouteFactory(page, this));
-                        
+
                         //Also register route in our own list for setting parameters and tracking if it is registered;
                         Routes.Add(structuredRoute);
                     }
@@ -83,7 +77,7 @@ namespace Microsoft.MobileBlazorBindings
             {
                 NavigationParameters[route.Route.Type] = route;
 
-                await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false) ;
+                await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
             }
             else
             {
@@ -100,7 +94,7 @@ namespace Microsoft.MobileBlazorBindings
             return page;
         }
 
-        private async Task PopulatePage(XF.ContentPage page , Type type)
+        private async Task PopulatePage(XF.ContentPage page, Type type)
         {
             var route = NavigationParameters[type];
             await _services.AddComponent(page, type, route.Parameters).ConfigureAwait(false);

@@ -296,7 +296,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         /// <returns>The content type.</returns>
         private static string GetContentType(string url)
         {
-            if (_fileExtensionContentTypeProvider.TryGetContentType(url, out string result))
+            if (_fileExtensionContentTypeProvider.TryGetContentType(url, out var result))
             {
                 return result;
             }

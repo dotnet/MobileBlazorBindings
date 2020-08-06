@@ -434,7 +434,7 @@ namespace Microsoft.AspNetCore.StaticFiles
         /// <returns>True if MIME type could be determined</returns>
         public bool TryGetContentType(string subpath, out string contentType)
         {
-            string extension = GetExtension(subpath);
+            var extension = GetExtension(subpath);
             if (extension == null)
             {
                 contentType = null;
@@ -454,7 +454,7 @@ namespace Microsoft.AspNetCore.StaticFiles
                 return null;
             }
 
-            int index = path.LastIndexOf('.');
+            var index = path.LastIndexOf('.');
             if (index < 0)
             {
                 return null;
