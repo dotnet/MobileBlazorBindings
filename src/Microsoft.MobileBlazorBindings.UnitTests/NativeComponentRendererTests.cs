@@ -44,7 +44,9 @@ namespace Microsoft.MobileBlazorBindings.UnitTests
             });
         }
 
+#pragma warning disable CA1034 // Nested types should not be visible; this is test-only code
         public class TestComponent : ComponentBase
+#pragma warning restore CA1034 // Nested types should not be visible
         {
             [Parameter] public string StringParameter { get; set; }
             [Parameter] public int IntParameter { get; set; }
