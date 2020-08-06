@@ -25,7 +25,7 @@
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.6.0.800">
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.7.0.968">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
