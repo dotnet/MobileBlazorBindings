@@ -16,6 +16,15 @@ steps:
     solution: CI/CI.Windows.proj
     configuration: '$(BuildConfiguration)'
 
+- task: VSTest@2
+  displayName: 'Run tests'
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\*.UnitTests.dll
+      !**\obj\**
+    configuration: '$(BuildConfiguration)'
+
 - task: MSBuild@1
   displayName: 'Pack src Windows and Android projects'
   inputs:
