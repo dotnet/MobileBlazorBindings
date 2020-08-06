@@ -36,21 +36,9 @@ jobs:
 
   - template: dotnet.yml
 
-# NOTE: This is disabled due to https://github.com/dotnet/Nerdbank.GitVersioning/issues/487
-# - job: macOS
-#   pool: ${{ parameters.macPool }}
-#   steps:
-#   - checkout: self
-#     clean: true
-#   - template: install-dependencies.yml
-#     parameters:
-#       initArgs: -NoRestore # Mac build restores its own projects so that Windows-only projects can be excluded
-#   - template: dotnet-mac.yml
-
 - job: WrapUp
   dependsOn:
   - Windows
-#  - macOS
   pool: ${{ parameters.windowsPool }}
   condition: succeededOrFailed()
   steps:
