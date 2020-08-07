@@ -40,12 +40,18 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ElementControl.StyleId = (string)attributeValue;
                     break;
                 default:
-                    if (!TryRegisterEvent(attributeName, attributeEventHandlerId))
+                    if (!ApplyAdditionalAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName) &&
+                        !TryRegisterEvent(attributeName, attributeEventHandlerId))
                     {
                         throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
                     }
                     break;
             }
+        }
+
+        public virtual bool ApplyAdditionalAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        {
+            return false;
         }
 
         private bool TryRegisterEvent(string eventName, ulong eventHandlerId)

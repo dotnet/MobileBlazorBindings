@@ -1,0 +1,38 @@
+﻿@page "/gestureplayground"
+
+<ContentView>
+    <StackLayout Margin="new Thickness(20)">
+
+        <Label Text="Tap me or pan me"
+               FontSize="40" GestureRecognizers="@GetLabelGestures()" BackgroundColor="Color.LightCoral" />
+
+        <Label Text="@($"The label above was clicked {count} times")" FontSize="@fontSize" BackgroundColor="Color.AliceBlue" />
+
+    </StackLayout>
+</ContentView>
+
+@code
+{
+    int count;
+    double fontSize = 20;
+
+    List<IGestureRecognizer> GetLabelGestures()
+    {
+        return new List<IGestureRecognizer>() {
+            new TapGestureRecognizer{NumberOfTapsRequired=1,  }.AddEvents(g => g.Tapped += OnLabelTapped ),
+            new PanGestureRecognizer{}.AddEvents(g => g.PanUpdated += OnLabelPanned),
+        };
+    }
+
+    void OnLabelTapped(object sender, EventArgs e)
+    {
+        count++;
+        StateHasChanged();
+    }
+
+    void OnLabelPanned(object sender, PanUpdatedEventArgs e)
+    {
+        fontSize = 20 + e.TotalX;
+        StateHasChanged();
+    }
+}
