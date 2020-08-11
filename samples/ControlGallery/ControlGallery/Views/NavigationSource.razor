@@ -13,6 +13,7 @@
             <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
             <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
             <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
+            <Button Text="Navigate to gesture playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/gestureplayground"))"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>

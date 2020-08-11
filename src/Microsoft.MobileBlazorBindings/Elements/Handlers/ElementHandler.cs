@@ -3,24 +3,24 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using System.Collections.Generic;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class ElementHandler : IXamarinFormsElementHandler
     {
+        private readonly EventManager _eventManager = new EventManager();
+
         public ElementHandler(NativeComponentRenderer renderer, XF.Element elementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
         }
 
-        protected void RegisterEvent(string eventName, Action<ulong> setId, Action<ulong> clearId)
+        protected void ConfigureEvent(string eventName, Action<ulong> setId, Action<ulong> clearId)
         {
-            RegisteredEvents[eventName] = new EventRegistration(eventName, setId, clearId);
+            _eventManager.ConfigureEvent(eventName, setId, clearId);
         }
-        private Dictionary<string, EventRegistration> RegisteredEvents { get; } = new Dictionary<string, EventRegistration>();
 
         public NativeComponentRenderer Renderer { get; }
         public XF.Element ElementControl { get; }
@@ -40,24 +40,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ElementControl.StyleId = (string)attributeValue;
                     break;
                 default:
-                    if (!TryRegisterEvent(attributeName, attributeEventHandlerId))
+                    if (!_eventManager.TryRegisterEvent(Renderer, attributeName, attributeEventHandlerId))
                     {
                         throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
                     }
                     break;
             }
-        }
-
-        private bool TryRegisterEvent(string eventName, ulong eventHandlerId)
-        {
-            if (RegisteredEvents.TryGetValue(eventName, out var eventRegistration))
-            {
-                Renderer.RegisterEvent(eventHandlerId, eventRegistration.ClearId);
-                eventRegistration.SetId(eventHandlerId);
-
-                return true;
-            }
-            return false;
         }
 
         public virtual void AddChild(XF.Element child, int physicalSiblingIndex)

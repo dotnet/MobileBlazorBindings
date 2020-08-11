@@ -24,7 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _flyoutHeaderContentView.IsVisible = false;
             ShellControl.FlyoutHeader = _flyoutHeaderContentView;
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onnavigated",
                 setId: id => NavigatedEventHandlerId = id,
                 clearId: id => { if (NavigatedEventHandlerId == id) { NavigatedEventHandlerId = 0; } });
@@ -35,7 +35,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(NavigatedEventHandlerId, null, e));
                 }
             };
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onnavigating",
                 setId: id => NavigatingEventHandlerId = id,
                 clearId: id => { if (NavigatingEventHandlerId == id) { NavigatingEventHandlerId = 0; } });

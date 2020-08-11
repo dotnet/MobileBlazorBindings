@@ -18,7 +18,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             Control = control;
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onwebmessagereceived",
                 setId: id => _onWebMessageReceivedEventHandlerId = id,
                 clearId: id => { if (_onWebMessageReceivedEventHandlerId == id) { _onWebMessageReceivedEventHandlerId = 0; } });
