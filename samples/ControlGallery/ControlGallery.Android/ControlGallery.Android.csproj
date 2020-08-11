@@ -55,6 +55,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>2.80.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
   </ItemGroup>

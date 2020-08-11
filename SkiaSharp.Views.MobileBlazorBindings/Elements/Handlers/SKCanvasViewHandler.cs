@@ -4,13 +4,15 @@ using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using SK = SkiaSharp.Views.Forms;
 using XF = Xamarin.Forms;
 
-namespace SkiaSharp.Views.MobileBlazorBindings.Elements.Handlers
+namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 {
     public class SKCanvasViewHandler : ViewHandler
     {
         public SKCanvasViewHandler(NativeComponentRenderer renderer, SK.SKCanvasView sKCanvasViewControl) : base(renderer, sKCanvasViewControl)
         {
+            SKCanvasViewControl = sKCanvasViewControl ?? throw new ArgumentNullException(nameof(sKCanvasViewControl));
 
+            Initialize(renderer);
         }
         public SK.SKCanvasView SKCanvasViewControl { get; }
 
@@ -18,10 +20,29 @@ namespace SkiaSharp.Views.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
+
+        void Initialize(NativeComponentRenderer renderer)
+        {
+            RegisterEvent(
+                eventName: "onpaintsurface",
+                setId: id => PaintEventHandlerId = id,
+                clearId: id => { if (PaintEventHandlerId == id) { PaintEventHandlerId = 0; } });
+            SKCanvasViewControl.PaintSurface += (s, e) =>
+            {
+                if (PaintEventHandlerId != default)
+                {
+                    renderer.DispatchEventAsync(PaintEventHandlerId,null, e);
+                }
+            };
+        }
+
+        public ulong PaintEventHandlerId { get; set; }
+
     }
 }

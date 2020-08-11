@@ -116,7 +116,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlGallery.Android", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlGallery.iOS", "samples\ControlGallery\ControlGallery.iOS\ControlGallery.iOS.csproj", "{24939485-B489-47E0-ACB5-199264D4BEB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkiaSharp.Views.MobileBlazorBindings", "SkiaSharp.Views.MobileBlazorBindings\SkiaSharp.Views.MobileBlazorBindings.csproj", "{C86CE1B4-710F-4D63-B0F2-D4C5B6443D8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.SkiaSharp", "SkiaSharp.Views.MobileBlazorBindings\Microsoft.MobileBlazorBindings.SkiaSharp.csproj", "{C86CE1B4-710F-4D63-B0F2-D4C5B6443D8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
