@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onistoggledchanged",
                 setId: id => IsToggledChangedEventHandlerId = id,
                 clearId: id => { if (IsToggledChangedEventHandlerId == id) { IsToggledChangedEventHandlerId = 0; } });

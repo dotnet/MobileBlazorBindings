@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "ondragcompleted",
                 setId: id => DragCompletedEventHandlerId = id,
                 clearId: id => { if (DragCompletedEventHandlerId == id) { DragCompletedEventHandlerId = 0; } });
@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 }
             };
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "ondragstarted",
                 setId: id => DragStartedEventHandlerId = id,
                 clearId: id => { if (DragStartedEventHandlerId == id) { DragStartedEventHandlerId = 0; } });
@@ -34,7 +34,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 }
             };
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onvaluechanged",
                 setId: id => ValueChangedEventHandlerId = id,
                 clearId: id => { if (ValueChangedEventHandlerId == id) { ValueChangedEventHandlerId = 0; } });

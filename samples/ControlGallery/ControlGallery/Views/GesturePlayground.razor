@@ -4,7 +4,10 @@
     <StackLayout Margin="new Thickness(20)">
 
         <Label Text="Tap me or pan me"
-               FontSize="40" GestureRecognizers="@GetLabelGestures()" BackgroundColor="Color.LightCoral" />
+               FontSize="40" BackgroundColor="Color.LightCoral">
+            <TapGestureRecognizer NumberOfTapsRequired="1" OnTapped="@OnLabelTapped" />
+            @*<PanGestureRecognizer OnPanUpdated="@OnLabelPanned" />*@
+        </Label>
 
         <Label Text="@($"The label above was clicked {count} times")" FontSize="@fontSize" BackgroundColor="Color.AliceBlue" />
 
@@ -19,14 +22,14 @@
     List<IGestureRecognizer> GetLabelGestures()
     {
         return new List<IGestureRecognizer>() {
-            new TapGestureRecognizer{NumberOfTapsRequired=1,  }.AddEvents(g => g.Tapped += OnLabelTapped ),
+            //new TapGestureRecognizer{NumberOfTapsRequired=1,  }.AddEvents(g => g.Tapped += OnLabelTapped ),
             new PanGestureRecognizer{}.AddEvents(g => g.PanUpdated += OnLabelPanned),
         };
     }
 
-    void OnLabelTapped(object sender, EventArgs e)
+    void OnLabelTapped()
     {
-        count++;
+        count += 10;
         StateHasChanged();
     }
 

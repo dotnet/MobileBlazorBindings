@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onappearing",
                 setId: id => AppearingEventHandlerId = id,
                 clearId: id => { if (AppearingEventHandlerId == id) { AppearingEventHandlerId = 0; } });
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(AppearingEventHandlerId, null, e));
                 }
             };
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "ondisappearing",
                 setId: id => DisappearingEventHandlerId = id,
                 clearId: id => { if (DisappearingEventHandlerId == id) { DisappearingEventHandlerId = 0; } });

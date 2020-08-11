@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onfocused",
                 setId: id => FocusedEventHandlerId = id,
                 clearId: id => { if (FocusedEventHandlerId == id) { FocusedEventHandlerId = 0; } });
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(FocusedEventHandlerId, null, e));
                 }
             };
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onsizechanged",
                 setId: id => SizeChangedEventHandlerId = id,
                 clearId: id => { if (SizeChangedEventHandlerId == id) { SizeChangedEventHandlerId = 0; } });
@@ -31,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(SizeChangedEventHandlerId, null, e));
                 }
             };
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onunfocused",
                 setId: id => UnfocusedEventHandlerId = id,
                 clearId: id => { if (UnfocusedEventHandlerId == id) { UnfocusedEventHandlerId = 0; } });
