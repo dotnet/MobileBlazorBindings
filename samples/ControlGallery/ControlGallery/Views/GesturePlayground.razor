@@ -11,6 +11,11 @@
 
         <Label Text="@($"The label above was clicked {count} times")" FontSize="@fontSize" BackgroundColor="Color.AliceBlue" />
 
+        <Label Text="@($"Swipe left to delete, right to archive [STATE: {swipeState}]")" FontSize="40" BackgroundColor="Color.AntiqueWhite">
+            <SwipeGestureRecognizer Direction="@(SwipeDirection.Left)" OnSwiped="@OnSwipeLabel" />
+            <SwipeGestureRecognizer Direction="@(SwipeDirection.Right)" OnSwiped="@OnSwipeLabel" />
+        </Label>
+
     </StackLayout>
 </ContentView>
 
@@ -18,6 +23,7 @@
 {
     int count;
     double fontSize = 20;
+    string swipeState = "none";
 
     void OnLabelTapped()
     {
@@ -28,6 +34,18 @@
     void OnLabelPanned(PanUpdatedEventArgs e)
     {
         fontSize = 20 + e.TotalX;
+        StateHasChanged();
+    }
+
+    void OnSwipeLabel(SwipedEventArgs e)
+    {
+        swipeState = e.Direction switch
+        {
+            SwipeDirection.Left => "deleted",
+            SwipeDirection.Right => "archive",
+            _ => "unknown: " + e.Direction.ToString(),
+        };
+
         StateHasChanged();
     }
 }

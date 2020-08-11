@@ -9,9 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class PanGestureRecognizerHandler : GestureRecognizerHandler
     {
-        public PanGestureRecognizerHandler(NativeComponentRenderer renderer, XF.PanGestureRecognizer PanGestureRecognizerControl) : base(renderer, PanGestureRecognizerControl)
+        public PanGestureRecognizerHandler(NativeComponentRenderer renderer, XF.PanGestureRecognizer panGestureRecognizerControl) : base(renderer, panGestureRecognizerControl)
         {
-            PanGestureRecognizerControl = PanGestureRecognizerControl ?? throw new ArgumentNullException(nameof(PanGestureRecognizerControl));
+            PanGestureRecognizerControl = panGestureRecognizerControl ?? throw new ArgumentNullException(nameof(panGestureRecognizerControl));
 
             ConfigureEvent(
                 eventName: "onpanupdated",

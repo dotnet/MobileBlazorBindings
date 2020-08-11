@@ -27,9 +27,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to serialize <see cref="double" /> objects.
         /// </summary>
-        public static string DoubleToString(double color)
+        public static string DoubleToString(double value)
         {
-            return color.ToString("R", CultureInfo.InvariantCulture); // "R" --> Round-trip format specifier guarantees fidelity when parsing
+            return value.ToString("R", CultureInfo.InvariantCulture); // "R" --> Round-trip format specifier guarantees fidelity when parsing
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to serialize <see cref="float" /> objects.
         /// </summary>
-        public static string SingleToString(float color)
+        public static string SingleToString(float value)
         {
-            return color.ToString("R", CultureInfo.InvariantCulture); // "R" --> Round-trip format specifier guarantees fidelity when parsing
+            return value.ToString("R", CultureInfo.InvariantCulture); // "R" --> Round-trip format specifier guarantees fidelity when parsing
         }
 
         /// <summary>
@@ -62,6 +62,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 return defaultValueIfNull;
             }
             return float.Parse(singleString, CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Helper method to serialize <see cref="uint" /> objects.
+        /// </summary>
+        public static string UInt32ToString(uint value)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Helper method to deserialize <see cref="uint" /> objects.
+        /// </summary>
+        public static uint StringToUInt32(string uintString, uint defaultValueIfNull = default)
+        {
+            if (uintString is null)
+            {
+                return defaultValueIfNull;
+            }
+            return uint.Parse(uintString, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
