@@ -7,7 +7,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class GridHandler : LayoutHandler
     {
-        partial void ApplyColumnDefinitions(object attributeValue)
+        private void ApplyColumnDefinitions(object attributeValue)
         {
             GridControl.ColumnDefinitions.Clear();
 
@@ -19,7 +19,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        partial void ApplyRowDefinitions(object attributeValue)
+        private void ApplyRowDefinitions(object attributeValue)
         {
             GridControl.RowDefinitions.Clear();
 
@@ -28,6 +28,21 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             foreach (var row in rowDefinitions)
             {
                 GridControl.RowDefinitions.Add(row);
+            }
+        }
+
+        public override bool ApplyAdditionalAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        {
+            switch (attributeName)
+            {
+                case nameof(Grid.ColumnDefinitions):
+                    ApplyColumnDefinitions(attributeValue);
+                    return true;
+                case nameof(Grid.RowDefinitions):
+                    ApplyRowDefinitions(attributeValue);
+                    return true;
+                default:
+                    return base.ApplyAdditionalAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
             }
         }
     }

@@ -40,13 +40,20 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ElementControl.StyleId = (string)attributeValue;
                     break;
                 default:
-                    if (!_eventManager.TryRegisterEvent(Renderer, attributeName, attributeEventHandlerId))
+                    if (!ApplyAdditionalAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName) &&
+                        !_eventManager.TryRegisterEvent(Renderer, attributeName, attributeEventHandlerId))
                     {
                         throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
                     }
                     break;
             }
         }
+
+        public virtual bool ApplyAdditionalAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
+        {
+            return false;
+        }
+
 
         public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
