@@ -6,7 +6,7 @@
         <Label Text="Tap me or pan me"
                FontSize="40" BackgroundColor="Color.LightCoral">
             <TapGestureRecognizer NumberOfTapsRequired="1" OnTapped="@OnLabelTapped" />
-            @*<PanGestureRecognizer OnPanUpdated="@OnLabelPanned" />*@
+            <PanGestureRecognizer OnPanUpdated="@OnLabelPanned" />
         </Label>
 
         <Label Text="@($"The label above was clicked {count} times")" FontSize="@fontSize" BackgroundColor="Color.AliceBlue" />
@@ -19,21 +19,13 @@
     int count;
     double fontSize = 20;
 
-    List<IGestureRecognizer> GetLabelGestures()
-    {
-        return new List<IGestureRecognizer>() {
-            //new TapGestureRecognizer{NumberOfTapsRequired=1,  }.AddEvents(g => g.Tapped += OnLabelTapped ),
-            new PanGestureRecognizer{}.AddEvents(g => g.PanUpdated += OnLabelPanned),
-        };
-    }
-
     void OnLabelTapped()
     {
         count += 10;
         StateHasChanged();
     }
 
-    void OnLabelPanned(object sender, PanUpdatedEventArgs e)
+    void OnLabelPanned(PanUpdatedEventArgs e)
     {
         fontSize = 20 + e.TotalX;
         StateHasChanged();
