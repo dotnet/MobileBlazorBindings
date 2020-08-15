@@ -20,7 +20,6 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
         {
             switch (attributeName)
             {
-
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
@@ -29,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 
         void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onpaintsurface",
                 setId: id => PaintEventHandlerId = id,
                 clearId: id => { if (PaintEventHandlerId == id) { PaintEventHandlerId = 0; } });

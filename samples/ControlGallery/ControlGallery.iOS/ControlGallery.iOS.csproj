@@ -130,7 +130,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SkiaSharp.Views.MobileBlazorBindings\Microsoft.MobileBlazorBindings.SkiaSharp.csproj">
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj">
       <Project>{c86ce1b4-710f-4d63-b0f2-d4c5b6443d8f}</Project>
       <Name>Microsoft.MobileBlazorBindings.SkiaSharp</Name>
     </ProjectReference>

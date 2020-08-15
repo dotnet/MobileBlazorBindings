@@ -28,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 
         void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onpaintsurface",
                 setId: id => PaintEventHandlerId = id,
                 clearId: id => { if (PaintEventHandlerId == id) { PaintEventHandlerId = 0; } });
@@ -37,15 +37,17 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
                 if (PaintEventHandlerId != default)
                 {
                     //This works well on iOS but has issues on Android
-                    renderer.DispatchEventAsync(PaintEventHandlerId, null, e);
+                    //Sometimes it throws "System.InvalidOperationException: 'The current thread is not associated with the Dispatcher. Use InvokeAsync() to switch execution to the Dispatcher when triggering rendering or component state.'"
+                    //renderer.DispatchEventAsync(PaintEventHandlerId, null, e);
 
-                    //Putting it inside an InvokeAsync Prevents the error for wrong thread but causes other weird problems on android
-                    //This intermittently causes an abrt with no human readable crash on both iOS and Android
+                    //Putting it inside an InvokeAsync prevents "The current thread is not associated with the Dispatcher" but causes other weird problems on android
+                    //This intermittently causes an abrt with no human readable crash on iOS
                     //Adding break points makes everything go strange and crash
-                    //renderer.Dispatcher.InvokeAsync(() =>
-                    //    renderer.DispatchEventAsync(PaintEventHandlerId, null, e)
-                    //);
-
+                    //To see these issues run the Control Gallery, click Skia Playground, click Skia GL Paths MBB Events
+                    //To see the GLCanvas working correctly by bypassing dispatcher run the Control Gallery, click Skia Playground, click Skia GL Native Control Events
+                    renderer.Dispatcher.InvokeAsync(() =>
+                        renderer.DispatchEventAsync(PaintEventHandlerId, null, e)
+                    );
                 }
             };
         }
