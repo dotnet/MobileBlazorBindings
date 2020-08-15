@@ -5,7 +5,7 @@ using SK = SkiaSharp.Views.Forms;
 using Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers;
 using Microsoft.AspNetCore.Components;
 
-namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements
+namespace Microsoft.MobileBlazorBindings.SkiaSharp
 {
     public class SKGLView : View
     {

@@ -13,7 +13,7 @@
             <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
             <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
             <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
-            <Button Text="Skia Playground" OnClick="NavigateToSkiaPlayground"></Button>
+            <Button Text="Skia Playground" OnClick="NavigateToSkia"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>
@@ -30,5 +30,5 @@
     async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
     async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
     async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
-    async Task NavigateToSkiaPlayground() => await NavigationManager.NavigateToAsync("/skia");
+    async Task NavigateToSkia() => await NavigationManager.NavigateToAsync("/skia");
 }

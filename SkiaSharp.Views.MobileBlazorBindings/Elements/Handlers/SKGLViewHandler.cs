@@ -1,8 +1,8 @@
 using System;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using Xamarin.Forms;
 using SK = SkiaSharp.Views.Forms;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 {
@@ -20,7 +20,6 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
         {
             switch (attributeName)
             {
-
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
@@ -37,12 +36,20 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
             {
                 if (PaintEventHandlerId != default)
                 {
+                    //This works well on iOS but has issues on Android
                     renderer.DispatchEventAsync(PaintEventHandlerId, null, e);
+
+                    //Putting it inside an InvokeAsync Prevents the error for wrong thread but causes other weird problems on android
+                    //This intermittently causes an abrt with no human readable crash on both iOS and Android
+                    //Adding break points makes everything go strange and crash
+                    //renderer.Dispatcher.InvokeAsync(() =>
+                    //    renderer.DispatchEventAsync(PaintEventHandlerId, null, e)
+                    //);
+
                 }
             };
         }
 
         public ulong PaintEventHandlerId { get; set; }
-
     }
 }

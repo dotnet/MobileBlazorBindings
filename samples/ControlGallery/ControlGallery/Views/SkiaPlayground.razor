@@ -1,0 +1,24 @@
+@page "/skia"
+@inject ShellNavigationManager NavigationManager
+
+<ContentView>
+    <StackLayout>
+        <Button Text="Skia Canvas Paths" OnClick="NavigateToSkiaCanvas"></Button>
+        <Button Text="Skia GL Native Control Events" OnClick="NavigateToSkiaGLNative"></Button>
+        <Button Text="Skia GL Paths MBB Events" OnClick="NavigateToSkiaGLMBBEvents"></Button>
+
+    </StackLayout>
+</ContentView>
+
+@code
+{ 
+    
+    
+    async Task NavigateToSkiaCanvas() => await NavigationManager.NavigateToAsync("/skiacanvas");
+    async Task NavigateToSkiaGLNative() => await NavigationManager.NavigateToAsync("/skiaglnative");
+    async Task NavigateToSkiaGLMBBEvents() => await NavigationManager.NavigateToAsync("/skiaglmbb");
+    
+}
+
+
+

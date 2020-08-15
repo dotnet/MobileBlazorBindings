@@ -1,8 +1,8 @@
 using System;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using Xamarin.Forms;
 using SK = SkiaSharp.Views.Forms;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 {
@@ -37,7 +37,7 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
             {
                 if (PaintEventHandlerId != default)
                 {
-                    renderer.DispatchEventAsync(PaintEventHandlerId,null, e);
+                    renderer.DispatchEventAsync(PaintEventHandlerId, null, e);
                 }
             };
         }
