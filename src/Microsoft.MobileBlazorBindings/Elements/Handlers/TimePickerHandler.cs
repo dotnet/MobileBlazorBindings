@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "ontimechanged",
                 setId: id => TimeChangedEventHandlerId = id,
                 clearId: id => { if (TimeChangedEventHandlerId == id) { TimeChangedEventHandlerId = 0; } });

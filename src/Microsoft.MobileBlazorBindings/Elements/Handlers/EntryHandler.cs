@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "oncompleted",
                 setId: id => CompletedEventHandlerId = id,
                 clearId: id => { if (CompletedEventHandlerId == id) { CompletedEventHandlerId = 0; } });
@@ -21,7 +21,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(CompletedEventHandlerId, null, e));
                 }
             };
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "ontextchanged",
                 setId: id => TextChangedEventHandlerId = id,
                 clearId: id => { if (TextChangedEventHandlerId == id) { TextChangedEventHandlerId = 0; } });

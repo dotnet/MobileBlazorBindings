@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onclick",
                 setId: id => ClickEventHandlerId = id,
                 clearId: id => { if (ClickEventHandlerId == id) { ClickEventHandlerId = 0; } });

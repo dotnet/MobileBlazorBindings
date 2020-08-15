@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onischeckedchanged",
                 setId: id => IsCheckedChangedEventHandlerId = id,
                 clearId: id => { if (IsCheckedChangedEventHandlerId == id) { IsCheckedChangedEventHandlerId = 0; } });

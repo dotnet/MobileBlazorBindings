@@ -5,7 +5,6 @@ BaseShellItem
 BoxView
 Button
 CheckBox
-#ColumnDefinition // Not based on real XF type
 ContentPage
 ContentView
 DatePicker
@@ -15,7 +14,7 @@ FlyoutItem
 #FormattedString // Not used anymore because Label directly contains Span elements
 Frame
 GestureElement
-#Grid // Temporary because we need a way to handle special Grid.Metadata property
+Grid
 #GridCell // Not based on real XF type
 Image
 ImageButton
@@ -30,7 +29,6 @@ MenuItem
 NavigableElement
 Page
 ProgressBar
-#RowDefinition // Not based on real XF type
 ScrollView
 Shell
 ShellContent

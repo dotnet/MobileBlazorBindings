@@ -11,7 +11,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onclick",
                 setId: id => ClickEventHandlerId = id,
                 clearId: id => { if (ClickEventHandlerId == id) { ClickEventHandlerId = 0; } });
@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 }
             };
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onpress",
                 setId: id => PressEventHandlerId = id,
                 clearId: id => { if (PressEventHandlerId == id) { PressEventHandlerId = 0; } });
@@ -35,7 +35,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 }
             };
 
-            RegisterEvent(
+            ConfigureEvent(
                 eventName: "onrelease",
                 setId: id => ReleaseEventHandlerId = id,
                 clearId: id => { if (ReleaseEventHandlerId == id) { ReleaseEventHandlerId = 0; } });

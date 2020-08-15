@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
@@ -22,37 +22,18 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
-            if (attributeEventHandlerId != 0)
-            {
-                ApplyEventHandlerId(attributeName, attributeEventHandlerId);
-            }
-
             switch (attributeName)
             {
                 case nameof(XF.Grid.ColumnSpacing):
-                    GridControl.ColumnSpacing = AttributeHelper.StringToDouble((string)attributeValue);
+                    GridControl.ColumnSpacing = AttributeHelper.StringToDouble((string)attributeValue, 6.00);
                     break;
                 case nameof(XF.Grid.RowSpacing):
-                    GridControl.RowSpacing = AttributeHelper.StringToDouble((string)attributeValue);
+                    GridControl.RowSpacing = AttributeHelper.StringToDouble((string)attributeValue, 6.00);
                     break;
-
-                // TODO: Need a better long-term solution to this because this isn't compatible with generated code
-                case nameof(Grid.ColumnDefinitions):
-                    ApplyColumnDefinitions(attributeValue);
-                    break;
-                case nameof(Grid.RowDefinitions):
-                    ApplyRowDefinitions(attributeValue);
-                    break;
-
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;
             }
         }
-
-        partial void ApplyColumnDefinitions(object attributeValue);
-        partial void ApplyRowDefinitions(object attributeValue);
-
-        partial void ApplyEventHandlerId(string attributeName, ulong attributeEventHandlerId);
     }
 }

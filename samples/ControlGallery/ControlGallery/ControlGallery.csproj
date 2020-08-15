@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
