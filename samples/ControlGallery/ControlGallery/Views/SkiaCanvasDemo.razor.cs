@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.MobileBlazorBindings.SkiaSharp;
+﻿using Microsoft.MobileBlazorBindings.SkiaSharp;
 using SkiaSharp;
 using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using SK = SkiaSharp.Views.Forms;
 
 namespace ControlGallery.Views
@@ -21,7 +18,7 @@ namespace ControlGallery.Views
             CanvasView2?.InvalidateSurface();
         }
 
-        private void PaintSurface2(SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
+        private void PaintSurface2(SK.SKPaintSurfaceEventArgs e)
         {
             var canvas = e.Surface.Canvas;
             canvas.Clear(SKColors.Green);
@@ -68,7 +65,7 @@ namespace ControlGallery.Views
             canvas.DrawPath(path, paint);
         }
 
-        private void PaintSurface(SkiaSharp.Views.Forms.SKPaintSurfaceEventArgs e)
+        private void PaintSurface(SK.SKPaintSurfaceEventArgs e)
         {
             var canvas = e.Surface.Canvas;
             canvas.Clear(SKColors.Crimson);
