@@ -38,7 +38,9 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
             {
                 if (PaintEventHandlerId != default)
                 {
+#pragma warning disable BL0006 // Do not use RenderTree types
                     renderer.DispatchEventAsync(PaintEventHandlerId, null, e);
+#pragma warning restore BL0006 // Do not use RenderTree types
                 }
             };
         }
