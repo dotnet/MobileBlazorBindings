@@ -16,10 +16,11 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp
         }
 
         [Parameter] public EventCallback<SK.SKPaintGLSurfaceEventArgs> OnPaintSurface { get; set; }
+        public new SK.SKGLView NativeControl => ((SKGLViewHandler)ElementHandler).SKGLViewControl;
 
         public void InvalidateSurface()
         {
-            (NativeControl as SK.SKGLView).InvalidateSurface();
+            NativeControl.InvalidateSurface();
         }
 
         protected override void RenderAttributes(AttributesBuilder builder)

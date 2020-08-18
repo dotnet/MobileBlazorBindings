@@ -26,7 +26,7 @@ namespace ControlGallery.Views
             var canvas = e.Surface.Canvas;
             canvas.Clear(SKColors.Green);
 
-            var size = ((SK.SKGLView)CanvasView2.NativeControl).CanvasSize;
+            var size = CanvasView2.NativeControl.CanvasSize;
             var canvasSize = new SKRect(0, 0, size.Width, size.Height);
 
             var paint = new SKPaint
@@ -74,7 +74,7 @@ namespace ControlGallery.Views
         {
             var canvas = e.Surface.Canvas;
             canvas.Clear(SKColors.Crimson);
-            var size = ((SK.SKGLView)CanvasView2.NativeControl).CanvasSize;
+            var size = CanvasView2.NativeControl.CanvasSize;
             var canvasSize = new SKRect(0, 0, size.Width, size.Height);
 
             var path = SKPath.ParseSvgPathData("M 926 878 c -46 -79 -113 -137 -186 -163 c -24 -8 -45 -14 -47 -12 c -2 2 5 24 16 48 c 10 24 21 59 25 77 l 6 33 l -38 -30 c -73 -59 -124 -74 -277 -82 c -88 -4 -156 -12 -183 -22 c -165 -62 -267 -249 -232 -423 c 44 -214 218 -328 453 -296 c 95 14 223 71 272 122 l 30 31 l -45 -25 c -85 -47 -185 -70 -300 -71 c -95 0 -111 3 -166 28 c -114 53 -176 143 -182 264 c -5 97 16 158 79 227 c 66 73 130 101 229 100 c 66 0 83 -4 138 -34 c 105 -56 165 -154 166 -270 c 1 -75 -22 -118 -74 -140 c -35 -15 -98 -1 -120 25 c -11 13 -16 12 -42 -10 c -63 -53 -178 -24 -218 56 c -25 47 -25 82 -1 135 c 28 63 71 84 168 84 c 110 0 116 -5 122 -119 c 6 -94 14 -110 53 -111 c 31 0 48 29 48 83 c -1 177 -194 291 -351 209 c -143 -75 -180 -250 -77 -367 c 59 -67 106 -88 208 -93 c 291 -14 551 199 592 485 c 14 94 2 198 -30 259 l -18 34 l -18 -32 Z");
