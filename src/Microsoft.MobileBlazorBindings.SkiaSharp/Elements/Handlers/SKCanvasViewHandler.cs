@@ -1,7 +1,9 @@
-using System;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using Xamarin.Forms;
+using System;
 using SK = SkiaSharp.Views.Forms;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
@@ -26,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
             }
         }
 
-        void Initialize(NativeComponentRenderer renderer)
+        private void Initialize(NativeComponentRenderer renderer)
         {
             ConfigureEvent(
                 eventName: "onpaintsurface",

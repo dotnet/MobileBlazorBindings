@@ -1,9 +1,11 @@
-using System;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
-using SK = SkiaSharp.Views.Forms;
 using Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers;
-using Microsoft.AspNetCore.Components;
+using SK = SkiaSharp.Views.Forms;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp
 {
