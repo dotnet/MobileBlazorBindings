@@ -1,4 +1,5 @@
 ﻿<Grid Padding="new Thickness(10)" RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
+    <TapGestureRecognizer OnTapped="Details"/>
     <GridCell RowSpan="2">
         <Image Source="new UriImageSource { Uri=new Uri(Animal.ImageUrl) }"
                Aspect="Aspect.AspectFill"
@@ -15,12 +16,6 @@
         <Label Text="@Animal.Location"
                FontAttributes="FontAttributes.Italic"
                VerticalOptions="LayoutOptions.End" />
-    </GridCell>
-    <GridCell RowSpan="2" ColumnSpan="2">
-            <Button Text=" "
-                    BackgroundColor="Color.Transparent"
-                    OnClick="Details"
-                   VerticalOptions="LayoutOptions.End" />
     </GridCell>
 </Grid>
 
