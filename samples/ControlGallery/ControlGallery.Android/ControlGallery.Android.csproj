@@ -55,6 +55,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>2.80.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.968" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
   </ItemGroup>
@@ -90,6 +93,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj">
+      <Project>{c86ce1b4-710f-4d63-b0f2-d4c5b6443d8f}</Project>
+      <Name>Microsoft.MobileBlazorBindings.SkiaSharp</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ControlGallery\ControlGallery.csproj">
       <Project>{5D6F0A6D-9756-445C-B36C-B6F187418969}</Project>
       <Name>ControlGallery</Name>

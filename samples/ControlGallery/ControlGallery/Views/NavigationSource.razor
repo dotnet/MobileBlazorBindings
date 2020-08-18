@@ -14,11 +14,12 @@
             <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
             <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
             <Button Text="Navigate to gesture playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/gestureplayground"))"></Button>
+            <Button Text="Skia Playground" OnClick="NavigateToSkia"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>
 
-@code 
+@code
 {
     async Task NavigateNoParameter() => await NavigationManager.NavigateToAsync("/target");
     async Task NavigateWithName() => await NavigationManager.NavigateToAsync("/target/xamarin");
@@ -30,4 +31,5 @@
     async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
     async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
     async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
+    async Task NavigateToSkia() => await NavigationManager.NavigateToAsync("/skia");
 }
