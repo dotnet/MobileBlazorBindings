@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!--
-      NOTE: This project doesn't currently use any DualScreen features, but this reference is here
-      to make it easier to try out DualScreen features.
-    -->
-    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.DualScreen\Microsoft.MobileBlazorBindings.DualScreen.csproj" />
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
   </ItemGroup>
 </Project>

@@ -20,6 +20,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj" />
-    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
+    <!--
+      NOTE: This project doesn't currently use any DualScreen features, but this reference is here
+      to make it easier to try out DualScreen features.
+    -->
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.DualScreen\Microsoft.MobileBlazorBindings.DualScreen.csproj" />
   </ItemGroup>
 </Project>
