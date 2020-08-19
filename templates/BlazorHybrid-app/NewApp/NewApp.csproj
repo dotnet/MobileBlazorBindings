@@ -5,7 +5,7 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RazorLangVersion>3.0</RazorLangVersion>
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
-    <WwwRootResourcePath>WebUI\wwwroot</WwwRootResourcePath>
+    <WwwRootResourcePath>wwwroot</WwwRootResourcePath>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
@@ -15,11 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="$(WwwRootResourcePath)\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.5" />
     <PackageReference Include="Microsoft.MobileBlazorBindings" Version="MobileBlazorBindingsVersion" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
     <PackageReference Include="Xamarin.Essentials" Version="XamarinEssentialsVersion" />

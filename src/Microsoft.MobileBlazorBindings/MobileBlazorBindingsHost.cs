@@ -12,12 +12,13 @@ namespace Microsoft.MobileBlazorBindings
         public static IHostBuilder CreateDefaultBuilder()
         {
             // Inspired by Microsoft.Extensions.Hosting.Host, which can be seen here:
-            // https://github.com/dotnet/extensions/blob/master/src/Hosting/Hosting/src/Host.cs
+            // https://github.com/dotnet/runtime/blob/master/src/libraries/Microsoft.Extensions.Hosting/src/Host.cs
             // But slightly modified to work on all of Android, iOS, and UWP.
 
             var builder = new HostBuilder();
 
             builder.UseContentRoot(Directory.GetCurrentDirectory());
+            builder.UseWebRoot("wwwroot");
 
             builder.ConfigureLogging((hostingContext, logging) =>
             {

@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;

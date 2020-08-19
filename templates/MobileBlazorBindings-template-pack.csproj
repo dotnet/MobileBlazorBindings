@@ -45,15 +45,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="
-             BlazorHybrid-app\**\*;
-             MobileBlazorBindings-app\**\*;
-             "
-             Exclude="
-             **\bin\**;
-             **\obj\**;
-             **\template.in.json;
-             **\.gitignore" />
+    <Content Include="&#xD;&#xA;             BlazorHybrid-app\**\*;&#xD;&#xA;             MobileBlazorBindings-app\**\*;&#xD;&#xA;             " Exclude="&#xD;&#xA;             **\bin\**;&#xD;&#xA;             **\obj\**;&#xD;&#xA;             **\template.in.json;&#xD;&#xA;             **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 
@@ -73,6 +65,16 @@
     <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.*.nupkg">
       <Authenticode>NuGet</Authenticode>
     </FilesToSign>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="BlazorHybrid-app\NewApp.Android\wwwroot\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="BlazorHybrid-app\NewApp.iOS\Resources\wwwroot\index.html" />
+    <None Remove="BlazorHybrid-app\NewApp.macOS\Resources\wwwroot\index.html" />
+    <None Remove="BlazorHybrid-app\NewApp.Windows\wwwroot\index.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,5 +99,19 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="BlazorHybrid-app\NewApp.Windows\wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BlazorHybrid-app\NewApp.Android\wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

@@ -10,6 +10,6 @@
              Title="Messages"
              Padding="1">
 
-    <b:BlazorWebView x:TypeArguments="app:MessageList" ContentRoot="WebUI/wwwroot" />
+    <b:BlazorWebView x:TypeArguments="app:MessageList" x:Name="MessageListWebView" />
 
 </ContentPage>

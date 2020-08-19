@@ -12,8 +12,6 @@ namespace NewApp
     {
         public App()
         {
-            BlazorHybridHost.AddResourceAssembly(GetType().Assembly, contentRoot: "WebUI/wwwroot");
-
             var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
@@ -22,6 +20,29 @@ namespace NewApp
 
                     // Register app-specific services
                     services.AddSingleton<CounterState>();
+                })
+                .UseWebRoot("wwwroot")
+                .UseStaticFiles()
+                .Build();
+
+            MainPage = new ContentPage { Title = "My Application" };
+            host.AddComponent<Main>(parent: MainPage);
+        }
+
+        public App(IFileProvider fileProvider)
+        {
+            var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
+                .ConfigureServices((hostContext, services) =>
+                {
+                    // Adds web-specific services such as NavigationManager
+                    services.AddBlazorHybrid();
+
+                    // Register app-specific services
+                    services.AddSingleton<CounterState>();
+                })
+                .UseStaticFiles(new StaticFileOptions()
+                {
+                    FileProvider = fileProvider,
                 })
                 .Build();
 

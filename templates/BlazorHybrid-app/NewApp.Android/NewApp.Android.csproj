@@ -93,6 +93,11 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NewApp\NewApp.csproj">
       <Project>{99E19497-29A6-4B77-B773-BEC55F9B55DC}</Project>
       <Name>NewApp</Name>

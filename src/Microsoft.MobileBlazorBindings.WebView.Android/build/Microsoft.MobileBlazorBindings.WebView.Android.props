@@ -1,0 +1,16 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <UsingMicrosoftNETSdk>true</UsingMicrosoftNETSdk>
+    <IsCrossTargetingBuild>false</IsCrossTargetingBuild>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <StaticWebAssetsEnabled>true</StaticWebAssetsEnabled>
+    <EnableDefaultRazorTargetAssemblyInfoAttributes>false</EnableDefaultRazorTargetAssemblyInfoAttributes>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Mono.Android.Export" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
+  </ItemGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Razor"/>
+</Project>
