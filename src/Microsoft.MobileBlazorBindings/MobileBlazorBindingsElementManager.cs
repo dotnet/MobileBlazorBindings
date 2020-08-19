@@ -19,13 +19,13 @@ namespace Microsoft.MobileBlazorBindings
             IXamarinFormsElementHandler childHandler,
             int physicalSiblingIndex)
         {
-            if (childHandler is INonChildContainerElement childNonContainer)
+            if (childHandler is INonPhysicalChild nonPhysicalChild)
             {
                 // If the child is a non-child container then we shouldn't try to add it to a parent.
                 // This is used in cases such as ModalContainer, which exists for the purposes of Blazor
                 // markup and is not represented in the Xamarin.Forms control hierarchy.
 
-                childNonContainer.SetParent(parentHandler.ElementControl);
+                nonPhysicalChild.SetParent(parentHandler.ElementControl);
                 return;
             }
 
