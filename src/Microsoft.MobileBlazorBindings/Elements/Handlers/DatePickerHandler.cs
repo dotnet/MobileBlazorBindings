@@ -18,7 +18,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 if (DateChangedEventHandlerId != default)
                 {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(DateChangedEventHandlerId, null, new ChangeEventArgs { Value = e.NewDate }));
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(DateChangedEventHandlerId, null, new ChangeEventArgs { Value = DatePickerControl.Date }));
                 }
             };
         }

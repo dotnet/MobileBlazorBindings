@@ -42,7 +42,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 if (ValueChangedEventHandlerId != default)
                 {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ValueChangedEventHandlerId, null, new ChangeEventArgs { Value = e.NewValue }));
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(ValueChangedEventHandlerId, null, new ChangeEventArgs { Value = SliderControl.Value }));
                 }
             };
         }

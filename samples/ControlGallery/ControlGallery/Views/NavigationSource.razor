@@ -3,6 +3,7 @@
 <ContentPage>
     <ScrollView>
         <StackLayout>
+            <Button Text="Common controls" OnClick="@(async () => await NavigationManager.NavigateToAsync("/commoncontrols"))"></Button>
             <Button Text="Navigate with no parameters" OnClick="NavigateNoParameter"></Button>
             <Button Text="Navigate with name string" OnClick="NavigateWithName"></Button>
             <Button Text="Navigate with name string and version int" OnClick="NavigateWithNameAndVersion"></Button>
