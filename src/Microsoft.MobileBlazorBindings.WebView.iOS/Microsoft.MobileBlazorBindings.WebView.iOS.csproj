@@ -43,5 +43,5 @@
     These targets must be imported last so that they override the SDK-provided targets.
     These override the Mac build agent command because they are not needed on CI.
   -->
-  <Import Project="..\..\CI\AvoidMacBuildWarning.targets" Condition=" '$(SkipMacBuild)' == 'true' " />
+  <Import Project="..\..\CI\AvoidMacBuildWarning.targets" />
 </Project>

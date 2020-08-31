@@ -1,4 +1,10 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras">
+﻿<Project>
+  <!--
+    The SDK is imported manually so that certain targets can be overridden (see bottom of file).
+    Otherwise we could use Project Sdk="MSBuild.Sdk.Extras"
+  -->
+  <Import Project="Sdk.props" Sdk="MSBuild.Sdk.Extras" />
+
   <PropertyGroup>
     <TargetFrameworks>xamarin.mac20</TargetFrameworks>
   </PropertyGroup>
@@ -30,4 +36,12 @@
       <Authenticode>Microsoft400</Authenticode>
     </FilesToSign>
   </ItemGroup>
+
+  <!-- See comment at top of file about manually importing SDK -->
+  <Import Project="Sdk.targets" Sdk="MSBuild.Sdk.Extras" />
+  <!--
+    These targets must be imported last so that they override the SDK-provided targets.
+    These override the Mac build agent command because they are not needed on CI.
+  -->
+  <Import Project="..\..\CI\AvoidMacBuildWarning.targets" />
 </Project>

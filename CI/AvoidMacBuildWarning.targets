@@ -14,8 +14,10 @@
   </Target>
   <Target Name="CopyFilesToMacOutputDirectory">
   </Target>
-	<Target Name="_VerifyBuildSignature">
+  <Target Name="_VerifyBuildSignature">
   </Target>
-	<Target Name="_VerifyXcodeVersion">
+  <Target Name="_VerifyXcodeVersion">
+  </Target>
+  <Target Name="_GetMinimumOSVersion">
   </Target>
 </Project>

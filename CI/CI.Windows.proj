@@ -1,8 +1,4 @@
 <Project>
-  <PropertyGroup>
-    <AdditionalProperties>SkipMacBuild=true</AdditionalProperties>
-  </PropertyGroup>
-
   <Target Name="Restore">
     <MSBuild Projects="@(ProjectToBuild)" Targets="Restore" Properties="$(AdditionalProperties)" />
   </Target>
