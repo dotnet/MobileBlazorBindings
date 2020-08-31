@@ -28,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ShellControl.FlyoutBackgroundColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(XF.Shell.FlyoutBackgroundImage):
-                    ShellControl.FlyoutBackgroundImage = AttributeHelper.StringToImageSource(attributeValue);
+                    ShellControl.FlyoutBackgroundImage = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Shell.FlyoutBackgroundImageAspect):
                     ShellControl.FlyoutBackgroundImageAspect = (XF.Aspect)AttributeHelper.GetInt(attributeValue);
@@ -40,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ShellControl.FlyoutHeaderBehavior = (XF.FlyoutHeaderBehavior)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(XF.Shell.FlyoutIcon):
-                    ShellControl.FlyoutIcon = AttributeHelper.StringToImageSource(attributeValue);
+                    ShellControl.FlyoutIcon = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Shell.FlyoutIsPresented):
                     ShellControl.FlyoutIsPresented = AttributeHelper.GetBool(attributeValue);

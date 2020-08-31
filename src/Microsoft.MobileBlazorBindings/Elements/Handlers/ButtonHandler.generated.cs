@@ -46,7 +46,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ButtonControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
                 case nameof(XF.Button.ImageSource):
-                    ButtonControl.ImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    ButtonControl.ImageSource = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Button.Padding):
                     ButtonControl.Padding = AttributeHelper.StringToThickness(attributeValue);

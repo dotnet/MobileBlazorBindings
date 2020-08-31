@@ -113,7 +113,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (ImageSource != null)
             {
-                builder.AddAttribute(nameof(ImageSource), AttributeHelper.ImageSourceToString(ImageSource));
+                builder.AddAttribute(nameof(ImageSource), AttributeHelper.ImageSourceToDelegate(ImageSource));
             }
             if (Padding != null)
             {

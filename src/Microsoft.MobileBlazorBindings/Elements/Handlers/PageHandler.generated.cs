@@ -25,10 +25,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.Page.BackgroundImageSource):
-                    PageControl.BackgroundImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    PageControl.BackgroundImageSource = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Page.IconImageSource):
-                    PageControl.IconImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    PageControl.IconImageSource = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Page.IsBusy):
                     PageControl.IsBusy = AttributeHelper.GetBool(attributeValue);

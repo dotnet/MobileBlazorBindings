@@ -56,7 +56,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (FlyoutBackgroundImage != null)
             {
-                builder.AddAttribute(nameof(FlyoutBackgroundImage), AttributeHelper.ImageSourceToString(FlyoutBackgroundImage));
+                builder.AddAttribute(nameof(FlyoutBackgroundImage), AttributeHelper.ImageSourceToDelegate(FlyoutBackgroundImage));
             }
             if (FlyoutBackgroundImageAspect != null)
             {
@@ -72,7 +72,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (FlyoutIcon != null)
             {
-                builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToString(FlyoutIcon));
+                builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToDelegate(FlyoutIcon));
             }
             if (FlyoutIsPresented != null)
             {

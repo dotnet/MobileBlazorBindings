@@ -34,7 +34,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ImageControl.IsOpaque = AttributeHelper.GetBool(attributeValue);
                     break;
                 case nameof(XF.Image.Source):
-                    ImageControl.Source = AttributeHelper.StringToImageSource(attributeValue);
+                    ImageControl.Source = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

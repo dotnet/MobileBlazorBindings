@@ -40,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     SliderControl.ThumbColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(XF.Slider.ThumbImageSource):
-                    SliderControl.ThumbImageSource = AttributeHelper.StringToImageSource(attributeValue);
+                    SliderControl.ThumbImageSource = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.Slider.Value):
                     SliderControl.Value = AttributeHelper.StringToDouble((string)attributeValue);

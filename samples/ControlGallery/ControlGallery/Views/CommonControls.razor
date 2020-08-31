@@ -8,6 +8,11 @@
             <Span>Slider is @_sliderValue</Span>
         </Label>
 
+        <StackLayout Orientation="StackOrientation.Horizontal">
+            <Button Text="Favorite?" OnClick="ToggleFavorite" />
+
+            <Image Source="@(ImageSource.FromResource(isFavorite ? "ControlGallery.images.favorite.png" : "ControlGallery.images.not-favorite.png"))" />
+        </StackLayout>
     </StackLayout>
 </ContentView>
 
@@ -26,8 +31,14 @@
             if (_sliderValue != value)
             {
                 _sliderValue = value;
-                //StateHasChanged();
             }
         }
+    }
+
+    bool isFavorite;
+
+    void ToggleFavorite()
+    {
+        isFavorite = !isFavorite;
     }
 }

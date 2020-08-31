@@ -75,11 +75,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (FlyoutIcon != null)
             {
-                builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToString(FlyoutIcon));
+                builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ImageSourceToDelegate(FlyoutIcon));
             }
             if (Icon != null)
             {
-                builder.AddAttribute(nameof(Icon), AttributeHelper.ImageSourceToString(Icon));
+                builder.AddAttribute(nameof(Icon), AttributeHelper.ImageSourceToDelegate(Icon));
             }
             if (IsEnabled != null)
             {

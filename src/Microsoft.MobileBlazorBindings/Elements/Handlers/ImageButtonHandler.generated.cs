@@ -43,7 +43,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ImageButtonControl.Padding = AttributeHelper.StringToThickness(attributeValue);
                     break;
                 case nameof(XF.ImageButton.Source):
-                    ImageButtonControl.Source = AttributeHelper.StringToImageSource(attributeValue);
+                    ImageButtonControl.Source = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

@@ -48,7 +48,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (IconImageSource != null)
             {
-                builder.AddAttribute(nameof(IconImageSource), AttributeHelper.ImageSourceToString(IconImageSource));
+                builder.AddAttribute(nameof(IconImageSource), AttributeHelper.ImageSourceToDelegate(IconImageSource));
             }
             if (IsDestructive != null)
             {

@@ -43,11 +43,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (BackgroundImageSource != null)
             {
-                builder.AddAttribute(nameof(BackgroundImageSource), AttributeHelper.ImageSourceToString(BackgroundImageSource));
+                builder.AddAttribute(nameof(BackgroundImageSource), AttributeHelper.ImageSourceToDelegate(BackgroundImageSource));
             }
             if (IconImageSource != null)
             {
-                builder.AddAttribute(nameof(IconImageSource), AttributeHelper.ImageSourceToString(IconImageSource));
+                builder.AddAttribute(nameof(IconImageSource), AttributeHelper.ImageSourceToDelegate(IconImageSource));
             }
             if (IsBusy != null)
             {

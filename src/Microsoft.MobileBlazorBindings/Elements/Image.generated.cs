@@ -60,7 +60,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (Source != null)
             {
-                builder.AddAttribute(nameof(Source), AttributeHelper.ImageSourceToString(Source));
+                builder.AddAttribute(nameof(Source), AttributeHelper.ImageSourceToDelegate(Source));
             }
 
             RenderAdditionalAttributes(builder);

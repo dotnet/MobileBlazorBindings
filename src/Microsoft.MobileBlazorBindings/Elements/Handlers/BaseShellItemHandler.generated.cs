@@ -25,10 +25,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.BaseShellItem.FlyoutIcon):
-                    BaseShellItemControl.FlyoutIcon = AttributeHelper.StringToImageSource(attributeValue);
+                    BaseShellItemControl.FlyoutIcon = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.BaseShellItem.Icon):
-                    BaseShellItemControl.Icon = AttributeHelper.StringToImageSource(attributeValue);
+                    BaseShellItemControl.Icon = AttributeHelper.DelegateToImageSource(attributeValue);
                     break;
                 case nameof(XF.BaseShellItem.IsEnabled):
                     BaseShellItemControl.IsEnabled = AttributeHelper.GetBool(attributeValue, true);
