@@ -9,15 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellHandler : PageHandler
     {
-        private readonly ShellContentMarkerItem _dummyShellContent = new ShellContentMarkerItem();
         private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
 
         partial void Initialize(NativeComponentRenderer renderer)
         {
-            // Add one item for Shell to load correctly. It will later be removed when the first real
-            // item is added by the app.
-            ShellControl.Items.Add(_dummyShellContent);
-
             // Add a dummy FlyoutHeader because it cannot be set dynamically later. When app code sets
             // its own FlyoutHeader, it will be set as the Content of this ContentView.
             // See https://github.com/xamarin/Xamarin.Forms/issues/6161 ([Bug] Changing the Shell Flyout Header after it's already rendered doesn't work)
@@ -48,12 +43,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        private bool ClearDummyChild()
-        {
-            // Remove the dummy ShellContent if it's still there. This won't throw even if the item is already removed.
-            return ShellControl.Items.Remove(_dummyShellContent);
-        }
-
         public ulong NavigatedEventHandlerId { get; set; }
         public ulong NavigatingEventHandlerId { get; set; }
 
@@ -64,7 +53,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            var removedDummyChild = ClearDummyChild();
             switch (child)
             {
                 case XF.TemplatedPage childAsTemplatedPage:
@@ -85,12 +73,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 default:
                     throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').");
             }
-            // TODO: If this was the first item added, mark it as the current item
-            // But this code seems to cause a NullRef...
-            //if (removedDummyChild)
-            //{
-            //    ShellControl.CurrentItem = parentAsShell.Items[0];
-            //}       
         }
     }
 }
