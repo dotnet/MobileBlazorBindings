@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -26,6 +27,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private readonly IPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
+        private readonly IBlazorErrorHandler _blazorErrorHandler;
         private readonly ConcurrentQueue<UnacknowledgedRenderBatch> _unacknowledgedRenderBatches = new ConcurrentQueue<UnacknowledgedRenderBatch>();
         private bool _disposing = false;
         private long _nextRenderId = 1;
@@ -39,12 +41,13 @@ namespace Microsoft.MobileBlazorBindings.WebView
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
         }
 
-        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher)
+        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler)
             : base(serviceProvider, loggerFactory)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             _jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
+            _blazorErrorHandler = blazorErrorHandler;
 
             var rootComponent = new RenderFragmentComponent();
             var rootComponentId = AssignRootComponentId(rootComponent);
@@ -123,13 +126,20 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
         protected override void HandleException(Exception exception)
         {
-            if (Dispatcher.CheckAccess())
+            if (_blazorErrorHandler != null)
             {
-                Dispatcher.InvokeAsync(() => throw exception);
+                _blazorErrorHandler.HandleException(exception);
             }
             else
             {
-                throw exception;
+                if (Dispatcher.CheckAccess())
+                {
+                    Dispatcher.InvokeAsync(() => throw exception);
+                }
+                else
+                {
+                    throw exception;
+                }
             }
         }
 

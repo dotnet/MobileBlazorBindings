@@ -173,7 +173,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             var loggerFactory = services.GetRequiredService<ILoggerFactory>();
             _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
             _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
-            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher);
+            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
@@ -288,6 +288,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                     : "app";
             }
         }
+
+        public IBlazorErrorHandler ErrorHandler { get; set; }
 
         /// <summary>
         /// Gets the content type for the url.

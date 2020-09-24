@@ -57,23 +57,33 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// <returns></returns>
         public async Task<IComponent> AddComponent(Type componentType, IElementHandler parent, Dictionary<string, string> parameters = null)
         {
-            return await Dispatcher.InvokeAsync(async () =>
+            try
             {
-                var component = InstantiateComponent(componentType);
-                var componentId = AssignRootComponentId(component);
-
-                var rootAdapter = new NativeComponentAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
+                return await Dispatcher.InvokeAsync(async () =>
                 {
-                    Name = $"RootAdapter attached to {parent.GetType().FullName}",
-                };
+                    var component = InstantiateComponent(componentType);
+                    var componentId = AssignRootComponentId(component);
 
-                _componentIdToAdapter[componentId] = rootAdapter;
+                    var rootAdapter = new NativeComponentAdapter(this, closestPhysicalParent: parent, knownTargetElement: parent)
+                    {
+                        Name = $"RootAdapter attached to {parent.GetType().FullName}",
+                    };
 
-                SetNavigationParameters(component, parameters);
+                    _componentIdToAdapter[componentId] = rootAdapter;
 
-                await RenderRootComponentAsync(componentId).ConfigureAwait(false);
-                return component;
-            }).ConfigureAwait(false);
+                    SetNavigationParameters(component, parameters);
+
+                    await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+                    return component;
+                }).ConfigureAwait(false);
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+            {
+                HandleException(ex);
+                return null;
+            }
         }
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)

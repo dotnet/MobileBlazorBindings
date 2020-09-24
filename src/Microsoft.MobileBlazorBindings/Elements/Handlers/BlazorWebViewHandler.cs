@@ -11,6 +11,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public BlazorWebViewHandler(NativeComponentRenderer renderer, MobileBlazorBindingsBlazorWebView control)
             : base(renderer, control)
         {
+            control.ErrorHandler = new DefaulBlazorErrorHandler();
         }
     }
 }
