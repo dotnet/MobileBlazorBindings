@@ -13,13 +13,11 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 
     <Title>iOS WebView component for hosting Blazor components in hybrid (native+web) applications.</Title>
-    <Description>Xamarin.Forms Android WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <Description>Xamarin.Forms iOS WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" />
-
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>

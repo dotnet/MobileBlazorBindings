@@ -7,7 +7,7 @@
     <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
 
     <Title>macOS WebView component for hosting Blazor components in hybrid (native+web) applications.</Title>
-    <Description>Xamarin.Forms Android WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <Description>Xamarin.Forms macOS WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
   </PropertyGroup>
 
