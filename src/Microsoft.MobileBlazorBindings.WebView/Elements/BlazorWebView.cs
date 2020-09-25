@@ -137,7 +137,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                                 "));
                         }
                     }
-                    else if (BlazorHybridHost.TryGetEmbeddedResourceFile(uri.AbsolutePath.Substring(1), out var fileStream))
+                    else if (BlazorHybridHost.TryGetEmbeddedResourceFile(GetResourceFilenameFromUri(uri), out var fileStream))
                     {
                         contentType = GetContentType(uri.AbsolutePath.Substring(1));
                         return fileStream;
@@ -157,6 +157,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
             _ipc = new IPC(_webView);
             _jsRuntime = new BlazorHybridJSRuntime(_ipc);
+        }
+
+        private string GetResourceFilenameFromUri(Uri uri)
+        {
+            return Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
