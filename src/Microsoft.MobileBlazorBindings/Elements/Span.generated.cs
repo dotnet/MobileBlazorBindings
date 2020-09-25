@@ -57,6 +57,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the <see cref="T:Xamarin.Forms.TextDecorations" /> applied to this span.
         /// </summary>
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
+        [Parameter] public XF.TextTransform? TextTransform { get; set; }
 
         public new XF.Span NativeControl => ((SpanHandler)ElementHandler).SpanControl;
 
@@ -103,6 +104,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextDecorations != null)
             {
                 builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
+            }
+            if (TextTransform != null)
+            {
+                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
 
             RenderAdditionalAttributes(builder);

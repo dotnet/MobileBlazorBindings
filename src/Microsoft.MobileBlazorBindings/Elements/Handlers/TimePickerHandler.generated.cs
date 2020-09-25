@@ -42,6 +42,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.TimePicker.TextColor):
                     TimePickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
+                case nameof(XF.TimePicker.TextTransform):
+                    TimePickerControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                    break;
                 case nameof(XF.TimePicker.Time):
                     TimePickerControl.Time = AttributeHelper.StringToTimeSpan(attributeValue);
                     break;

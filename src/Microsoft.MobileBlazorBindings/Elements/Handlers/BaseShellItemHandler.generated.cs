@@ -36,6 +36,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.BaseShellItem.IsTabStop):
                     BaseShellItemControl.IsTabStop = AttributeHelper.GetBool(attributeValue, true);
                     break;
+                case nameof(XF.BaseShellItem.IsVisible):
+                    BaseShellItemControl.IsVisible = AttributeHelper.GetBool(attributeValue, true);
+                    break;
                 case nameof(XF.BaseShellItem.Route):
                     BaseShellItemControl.Route = (string)attributeValue;
                     break;

@@ -176,6 +176,7 @@ namespace {Settings.RootNamespace}
 
         private static readonly List<Type> DisallowedComponentPropertyTypes = new List<Type>
         {
+            typeof(XF.Brush),
             typeof(XF.Button.ButtonContentLayout), // TODO: This is temporary; should be possible to add support later
             typeof(XF.ColumnDefinitionCollection),
             typeof(XF.ControlTemplate),

@@ -71,6 +71,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the <see cref="T:Xamarin.Forms.TextDecorations" /> applied to <see cref="P:Xamarin.Forms.Label.Text" />.
         /// </summary>
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
+        [Parameter] public XF.TextTransform? TextTransform { get; set; }
         [Parameter] public XF.TextType? TextType { get; set; }
         /// <summary>
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
@@ -130,6 +131,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextDecorations != null)
             {
                 builder.AddAttribute(nameof(TextDecorations), (int)TextDecorations.Value);
+            }
+            if (TextTransform != null)
+            {
+                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
             if (TextType != null)
             {

@@ -54,6 +54,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Span.TextDecorations):
                     SpanControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.Span.TextTransform):
+                    SpanControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

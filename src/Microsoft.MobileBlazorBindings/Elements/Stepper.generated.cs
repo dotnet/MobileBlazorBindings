@@ -38,7 +38,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// A double.
         /// </value>
         [Parameter] public double? Minimum { get; set; }
-        [Parameter] public int? StepperPosition { get; set; }
         /// <summary>
         /// Gets or sets the current value. This is a bindable property.
         /// </summary>
@@ -64,10 +63,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (Minimum != null)
             {
                 builder.AddAttribute(nameof(Minimum), AttributeHelper.DoubleToString(Minimum.Value));
-            }
-            if (StepperPosition != null)
-            {
-                builder.AddAttribute(nameof(StepperPosition), StepperPosition.Value);
             }
             if (Value != null)
             {

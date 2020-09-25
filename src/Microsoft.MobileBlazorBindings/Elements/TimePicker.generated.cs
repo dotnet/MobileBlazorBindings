@@ -45,6 +45,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the text color.
         /// </summary>
         [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public XF.TextTransform? TextTransform { get; set; }
         /// <summary>
         /// Gets or sets the displayed time. This is a bindable property.
         /// </summary>
@@ -82,6 +83,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+            }
+            if (TextTransform != null)
+            {
+                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
             if (Time != null)
             {

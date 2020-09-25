@@ -45,6 +45,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Default value is <see langword="true" />; when <see langword="false" />, the FlyoutItem is ignored by the tab-navigation infrastructure, irrespective if a TabIndex is set.
         /// </value>
         [Parameter] public bool? IsTabStop { get; set; }
+        [Parameter] public bool? IsVisible { get; set; }
         /// <summary>
         /// The string used to address the item.
         /// </summary>
@@ -88,6 +89,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (IsTabStop != null)
             {
                 builder.AddAttribute(nameof(IsTabStop), IsTabStop.Value);
+            }
+            if (IsVisible != null)
+            {
+                builder.AddAttribute(nameof(IsVisible), IsVisible.Value);
             }
             if (Route != null)
             {

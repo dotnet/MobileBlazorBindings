@@ -51,6 +51,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.DatePicker.TextColor):
                     DatePickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
+                case nameof(XF.DatePicker.TextTransform):
+                    DatePickerControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

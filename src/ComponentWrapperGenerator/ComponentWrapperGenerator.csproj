@@ -20,12 +20,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.7.0.968">
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.7.0.968">
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.8.0.1451">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>

@@ -48,6 +48,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.InputView.TextColor):
                     InputViewControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
+                case nameof(XF.InputView.TextTransform):
+                    InputViewControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

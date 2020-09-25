@@ -66,6 +66,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the text color for the date picker.
         /// </summary>
         [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public XF.TextTransform? TextTransform { get; set; }
 
         public new XF.DatePicker NativeControl => ((DatePickerHandler)ElementHandler).DatePickerControl;
 
@@ -108,6 +109,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+            }
+            if (TextTransform != null)
+            {
+                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
 
             RenderAdditionalAttributes(builder);

@@ -60,6 +60,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Label.TextDecorations):
                     LabelControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.Label.TextTransform):
+                    LabelControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                    break;
                 case nameof(XF.Label.TextType):
                     LabelControl.TextType = (XF.TextType)AttributeHelper.GetInt(attributeValue);
                     break;
