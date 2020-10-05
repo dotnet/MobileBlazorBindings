@@ -1,24 +1,20 @@
-﻿@inject ShellNavigationManager NavigationManager
+﻿@page "/navigation"
+@inject ShellNavigationManager NavigationManager
 
-<ContentPage>
-    <ScrollView>
-        <StackLayout>
-            <Button Text="Common controls" OnClick="@(async () => await NavigationManager.NavigateToAsync("/commoncontrols"))"></Button>
-            <Button Text="Navigate with no parameters" OnClick="NavigateNoParameter"></Button>
-            <Button Text="Navigate with name string" OnClick="NavigateWithName"></Button>
-            <Button Text="Navigate with name string and version int" OnClick="NavigateWithNameAndVersion"></Button>
-            <Button Text="Navigate with name, version, date" OnClick="NavigateWithNameVersionDate"></Button>
-            <Button Text="Navigate with Long" OnClick="NavigateWithLong"></Button>
-            <Button Text="Navigate with double" OnClick="NavigateWithDouble"></Button>
-            <Button Text="Navigate with float" OnClick="NavigateWithFloat"></Button>
-            <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
-            <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
-            <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
-            <Button Text="Navigate to gesture playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/gestureplayground"))"></Button>
-            <Button Text="Skia Playground" OnClick="NavigateToSkia"></Button>
-        </StackLayout>
-    </ScrollView>
-</ContentPage>
+<ScrollView>
+    <StackLayout>
+        <Button Text="Navigate with no parameters" OnClick="NavigateNoParameter"></Button>
+        <Button Text="Navigate with name string" OnClick="NavigateWithName"></Button>
+        <Button Text="Navigate with name string and version int" OnClick="NavigateWithNameAndVersion"></Button>
+        <Button Text="Navigate with name, version, date" OnClick="NavigateWithNameVersionDate"></Button>
+        <Button Text="Navigate with Long" OnClick="NavigateWithLong"></Button>
+        <Button Text="Navigate with double" OnClick="NavigateWithDouble"></Button>
+        <Button Text="Navigate with float" OnClick="NavigateWithFloat"></Button>
+        <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
+        <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
+        <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
+    </StackLayout>
+</ScrollView>
 
 @code
 {
@@ -32,5 +28,4 @@
     async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
     async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
     async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
-    async Task NavigateToSkia() => await NavigationManager.NavigateToAsync("/skia");
 }
