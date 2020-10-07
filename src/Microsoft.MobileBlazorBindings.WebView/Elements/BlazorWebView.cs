@@ -171,14 +171,15 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _attachInteropTask ??= AttachInteropAsync();
             var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
 
-            var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
-            _serviceScope = services.CreateScope();
-
+            var outerServices = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
+            _serviceScope = outerServices.CreateScope();
             var scopeServiceProvider = _serviceScope.ServiceProvider;
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
-            _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
+            var perWebViewServices = new DelegatingServiceProviderWithJsRuntime(scopeServiceProvider, _jsRuntime);
+
+            var loggerFactory = perWebViewServices.GetRequiredService<ILoggerFactory>();
+            _navigationManager = (BlazorHybridNavigationManager)perWebViewServices.GetRequiredService<NavigationManager>();
             _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
-            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler);
+            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, perWebViewServices, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
@@ -344,6 +345,33 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             {
                 BaseUri = baseUri;
                 InitialUri = initialUri;
+            }
+        }
+
+        /// <summary>
+        /// This is used to ensure that each <see cref="BlazorWebView{TComponent}"/> gets its own <see cref="IJSRuntime"/> that is
+        /// specific to the IPC channel used to communicate to its content, while delegating all other <see cref="IServiceProvider"/>
+        /// calls to the "outer" service provider, which contains various app-wide and app-specific services as defined by both
+        /// the system and the app developer.
+        /// </summary>
+        private sealed class DelegatingServiceProviderWithJsRuntime : IServiceProvider
+        {
+            public DelegatingServiceProviderWithJsRuntime(IServiceProvider originalServiceProvider, IJSRuntime jsRuntime)
+            {
+                OriginalServiceProvider = originalServiceProvider ?? throw new ArgumentNullException(nameof(originalServiceProvider));
+                JSRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
+            }
+
+            public IServiceProvider OriginalServiceProvider { get; }
+            public IJSRuntime JSRuntime { get; }
+
+            public object GetService(Type serviceType)
+            {
+                if (serviceType == typeof(IJSRuntime))
+                {
+                    return JSRuntime;
+                }
+                return OriginalServiceProvider.GetService(serviceType);
             }
         }
     }
