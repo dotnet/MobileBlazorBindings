@@ -167,9 +167,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
         public async Task InitAsync()
         {
-            var outerServices = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
+            var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
+            _serviceScope = services.CreateScope();
 
-            _serviceScope = outerServices.CreateScope();
             var scopeServiceProvider = _serviceScope.ServiceProvider;
 
             var webViewJSRuntime = (BlazorHybridJSRuntime)scopeServiceProvider.GetRequiredService<IJSRuntime>();
