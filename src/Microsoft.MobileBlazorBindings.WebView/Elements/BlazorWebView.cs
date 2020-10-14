@@ -27,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private readonly Dispatcher _dispatcher;
         private readonly WebViewExtended _webView;
         private readonly IPC _ipc;
-        private readonly JSRuntime _jsRuntime;
+        private JSRuntime _jsRuntime;
         private readonly bool _initOnParentSet;
         private static readonly RenderFragment EmptyRenderFragment = builder => { };
         private Task<InteropHandshakeResult> _attachInteropTask;
@@ -156,7 +156,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             });
 
             _ipc = new IPC(_webView);
-            _jsRuntime = new BlazorHybridJSRuntime(_ipc);
         }
 
         private string GetResourceFilenameFromUri(Uri uri)
@@ -168,14 +167,19 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
         public async Task InitAsync()
         {
-            _attachInteropTask ??= AttachInteropAsync();
-            var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
-
             var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
 
             var scopeServiceProvider = _serviceScope.ServiceProvider;
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            var webViewJSRuntime = (BlazorHybridJSRuntime)scopeServiceProvider.GetRequiredService<IJSRuntime>();
+            webViewJSRuntime.AttachToIpcChannel(_ipc);
+            _jsRuntime = webViewJSRuntime;
+
+            _attachInteropTask ??= AttachInteropAsync();
+            var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
+
+            var loggerFactory = scopeServiceProvider.GetRequiredService<ILoggerFactory>();
             _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
             _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
             _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler);
