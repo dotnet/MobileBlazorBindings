@@ -3,6 +3,8 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
+using Microsoft.MobileBlazorBindings.WebView;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -12,6 +14,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<NavigationManager, BlazorHybridNavigationManager>();
             services.AddScoped<INavigationInterception, BlazorHybridNavigationInterception>();
+
+            services.AddScoped<IJSRuntime, BlazorHybridJSRuntime>();
         }
     }
 }
