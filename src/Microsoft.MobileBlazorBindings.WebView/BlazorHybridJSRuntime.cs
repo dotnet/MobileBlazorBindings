@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
+#pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is instantiated generically
     internal class BlazorHybridJSRuntime : JSRuntime
+#pragma warning restore CA1812 // Internal class that is apparently never instantiated
     {
         private IPC _ipc;
         private static readonly Type VoidTaskResultType = typeof(Task).Assembly
