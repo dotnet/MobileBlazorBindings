@@ -109,50 +109,15 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 
         private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
         {
-            // TODO: we have to resort to reflection here because of two issues:
-            //
-            // 1) The Uri for the framework resource has a custom scheme and HttpRequestMessage does not respond
-            //    non http schemes: 
-            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L89-L92
-            //    https://github.com/dotnet/runtime/blob/0c7e9c19cb22420248c53eec6bb885fb563c700d/src/libraries/System.Net.Http/src/System/Net/Http/HttpRequestMessage.cs#L188-L191
-            //    So we have to take the Uri string from the native ICoreWebView2WebResourceRequest and create an
-            //    Uri from it ourselves.
-            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/325
-            // 2) There is a null reference exception that occurs in WebView2 when trying to set the response on the event
-            //    argument. 
-            //    This issue is tracked here: https://github.com/MicrosoftEdge/WebViewFeedback/issues/219
-
-            var eventType = args.GetType();
-            var field = eventType.GetField("_nativeCoreWebView2WebResourceRequestedEventArgs", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            var nativeArgs = field.GetValue(args);
-
-            var requestProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Request");
-            var nativeRequest = requestProperty.GetValue(nativeArgs);
-            var uriProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequest").GetProperty("Uri");
-            var uriString = (string)uriProperty.GetValue(nativeRequest);
+            var uriString = args.Request.Uri;
             var uri = new Uri(uriString);
-
             if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
             {
                 var responseStream = handler(uriString, out var responseContentType);
                 if (responseStream != null) // If null, the handler doesn't want to handle it
                 {
                     responseStream.Position = 0;
-
-                    field = _coreWebView2Environment.GetType().GetField("_nativeCoreWebView2Environment", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                    var nativeEnvironment = field.GetValue(_coreWebView2Environment);
-
-                    var managedStream = Activator.CreateInstance(eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.ManagedIStream"),
-                        System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance,
-                        null,
-                        new object[] { responseStream },
-                        null);
-
-                    var createWebSourceResponseMethod = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2Environment").GetMethod("CreateWebResourceResponse", new Type[] { Type.GetType("System.Runtime.InteropServices.ComTypes.IStream"), typeof(int), typeof(string), typeof(string) });
-                    var response = createWebSourceResponseMethod.Invoke(nativeEnvironment, new object[] { managedStream, 200, "OK", $"Content-Type: {responseContentType}" });
-
-                    var responseProperty = eventType.Assembly.GetType("Microsoft.Web.WebView2.Core.Raw.ICoreWebView2WebResourceRequestedEventArgs").GetProperty("Response");
-                    responseProperty.SetValue(nativeArgs, response);
+                    args.Response = Control.CoreWebView2.Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}");
                 }
             }
         }
