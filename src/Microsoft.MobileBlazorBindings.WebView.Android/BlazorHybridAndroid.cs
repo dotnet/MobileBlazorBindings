@@ -1,12 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Android.Content;
-using Android.Content.Res;
-using Microsoft.Extensions.FileProviders;
-using System;
-using Xamarin.Forms;
-
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     public static class BlazorHybridAndroid

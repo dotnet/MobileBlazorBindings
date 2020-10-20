@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         private void ExtractContents()
         {
-            if (!_assetManager.List(String.Empty).Contains("wwwroot.zip"))
+            if (!_assetManager.List(string.Empty).Contains("wwwroot.zip", StringComparer.Ordinal))
             {
                 return;
             }
@@ -63,48 +63,45 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
             using (var asset = _assetManager.Open("wwwroot.zip"))
             {
-                using (var zipFile = new ZipArchive(asset))
+                using var zipFile = new ZipArchive(asset);
+                foreach (var entry in zipFile.Entries)
                 {
-                    foreach (var entry in zipFile.Entries)
-                    {
 #pragma warning disable CA5389 // Do Not Add Archive Item's Path To The Target File System Path
-                        var destination = new FileInfo(Path.Combine(_extractionPath, entry.FullName));
+                    var destination = new FileInfo(Path.Combine(_extractionPath, entry.FullName));
 #pragma warning restore CA5389 // Do Not Add Archive Item's Path To The Target File System Path
-                        var directory = new DirectoryInfo(Path.GetDirectoryName(destination.FullName));
+                    var directory = new DirectoryInfo(Path.GetDirectoryName(destination.FullName));
 
-                        toRemove.Remove(destination.FullName);
-                        toRemove.Remove(directory.FullName);
+                    toRemove.Remove(destination.FullName);
+                    toRemove.Remove(directory.FullName);
 
-                        if (!directory.Exists)
+                    if (!directory.Exists)
+                    {
+                        directory.Create();
+                    }
+
+                    if (destination.Exists)
+                    {
+                        uint destinationCrc = 0;
+
+                        using (var file = destination.OpenRead())
                         {
-                            directory.Create();
+                            var buffer = new byte[destination.Length];
+                            file.Read(buffer, 0, (int)destination.Length);
+
+                            destinationCrc = crc32.ComputeChecksum(buffer);
                         }
 
-                        if (destination.Exists)
+                        if (destinationCrc == entry.Crc32)
                         {
-                            uint destinationCrc = 0;
-
-                            using (var file = destination.OpenRead())
-                            {
-                                var buffer = new byte[destination.Length];
-                                file.Read(buffer, 0, (int)destination.Length);
-
-                                destinationCrc = crc32.ComputeChecksum(buffer);
-                            }
-
-                            if (destinationCrc == entry.Crc32)
-                            {
-                                // skip entry, it's equal.
-                                continue;
-                            }
-                        }
-
-                        using (var outputStream = destination.OpenWrite())
-                        using (var inputStream = entry.Open())
-                        {
-                            inputStream.CopyTo(outputStream);
+                            // skip entry, it's equal.
+                            continue;
                         }
                     }
+
+                    using var outputStream = destination.OpenWrite();
+                    using var inputStream = entry.Open();
+
+                    inputStream.CopyTo(outputStream);
                 }
             }
 
@@ -161,7 +158,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             /// <summary>
             /// lookup table with memoization per byte.
             /// </summary>
-            uint[] _memoizationTable;
+            readonly uint[] _memoizationTable;
 
             /// <summary>
             /// Computes the Checksum of an array of bytes.
@@ -186,10 +183,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             {
                 uint poly = 0xedb88320;
                 _memoizationTable = new uint[256];
-                uint temp = 0;
                 for (uint i = 0; i < _memoizationTable.Length; ++i)
                 {
-                    temp = i;
+                    var temp = i;
                     for (int j = 8; j > 0; --j)
                     {
                         if ((temp & 1) == 1)

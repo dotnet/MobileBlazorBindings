@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-  <!-- Normally this import would be autmatic through the nuget package. We do it manually for projects inside this solution. -->
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
   <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\build\Microsoft.MobileBlazorBindings.WebView.Windows.props" />
 
   <PropertyGroup>
@@ -27,6 +27,6 @@
     </Content>
   </ItemGroup>
 
-  <!-- Normally this import would be autmatic through the nuget package. We do it manually for projects inside this solution. -->
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
   <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\build\Microsoft.MobileBlazorBindings.WebView.Windows.targets" />
 </Project>

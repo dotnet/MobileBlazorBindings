@@ -45,7 +45,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="&#xD;&#xA;             BlazorHybrid-app\**\*;&#xD;&#xA;             MobileBlazorBindings-app\**\*;&#xD;&#xA;             " Exclude="&#xD;&#xA;             **\bin\**;&#xD;&#xA;             **\obj\**;&#xD;&#xA;             **\template.in.json;&#xD;&#xA;             **\.gitignore" />
+    <Content Include="
+                 BlazorHybrid-app\**\*;
+                 MobileBlazorBindings-app\**\*;
+             "
+             Exclude="
+                 **\bin\**;
+                 **\obj\**;
+                 **\template.in.json;
+                 **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 

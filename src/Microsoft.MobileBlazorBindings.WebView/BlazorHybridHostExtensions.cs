@@ -76,12 +76,12 @@ namespace Microsoft.MobileBlazorBindings
         }
 
         /// <summary>
-        /// Enables static file serving for the current request path
+        /// Enables static file serving for the current request path.
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
-        /// <param name="staticFileOptions">The options for the Static File configuration.</param>
+        /// <param name="fileProvider">The file provider to use.</param>
         /// <returns>The <see cref="IHostBuilder"/>.</returns>
-        public static IHostBuilder UseStaticFiles(this IHostBuilder hostBuilder, StaticFileOptions staticFileOptions)
+        public static IHostBuilder UseStaticFiles(this IHostBuilder hostBuilder, IFileProvider fileProvider)
         {
             if (hostBuilder is null)
             {
@@ -92,9 +92,9 @@ namespace Microsoft.MobileBlazorBindings
 
             hostBuilder.ConfigureAppConfiguration((hostBuilderContext, configurationBuilder) =>
             {
-                rootProvider = staticFileOptions.FileProvider;
+                rootProvider = fileProvider;
 
-                configurationBuilder.Properties[BlazorHybridDefaults.WebRootFileProvider] = staticFileOptions.FileProvider;
+                configurationBuilder.Properties[BlazorHybridDefaults.WebRootFileProvider] = fileProvider;
             });
 
             return hostBuilder.ConfigureServices(serviceCollection =>

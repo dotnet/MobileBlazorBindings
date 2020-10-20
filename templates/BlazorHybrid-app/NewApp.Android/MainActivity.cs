@@ -16,7 +16,7 @@ namespace NewApp.Droid
         {
             BlazorHybridAndroid.Init();
 
-            var fileProvider = new AssetFileProvider(this.Assets, "wwwroot");
+            var fileProvider = new AssetFileProvider(Assets, "wwwroot");
 
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
