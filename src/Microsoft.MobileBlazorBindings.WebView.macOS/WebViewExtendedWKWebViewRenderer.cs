@@ -160,13 +160,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
             [Export("webView:startURLSchemeTask:")]
             public void StartUrlSchemeTask(WKWebView webView, IWKUrlSchemeTask urlSchemeTask)
             {
-                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, statusCode: out _);
-                using (var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null))
+                var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, statusCode: out var statusCode);
+                if (statusCode == 200)
                 {
-                    urlSchemeTask.DidReceiveResponse(response);
+                    using (var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null))
+                    {
+                        urlSchemeTask.DidReceiveResponse(response);
+                    }
+                    urlSchemeTask.DidReceiveData(NSData.FromArray(responseBytes));
+                    urlSchemeTask.DidFinish();
                 }
-                urlSchemeTask.DidReceiveData(NSData.FromArray(responseBytes));
-                urlSchemeTask.DidFinish();
             }
 
             private byte[] GetResponseBytes(string url, out string contentType, out int statusCode)
