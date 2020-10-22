@@ -76,16 +76,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="BlazorHybrid-app\NewApp.Android\wwwroot\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="BlazorHybrid-app\NewApp.iOS\Resources\wwwroot\index.html" />
-    <None Remove="BlazorHybrid-app\NewApp.macOS\Resources\wwwroot\index.html" />
-    <None Remove="BlazorHybrid-app\NewApp.Windows\wwwroot\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="BlazorHybrid-app\.template.config\template.in.json" />
     <None Include="MobileBlazorBindings-app\.template.config\template.in.json" />
   </ItemGroup>
@@ -107,19 +97,5 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Update="BlazorHybrid-app\NewApp.Windows\wwwroot\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="BlazorHybrid-app\NewApp.Android\wwwroot\index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>
