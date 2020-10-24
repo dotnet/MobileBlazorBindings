@@ -6,6 +6,8 @@ using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Xamarin.Forms.Platform.WPF;
@@ -61,7 +63,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
 
-                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+                    var defaultPrivateWebView2InstallFolder = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "WebView2");
+                    var privateWebView2InstallFolder = Directory.Exists(defaultPrivateWebView2InstallFolder) ? defaultPrivateWebView2InstallFolder : null;
+                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync(privateWebView2InstallFolder).ConfigureAwait(true);
 
                     await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
 
