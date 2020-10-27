@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
@@ -18,7 +19,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 .RegisterElementHandler<BlazorWebView>(renderer => new BlazorWebViewHandler(renderer, new MobileBlazorBindingsBlazorWebView(renderer.Dispatcher)));
         }
 
-        [Inject] internal IServiceProvider Services { get; private set; }
+        [Inject] internal IHost Host { get; private set; }
 
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
@@ -31,8 +32,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (firstRender)
             {
-                element.ContentRoot = ContentRoot;
-                element.Services = Services;
+                element.Host = Host;
                 await element.InitAsync().ConfigureAwait(false);
             }
 

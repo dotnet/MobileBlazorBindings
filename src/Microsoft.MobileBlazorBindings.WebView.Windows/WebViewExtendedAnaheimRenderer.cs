@@ -111,7 +111,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         {
             var uriString = args.Request.Uri;
             var uri = new Uri(uriString);
-            if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler))
+            if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var handler) && _coreWebView2Environment != null)
             {
                 var responseStream = handler(uriString, out var responseContentType);
                 if (responseStream != null) // If null, the handler doesn't want to handle it

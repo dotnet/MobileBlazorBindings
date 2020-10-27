@@ -1,0 +1,23 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Razor"/>
+  <Target Name="_StaticWebAssetsComputeFilesToBuild" AfterTargets="GetCopyToOutputDirectoryItems" DependsOnTargets="ResolveStaticWebAssetsInputs">
+    <ItemGroup>
+       <_ExternalBuildStaticWebAsset Include="%(StaticWebAsset.FullPath)" Condition="'%(SourceType)' != ''">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <TargetPath>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','$([MSBuild]::NormalizePath('Resources\wwwroot\%(BasePath)\%(RelativePath)'))'))</TargetPath>
+      </_ExternalBuildStaticWebAsset>
+      <_SourceItemsToCopyToOutputDirectory Remove="@(_ExternalBuildStaticWebAsset)" />
+      <_SourceItemsToCopyToOutputDirectory Include="@(_ExternalBuildStaticWebAsset)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="_StaticWebAssetsComputeFilesToBundle" AfterTargets="_DetectSigningIdentity" DependsOnTargets="ResolveStaticWebAssetsInputs">
+    <ItemGroup>
+      <_ExternalBundleStaticWebAsset Include="$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','%(StaticWebAsset.FullPath)'))" Condition="'%(SourceType)' != ''">
+        <Optimize>false</Optimize>
+        <LogicalName>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','$([MSBuild]::NormalizePath('wwwroot\%(BasePath)\%(RelativePath)'))'))</LogicalName>
+        <OriginalItemSpec>$([MSBuild]::MakeRelative('$(MSBuildProjectDirectory)','%(StaticWebAsset.FullPath)'))</OriginalItemSpec>
+      </_ExternalBundleStaticWebAsset>
+      <_BundleResourceWithLogicalName Include="@(_ExternalBundleStaticWebAsset)" />
+    </ItemGroup>
+  </Target>
+</Project>

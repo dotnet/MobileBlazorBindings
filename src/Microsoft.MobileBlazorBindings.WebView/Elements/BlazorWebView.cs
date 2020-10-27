@@ -3,9 +3,13 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
@@ -35,8 +39,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private BlazorHybridRenderer _blazorHybridRenderer;
         private BlazorHybridNavigationManager _navigationManager;
 
-        public string ContentRoot { get; set; }
-        public IServiceProvider Services { get; set; }
+        public IHost Host { get; set; }
 
         // Use this if no Services was supplied
         private static readonly Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
@@ -93,13 +96,28 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             Content = _webView = new WebViewExtended();
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
+            bool TryGetFile(IFileProvider fileProvider, string filename, out Stream fileStream)
+            {
+                var fileInfo = fileProvider.GetFileInfo(filename);
+                if (fileInfo != null && fileInfo.Exists)
+                {
+                    fileStream = fileInfo.CreateReadStream();
+                    return true;
+                }
+                fileStream = null;
+                return false;
+            }
+
             _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
                 var uri = new Uri(url);
                 if (uri.Host.Equals("0.0.0.0", StringComparison.Ordinal))
                 {
+                    var environment = _serviceScope.ServiceProvider.GetRequiredService<IHostEnvironment>();
+                    var fileProvider = _serviceScope.ServiceProvider.GetRequiredService<IFileProvider>();
+
                     // TODO: Prevent directory traversal?
-                    var contentRootAbsolute = Path.GetFullPath(ContentRoot ?? ".");
+                    var contentRootAbsolute = Path.GetFullPath(environment.ContentRootPath ?? ".");
                     var appFile = Path.Combine(contentRootAbsolute, uri.AbsolutePath.Substring(1));
                     if (appFile == contentRootAbsolute)
                     {
@@ -107,7 +125,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                         const string IndexHtmlFilename = "index.html";
                         var indexHtmlPath = Path.Combine(contentRootAbsolute, IndexHtmlFilename);
 
-                        if (BlazorHybridHost.TryGetEmbeddedResourceFile(IndexHtmlFilename, out var fileStream))
+                        if (TryGetFile(fileProvider, IndexHtmlFilename, out var fileStream))
                         {
                             return fileStream;
                         }
@@ -137,7 +155,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                                 "));
                         }
                     }
-                    else if (BlazorHybridHost.TryGetEmbeddedResourceFile(GetResourceFilenameFromUri(uri), out var fileStream))
+                    else if (TryGetFile(fileProvider, GetResourceFilenameFromUri(uri), out var fileStream))
                     {
                         contentType = GetContentType(uri.AbsolutePath.Substring(1));
                         return fileStream;
@@ -167,7 +185,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
         public async Task InitAsync()
         {
-            var services = Services ?? BlazorHybridDefaultServices.Instance ?? DefaultServices.Value;
+            var services = Host?.Services ?? DefaultServices.Value;
             _serviceScope = services.CreateScope();
 
             var scopeServiceProvider = _serviceScope.ServiceProvider;

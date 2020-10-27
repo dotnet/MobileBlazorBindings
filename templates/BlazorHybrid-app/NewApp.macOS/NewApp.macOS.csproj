@@ -6,8 +6,8 @@
     <ProjectGuid>{FAFA9B0B-975F-4B2A-BE09-97386204399C}</ProjectGuid>
     <ProjectTypeGuids>{A3F8F2AB-B479-4A4A-A458-A89E7DC349F1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Exe</OutputType>
-    <RootNamespace>HybridApp.macOS</RootNamespace>
-    <AssemblyName>HybridApp.macOS</AssemblyName>
+    <RootNamespace>NewApp.macOS</RootNamespace>
+    <AssemblyName>NewApp.macOS</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkIdentifier>Xamarin.Mac</TargetFrameworkIdentifier>
     <MonoMacResourcePrefix>Resources</MonoMacResourcePrefix>
@@ -91,6 +91,9 @@
     <Compile Include="ViewController.designer.cs">
       <DependentUpon>ViewController.cs</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\wwwroot\index.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.MobileBlazorBindings.WebView.macOS" Version="MobileBlazorBindingsVersion" />

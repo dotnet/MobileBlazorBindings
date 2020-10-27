@@ -5,7 +5,7 @@ using System;
 
 namespace HybridApp
 {
-    internal class CounterState
+    public class CounterState
     {
         public int CurrentCount { get; private set; }
 

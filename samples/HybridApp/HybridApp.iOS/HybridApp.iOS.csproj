@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.iOS\build\Microsoft.MobileBlazorBindings.WebView.iOS.props" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -137,9 +139,15 @@
       <Name>HybridApp</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\wwwroot\index.html" />
+  </ItemGroup>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties XamarinHotReloadGenericExceptionInfoBarHybridAppiOSHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
+
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.iOS\build\Microsoft.MobileBlazorBindings.WebView.iOS.targets" />
 </Project>

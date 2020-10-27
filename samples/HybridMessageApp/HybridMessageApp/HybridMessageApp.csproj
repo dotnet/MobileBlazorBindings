@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
   </ItemGroup>
 
 </Project>

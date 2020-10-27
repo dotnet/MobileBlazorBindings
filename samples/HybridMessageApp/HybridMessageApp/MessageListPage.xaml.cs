@@ -15,14 +15,17 @@ namespace HybridMessageApp
     {
         private readonly ContentPage detailsPage = new ContentPage
         {
-            Content = new BlazorWebView<WebUI.MessageDetails> { ContentRoot = "WebUI/wwwroot" }
+            Content = new BlazorWebView<WebUI.MessageDetails> { Host = MainPage.Host  }
         };
         private readonly AppState appState;
 
         public MessageListPage()
         {
             InitializeComponent();
-            appState = BlazorHybridDefaultServices.Instance.GetRequiredService<AppState>();
+
+            MessageListWebView.Host = MainPage.Host;
+
+            appState = MainPage.Host.Services.GetRequiredService<AppState>();
         }
 
         protected override void OnAppearing()

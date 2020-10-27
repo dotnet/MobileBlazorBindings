@@ -46,14 +46,14 @@
 
   <ItemGroup>
     <Content Include="
-             BlazorHybrid-app\**\*;
-             MobileBlazorBindings-app\**\*;
+                 BlazorHybrid-app\**\*;
+                 MobileBlazorBindings-app\**\*;
              "
              Exclude="
-             **\bin\**;
-             **\obj\**;
-             **\template.in.json;
-             **\.gitignore" />
+                 **\bin\**;
+                 **\obj\**;
+                 **\template.in.json;
+                 **\.gitignore" />
     <Compile Remove="**\*" />
   </ItemGroup>
 

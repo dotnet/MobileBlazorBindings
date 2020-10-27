@@ -14,7 +14,7 @@
 
             <MasterDetailPage.Master>
                 <ContentPage Title="Folders">
-                    <b:BlazorWebView x:TypeArguments="app:FolderList" ContentRoot="WebUI/wwwroot" VerticalOptions="FillAndExpand" />
+                    <b:BlazorWebView x:TypeArguments="app:FolderList" x:Name="FolderWebView" VerticalOptions="FillAndExpand" />
                 </ContentPage>
             </MasterDetailPage.Master>
 

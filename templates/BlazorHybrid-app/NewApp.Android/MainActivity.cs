@@ -16,6 +16,8 @@ namespace NewApp.Droid
         {
             BlazorHybridAndroid.Init();
 
+            var fileProvider = new AssetFileProvider(Assets, "wwwroot");
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -23,7 +25,7 @@ namespace NewApp.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            LoadApplication(new App());
+            LoadApplication(new App(fileProvider));
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

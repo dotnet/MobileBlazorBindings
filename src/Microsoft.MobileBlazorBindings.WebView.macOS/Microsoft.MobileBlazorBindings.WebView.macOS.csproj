@@ -12,6 +12,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="build/**/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="build/**/*">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+      <IncludeInPackage>true</IncludeInPackage>
+      <CopyToOutput>true</CopyToOutput>
+      <BuildAction>Content</BuildAction>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="netstandard" />
 
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
