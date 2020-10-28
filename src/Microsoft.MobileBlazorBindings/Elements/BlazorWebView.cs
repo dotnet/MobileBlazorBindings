@@ -24,7 +24,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
-        [Parameter] public string ContentRoot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ErrorHandler that will be used to catch unhandled exceptions.
+        /// </summary>
+        [Parameter] public IBlazorErrorHandler ErrorHandler { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -33,6 +37,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (firstRender)
             {
                 element.Host = Host;
+                if (ErrorHandler != null)
+                {
+                    element.ErrorHandler = ErrorHandler;
+                }
                 await element.InitAsync().ConfigureAwait(false);
             }
 
