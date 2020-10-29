@@ -13,7 +13,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageReleaseNotes>Release notes are available at: https://aka.ms/mbb-preview4-rel-notes</PackageReleaseNotes>
+    <PackageReleaseNotes>Release notes are available at: https://aka.ms/mbb-preview5-rel-notes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
