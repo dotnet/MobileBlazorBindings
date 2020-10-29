@@ -16,9 +16,9 @@ namespace HybridMessageApp
     {
         public static IHost Host { get; private set; }
 
-        public MainPage(IFileProvider fileProvider = null)
+        public MainPage(string[] args = null,IFileProvider fileProvider = null)
         {
-            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Adds web-specific services such as NavigationManager

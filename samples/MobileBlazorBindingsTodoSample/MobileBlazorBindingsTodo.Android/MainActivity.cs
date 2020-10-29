@@ -29,7 +29,7 @@ namespace MobileBlazorBindingsTodo.Droid
             var additionalServices = new ServiceCollection();
             additionalServices.AddSingleton<ITextToSpeech, TextToSpeech_Android>();
 
-            LoadApplication(new App(additionalServices));
+            LoadApplication(new App(additionalServices: additionalServices));
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

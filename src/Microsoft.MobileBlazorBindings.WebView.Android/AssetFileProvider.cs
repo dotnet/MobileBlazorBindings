@@ -78,7 +78,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                     {
                         directory.Create();
                     }
-
+                    
                     if (destination.Exists)
                     {
                         uint destinationCrc = 0;
@@ -98,10 +98,13 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                         }
                     }
 
-                    using var outputStream = destination.OpenWrite();
-                    using var inputStream = entry.Open();
+                    if (!destination.FullName.EndsWith("/", StringComparison.Ordinal))
+                    {
+                        using var outputStream = destination.OpenWrite();
+                        using var inputStream = entry.Open();
 
-                    inputStream.CopyTo(outputStream);
+                        inputStream.CopyTo(outputStream);
+                    }
                 }
             }
 

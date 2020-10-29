@@ -11,7 +11,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Microsoft.MobileBlazorBindings.WebView.Android")]
 
 namespace Microsoft.MobileBlazorBindings
 {

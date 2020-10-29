@@ -192,9 +192,16 @@ namespace Microsoft.MobileBlazorBindings.WebView
         protected override void Dispose(bool disposing)
         {
             _disposing = true;
+
             while (_unacknowledgedRenderBatches.TryDequeue(out var entry))
             {
-                entry.CompletionSource.TrySetCanceled();
+                try
+                {
+                    entry.CompletionSource.TrySetCanceled();
+                }
+                catch
+                { 
+                }
             }
 
             base.Dispose(true);

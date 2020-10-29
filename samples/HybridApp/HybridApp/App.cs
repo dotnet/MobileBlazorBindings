@@ -10,9 +10,9 @@ namespace HybridApp
 {
     public class App : Application
     {
-        public App(IFileProvider fileProvider = null)
+        public App(string[] args = null, IFileProvider fileProvider = null)
         {
-            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Adds web-specific services such as NavigationManager

@@ -12,9 +12,9 @@ namespace MobileBlazorBindingsXaminals
     {
         public IHost AppHost { get; }
 
-        public App()
+        public App(string[] args = null)
         {
-            AppHost = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            AppHost = MobileBlazorBindingsHost.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services

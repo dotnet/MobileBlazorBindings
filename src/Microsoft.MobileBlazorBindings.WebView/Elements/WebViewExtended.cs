@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Elements
@@ -12,14 +14,23 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
     public class WebViewExtended : XF.WebView
     {
+        public WebViewExtended(IBlazorErrorHandler ErrorHandler)
+        {
+            this.ErrorHandler = ErrorHandler;
+        }
         public EventHandler<string> OnWebMessageReceived { get; set; }
         public EventHandler<string> SendMessageFromJSToDotNetRequested { get; set; }
+
+        // Unfortunately since the orginal Navigating and Navigated event invoke methods are internal
+        // the events cannot be invoked and we have to duplicate those.
+        public EventHandler<Uri> OnNavigationStarting { get; set; }
+
+        public EventHandler<Uri> OnNavigationFinished { get; set; }
+
         public IDictionary<string, ResolveWebResourceDelegate> SchemeHandlers { get; }
             = new Dictionary<string, ResolveWebResourceDelegate>();
 
-        // We can't destroy and recreate WebView instances because they hold nontrivial state
-        // The ability for XF.Element to retain renderers would be a good framework feature
-        public object RetainedNativeControl { get; set; }
+        public IBlazorErrorHandler ErrorHandler { get; }
 
         public void HandleWebMessageReceived(string webMessageAsString)
         {
@@ -29,6 +40,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         public void SendMessage(string message)
         {
             SendMessageFromJSToDotNetRequested?.Invoke(this, message);
+        }
+
+        public void HandleNavigationStarting(Uri url)
+        {
+            OnNavigationStarting?.Invoke(this, url);
+        }
+
+        public void HandleNavigationFinished(Uri url)
+        {
+            OnNavigationFinished?.Invoke(this, url);
         }
     }
 }
