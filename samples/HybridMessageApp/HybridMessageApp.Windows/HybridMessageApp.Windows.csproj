@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\build\Microsoft.MobileBlazorBindings.WebView.Windows.props" />
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -7,6 +9,12 @@
     <NoWarn>$(NoWarn);NU1701</NoWarn>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
@@ -19,4 +27,6 @@
     <ProjectReference Include="..\HybridMessageApp\HybridMessageApp.csproj" />
   </ItemGroup>
 
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Windows\build\Microsoft.MobileBlazorBindings.WebView.Windows.targets" />
 </Project>
