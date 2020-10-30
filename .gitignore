@@ -339,3 +339,6 @@ ASALocalRun/
 
 # Xamarin auto-generated Android resources
 Resource.designer.cs
+
+# The zipfile that is created by the static web assets build process.
+wwwroot.zip

@@ -3,6 +3,7 @@
 
 using HybridMessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.WebView;
@@ -15,9 +16,9 @@ namespace HybridMessageApp
     {
         public static IHost Host { get; private set; }
 
-        public MainPage()
+        public MainPage(IFileProvider fileProvider = null)
         {
-            Host = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Adds web-specific services such as NavigationManager
@@ -26,9 +27,17 @@ namespace HybridMessageApp
                     // Register app-specific services
                     services.AddSingleton<AppState>();
                 })
-                .UseWebRoot("WebUI/wwwroot")
-                .UseResourceAssembly(GetType().Assembly)
-                .Build();
+                .UseWebRoot("wwwroot");
+
+            if (fileProvider != null)
+            {
+                hostBuilder.UseStaticFiles(fileProvider);
+            }
+            else
+            {
+                hostBuilder.UseStaticFiles();
+            }
+            Host = hostBuilder.Build();
 
             InitializeComponent();
 
