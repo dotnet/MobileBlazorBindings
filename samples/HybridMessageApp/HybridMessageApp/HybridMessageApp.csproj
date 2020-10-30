@@ -5,7 +5,6 @@
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <RazorLangVersion>3.0</RazorLangVersion>
     <EnableDefaultCssItems>false</EnableDefaultCssItems>
-    <WwwRootResourcePath>WebUI\wwwroot</WwwRootResourcePath>
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
@@ -18,10 +17,6 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.5" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="$(WwwRootResourcePath)\**" />
   </ItemGroup>
 
   <ItemGroup>
