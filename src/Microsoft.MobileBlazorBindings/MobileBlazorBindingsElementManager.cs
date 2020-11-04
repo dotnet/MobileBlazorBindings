@@ -60,12 +60,12 @@ namespace Microsoft.MobileBlazorBindings
             return handler.GetPhysicalSiblingIndex();
         }
 
-        protected override void RemoveElement(IXamarinFormsElementHandler handler)
+        protected override void RemoveChildElement(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
         {
             // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
 
-            var control = handler.ElementControl;
-            var physicalParent = control.Parent;
+            var control = childHandler.ElementControl;
+            var physicalParent = parentHandler.ElementControl;
             if (physicalParent is Layout<View> physicalParentAsLayout)
             {
                 var childTargetAsView = control as View;

@@ -8,9 +8,9 @@ namespace BlinForms.Framework
 {
     internal class BlinFormsElementManager : ElementManager<IWindowsFormsControlHandler>
     {
-        protected override void RemoveElement(IWindowsFormsControlHandler handler)
+        protected override void RemoveChildElement(IWindowsFormsControlHandler parentHandler, IWindowsFormsControlHandler childHandler)
         {
-            handler.Control.Parent.Controls.Remove(handler.Control);
+            parentHandler.Control.Controls.Remove(childHandler.Control);
         }
 
         protected override void AddChildElement(IWindowsFormsControlHandler parentHandler, IWindowsFormsControlHandler childHandler, int physicalSiblingIndex)

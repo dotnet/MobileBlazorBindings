@@ -137,7 +137,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             {
                 // This adapter represents a physical element, so by removing it, we implicitly
                 // remove all descendants.
-                Renderer.ElementManager.RemoveElement(_targetElement);
+                Renderer.ElementManager.RemoveChildElement(_closestPhysicalParent, _targetElement);
             }
             else
             {

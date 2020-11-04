@@ -15,6 +15,6 @@ namespace Microsoft.MobileBlazorBindings.Core
         public abstract int GetPhysicalSiblingIndex(IElementHandler handler);
         public abstract bool IsParented(IElementHandler handler);
         public abstract bool IsParentOfChild(IElementHandler parentHandler, IElementHandler childHandler);
-        public abstract void RemoveElement(IElementHandler handler);
+        public abstract void RemoveChildElement(IElementHandler parentHandler, IElementHandler childHandler);
     }
 }
