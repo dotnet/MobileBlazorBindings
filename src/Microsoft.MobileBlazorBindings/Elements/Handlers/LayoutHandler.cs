@@ -6,9 +6,9 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public abstract partial class LayoutHandler : ViewHandler
+    public abstract partial class LayoutHandler : ViewHandler, IXamarinFormsContainerElementHandler
     {
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsView = child as XF.View;
 
@@ -22,6 +22,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but layoutControlOfView.Children.Count={layoutControlOfView.Children.Count}");
                 layoutControlOfView.Children.Add(childAsView);
+            }
+        }
+
+        public void RemoveChild(XF.Element child)
+        {
+            var physicalParent = ElementControl.Parent;
+            if (physicalParent is XF.Layout<XF.View> physicalParentAsLayout)
+            {
+                var childTargetAsView = child as XF.View;
+                physicalParentAsLayout.Children.Remove(childTargetAsView);
             }
         }
     }

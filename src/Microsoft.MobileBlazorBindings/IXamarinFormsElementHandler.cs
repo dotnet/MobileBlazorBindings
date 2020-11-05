@@ -10,7 +10,6 @@ namespace Microsoft.MobileBlazorBindings
     {
         XF.Element ElementControl { get; }
 
-        void AddChild(XF.Element child, int physicalSiblingIndex);
         bool IsParented();
         bool IsParentedTo(XF.Element parent);
         void SetParent(XF.Element parent);
