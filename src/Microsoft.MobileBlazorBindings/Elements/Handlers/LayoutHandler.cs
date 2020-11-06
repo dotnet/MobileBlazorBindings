@@ -27,12 +27,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public void RemoveChild(XF.Element child)
         {
-            var physicalParent = ElementControl.Parent;
-            if (physicalParent is XF.Layout<XF.View> physicalParentAsLayout)
-            {
-                var childTargetAsView = child as XF.View;
-                physicalParentAsLayout.Children.Remove(childTargetAsView);
-            }
+            var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;
+            var childAsView = child as XF.View;
+
+            layoutControlOfView.Children.Remove(childAsView);
         }
     }
 }
