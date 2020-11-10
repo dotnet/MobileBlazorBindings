@@ -1,0 +1,25 @@
+﻿<Tab Title="@Title">
+    @for (int i = 0; i < count; i++)
+    {
+        var currentIndex = i;
+        <ShellContent Title="@($"SC {currentIndex}")">
+            <ContentPage>
+                <StackLayout>
+                    <Label Text="@($"Tab {currentIndex}")" />
+                    <Button Text="Add shell content" OnClick="AddShellContent" />
+                </StackLayout>
+            </ContentPage>
+        </ShellContent>
+    }
+</Tab>
+
+@code {
+    [Parameter] public string Title { get; set; }
+
+    int count = 2;
+
+    void AddShellContent()
+    {
+        count++;
+    }
+}
