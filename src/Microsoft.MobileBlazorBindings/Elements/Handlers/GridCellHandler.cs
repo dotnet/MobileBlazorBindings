@@ -7,7 +7,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class GridCellHandler : IXamarinFormsElementHandler, INonChildContainerElement
+    public class GridCellHandler : IXamarinFormsContainerElementHandler, INonChildContainerElement
     {
         public GridCellHandler(NativeComponentRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
         {
@@ -53,6 +53,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             _parentChildManager.SetChild(child);
+        }
+
+        public void RemoveChild(XF.Element child)
+        {
+            // TODO: This could probably be implemented at some point, but it isn't needed right now
+            throw new NotImplementedException();
         }
 
         public int GetPhysicalSiblingIndex()
