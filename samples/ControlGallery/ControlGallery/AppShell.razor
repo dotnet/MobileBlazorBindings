@@ -1,6 +1,13 @@
-﻿<Shell Title="Shell Title">
-    <TabBar Title="TabBar Title">
-        <Tab Title="Tab Title">
+﻿@using ControlGallery.Views
+
+<Shell FlyoutBehavior="FlyoutBehavior.Disabled">
+    <TabBar>
+        <Tab Title="Gallery">
+            <ShellContent>
+                <PlaygroundList />
+            </ShellContent>
+        </Tab>
+        <Tab Title="Add/Remove">
             <ContentPage Title="Adder">
                 <StackLayout>
                     <Button OnClick="AddTab">Add Tab</Button>
@@ -12,7 +19,7 @@
         @for (int i = 0; i < count; i++)
         {
             var currentIndex = i;
-            <ShellTab Title="@($"Tab number {currentIndex}")" />
+            <ShellTab Title="@($"Tab #{currentIndex + 1}")" />
         }
     </TabBar>
 </Shell>
