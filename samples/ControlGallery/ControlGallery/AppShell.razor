@@ -2,10 +2,41 @@
 
 <Shell FlyoutBehavior="FlyoutBehavior.Disabled">
     <TabBar>
-        <Tab>
+        <Tab Title="Gallery">
             <ShellContent>
                 <PlaygroundList />
             </ShellContent>
         </Tab>
+        <Tab Title="Add/Remove">
+            <ContentPage Title="Adder">
+                <StackLayout>
+                    <Button OnClick="AddTab">Add Tab</Button>
+                    <Button IsEnabled="(count > 1)" OnClick="RemoveTab">Remove tab</Button>
+                </StackLayout>
+            </ContentPage>
+        </Tab>
+
+        @for (int i = 0; i < count; i++)
+        {
+            var currentIndex = i;
+            <ShellTab Title="@($"Tab #{currentIndex + 1}")" />
+        }
     </TabBar>
 </Shell>
+
+@code {
+    int count = 1;
+
+    void AddTab()
+    {
+        count++;
+    }
+
+    void RemoveTab()
+    {
+        if (count > 1)
+        {
+            count--;
+        }
+    }
+}

@@ -54,17 +54,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return false;
         }
 
-
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
-        {
-            if (child is null)
-            {
-                throw new ArgumentNullException(nameof(child));
-            }
-
-            throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').");
-        }
-
         public virtual int GetPhysicalSiblingIndex()
         {
             // TODO: What is the set of types that support child elements? Do they all need to be special-cased here? (Maybe...)

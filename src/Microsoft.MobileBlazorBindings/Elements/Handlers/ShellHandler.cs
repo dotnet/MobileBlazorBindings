@@ -3,11 +3,14 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellHandler : PageHandler
+    public partial class ShellHandler : PageHandler, IXamarinFormsContainerElementHandler
     {
         private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
 
@@ -46,33 +49,93 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public ulong NavigatedEventHandlerId { get; set; }
         public ulong NavigatingEventHandlerId { get; set; }
 
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
                 throw new ArgumentNullException(nameof(child));
             }
 
-            switch (child)
+            XF.ShellItem itemToAdd = child switch
             {
-                case XF.TemplatedPage childAsTemplatedPage:
-                    ShellControl.Items.Add(childAsTemplatedPage); // Implicit conversion
-                    break;
-                case XF.ShellContent childAsShellContent:
-                    ShellControl.Items.Add(childAsShellContent); // Implicit conversion
-                    break;
-                case XF.ShellSection childAsShellSection:
-                    ShellControl.Items.Add(childAsShellSection); // Implicit conversion
-                    break;
-                case XF.MenuItem childAsMenuItem:
-                    ShellControl.Items.Add(childAsMenuItem); // Implicit conversion
-                    break;
-                case XF.ShellItem childAsShellItem:
-                    ShellControl.Items.Add(childAsShellItem);
-                    break;
-                default:
-                    throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').");
+                XF.TemplatedPage childAsTemplatedPage => childAsTemplatedPage, // Implicit conversion
+                XF.ShellContent childAsShellContent => childAsShellContent, // Implicit conversion
+                XF.ShellSection childAsShellSection => childAsShellSection, // Implicit conversion
+                XF.MenuItem childAsMenuItem => childAsMenuItem, // Implicit conversion
+                XF.ShellItem childAsShellItem => childAsShellItem,
+                _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').")
+            };
+
+            if (ShellControl.Items.Count >= physicalSiblingIndex)
+            {
+                ShellControl.Items.Insert(physicalSiblingIndex, itemToAdd);
+            }
+            else
+            {
+                Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but ShellControl.Items.Count={ShellControl.Items.Count}");
+                ShellControl.Items.Add(itemToAdd);
             }
         }
+
+        public virtual void RemoveChild(XF.Element child)
+        {
+            if (child is null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            var itemToRemove = child switch
+            {
+                XF.TemplatedPage childAsTemplatedPage => GetItemForTemplatedPage(childAsTemplatedPage),
+                XF.ShellContent childAsShellContent => GetItemForContent(childAsShellContent),
+                XF.ShellSection childAsShellSection => GetItemForSection(childAsShellSection),
+                XF.MenuItem childAsMenuItem => GetItemForMenuItem(childAsMenuItem),
+                XF.ShellItem childAsShellItem => childAsShellItem,
+                _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').")
+            };
+
+            ShellControl.Items.Remove(itemToRemove);
+        }
+
+        private XF.ShellItem GetItemForTemplatedPage(XF.TemplatedPage childAsTemplatedPage)
+        {
+            return ShellControl.Items
+                .FirstOrDefault(item => item.Items
+                    .Any(section => section.Items.Any(content => content.Content == childAsTemplatedPage)));
+        }
+
+        private XF.ShellItem GetItemForContent(XF.ShellContent childAsShellContent)
+        {
+            return ShellControl.Items
+                .FirstOrDefault(item => item.Items
+                    .Any(section => section.Items.Contains(childAsShellContent)));
+        }
+
+        private XF.ShellItem GetItemForSection(XF.ShellSection childAsShellSection)
+        {
+            return ShellControl.Items.FirstOrDefault(item => item.Items.Contains(childAsShellSection));
+        }
+
+        private XF.ShellItem GetItemForMenuItem(XF.MenuItem childAsMenuItem)
+        {
+            // MenuItem is wrapped in ShellMenuItem, which is internal type.
+            // Not sure how to identify this item correctly.
+            return ShellControl.Items.FirstOrDefault(item => IsShellItemWithMenuItem(item, childAsMenuItem));
+        }
+
+        private static bool IsShellItemWithMenuItem(XF.ShellItem shellItem, XF.MenuItem menuItem)
+        {
+            // Xamarin.Forms.MenuShellItem is internal so we have to use reflection to check that
+            // its MenuItem property is the same as the MenuItem we're looking for.
+            if (!MenuShellItemType.IsAssignableFrom(shellItem.GetType()))
+            {
+                return false;
+            }
+            var menuItemInMenuShellItem = MenuShellItemMenuItemProperty.GetValue(shellItem);
+            return menuItemInMenuShellItem == menuItem;
+        }
+
+        private static readonly Type MenuShellItemType = typeof(XF.ShellItem).Assembly.GetType("Xamarin.Forms.MenuShellItem");
+        private static readonly PropertyInfo MenuShellItemMenuItemProperty = MenuShellItemType.GetProperty("MenuItem");
     }
 }

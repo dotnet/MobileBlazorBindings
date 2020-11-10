@@ -43,7 +43,14 @@ namespace Microsoft.MobileBlazorBindings
                 return;
             }
 
-            parentHandler.AddChild(childHandler.ElementControl, physicalSiblingIndex);
+            if (!(parentHandler is IXamarinFormsContainerElementHandler parent))
+            {
+                throw new NotSupportedException($"Handler of type '{parentHandler.GetType().FullName}' representing element type " +
+                    $"'{parentHandler.ElementControl?.GetType().FullName ?? "<null>"}' doesn't support adding a child " +
+                    $"(child type is '{childHandler.ElementControl?.GetType().FullName}').");
+            }
+
+            parent.AddChild(childHandler.ElementControl, physicalSiblingIndex);
 
             if (!(parentHandler is INonChildContainerElement))
             {
@@ -60,16 +67,17 @@ namespace Microsoft.MobileBlazorBindings
             return handler.GetPhysicalSiblingIndex();
         }
 
-        protected override void RemoveElement(IXamarinFormsElementHandler handler)
+        protected override void RemoveChildElement(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
         {
-            // TODO: Need to make this logic more generic; not all parents are Layouts, not all children are Views
-
-            var control = handler.ElementControl;
-            var physicalParent = control.Parent;
-            if (physicalParent is Layout<View> physicalParentAsLayout)
+            if (parentHandler is IXamarinFormsContainerElementHandler parent)
             {
-                var childTargetAsView = control as View;
-                physicalParentAsLayout.Children.Remove(childTargetAsView);
+                parent.RemoveChild(childHandler.ElementControl);
+            }
+            else
+            {
+                throw new NotSupportedException($"Handler of type '{parentHandler.GetType().FullName}' representing element type " +
+                    $"'{parentHandler.ElementControl?.GetType().FullName ?? "<null>"}' doesn't support removing a child " +
+                    $"(child type is '{childHandler.ElementControl?.GetType().FullName}').");
             }
         }
 

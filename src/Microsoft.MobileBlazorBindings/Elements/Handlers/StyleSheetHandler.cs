@@ -48,11 +48,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
-        {
-            throw new NotImplementedException();
-        }
-
         public int GetPhysicalSiblingIndex()
         {
             return 0;

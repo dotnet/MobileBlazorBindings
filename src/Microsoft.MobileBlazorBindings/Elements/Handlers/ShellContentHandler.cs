@@ -6,12 +6,20 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellContentHandler : BaseShellItemHandler
+    public partial class ShellContentHandler : BaseShellItemHandler, IXamarinFormsContainerElementHandler
     {
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsTemplatedPage = child as XF.TemplatedPage;
             ShellContentControl.Content = childAsTemplatedPage;
+        }
+
+        public virtual void RemoveChild(XF.Element child)
+        {
+            if (ShellContentControl.Content == child)
+            {
+                ShellContentControl.Content = null;
+            }
         }
 
         public override void SetParent(XF.Element parent)

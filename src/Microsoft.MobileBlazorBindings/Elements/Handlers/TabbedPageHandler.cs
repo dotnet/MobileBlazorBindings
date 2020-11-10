@@ -6,9 +6,9 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class TabbedPageHandler : PageHandler
+    public partial class TabbedPageHandler : PageHandler, IXamarinFormsContainerElementHandler
     {
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsPage = child as XF.Page;
 
@@ -21,6 +21,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but TabbedPageControl.Children.Count={TabbedPageControl.Children.Count}");
                 TabbedPageControl.Children.Add(childAsPage);
             }
+        }
+
+        public virtual void RemoveChild(XF.Element child)
+        {
+            TabbedPageControl.Children.Remove(child as XF.Page);
         }
     }
 }

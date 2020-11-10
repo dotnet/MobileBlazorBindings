@@ -228,7 +228,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadGenericExceptionInfoBarMobileBlazorBindingsXaminalsiOSHideInfoBar="True" />
+      <UserProperties TriggeredFromHotReload="False" XamarinHotReloadGenericExceptionInfoBarMobileBlazorBindingsXaminalsiOSHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

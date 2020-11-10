@@ -40,12 +40,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
-        {
-            // This element doesn't support children
-            throw new NotSupportedException();
-        }
-
         public int GetPhysicalSiblingIndex()
         {
             // Because this is a 'fake' element, all matters related to physical trees

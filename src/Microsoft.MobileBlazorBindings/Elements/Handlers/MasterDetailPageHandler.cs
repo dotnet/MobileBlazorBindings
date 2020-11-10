@@ -7,7 +7,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class MasterDetailPageHandler : PageHandler
+    public partial class MasterDetailPageHandler : PageHandler, IXamarinFormsContainerElementHandler
     {
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable CA1801 // Parameter is never used
@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             MasterDetailPageControl.Detail = new XF.Page();
         }
 
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
@@ -44,6 +44,27 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             else
             {
                 throw new InvalidOperationException($"Unknown child type {child.GetType().FullName} being added to parent element type {GetType().FullName}.");
+            }
+        }
+
+        public virtual void RemoveChild(XF.Element child)
+        {
+            if (child is null)
+            {
+                throw new ArgumentNullException(nameof(child));
+            }
+
+            if (child == MasterDetailPageControl.Master)
+            {
+                MasterDetailPageControl.Master = new XF.Page() { Title = "Title" };
+            }
+            else if (child == MasterDetailPageControl.Detail)
+            {
+                MasterDetailPageControl.Detail = new XF.Page();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unknown child type {child.GetType().FullName} being removed from parent element type {GetType().FullName}.");
             }
         }
     }

@@ -1,0 +1,34 @@
+﻿<Tab Title="@Title">
+    @for (int i = 0; i < count; i++)
+    {
+        var currentIndex = i;
+        <ShellContent Title="@($"Content #{currentIndex + 1}")">
+            <ContentPage>
+                <StackLayout>
+                    <Label Text="@($"Tab {currentIndex + 1}")" />
+                    <Button Text="Add shell content" OnClick="AddShellContent" />
+                    <Button IsEnabled="(count > 1)" Text="Remove shell content" OnClick="RemoveShellContent" />
+                </StackLayout>
+            </ContentPage>
+        </ShellContent>
+    }
+</Tab>
+
+@code {
+    [Parameter] public string Title { get; set; }
+
+    int count = 2;
+
+    void AddShellContent()
+    {
+        count++;
+    }
+
+    void RemoveShellContent()
+    {
+        if (count > 1)
+        {
+            count--;
+        }
+    }
+}
