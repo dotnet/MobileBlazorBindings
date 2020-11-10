@@ -2,7 +2,10 @@
     <TabBar Title="TabBar Title">
         <Tab Title="Tab Title">
             <ContentPage Title="Adder">
-                <Button OnClick="AddTab">Add Tab</Button>
+                <StackLayout>
+                    <Button OnClick="AddTab">Add Tab</Button>
+                    <Button IsEnabled="(count > 1)" OnClick="RemoveTab">Remove tab</Button>
+                </StackLayout>
             </ContentPage>
         </Tab>
 
@@ -20,5 +23,13 @@
     void AddTab()
     {
         count++;
+    }
+
+    void RemoveTab()
+    {
+        if (count > 1)
+        {
+            count--;
+        }
     }
 }

@@ -7,6 +7,7 @@
                 <StackLayout>
                     <Label Text="@($"Tab {currentIndex}")" />
                     <Button Text="Add shell content" OnClick="AddShellContent" />
+                    <Button IsEnabled="(count > 1)" Text="Remove shell content" OnClick="RemoveShellContent" />
                 </StackLayout>
             </ContentPage>
         </ShellContent>
@@ -21,5 +22,13 @@
     void AddShellContent()
     {
         count++;
+    }
+
+    void RemoveShellContent()
+    {
+        if (count > 1)
+        {
+            count--;
+        }
     }
 }
