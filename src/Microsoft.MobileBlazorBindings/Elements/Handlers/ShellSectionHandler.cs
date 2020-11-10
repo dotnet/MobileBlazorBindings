@@ -24,6 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').")
             };
 
+            // Ensure that there is non-null Content to avoid exceptions in Xamarin.Forms
             contentToAdd.Content ??= new XF.Page();
 
             if (ShellSectionControl.Items.Count >= physicalSiblingIndex)
