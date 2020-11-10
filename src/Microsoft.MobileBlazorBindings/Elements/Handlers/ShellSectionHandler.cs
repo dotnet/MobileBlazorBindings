@@ -10,7 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellSectionHandler : ShellGroupItemHandler, IXamarinFormsContainerElementHandler
     {
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
@@ -35,7 +35,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(XF.Element child)
         {
             if (child is null)
             {

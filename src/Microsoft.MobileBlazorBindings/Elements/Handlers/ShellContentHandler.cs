@@ -8,13 +8,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellContentHandler : BaseShellItemHandler, IXamarinFormsContainerElementHandler
     {
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsTemplatedPage = child as XF.TemplatedPage;
             ShellContentControl.Content = childAsTemplatedPage;
         }
 
-        public void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(XF.Element child)
         {
             if (ShellContentControl.Content == child)
             {

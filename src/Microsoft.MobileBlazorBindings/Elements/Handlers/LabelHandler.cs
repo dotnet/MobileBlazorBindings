@@ -8,7 +8,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class LabelHandler : ViewHandler, IXamarinFormsContainerElementHandler
     {
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsSpan = child as XF.Span;
 
@@ -24,7 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(XF.Element child)
         {
             var childAsSpan = child as XF.Span;
 

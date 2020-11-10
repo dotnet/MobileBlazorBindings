@@ -8,7 +8,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TabbedPageHandler : PageHandler, IXamarinFormsContainerElementHandler
     {
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var childAsPage = child as XF.Page;
 
@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(XF.Element child)
         {
             TabbedPageControl.Children.Remove(child as XF.Page);
         }
