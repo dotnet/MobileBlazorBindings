@@ -1,0 +1,32 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.MobileBlazorBindings.Authentication
+@inject NavigationManager Navigation
+@inject IAuthenticationService AuthenticationService
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @context.User.Identity.Name!
+        <button class="nav-link btn btn-link" @onclick="SignOut">
+            Log out
+        </button>
+    </Authorized>
+    <NotAuthorized>
+        <button class="nav-link btn btn-link" @onclick="SignIn">Log in</button>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private async Task SignOut(MouseEventArgs args)
+    {
+        await AuthenticationService.SignOut();
+    }
+
+    private async Task SignIn(MouseEventArgs args)
+    {
+        await AuthenticationService.SignIn(new SignInOptions()
+        {
+            Scopes = new string[] { "openid", "profile", "User.Read" }
+        });
+    }
+
+}

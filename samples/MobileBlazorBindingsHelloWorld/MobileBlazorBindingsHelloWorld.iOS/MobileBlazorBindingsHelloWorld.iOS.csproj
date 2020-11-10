@@ -123,12 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MobileBlazorBindingsHelloWorld\MobileBlazorBindingsHelloWorld.csproj">
-      <Project>{0A7BC23D-7DF0-40A7-AC9F-BEFC93BFCA07}</Project>
+      <Project>{0A7A4594-D3E3-4EFE-9375-0B80BC049F6F}</Project>
       <Name>MobileBlazorBindingsHelloWorld</Name>
     </ProjectReference>
   </ItemGroup>

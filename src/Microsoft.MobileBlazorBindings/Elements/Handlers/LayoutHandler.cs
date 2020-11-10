@@ -27,10 +27,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public virtual void RemoveChild(XF.Element child)
         {
-            var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;
             var childAsView = child as XF.View;
 
-            layoutControlOfView.Children.Remove(childAsView);
+            // TODO: Had to add a switch statement to handle ContentView case.
+            // as I'm not very familiar with native controls, this probably needs
+            // a better fix.
+            switch (LayoutControl)
+            {
+                case XF.Layout<XF.View> layoutControlOfView:
+                    layoutControlOfView.Children.Remove(childAsView);
+                    break;
+            }
         }
     }
 }

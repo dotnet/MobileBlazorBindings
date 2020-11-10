@@ -28,6 +28,9 @@
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.DualScreen\Microsoft.MobileBlazorBindings.DualScreen.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.UnitTests\Microsoft.MobileBlazorBindings.UnitTests.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.ProtectedStorage\Microsoft.MobileBlazorBindings.ProtectedStorage.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Authentication\Microsoft.MobileBlazorBindings.Authentication.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Authentication.Msal\Microsoft.MobileBlazorBindings.Authentication.Msal.csproj" />
     <ProjectToBuild Include="..\src\ComponentWrapperGenerator\ComponentWrapperGenerator.csproj" />
   </ItemGroup>
 </Project>

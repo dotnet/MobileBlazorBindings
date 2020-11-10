@@ -1,0 +1,7 @@
+﻿# More info about this file: https://docs.microsoft.com/xamarin/android/deploy-test/environment
+# And this: https://stackoverflow.com/questions/26760798/xamarin-android-turn-off-mono-logs
+
+MONO_LOG_LEVEL=
+debug.mono.log=
+
+# Note: This doesn't seem to work as I expected. It doesn't seem to suppress anything at all compared to not having it.
