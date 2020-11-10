@@ -5,6 +5,7 @@ using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -119,8 +120,22 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             // MenuItem is wrapped in ShellMenuItem, which is internal type.
             // Not sure how to identify this item correctly.
-            return ShellControl.Items.FirstOrDefault(item => item.Title == childAsMenuItem.Text 
-                && item.Items.Count == 0);
+            return ShellControl.Items.FirstOrDefault(item => IsShellItemWithMenuItem(item, childAsMenuItem));
         }
+
+        private static bool IsShellItemWithMenuItem(XF.ShellItem shellItem, XF.MenuItem menuItem)
+        {
+            // Xamarin.Forms.MenuShellItem is internal so we have to use reflection to check that
+            // its MenuItem property is the same as the MenuItem we're looking for.
+            if (!MenuShellItemType.IsAssignableFrom(shellItem.GetType()))
+            {
+                return false;
+            }
+            var menuItemInMenuShellItem = MenuShellItemMenuItemProperty.GetValue(shellItem);
+            return menuItemInMenuShellItem == menuItem;
+        }
+
+        private static readonly Type MenuShellItemType = typeof(XF.ShellItem).Assembly.GetType("Xamarin.Forms.MenuShellItem");
+        private static readonly PropertyInfo MenuShellItemMenuItemProperty = MenuShellItemType.GetProperty("MenuItem");
     }
 }
