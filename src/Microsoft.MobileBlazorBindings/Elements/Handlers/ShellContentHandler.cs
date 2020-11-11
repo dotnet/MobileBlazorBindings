@@ -22,6 +22,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            return child == ShellContentControl.Content ? 0 : -1;
+        }
+
         public override void SetParent(XF.Element parent)
         {
             if (ElementControl.Parent == null)

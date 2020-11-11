@@ -43,13 +43,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            var sectionToRemove = child switch
-            {
-                XF.TemplatedPage childAsTemplatedPage => GetSectionForTemplatedPage(childAsTemplatedPage),
-                XF.ShellContent childAsShellContent => GetSectionForContent(childAsShellContent),
-                XF.ShellSection childAsShellSection => childAsShellSection,
-                _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').")
-            };
+            var sectionToRemove = GetSectionForElement(child)
+                ?? throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').");
 
             ShellItemControl.Items.Remove(sectionToRemove);
         }
@@ -61,6 +56,23 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 // The Parent should already be set
                 throw new InvalidOperationException("Shouldn't need to set parent here...");
             }
+        }
+
+        public int GetChildIndex(XF.Element child)
+        {
+            var section = GetSectionForElement(child);
+            return ShellItemControl.Items.IndexOf(section);
+        }
+
+        private XF.ShellSection GetSectionForElement(XF.Element child)
+        {
+            return child switch
+            {
+                XF.TemplatedPage childAsTemplatedPage => GetSectionForTemplatedPage(childAsTemplatedPage),
+                XF.ShellContent childAsShellContent => GetSectionForContent(childAsShellContent),
+                XF.ShellSection childAsShellSection => childAsShellSection,
+                _ => null
+            };
         }
 
         private XF.ShellSection GetSectionForContent(XF.ShellContent shellContent)

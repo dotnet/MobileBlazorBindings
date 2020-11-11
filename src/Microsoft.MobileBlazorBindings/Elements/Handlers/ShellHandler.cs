@@ -84,17 +84,29 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            var itemToRemove = child switch
+            var itemToRemove = GetItemForElement(child)
+                ?? throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').");
+
+            ShellControl.Items.Remove(itemToRemove);
+        }
+
+        public int GetChildIndex(XF.Element child)
+        {
+            var shellItem = GetItemForElement(child);
+            return ShellControl.Items.IndexOf(shellItem);
+        }
+
+        private XF.ShellItem GetItemForElement(XF.Element child)
+        {
+            return child switch
             {
                 XF.TemplatedPage childAsTemplatedPage => GetItemForTemplatedPage(childAsTemplatedPage),
                 XF.ShellContent childAsShellContent => GetItemForContent(childAsShellContent),
                 XF.ShellSection childAsShellSection => GetItemForSection(childAsShellSection),
                 XF.MenuItem childAsMenuItem => GetItemForMenuItem(childAsMenuItem),
                 XF.ShellItem childAsShellItem => childAsShellItem,
-                _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').")
+                _ => null
             };
-
-            ShellControl.Items.Remove(itemToRemove);
         }
 
         private XF.ShellItem GetItemForTemplatedPage(XF.TemplatedPage childAsTemplatedPage)

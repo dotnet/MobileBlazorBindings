@@ -9,5 +9,6 @@ namespace Microsoft.MobileBlazorBindings
     {
         void AddChild(XF.Element child, int physicalSiblingIndex);
         void RemoveChild(XF.Element child);
+        int GetChildIndex(XF.Element child);
     }
 }

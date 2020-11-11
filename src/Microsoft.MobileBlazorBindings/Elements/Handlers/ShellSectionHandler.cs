@@ -38,6 +38,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            var shellContent = GetContentForChild(child);
+            return ShellSectionControl.Items.IndexOf(shellContent);
+        }
+
         public virtual void RemoveChild(XF.Element child)
         {
             if (child is null)
@@ -45,12 +51,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            XF.ShellContent contentToRemove = child switch
-            {
-                XF.TemplatedPage childAsTemplatedPage => GetContentForTemplatePage(childAsTemplatedPage),
-                XF.ShellContent childAsShellContent => childAsShellContent,
-                _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').")
-            };
+            XF.ShellContent contentToRemove = GetContentForChild(child)
+                ?? throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').");
 
             ShellSectionControl.Items.Remove(contentToRemove);
         }
@@ -62,6 +64,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 // The Parent should already be set
                 throw new InvalidOperationException("Shouldn't need to set parent here...");
             }
+        }
+
+        private XF.ShellContent GetContentForChild(XF.Element child)
+        {
+            return child switch
+            {
+                XF.TemplatedPage childAsTemplatedPage => GetContentForTemplatePage(childAsTemplatedPage),
+                XF.ShellContent childAsShellContent => childAsShellContent,
+                _ => null
+            };
         }
 
         private XF.ShellContent GetContentForTemplatePage(XF.TemplatedPage childAsTemplatedPage)

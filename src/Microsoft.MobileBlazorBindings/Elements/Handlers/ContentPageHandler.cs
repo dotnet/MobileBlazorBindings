@@ -13,6 +13,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ContentPageControl.Content = childAsView;
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            return ContentPageControl.Content == child ? 0 : -1;
+        }
+
         public virtual void RemoveChild(XF.Element child)
         {
             if (ContentPageControl.Content == child)

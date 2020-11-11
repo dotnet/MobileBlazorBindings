@@ -335,7 +335,7 @@ namespace Microsoft.MobileBlazorBindings.Core
 
                     // If a native element was found somewhere within this sibling, the index for the new element
                     // will be 1 greater than its native index.
-                    return Renderer.ElementManager.GetPhysicalSiblingIndex(matchedEarlierSibling._targetElement) + 1;
+                    return Renderer.ElementManager.GetChildElementIndex(_closestPhysicalParent, matchedEarlierSibling._targetElement) + 1;
                 }
 
                 // If this level has a native element and all its relevant children have been scanned, then there's
