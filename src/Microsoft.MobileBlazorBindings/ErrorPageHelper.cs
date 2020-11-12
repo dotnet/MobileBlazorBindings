@@ -23,6 +23,7 @@ namespace Microsoft.MobileBlazorBindings
         {
             var errorPage = new XF.ContentPage()
             {
+                BackgroundColor = XF.Color.White,
                 Title = "Unhandled exception",
                 Content = new XF.StackLayout
                 {
@@ -32,12 +33,14 @@ namespace Microsoft.MobileBlazorBindings
                     {
                         new XF.Label
                         {
+                            TextColor = XF.Color.Black,
                             FontAttributes = XF.FontAttributes.Bold,
                             FontSize = XF.Device.GetNamedSize(XF.NamedSize.Large, typeof(XF.Label)),
                             Text = "Unhandled exception",
                         },
                         new XF.Label
                         {
+                            TextColor = XF.Color.Black,
                             Text = exception?.Message,
                         },
                         new XF.ScrollView
@@ -45,6 +48,7 @@ namespace Microsoft.MobileBlazorBindings
                             Content =
                                 new XF.Label
                                 {
+                                    TextColor = XF.Color.Black,
                                     FontSize = XF.Device.GetNamedSize(XF.NamedSize.Small, typeof(XF.Label)),
                                     Text = exception?.StackTrace,
                                 },
