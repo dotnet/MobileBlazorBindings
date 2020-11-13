@@ -41,7 +41,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
                 var uri = _currentUri;
                 _currentUri = null;
                 _currentNavigation = null;
+#pragma warning disable CA2000 // Dispose objects before losing scope
                 var request = new NSUrlRequest(uri);
+#pragma warning restore CA2000 // Dispose objects before losing scope
                 webView.LoadRequest(request);
             }
         }

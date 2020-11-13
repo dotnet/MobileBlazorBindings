@@ -199,7 +199,9 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 {
                     entry.CompletionSource.TrySetCanceled();
                 }
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch
+#pragma warning restore CA1031 // Do not catch general exception types
                 { 
                 }
             }

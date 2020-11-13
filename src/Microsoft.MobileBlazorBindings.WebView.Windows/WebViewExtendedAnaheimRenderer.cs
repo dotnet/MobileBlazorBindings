@@ -46,7 +46,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             switch (e.PropertyName)
             {
                 case "Source":
-                    _ = Load();
+                    Load();
                     break;
             }
         }
@@ -71,7 +71,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 {
                     try
                     {
+#pragma warning disable CA2000 // Dispose objects before losing scope; this object's lifetime is managed elsewhere
                         var nativeControl = new WebView2() { MinHeight = 200 };
+#pragma warning restore CA2000 // Dispose objects before losing scope
                         SetNativeControl(nativeControl);
 
                         _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
@@ -160,7 +162,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
         }
 
-        private async Task Load()
+        private void Load()
         {
             try
             {

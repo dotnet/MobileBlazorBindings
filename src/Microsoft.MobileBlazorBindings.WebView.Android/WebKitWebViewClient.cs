@@ -60,12 +60,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         {
             // handle redirects to the app custom scheme by reloading the url in the view.
             // otherwise they will be blocked by Android.
+#pragma warning disable CA1062 // Validate arguments of public methods
             if (request.IsRedirect && request.IsForMainFrame)
+#pragma warning restore CA1062 // Validate arguments of public methods
             {
                 var uri = new Uri(request.Url.ToString());
                 if (uri.Host == "0.0.0.0")
                 {
+#pragma warning disable CA1062 // Validate arguments of public methods
                     view.LoadUrl(uri.ToString());
+#pragma warning restore CA1062 // Validate arguments of public methods
                     return true;
                 }
             }
