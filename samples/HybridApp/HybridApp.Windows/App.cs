@@ -3,6 +3,8 @@
 
 using Microsoft.MobileBlazorBindings.WebView.Windows;
 using System;
+using System.IO;
+using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 
@@ -20,7 +22,7 @@ namespace HybridApp.Windows
         public MainWindow()
         {
             Forms.Init();
-            BlazorHybridWindows.Init();
+            BlazorHybridWindows.Init(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
             LoadApplication(new App());
         }
     }
