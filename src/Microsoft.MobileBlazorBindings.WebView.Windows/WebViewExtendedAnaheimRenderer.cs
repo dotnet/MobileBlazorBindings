@@ -9,7 +9,6 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Xamarin.Forms;
 using Xamarin.Forms.Platform.WPF;
 using XF = Xamarin.Forms;
 

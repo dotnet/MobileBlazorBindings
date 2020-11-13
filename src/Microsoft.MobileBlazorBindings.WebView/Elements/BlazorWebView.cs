@@ -58,13 +58,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         /// <summary>
         /// Get the non-scoped root service provider.
         /// </summary>
-        private IServiceProvider RootServiceProvider
-        {
-            get
-            {
-                return Host?.Services ?? DefaultServices.Value;
-            }
-        }
+        private IServiceProvider RootServiceProvider => Host?.Services ?? DefaultServices.Value;
 
         // This is the constructor used when created from XAML
         // so we know we have to init as soon as the parent is set
@@ -89,7 +83,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                             builder.OpenComponent<TComponent>(0);
                             builder.CloseComponent();
 #pragma warning disable CA1031 // Do not catch general exception types
-                        } 
+                        }
                         catch (Exception ex)
 #pragma warning restore CA1031 // Do not catch general exception types
                         {
@@ -208,7 +202,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         private void HandleNavigationStarting(object sender, Uri e)
         {
-
             // We stop blazor when we navigate away
             // and we restart it if our host is 0.0.0.0 again.
             Stop();
@@ -236,10 +229,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
         public async Task InitAsync()
         {
-            IServiceProvider scopeServiceProvider;
             var services = RootServiceProvider;
             _serviceScope = services.CreateScope();
-            scopeServiceProvider = _serviceScope.ServiceProvider;
+            var scopeServiceProvider = _serviceScope.ServiceProvider;
 
             var webViewJSRuntime = (BlazorHybridJSRuntime)scopeServiceProvider.GetRequiredService<IJSRuntime>();
             webViewJSRuntime.AttachToIpcChannel(_ipc);

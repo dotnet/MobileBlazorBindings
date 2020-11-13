@@ -17,12 +17,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.macOS
 
         public WebViewNavigationDelegate(WebViewExtended webView)
         {
-            this._webView = webView;
+            _webView = webView;
         }
+
         public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
         {
             _currentNavigation = navigation;
         }
+
         public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
         {
             if (navigationAction.TargetFrame.MainFrame)

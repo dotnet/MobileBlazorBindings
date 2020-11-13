@@ -3,11 +3,9 @@
 
 using Android.Graphics;
 using Android.Runtime;
-using Android.Text.Style;
 using Android.Util;
 using Android.Webkit;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
-using Org.Apache.Http.Impl.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -45,7 +43,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         public WebKitWebViewClient(WebKitWebViewRenderer renderer, WebViewExtended webView)
         {
             _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
-            this._webView = webView;
+            _webView = webView;
         }
 
         protected WebKitWebViewClient(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
@@ -103,7 +101,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                         memoryStream.Position = 0;
                         contentStream = memoryStream;
                     }
-                    
+
                     // there is a result stream, prepare the response.
                     var responseHeaders = new Dictionary<string, string>()
                     {
@@ -198,7 +196,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         private void RunBlazorStartupScripts(AWebView view)
         {
             Log.Info("RunBlazorStartupScripts", "attaching Blazor init script.");
-            var scriptSourceBytes = Encoding.UTF8.GetBytes(InitScriptSource);
             view.EvaluateJavascript(@"
                 var blazorScript = document.createElement('script');
                 blazorScript.src = 'framework://blazor.desktop.js';

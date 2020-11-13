@@ -3,7 +3,6 @@
 
 using Android.Runtime;
 using Android.Speech.Tts;
-using Java.Lang;
 using System;
 
 namespace MobileBlazorBindingsTodo.Droid

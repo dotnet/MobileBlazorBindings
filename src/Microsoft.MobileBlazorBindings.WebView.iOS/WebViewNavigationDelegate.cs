@@ -1,12 +1,10 @@
-﻿using Foundation;
-using Intents;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Foundation;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
-using ObjCRuntime;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using WebKit;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.WebView.iOS
 {
@@ -19,18 +17,20 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 
         public WebViewNavigationDelegate(WebViewExtended webView)
         {
-            this._webView = webView;
+            _webView = webView;
         }
+
         public override void DidStartProvisionalNavigation(WKWebView webView, WKNavigation navigation)
         {
             _currentNavigation = navigation;
         }
+
         public override void DecidePolicy(WKWebView webView, WKNavigationAction navigationAction, Action<WKNavigationActionPolicy> decisionHandler)
         {
             if (navigationAction.TargetFrame.MainFrame)
             {
                 _currentUri = navigationAction.Request.Url;
-            } 
+            }
             decisionHandler(WKNavigationActionPolicy.Allow);
         }
 

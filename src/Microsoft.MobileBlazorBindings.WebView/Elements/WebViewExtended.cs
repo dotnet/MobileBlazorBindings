@@ -4,8 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Elements
@@ -14,10 +12,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
     public class WebViewExtended : XF.WebView
     {
-        public WebViewExtended(IBlazorErrorHandler ErrorHandler)
+        public WebViewExtended(IBlazorErrorHandler errorHandler)
         {
-            this.ErrorHandler = ErrorHandler;
+            ErrorHandler = errorHandler;
         }
+
         public EventHandler<string> OnWebMessageReceived { get; set; }
         public EventHandler<string> SendMessageFromJSToDotNetRequested { get; set; }
 

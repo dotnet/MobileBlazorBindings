@@ -9,7 +9,6 @@ using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -220,7 +219,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 newElementController.GoBackRequested += OnGoBackRequested;
                 newElementController.GoForwardRequested += OnGoForwardRequested;
                 newElementController.ReloadRequested += OnReloadRequested;
-                
+
                 UpdateMixedContentMode();
                 UpdateEnableZoomControls();
                 UpdateDisplayZoomControls();
@@ -235,7 +234,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             try
             {
                 Control.EvaluateJavascript($"__dispatchMessageCallback(\"{messageJSStringLiteral}\")", null);
-            } catch (ObjectDisposedException)
+            }
+            catch (ObjectDisposedException)
             {
                 // the control was disposed, no evaluation possible anymore.
             }
