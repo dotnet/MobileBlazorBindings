@@ -214,7 +214,6 @@ window.external = {
                     responseStream.CopyTo(ms);
                     responseStream.Dispose();
                     return ms.ToArray();
-
                 }
             }
 
