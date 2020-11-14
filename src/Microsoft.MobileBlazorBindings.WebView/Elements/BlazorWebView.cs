@@ -111,7 +111,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _webView.OnNavigationStarting += HandleNavigationStarting;
             _webView.OnNavigationFinished += HandleNavigationFinished;
 
-            bool TryGetFile(IFileProvider fileProvider, string filename, out Stream fileStream)
+            static bool TryGetFile(IFileProvider fileProvider, string filename, out Stream fileStream)
             {
                 var fileInfo = fileProvider.GetFileInfo(filename);
                 if (fileInfo != null && fileInfo.Exists)

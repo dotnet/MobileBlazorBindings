@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-#pragma warning disable BL0006 // Do not use RenderTree types
     internal class BlazorHybridRenderer : Renderer
     {
         private static readonly Type _writer;
@@ -289,5 +288,4 @@ namespace Microsoft.MobileBlazorBindings.WebView
             public TaskCompletionSource<object> CompletionSource { get; }
         }
     }
-#pragma warning restore BL0006 // Do not use RenderTree types
 }
