@@ -9,9 +9,9 @@ namespace ControlGallery
 {
     public class App : Application
     {
-        public App()
+        public App(string[] args = null)
         {
-            var host = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var host = MobileBlazorBindingsHost.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Register app-specific services

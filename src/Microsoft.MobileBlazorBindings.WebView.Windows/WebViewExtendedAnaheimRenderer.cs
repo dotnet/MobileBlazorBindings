@@ -6,6 +6,7 @@ using Microsoft.MobileBlazorBindings.WebView.Windows;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Xamarin.Forms.Platform.WPF;
@@ -18,6 +19,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
     public class WebViewExtendedAnaheimRenderer : ViewRenderer<WebViewExtended, WebView2>, XF.IWebViewDelegate
     {
         private CoreWebView2Environment _coreWebView2Environment;
+        private ulong _navigationId;
+        private Uri _currentUri;
+        private bool _isDisposed;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
         {
@@ -27,6 +31,23 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
             }
 
             _ = HandleElementChangedAsync(e);
+        }
+
+        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            base.OnElementPropertyChanged(sender, e);
+
+            switch (e.PropertyName)
+            {
+                case "Source":
+                    Load();
+                    break;
+            }
         }
 
         private const string LoadBlazorJSScript =
@@ -40,38 +61,38 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         {
             if (e.OldElement != null)
             {
-                throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
+                Element.SendMessageFromJSToDotNetRequested -= OnSendMessageFromJSToDotNetRequested;
             }
 
             if (e.NewElement != null)
             {
-                if (Control != null)
+                if (Control == null)
                 {
-                    throw new NotSupportedException("On WPF, we need to retain the association between WebView elements and renderers, so switching to a different element isn't supported.");
-                }
+                    try
+                    {
+#pragma warning disable CA2000 // Dispose objects before losing scope; this object's lifetime is managed elsewhere
+                        var nativeControl = new WebView2() { MinHeight = 200 };
+#pragma warning restore CA2000 // Dispose objects before losing scope
+                        SetNativeControl(nativeControl);
 
-                if (e.NewElement.RetainedNativeControl is WebView2 retainedNativeControl)
-                {
-                    SetNativeControl(retainedNativeControl);
+                        _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+
+                        await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
+
+                        await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
+                        await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
+                    }
+#pragma warning disable CA1031 // Do not catch general exception types
+                    catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+                    {
+                        e.NewElement.ErrorHandler?.HandleException(ex);
+                        return;
+                    }
                     SubscribeToControlEvents();
                 }
-                else
-                {
-                    var nativeControl = new WebView2() { MinHeight = 200 };
-                    e.NewElement.RetainedNativeControl = nativeControl;
-                    SetNativeControl(nativeControl);
 
-                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
-
-                    await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
-
-                    await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
-                    await Control.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
-
-                    SubscribeToControlEvents();
-
-                    Load();
-                }
+                Load();
 
                 SubscribeToElementEvents();
 
@@ -92,9 +113,27 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 
         private void SubscribeToControlEvents()
         {
+            Control.NavigationStarting += HandleNavigationStarting;
+            Control.NavigationCompleted += HandleNavigationCompleted;
             Control.WebMessageReceived += HandleWebMessageReceived;
             Control.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
             Control.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
+        }
+
+        private void HandleNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            if (e.NavigationId == _navigationId)
+            {
+                Element.HandleNavigationFinished(_currentUri);
+            }
+        }
+
+        private void HandleNavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
+        {
+            _navigationId = e.NavigationId;
+            _currentUri = new Uri(e.Uri);
+
+            Element.HandleNavigationStarting(_currentUri);
         }
 
         private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
@@ -117,16 +156,25 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 if (responseStream != null) // If null, the handler doesn't want to handle it
                 {
                     responseStream.Position = 0;
-                    args.Response = Control.CoreWebView2.Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}");
+                    args.Response = Control.CoreWebView2.Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store");
                 }
             }
         }
 
         private void Load()
         {
-            if (Element.Source != null)
+            try
             {
-                Element.Source.Load(this);
+                if (Element.Source != null)
+                {
+                    Element.Source.Load(this);
+                }
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch (Exception ex)
+#pragma warning restore CA1031 // Do not catch general exception types
+            {
+                Element?.ErrorHandler?.HandleException(ex);
             }
         }
 
@@ -144,13 +192,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         public void LoadUrl(string url)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
-            if (url != null)
+            if (url != null && Control?.CoreWebView2 != null)
             {
                 Control.CoreWebView2.Navigate(url);
             }
         }
-
-        private bool _isDisposed;
 
         protected override void Dispose(bool disposing)
         {
@@ -166,7 +212,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     Control.CoreWebView2.WebResourceRequested -= HandleWebResourceRequested;
                     Control.CoreWebView2.RemoveWebResourceRequestedFilter("*", Web.WebView2.Core.CoreWebView2WebResourceContext.All);
                     Control.WebMessageReceived -= HandleWebMessageReceived;
-
+                    Control.CoreWebView2.NavigationStarting -= HandleNavigationStarting;
+                    Control.CoreWebView2.NavigationCompleted -= HandleNavigationCompleted;
                     switch (Control.Parent)
                     {
                         case FormsPanel formsPanel:
@@ -174,6 +221,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                             break;
                         case ContentControl contentControl:
                             contentControl.Content = null;
+                            break;
+                        // might be null when the control is not properly initialized. Don't crash on a NullReference then.
+                        case null:
                             break;
                         default:
                             throw new NotImplementedException($"Don't know how to detach from a parent of type {Control.Parent.GetType().FullName}");

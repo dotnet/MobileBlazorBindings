@@ -3,8 +3,11 @@
 
 using Android.Graphics;
 using Android.Runtime;
+using Android.Util;
 using Android.Webkit;
+using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Xamarin.Forms;
@@ -13,46 +16,65 @@ using AWebView = Android.Webkit.WebView;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
-    public class WebKitWebViewClient : WebViewClient
+    public class WebKitWebViewClient : WebViewClient, IValueCallback
     {
+        /// <summary>
+        /// Script to enable C#/JS communication for Blazor, and then loads Blazor and starts it
+        /// </summary>
+        private const string InitScriptSource = @"
+            window.__receiveMessageCallbacks = [];
+            window.__dispatchMessageCallback = function(message) {
+                window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
+            };
+
+            window.external.sendMessage = function(message) {
+                window.external.PostMessage(message);
+            };
+            window.external.receiveMessage = function(callback) {
+                window.__receiveMessageCallbacks.push(callback);
+            };
+        ";
+
         private WebNavigationResult _navigationResult = WebNavigationResult.Success;
         private WebKitWebViewRenderer _renderer;
+        private readonly WebViewExtended _webView;
         private string _lastUrlNavigatedCancel;
 
-        public WebKitWebViewClient(WebKitWebViewRenderer renderer)
-            => _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+        public WebKitWebViewClient(WebKitWebViewRenderer renderer, WebViewExtended webView)
+        {
+            _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+            _webView = webView;
+        }
 
         protected WebKitWebViewClient(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
+            // This constructor is called whenever the .NET proxy was disposed, and it was recreated by Java. It also
+            // happens when overriden methods are called between execution of this constructor and the one above.
+            // because of these facts, we have to check
+            // all methods below for null field references and properties.
         }
-
-        private bool SendNavigatingCanceled(string url) => _renderer?.SendNavigatingCanceled(url) ?? true;
 
         public override bool ShouldOverrideUrlLoading(AWebView view, IWebResourceRequest request)
         {
-            if (request is null)
+            // handle redirects to the app custom scheme by reloading the url in the view.
+            // otherwise they will be blocked by Android.
+#pragma warning disable CA1062 // Validate arguments of public methods
+            if (request.IsRedirect && request.IsForMainFrame)
+#pragma warning restore CA1062 // Validate arguments of public methods
             {
-                throw new ArgumentNullException(nameof(request));
+                var uri = new Uri(request.Url.ToString());
+                if (uri.Host == "0.0.0.0")
+                {
+#pragma warning disable CA1062 // Validate arguments of public methods
+                    view.LoadUrl(uri.ToString());
+#pragma warning restore CA1062 // Validate arguments of public methods
+                    return true;
+                }
             }
-
-            if (_renderer.Element.SchemeHandlers.TryGetValue(request.Url.Scheme, out var schemeHandler))
-            {
-                var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
-
-                using var reader = new StreamReader(contentStream);
-                var content = reader.ReadToEnd();
-
-                view.LoadDataWithBaseURL(
-                    baseUrl: "app://0.0.0.0/",
-                    data: content,
-                    mimeType: contentType,
-                    encoding: "UTF-8",
-                    historyUrl: null);
-
-                return true;
-            }
-            return SendNavigatingCanceled(request.Url?.ToString());
+            return base.ShouldOverrideUrlLoading(view, request);
         }
+
+        private bool SendNavigatingCanceled(string url) => _renderer?.SendNavigatingCanceled(url) ?? true;
 
         public override WebResourceResponse ShouldInterceptRequest(AWebView view, IWebResourceRequest request)
         {
@@ -61,15 +83,32 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (_renderer.Element.SchemeHandlers.TryGetValue(request.Url.Scheme, out var schemeHandler))
+            if (_renderer?.Element != null && _renderer.Element.SchemeHandlers.TryGetValue(request.Url.Scheme, out var schemeHandler))
             {
                 var contentStream = schemeHandler(request.Url.ToString(), out var contentType);
                 if (contentStream != null)
                 {
-                    using var reader = new StreamReader(contentStream);
-                    var content = reader.ReadToEnd();
-                    contentStream = schemeHandler(request.Url.ToString(), out contentType);
-                    return new WebResourceResponse(contentType, "UTF-8", contentStream);
+                    if (request.Url.Scheme == "framework")
+                    {
+#pragma warning disable CA2000 // Dispose objects before losing scope
+                        var memoryStream = new MemoryStream();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+
+                        var buffer = Encoding.UTF8.GetBytes(InitScriptSource);
+                        memoryStream.Write(buffer, 0, buffer.Length);
+                        contentStream.CopyTo(memoryStream);
+                        contentStream.Dispose();
+                        memoryStream.Position = 0;
+                        contentStream = memoryStream;
+                    }
+
+                    // there is a result stream, prepare the response.
+                    var responseHeaders = new Dictionary<string, string>()
+                    {
+                        { "Cache-Control", "no-cache, max-age=0, must-revalidate, no-store" },
+                    };
+
+                    return new WebResourceResponse(contentType, "UTF-8", 200, "OK", responseHeaders, contentStream);
                 }
             }
 
@@ -83,13 +122,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 throw new ArgumentNullException(nameof(view));
             }
 
-            if (_renderer?.Element == null || string.IsNullOrWhiteSpace(url) || url == WebViewRenderer.AssetBaseUrl)
+            if (_renderer?.Element == null || _webView == null || string.IsNullOrWhiteSpace(url) || url == WebViewRenderer.AssetBaseUrl)
             {
                 return;
             }
 
             _renderer.SyncNativeCookiesToElement(url);
             var cancel = false;
+
             if (!url.Equals(_renderer.UrlCanceled, StringComparison.OrdinalIgnoreCase))
             {
                 cancel = SendNavigatingCanceled(url);
@@ -106,33 +146,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             {
                 _navigationResult = WebNavigationResult.Success;
                 base.OnPageStarted(view, url, favicon);
+                _webView.HandleNavigationStarting(new Uri(url));
             }
         }
-
-        /// <summary>
-        /// Script to enable C#/JS communication for Blazor, and then loads Blazor and starts it
-        /// </summary>
-        private const string InitScriptSource = @"
-            function blazorInitScript() {
-                window.__receiveMessageCallbacks = [];
-                window.__dispatchMessageCallback = function(message) {
-                    window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
-                };
-
-                window.external.sendMessage = function(message) {
-                    window.external.PostMessage(message);
-                };
-                window.external.receiveMessage = function(callback) {
-                    window.__receiveMessageCallbacks.push(callback);
-                };
-
-                var blazorScript = document.createElement('script');
-                blazorScript.src = 'framework://blazor.desktop.js';
-                document.head.appendChild(blazorScript);
-            }
-        ";
-
-        private bool _firstPageLoad = true;
 
         public override void OnPageFinished(AWebView view, string url)
         {
@@ -145,7 +161,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 throw new ArgumentException($"'{nameof(url)}' cannot be null or empty", nameof(url));
             }
 
-            if (_renderer?.Element == null || url == WebViewRenderer.AssetBaseUrl)
+            if (_webView == null && _renderer?.Element == null || url == WebViewRenderer.AssetBaseUrl)
             {
                 return;
             }
@@ -169,31 +185,22 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
             base.OnPageFinished(view, url);
 
-            // TODO: Not sure if this check is right. This protects against re-starting Blazor
-            // during a Blazor navigation. But it will prevent re-starting Blazor if there's
-            // a "full" navigation. Does that matter?
-            if (_firstPageLoad)
+            var uri = new Uri(url);
+            _webView.HandleNavigationFinished(uri);
+            if (uri.Scheme == "app")
             {
                 RunBlazorStartupScripts(view);
-                _firstPageLoad = false;
             }
         }
 
-
         private void RunBlazorStartupScripts(AWebView view)
         {
-            var scriptSourceBytes = Encoding.UTF8.GetBytes(InitScriptSource);
-            var encodedInitScript = Convert.ToBase64String(scriptSourceBytes, Base64FormattingOptions.None);
-
-            // Add the init script tag reference
-            view.LoadUrl("javascript:(function() {" +
-                         "var initScript = document.createElement('script');" +
-                         "initScript.innerHTML = window.atob('" + encodedInitScript + "');" +
-                         "document.head.appendChild(initScript);" +
-                         "})()");
-
-            // Run the init script (which will then load Blazor and start it)
-            view.LoadUrl("javascript:setTimeout(blazorInitScript, 0)");
+            Log.Info("RunBlazorStartupScripts", "attaching Blazor init script.");
+            view.EvaluateJavascript(@"
+                var blazorScript = document.createElement('script');
+                blazorScript.src = 'framework://blazor.desktop.js';
+                document.head.appendChild(blazorScript);
+            ", this);
         }
 
         public override void OnReceivedError(AWebView view, IWebResourceRequest request, WebResourceError error)
@@ -219,6 +226,10 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             {
                 _renderer = null;
             }
+        }
+
+        public void OnReceiveValue(Java.Lang.Object value)
+        {
         }
     }
 }

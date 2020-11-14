@@ -6,7 +6,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
-using System;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -37,14 +36,21 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (firstRender)
             {
                 element.Host = Host;
+                // The rerender is triggered whenever Blazor has to reload e.g. when navigating away from a page
+                // and subsequently coming back to the app URL. 
+                element.RerenderAction = () => InvokeAsync(() => StateHasChanged());
+
                 if (ErrorHandler != null)
                 {
                     element.ErrorHandler = ErrorHandler;
                 }
-                await element.InitAsync().ConfigureAwait(false);
-            }
 
-            await element.Render(ChildContent).ConfigureAwait(false);
+                element.SetInitialSource();
+            }
+            else
+            {
+                await element.Render(ChildContent).ConfigureAwait(false);
+            }
         }
     }
 }

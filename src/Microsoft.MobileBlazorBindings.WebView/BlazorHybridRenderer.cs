@@ -16,7 +16,6 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-#pragma warning disable BL0006 // Do not use RenderTree types
     internal class BlazorHybridRenderer : Renderer
     {
         private static readonly Type _writer;
@@ -192,9 +191,18 @@ namespace Microsoft.MobileBlazorBindings.WebView
         protected override void Dispose(bool disposing)
         {
             _disposing = true;
+
             while (_unacknowledgedRenderBatches.TryDequeue(out var entry))
             {
-                entry.CompletionSource.TrySetCanceled();
+                try
+                {
+                    entry.CompletionSource.TrySetCanceled();
+                }
+#pragma warning disable CA1031 // Do not catch general exception types
+                catch
+#pragma warning restore CA1031 // Do not catch general exception types
+                {
+                }
             }
 
             base.Dispose(true);
@@ -280,5 +288,4 @@ namespace Microsoft.MobileBlazorBindings.WebView
             public TaskCompletionSource<object> CompletionSource { get; }
         }
     }
-#pragma warning restore BL0006 // Do not use RenderTree types
 }

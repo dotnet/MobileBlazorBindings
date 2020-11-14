@@ -7,11 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Microsoft.MobileBlazorBindings.WebView.Android")]
 
 namespace Microsoft.MobileBlazorBindings
 {

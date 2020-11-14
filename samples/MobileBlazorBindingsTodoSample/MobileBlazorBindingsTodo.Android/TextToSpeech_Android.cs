@@ -1,15 +1,25 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Android.Runtime;
 using Android.Speech.Tts;
-using Java.Lang;
+using System;
 
 namespace MobileBlazorBindingsTodo.Droid
 {
-    public class TextToSpeech_Android : Object, ITextToSpeech, TextToSpeech.IOnInitListener
+    public class TextToSpeech_Android : Java.Lang.Object, ITextToSpeech, TextToSpeech.IOnInitListener
     {
         private TextToSpeech _speaker;
         private string _toSpeak;
+
+        public TextToSpeech_Android()
+        {
+
+        }
+
+        public TextToSpeech_Android(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+        {
+        }
 
         public void Speak(string text)
         {

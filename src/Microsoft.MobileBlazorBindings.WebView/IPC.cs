@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-    internal class IPC
+    internal sealed class IPC : IDisposable
     {
         private readonly WebViewExtended _webView;
         private readonly Dictionary<string, List<Action<object>>> _registrations = new Dictionary<string, List<Action<object>>>();
@@ -113,6 +113,11 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 CancellationToken.None,
                 TaskCreationOptions.None,
                 TaskScheduler.Default);
+        }
+
+        public void Dispose()
+        {
+            _webView.OnWebMessageReceived -= HandleScriptNotify;
         }
     }
 }

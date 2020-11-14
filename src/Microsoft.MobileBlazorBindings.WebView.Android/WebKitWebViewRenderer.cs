@@ -2,13 +2,13 @@
 // Licensed under the MIT license.
 
 using Android.Content;
+using Android.Runtime;
 using Android.Webkit;
 using Java.Interop;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Net;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -62,27 +62,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
         private void LoadUrl(string url, bool fireNavigatingCanceled)
         {
-            var uri = new Uri(url);
-
-            if (Element.SchemeHandlers.TryGetValue(uri.Scheme, out var schemeHandler))
-            {
-                var contentStream = schemeHandler(url, out var contentType);
-
-                using var reader = new StreamReader(contentStream);
-                var content = reader.ReadToEnd();
-                Control.LoadDataWithBaseURL(
-                    baseUrl: "app://0.0.0.0/",
-                    data: content,
-                    mimeType: contentType,
-                    encoding: "UTF-8",
-                    historyUrl: null);
-                return;
-            }
-
             if (!fireNavigatingCanceled || !SendNavigatingCanceled(url))
             {
                 _eventState = WebNavigationEvent.NewPage;
-
                 Control.LoadUrl(url);
             }
         }
@@ -139,9 +121,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
             base.Dispose(disposing);
         }
 
-        protected virtual WebKitWebViewClient GetWebViewClient()
+        protected virtual WebKitWebViewClient GetWebViewClient(WebViewExtended webView)
         {
-            return new WebKitWebViewClient(this);
+            return new WebKitWebViewClient(this, webView);
         }
 
         protected virtual WebKitWebChromeClient GetFormsWebChromeClient()
@@ -190,12 +172,13 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 webView.LayoutParameters = new global::Android.Widget.AbsoluteLayout.LayoutParams(LayoutParams.MatchParent, LayoutParams.MatchParent, 0, 0);
 #pragma warning restore 618
 
-                _webViewClient = GetWebViewClient();
+                _webViewClient = GetWebViewClient(Element);
                 webView.SetWebViewClient(_webViewClient);
 
                 _webChromeClient = GetFormsWebChromeClient();
                 _webChromeClient.SetContext(Context);
                 webView.SetWebChromeClient(_webChromeClient);
+
 
                 // TODO: This API is internal so it can't be called. Is it needed? (There's no Designer here anyway.)
                 //if (Context.IsDesignerContext())
@@ -248,7 +231,14 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
         {
             var messageJSStringLiteral = JavaScriptEncoder.Default.Encode(message);
-            Control.EvaluateJavascript($"__dispatchMessageCallback(\"{messageJSStringLiteral}\")", null);
+            try
+            {
+                Control.EvaluateJavascript($"__dispatchMessageCallback(\"{messageJSStringLiteral}\")", null);
+            }
+            catch (ObjectDisposedException)
+            {
+                // the control was disposed, no evaluation possible anymore.
+            }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -441,7 +431,10 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 return;
             }
 
-            Element.Source?.Load(this);
+            if (Element.Source != null)
+            {
+                Element.Source.Load(this);
+            }
 
             UpdateCanGoBackForward();
         }
@@ -529,10 +522,22 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 _source = new TaskCompletionSource<string>();
             }
 
-            public Task<string> JsResult => _source.Task;
+            public JavascriptResult(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+            {
+                // This constructor is called whenever the .NET proxy was disposed, and it was recreated by Java. It also
+                // happens when overriden methods are called between execution of this constructor and the one above.
+                // because of these facts, we have to check all methods below for null field references and properties.            
+            }
+
+            public Task<string> JsResult => _source?.Task ?? Task.FromResult(string.Empty);
 
             public void OnReceiveValue(Java.Lang.Object result)
             {
+                if (_source == null)
+                {
+                    return;
+                }
+
                 var json = ((Java.Lang.String)result).ToString();
                 _source.SetResult(json);
             }
@@ -545,13 +550,20 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 PostMessageCallback = postMessageCallback ?? throw new ArgumentNullException(nameof(postMessageCallback));
             }
 
+            public PostMessageJavaScriptInterface(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
+            {
+                // This constructor is called whenever the .NET proxy was disposed, and it was recreated by Java. It also
+                // happens when overriden methods are called between execution of this constructor and the one above.
+                // because of these facts, we have to check all methods below for null field references and properties.            
+            }
+
             public Action<string> PostMessageCallback { get; }
 
             [Export(nameof(PostMessage))]
             [JavascriptInterface]
             public void PostMessage(Java.Lang.String message)
             {
-                PostMessageCallback.Invoke(message.ToString());
+                PostMessageCallback?.Invoke(message.ToString());
             }
         }
     }
