@@ -6,6 +6,7 @@
         "Xamarin.Forms"
     ],
     "name": "Experimental Mobile Blazor Bindings App",
+    "description": "A multiproject template for using Blazor to build native cross-platform applications.",
     "groupIdentity": "Microsoft.MobileBlazorBindings.App",
     "identity": "Microsoft.MobileBlazorBindings.App.CSharp",
     "shortName": "mobileblazorbindings",
