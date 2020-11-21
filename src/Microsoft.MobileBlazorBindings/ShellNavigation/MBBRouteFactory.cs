@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings;
 using System;
 using XF = Xamarin.Forms;
 
 
-namespace MobileBlazorBindingsXaminals.ShellNavigation
+namespace Microsoft.MobileBlazorBindings.ShellNavigation
 {
     //Based on the forms TypeRouteFactory https://github.com/xamarin/Xamarin.Forms/blob/9fd882e6c598a51bffbbb2f4de72c3bd9023ab41/Xamarin.Forms.Core/Routing.cs
     public class MBBRouteFactory : XF.RouteFactory
