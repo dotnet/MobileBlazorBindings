@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
-using MobileBlazorBindingsXaminals.ShellNavigation;
+using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;

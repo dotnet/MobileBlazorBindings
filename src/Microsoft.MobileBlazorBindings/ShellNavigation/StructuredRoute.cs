@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MobileBlazorBindingsXaminals.ShellNavigation
+namespace Microsoft.MobileBlazorBindings.ShellNavigation
 {
     //Used to map blazor route syntax to forms query syntax
     public class StructuredRoute
