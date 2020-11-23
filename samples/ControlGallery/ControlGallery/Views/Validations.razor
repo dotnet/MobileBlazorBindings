@@ -1,0 +1,48 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.MobileBlazorBindings.Forms
+@using ControlGallery.Models
+
+@page "/validations"
+
+<ContentView>
+    <StackLayout>
+        <Button Text="Add FluentValidator" OnClick="AddFluentValidator" IsEnabled="!useFluentValidator" />
+        <Button Text="Add DataAnnotationsValidator" OnClick="AddDataAnnotationsValidator" IsEnabled="!useDataAnnotationsValidator" />
+
+        <CascadingEditContext Model="LogInModel">
+            @if (useFluentValidator)
+            {
+                <FluentValidator Validator="new LogInModelValidator()" />
+            }
+            @if (useDataAnnotationsValidator)
+            {
+                <DataAnnotationsValidator />
+            }
+
+            <ValidatedEntry @bind-Text="@LogInModel.Email" Placeholder="Email" />
+            <ValidationLabel For="@(() => LogInModel.Email)" TextColor="Color.Red" />
+
+            <ValidatedEntry @bind-Text="@LogInModel.Password" Placeholder="Password" />
+            <ValidationLabel For="@(() => LogInModel.Password)" TextColor="Color.Red" />
+
+            <ValidatedEntry @bind-Text="@LogInModel.ConfirmPassword" Placeholder="Confirm password" />
+            <ValidationLabel For="@(() => LogInModel.ConfirmPassword)" TextColor="Color.Red" />
+
+            <SubmitButton Text="Submit" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" />
+            <Label Text="@statusText" />
+        </CascadingEditContext>
+    </StackLayout>
+</ContentView>
+
+@code {
+    LogInModel LogInModel { get; } = new LogInModel();
+    bool useFluentValidator = false;
+    bool useDataAnnotationsValidator = false;
+    string statusText;
+
+    void OnValidSubmit() => statusText = "Success!";
+    void OnInvalidSubmit() => statusText = "Failure!";
+
+    void AddFluentValidator() => useFluentValidator = true;
+    void AddDataAnnotationsValidator() => useDataAnnotationsValidator = true;
+}

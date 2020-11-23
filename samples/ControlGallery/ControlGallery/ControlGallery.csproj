@@ -23,12 +23,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Accelist.FluentValidation.Blazor" Version="3.0.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.Forms\Microsoft.MobileBlazorBindings.Forms.csproj" />
     <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj" />
     <!--
       NOTE: This project doesn't currently use any DualScreen features, but this reference is here
