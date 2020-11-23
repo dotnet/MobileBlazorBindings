@@ -1,0 +1,33 @@
+﻿@typeparam TValue
+@inherits ViewWrapper
+@implements IDisposable
+
+@foreach (var message in CascadedEditContext.GetValidationMessages(_fieldIdentifier))
+{
+    <Label StyleClass="validation-message" Text="@message" @attributes="Properties" />
+}
+
+@code {
+    readonly EventHandler<ValidationStateChangedEventArgs> _validationStateChangedHandler;
+    FieldIdentifier _fieldIdentifier;
+
+    [CascadingParameter] EditContext CascadedEditContext { get; set; }
+
+    [Parameter] public Expression<Func<TValue>> For { get; set; }
+
+    public ValidationLabel()
+    {
+        _validationStateChangedHandler = (_, __) => StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        _fieldIdentifier = FieldIdentifier.Create(For);
+        CascadedEditContext.OnValidationStateChanged += _validationStateChangedHandler;
+    }
+
+    void IDisposable.Dispose()
+    {
+        CascadedEditContext.OnValidationStateChanged -= _validationStateChangedHandler;
+    }
+}

@@ -1,0 +1,34 @@
+﻿@inherits ViewWrapper
+
+<Button OnClick="OnButtonClick" @attributes="Properties" />
+
+@code {
+    [CascadingParameter] EditContext CascadedEditContext { get; set; }
+
+    [Parameter] public EventCallback<EditContext> OnValidSubmit { get; set; }
+    [Parameter] public EventCallback<EditContext> OnInvalidSubmit { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if (CascadedEditContext is null)
+        {
+            throw new InvalidOperationException($"{GetType()} requires a cascading parameter " +
+                $"of type {nameof(EditContext)}. For example, you can use {GetType().FullName} inside " +
+                $"an {nameof(CascadedEditContext)}.");
+        }
+    }
+
+    private async Task OnButtonClick()
+    {
+        CascadedEditContext.Validate();
+
+        if (CascadedEditContext.GetValidationMessages().Any())
+        {
+            await OnInvalidSubmit.InvokeAsync(CascadedEditContext).ConfigureAwait(false);
+        }
+        else
+        {
+            await OnValidSubmit.InvokeAsync(CascadedEditContext).ConfigureAwait(false);
+        }
+    }
+}
