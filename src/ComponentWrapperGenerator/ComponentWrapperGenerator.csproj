@@ -16,16 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451">
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.8.0.1451">
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.8.0.1687">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>

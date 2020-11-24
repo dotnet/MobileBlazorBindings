@@ -122,7 +122,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
     <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
   </ItemGroup>
@@ -147,7 +147,6 @@
       <UserProperties XamarinHotReloadGenericExceptionInfoBarHybridAppiOSHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
-
   <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
   <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.iOS\build\Microsoft.MobileBlazorBindings.WebView.iOS.targets" />
 </Project>

@@ -18,8 +18,8 @@
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
-    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.8.0.1451" NoWarn="NU1701" />
+    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
+    <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="4.8.0.1687" NoWarn="NU1701" />
   </ItemGroup>
 
   <ItemGroup>
