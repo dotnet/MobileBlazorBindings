@@ -22,7 +22,7 @@ namespace HybridApp.Windows
         public MainWindow()
         {
             Forms.Init();
-            BlazorHybridWindows.Init(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location));
+            BlazorHybridWindows.Init();
             LoadApplication(new App());
         }
     }

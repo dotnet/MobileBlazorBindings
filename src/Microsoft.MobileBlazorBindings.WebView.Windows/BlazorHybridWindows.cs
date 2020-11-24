@@ -1,6 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System;
+using System.IO;
+using System.Reflection;
+
 namespace Microsoft.MobileBlazorBindings.WebView.Windows
 {
     public static class BlazorHybridWindows
@@ -16,6 +20,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
         /// </summary>
         public static void Init(string webviewDirectory = null)
         {
+            if (webviewDirectory == null)
+            {
+                var applicationName = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly()).GetName().Name;
+                webviewDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationName);
+            }
             WebViewDirectory = webviewDirectory;
             // Calling this means the assembly will be loaded, so Xamarin.Forms will discover its ExportRenderer attributes
         }
