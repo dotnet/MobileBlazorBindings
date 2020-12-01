@@ -32,7 +32,9 @@ namespace Microsoft.Extensions.DependencyInjection
 
         protected override void NavigateToCore(string uri, bool forceLoad)
         {
+#pragma warning disable CA2012 // Use ValueTasks correctly
             _jsRuntime.InvokeAsync<object>(InteropNavigateTo, uri, forceLoad);
+#pragma warning restore CA2012 // Use ValueTasks correctly
         }
 
         public void SetLocation(string uri, bool isInterceptedLink)

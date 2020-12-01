@@ -30,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Core
         {
             get
             {
-                return _elementManager ?? (_elementManager = CreateNativeControlManager());
+                return _elementManager ??= CreateNativeControlManager();
             }
         }
 

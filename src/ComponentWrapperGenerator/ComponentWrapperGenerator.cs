@@ -21,13 +21,11 @@ namespace ComponentWrapperGenerator
     {
         private GeneratorSettings Settings { get; }
         private IList<XmlDocument> XmlDocs { get; }
-        private List<ComponentLocation> ComponentLocations { get; }
 
-        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs, List<ComponentLocation> componentLocations)
+        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             XmlDocs = xmlDocs ?? throw new ArgumentNullException(nameof(xmlDocs));
-            ComponentLocations = componentLocations ?? throw new ArgumentNullException(nameof(componentLocations));
         }
 
         public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
@@ -314,7 +312,7 @@ namespace {Settings.RootNamespace}
             }
             var typeNameBuilder = new StringBuilder();
             typeNameBuilder.Append(type.Name.Substring(0, type.Name.IndexOf('`', StringComparison.Ordinal)));
-            typeNameBuilder.Append("<");
+            typeNameBuilder.Append('<');
             var genericArgs = type.GetGenericArguments();
             for (var i = 0; i < genericArgs.Length; i++)
             {
@@ -325,7 +323,7 @@ namespace {Settings.RootNamespace}
                 typeNameBuilder.Append(GetTypeNameAndAddNamespace(genericArgs[i], usings));
 
             }
-            typeNameBuilder.Append(">");
+            typeNameBuilder.Append('>');
             return typeNameBuilder.ToString();
         }
 

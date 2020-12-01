@@ -19,9 +19,7 @@ using XF = Xamarin.Forms;
 namespace Microsoft.MobileBlazorBindings.WebView.iOS
 {
 #pragma warning disable CA1010 // Collections should implement generic interface
-#pragma warning disable CA1710 // Identifiers should have correct suffix
     public class WebViewExtendedWKWebViewRenderer : ViewRenderer<WebViewExtended, WKWebView>, XF.IWebViewDelegate, IWKScriptMessageHandler
-#pragma warning restore CA1710 // Identifiers should have correct suffix
 #pragma warning restore CA1010 // Collections should implement generic interface
     {
 

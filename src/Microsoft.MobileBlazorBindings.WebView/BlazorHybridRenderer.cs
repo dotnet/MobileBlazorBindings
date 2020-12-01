@@ -27,8 +27,8 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
         private readonly IBlazorErrorHandler _blazorErrorHandler;
-        private readonly ConcurrentQueue<UnacknowledgedRenderBatch> _unacknowledgedRenderBatches = new ConcurrentQueue<UnacknowledgedRenderBatch>();
-        private bool _disposing = false;
+        private readonly ConcurrentQueue<UnacknowledgedRenderBatch> _unacknowledgedRenderBatches = new();
+        private bool _disposing;
         private long _nextRenderId = 1;
 
 

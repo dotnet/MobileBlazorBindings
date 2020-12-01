@@ -20,8 +20,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
 
+#pragma warning disable IDE1006 // Naming Styles
         private bool __ShowDialog { get; set; }
         private bool __DialogIsShown { get; set; }
+#pragma warning restore IDE1006 // Naming Styles
+
         [Parameter] public EventCallback OnClosed { get; set; }
 
         protected override void RenderAttributes(AttributesBuilder builder)

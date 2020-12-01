@@ -10,9 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Core
     // sequence numbers, and can't leak the instance outside their
     // position in the call stack.
 
-#pragma warning disable CA1815 // Override equals and operator equals on value types; these instances are never compared
     public readonly ref struct AttributesBuilder
-#pragma warning restore CA1815 // Override equals and operator equals on value types
     {
         private readonly RenderTreeBuilder _underlyingBuilder;
 

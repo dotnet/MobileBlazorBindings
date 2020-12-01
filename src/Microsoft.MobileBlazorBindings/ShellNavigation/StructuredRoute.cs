@@ -25,12 +25,7 @@ namespace Microsoft.MobileBlazorBindings.ShellNavigation
 
         public StructuredRoute(string originalRoute, Type type)
         {
-            if (originalRoute == null)
-            {
-                throw new ArgumentNullException(nameof(originalRoute));
-            }
-
-            OriginalUri = originalRoute;
+            OriginalUri = originalRoute ?? throw new ArgumentNullException(nameof(originalRoute));
             Type = type;
             var allRouteSegments = originalRoute.Split('/');
             var parameterKeys = allRouteSegments.Where(x => x.Contains('{') && x.Contains('}'));

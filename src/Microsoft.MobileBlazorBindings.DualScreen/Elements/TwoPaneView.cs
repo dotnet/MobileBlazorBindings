@@ -11,9 +11,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public RenderFragment Pane1 { get; set; }
         [Parameter] public RenderFragment Pane2 { get; set; }
 
-#pragma warning disable CA1721 // Property names should not match get methods
         protected override RenderFragment GetChildContent() => RenderChildContent;
-#pragma warning restore CA1721 // Property names should not match get methods
 
         private void RenderChildContent(RenderTreeBuilder builder)
         {

@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
     internal sealed class IPC : IDisposable
     {
         private readonly WebViewExtended _webView;
-        private readonly Dictionary<string, List<Action<object>>> _registrations = new Dictionary<string, List<Action<object>>>();
+        private readonly Dictionary<string, List<Action<object>>> _registrations = new();
 
         public IPC(WebViewExtended webView)
         {

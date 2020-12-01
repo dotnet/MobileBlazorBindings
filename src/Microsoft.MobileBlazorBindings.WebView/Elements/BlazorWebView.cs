@@ -28,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
     public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
     {
-        private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
+        private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
         private static readonly RenderFragment EmptyRenderFragment = builder => { };
 
         private readonly Dispatcher _dispatcher;
@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         public IHost Host { get; set; }
 
         // Use this if no Services was supplied
-        private static readonly Lazy<IServiceProvider> DefaultServices = new Lazy<IServiceProvider>(() =>
+        private static readonly Lazy<IServiceProvider> DefaultServices = new(() =>
         {
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging();

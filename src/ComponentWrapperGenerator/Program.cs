@@ -47,7 +47,7 @@ namespace ComponentWrapperGenerator
 
             var xmlDocs = LoadXmlDocs(ComponentLocations.Select(loc => loc.XmlDocFilename).Where(loc => loc != null));
 
-            var generator = new ComponentWrapperGenerator(settings, xmlDocs, ComponentLocations);
+            var generator = new ComponentWrapperGenerator(settings, xmlDocs);
 
             foreach (var typeNameToGenerate in listOfTypeNamesToGenerate)
             {

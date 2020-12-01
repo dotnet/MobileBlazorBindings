@@ -62,9 +62,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                 using var zipFile = new ZipArchive(asset);
                 foreach (var entry in zipFile.Entries)
                 {
-#pragma warning disable CA5389 // Do Not Add Archive Item's Path To The Target File System Path
                     var destination = new FileInfo(Path.Combine(_extractionPath, entry.FullName));
-#pragma warning restore CA5389 // Do Not Add Archive Item's Path To The Target File System Path
                     var directory = new DirectoryInfo(Path.GetDirectoryName(destination.FullName));
 
                     toRemove.Remove(destination.FullName);

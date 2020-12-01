@@ -40,5 +40,4 @@ namespace Microsoft.MobileBlazorBindings.WebView
             return Device.InvokeOnMainThreadAsync(workItem);
         }
     }
-#pragma warning restore BL0006 // Do not use RenderTree types
 }
