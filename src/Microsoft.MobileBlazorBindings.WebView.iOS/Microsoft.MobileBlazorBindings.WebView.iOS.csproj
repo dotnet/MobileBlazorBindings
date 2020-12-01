@@ -51,10 +51,6 @@
     </FilesToSign>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" />
-  </ItemGroup>
-
   <!-- See comment at top of file about manually importing SDK -->
   <Import Project="Sdk.targets" Sdk="MSBuild.Sdk.Extras" />
   <!--

@@ -46,8 +46,4 @@
       <Authenticode>Microsoft400</Authenticode>
     </FilesToSign>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" />
-  </ItemGroup>
 </Project>
