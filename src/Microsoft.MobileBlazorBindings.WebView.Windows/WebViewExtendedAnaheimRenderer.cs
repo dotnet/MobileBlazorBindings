@@ -156,7 +156,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                 if (responseStream != null) // If null, the handler doesn't want to handle it
                 {
                     responseStream.Position = 0;
-                    args.Response = Control.CoreWebView2.Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store");
+                    args.Response = _coreWebView2Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store");
                 }
             }
         }
