@@ -61,7 +61,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
                     e.NewElement.RetainedNativeControl = nativeControl;
                     SetNativeControl(nativeControl);
 
-                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync( null, BlazorHybridWindows.WebViewDirectory).ConfigureAwait(true);
+                    _coreWebView2Environment = await CoreWebView2Environment.CreateAsync(userDataFolder: BlazorHybridWindows.WebViewDirectory).ConfigureAwait(true);
 
                     await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
 
