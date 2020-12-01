@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private static readonly MethodInfo _writeMethod;
         private static readonly Task _canceledTask = Task.FromCanceled(new CancellationToken(canceled: true));
 
-        private readonly int _rendererId; // No need for more than one renderer per webview
+        private const int RendererId = 0; // No need for more than one renderer per webview
         private readonly IPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
@@ -56,7 +56,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 "Blazor._internal.attachRootComponentToElement",
                 "app",
                 rootComponentId,
-                _rendererId);
+                RendererId);
             CaptureAsyncExceptions(initTask);
         }
 
