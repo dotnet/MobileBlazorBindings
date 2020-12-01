@@ -75,7 +75,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Windows
 #pragma warning restore CA2000 // Dispose objects before losing scope
                         SetNativeControl(nativeControl);
 
-                        _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+                        _coreWebView2Environment = await CoreWebView2Environment.CreateAsync(userDataFolder: BlazorHybridWindows.WebViewDirectory).ConfigureAwait(true);
 
                         await nativeControl.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
 
