@@ -18,7 +18,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static WebView()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new WebViewExtended()));
+                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new WebViewExtended(new DefaulBlazorErrorHandler())));
         }
 
         [Parameter] public XF.WebViewSource Source { get; set; }

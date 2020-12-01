@@ -7,6 +7,7 @@
         "Web"
     ],
     "name": "Experimental Mobile Blazor Bindings Hybrid App",
+    "description": "A multiproject template for using Blazor to build hybrid (native and web) cross-platform applications.",
     "groupIdentity": "Microsoft.MobileBlazorBindings.HybridApp",
     "identity": "Microsoft.MobileBlazorBindings.HybridApp.CSharp",
     "shortName": "blazorhybrid",

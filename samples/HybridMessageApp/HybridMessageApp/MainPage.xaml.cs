@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings;
-using Microsoft.MobileBlazorBindings.WebView;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -16,9 +15,9 @@ namespace HybridMessageApp
     {
         public static IHost Host { get; private set; }
 
-        public MainPage(IFileProvider fileProvider = null)
+        public MainPage(string[] args = null, IFileProvider fileProvider = null)
         {
-            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder()
+            var hostBuilder = MobileBlazorBindingsHost.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
                     // Adds web-specific services such as NavigationManager

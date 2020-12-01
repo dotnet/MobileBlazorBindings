@@ -11,17 +11,17 @@ namespace HybridMessageApp.Windows
     public class MainWindow : FormsApplicationPage
     {
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
             var app = new System.Windows.Application();
-            app.Run(new MainWindow());
+            app.Run(new MainWindow(args));
         }
 
-        public MainWindow()
+        public MainWindow(string[] args)
         {
             BlazorHybridWindows.Init();
             Forms.Init();
-            LoadApplication(new MainPage());
+            LoadApplication(new MainPage(args: args));
         }
     }
 }

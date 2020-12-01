@@ -3,7 +3,6 @@
 
 using HybridMessageApp.Data;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.MobileBlazorBindings.WebView;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,7 +14,7 @@ namespace HybridMessageApp
     {
         private readonly ContentPage detailsPage = new ContentPage
         {
-            Content = new BlazorWebView<WebUI.MessageDetails> { Host = MainPage.Host  }
+            Content = new BlazorWebView<WebUI.MessageDetails> { Host = MainPage.Host }
         };
         private readonly AppState appState;
 

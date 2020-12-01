@@ -9,8 +9,6 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     internal class BlazorHybridNavigationManager : NavigationManager
     {
-        public static readonly BlazorHybridNavigationManager Instance = new BlazorHybridNavigationManager();
-
         private const string InteropPrefix = "Blazor._internal.navigationManager.";
         private const string InteropNavigateTo = InteropPrefix + "navigateTo";
 

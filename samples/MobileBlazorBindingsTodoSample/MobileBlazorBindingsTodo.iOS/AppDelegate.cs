@@ -28,7 +28,7 @@ namespace MobileBlazorBindingsTodo.iOS
             var additionalServices = new ServiceCollection();
             additionalServices.AddSingleton<ITextToSpeech, TextToSpeech_iOS>();
 
-            LoadApplication(new App(additionalServices));
+            LoadApplication(new App(additionalServices: additionalServices));
 
             return base.FinishedLaunching(app, options);
         }

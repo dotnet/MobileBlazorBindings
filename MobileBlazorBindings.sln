@@ -118,7 +118,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControlGallery.iOS", "sampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.SkiaSharp", "src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj", "{C86CE1B4-710F-4D63-B0F2-D4C5B6443D8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HybridApp.Server", "samples\HybridApp\HybridApp.Server\HybridApp.Server.csproj", "{3BD7FB0E-C71F-495E-B9F1-1378D4C27DD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HybridApp.Server", "samples\HybridApp\HybridApp.Server\HybridApp.Server.csproj", "{3BD7FB0E-C71F-495E-B9F1-1378D4C27DD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

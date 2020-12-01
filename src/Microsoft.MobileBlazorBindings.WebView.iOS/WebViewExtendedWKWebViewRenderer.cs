@@ -6,7 +6,9 @@ using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.iOS;
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Text.Encodings.Web;
 using WebKit;
 using Xamarin.Forms.Platform.iOS;
@@ -22,6 +24,21 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
 #pragma warning restore CA1710 // Identifiers should have correct suffix
 #pragma warning restore CA1010 // Collections should implement generic interface
     {
+
+        private const string InitScriptSource = @"
+window.__receiveMessageCallbacks = [];
+window.__dispatchMessageCallback = function(message) {
+	window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
+};
+window.external = {
+	sendMessage: function(message) {
+		window.webkit.messageHandlers.webwindowinterop.postMessage(message);
+	},
+	receiveMessage: function(callback) {
+		window.__receiveMessageCallbacks.push(callback);
+	}
+};
+";
         private WKWebView _wkWebView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebViewExtended> e)
@@ -44,30 +61,25 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                     config.Preferences.SetValueForKey(FromObject(true), new NSString("developerExtrasEnabled"));
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
-                    var initScriptSource = @"
-                        window.onload = (function blazorInitScript() {
-                            window.__receiveMessageCallbacks = [];
-			                window.__dispatchMessageCallback = function(message) {
-				                window.__receiveMessageCallbacks.forEach(function(callback) { callback(message); });
-			                };
-			                window.external = {
-				                sendMessage: function(message) {
-					                window.webkit.messageHandlers.webwindowinterop.postMessage(message);
-				                },
-				                receiveMessage: function(callback) {
-					                window.__receiveMessageCallbacks.push(callback);
-				                }
-			                };
-
-                            var blazorScript = document.createElement('script');
-                            blazorScript.src = 'framework://blazor.desktop.js';
-                            document.head.appendChild(blazorScript);
-                        });
+                    var frameworkScriptSource = @"
+    if (window.location.href.startsWith('app://'))
+    {
+        var blazorScript = document.createElement('script');
+        blazorScript.src = 'framework://blazor.desktop.js';
+        document.body.appendChild(blazorScript);
+        (function () {
+	        window.onpageshow = function(event) {
+		        if (event.persisted) {
+			        window.location.reload();
+		        }
+	        };
+        })();
+    }
                     ";
                     config.UserContentController.AddScriptMessageHandler(this, "webwindowinterop");
 #pragma warning disable CA2000 // Dispose objects before losing scope
                     config.UserContentController.AddUserScript(new WKUserScript(
-                        new NSString(initScriptSource), WKUserScriptInjectionTime.AtDocumentStart, true));
+                        new NSString(frameworkScriptSource), WKUserScriptInjectionTime.AtDocumentEnd, true));
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
                     foreach (var (scheme, handler) in Element.SchemeHandlers)
@@ -80,6 +92,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                     _wkWebView = new WKWebView(Frame, config);
                     SetNativeControl(_wkWebView);
 
+                    _wkWebView.NavigationDelegate = new WebViewNavigationDelegate(Element);
                     Element.SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
                 }
 
@@ -167,8 +180,13 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                 var responseBytes = GetResponseBytes(urlSchemeTask.Request.Url.AbsoluteString, out var contentType, statusCode: out var statusCode);
                 if (statusCode == 200)
                 {
-                    using (var response = new NSUrlResponse(urlSchemeTask.Request.Url, contentType, responseBytes.Length, null))
+                    using (var dic = new NSMutableDictionary<NSString, NSString>())
                     {
+                        dic.Add((NSString)"Content-Length", (NSString)(responseBytes.Length.ToString(CultureInfo.InvariantCulture)));
+                        dic.Add((NSString)"Content-Type", (NSString)contentType);
+                        // Disable local caching. This will prevent user scripts from executing correctly.
+                        dic.Add((NSString)"Cache-Control", (NSString)"no-cache, max-age=0, must-revalidate, no-store");
+                        using var response = new NSHttpUrlResponse(urlSchemeTask.Request.Url, statusCode, "HTTP/1.1", dic);
                         urlSchemeTask.DidReceiveResponse(response);
                     }
                     urlSchemeTask.DidReceiveData(NSData.FromArray(responseBytes));
@@ -188,7 +206,17 @@ namespace Microsoft.MobileBlazorBindings.WebView.iOS
                 {
                     statusCode = 200;
                     using var ms = new MemoryStream();
+                    var uri = new Uri(url);
+
+                    if (uri.Scheme == "framework")
+                    {
+                        var buffer = Encoding.UTF8.GetBytes(InitScriptSource);
+                        ms.Write(buffer, 0, buffer.Length);
+                        responseStream.CopyTo(ms);
+                    }
+
                     responseStream.CopyTo(ms);
+                    responseStream.Dispose();
                     return ms.ToArray();
                 }
             }

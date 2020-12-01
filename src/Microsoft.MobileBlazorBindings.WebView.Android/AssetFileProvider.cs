@@ -2,16 +2,12 @@
 // Licensed under the MIT license.
 
 using Android.Content.Res;
-using Java.Interop.Tools.JavaCallableWrappers;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
@@ -98,10 +94,13 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
                         }
                     }
 
-                    using var outputStream = destination.OpenWrite();
-                    using var inputStream = entry.Open();
+                    if (!destination.FullName.EndsWith("/", StringComparison.Ordinal))
+                    {
+                        using var outputStream = destination.OpenWrite();
+                        using var inputStream = entry.Open();
 
-                    inputStream.CopyTo(outputStream);
+                        inputStream.CopyTo(outputStream);
+                    }
                 }
             }
 
