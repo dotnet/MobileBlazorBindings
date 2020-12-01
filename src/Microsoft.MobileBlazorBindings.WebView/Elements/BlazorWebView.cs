@@ -220,7 +220,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
         }
 
-        private string GetResourceFilenameFromUri(Uri uri)
+        private static string GetResourceFilenameFromUri(Uri uri)
         {
             return Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
         }

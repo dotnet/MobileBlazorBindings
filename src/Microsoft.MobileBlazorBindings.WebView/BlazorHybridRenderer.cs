@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         private static readonly MethodInfo _writeMethod;
         private static readonly Task _canceledTask = Task.FromCanceled(new CancellationToken(canceled: true));
 
-        private readonly int _rendererId = 0; // No need for more than one renderer per webview
+        private readonly int _rendererId; // No need for more than one renderer per webview
         private readonly IPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
@@ -146,7 +146,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
         {
             try
             {
-                await task;
+                await task.ConfigureAwait(false);
             }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception ex)
