@@ -41,9 +41,6 @@
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="build\**" Pack="True" PackagePath="build\" />
-  </ItemGroup>
-  <ItemGroup>
       <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WebView.Windows.dll">
           <Authenticode>Microsoft400</Authenticode>
       </FilesToSign>
