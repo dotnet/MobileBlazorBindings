@@ -48,3 +48,4 @@ jobs:
     parameters:
       initArgs: -NoRestore
   - template: publish-deployables.yml
+    condition: ne(variables['Build.Reason'], 'PullRequest')
