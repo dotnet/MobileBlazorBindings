@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings.Core;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings.Core;
 using System;
 using XF = Xamarin.Forms;
 
@@ -6,13 +9,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract class BaseAttachedPropertiesHandler : IXamarinFormsElementHandler, INonPhysicalChild
     {
-        protected XF.BindableObject Parent { get; private set; }
+        /// <summary>
+        /// The target of the attached property. This will be set to the parent of the attached property container.
+        /// </summary>
+        protected XF.BindableObject Target { get; private set; }
 
         public abstract void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
 
         public void SetParent(object parentElement)
         {
-            Parent = (XF.BindableObject)parentElement;
+            Target = (XF.BindableObject)parentElement;
         }
 
         // Because this is a 'fake' element, all matters related to physical trees
