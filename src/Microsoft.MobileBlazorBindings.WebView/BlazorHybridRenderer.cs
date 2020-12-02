@@ -40,13 +40,14 @@ namespace Microsoft.MobileBlazorBindings.WebView
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
         }
 
-        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler)
+        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler, string rootComponentElementSelector)
             : base(serviceProvider, loggerFactory)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             _jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
             _blazorErrorHandler = blazorErrorHandler;
+            rootComponentElementSelector ??= "app";
 
             var rootComponent = new RenderFragmentComponent();
             var rootComponentId = AssignRootComponentId(rootComponent);
@@ -54,7 +55,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
 
             var initTask = _jsRuntime.InvokeAsync<object>(
                 "Blazor._internal.attachRootComponentToElement",
-                "app",
+                rootComponentElementSelector,
                 rootComponentId,
                 RendererId);
             CaptureAsyncExceptions(initTask);

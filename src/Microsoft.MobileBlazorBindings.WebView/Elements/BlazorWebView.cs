@@ -46,6 +46,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         public IHost Host { get; set; }
 
+        /// <summary>
+        /// The element selector for the root component. The default value is <c>app</c>, representing a component named <code>&lt;app&gt;...&lt;/app&gt;</code>
+        /// </summary>
+        public string RootComponentElementSelector { get; set; } = "app";
+
         // Use this if no Services was supplied
         private static readonly Lazy<IServiceProvider> DefaultServices = new(() =>
         {
@@ -243,7 +248,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             var loggerFactory = scopeServiceProvider.GetRequiredService<ILoggerFactory>();
             _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
             _navigationManager.Initialize(_jsRuntime, handshakeResult.BaseUri, handshakeResult.InitialUri);
-            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler);
+            _blazorHybridRenderer = new BlazorHybridRenderer(_ipc, scopeServiceProvider, loggerFactory, _jsRuntime, _dispatcher, ErrorHandler, RootComponentElementSelector);
         }
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
