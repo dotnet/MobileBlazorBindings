@@ -11,7 +11,7 @@ steps:
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
-  displayName: 'Build src Windows and Android projects'
+  displayName: 'Build src projects'
   inputs:
     msbuildArguments: /t:build /p:NoRestore=true
     solution: CI/CI.Windows.proj
@@ -27,7 +27,7 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 - task: MSBuild@1
-  displayName: 'Pack src Windows and Android projects'
+  displayName: 'Pack src projects'
   inputs:
     msbuildArguments: /t:pack /p:NoBuild=true
     solution: CI/CI.Windows.proj
