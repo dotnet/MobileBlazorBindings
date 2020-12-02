@@ -1,0 +1,35 @@
+﻿<ContentPage Title="Shell Properties">
+    <ShellProperties NavBarIsVisible="navBarVisible"
+                     TabBarIsVisible="tabBarVisible"
+                     TitleColor="titleColor" />
+
+    <StackLayout>
+        <StackLayout Orientation="StackOrientation.Horizontal">
+            <Label Text="Enable NavBar: " />
+            <CheckBox @bind-IsChecked="navBarVisible" />
+        </StackLayout>
+        <StackLayout Orientation="StackOrientation.Horizontal">
+            <Label Text="Enable TabBar: " />
+            <CheckBox @bind-IsChecked="tabBarVisible" />
+        </StackLayout>
+        <Button Text="Change Title Color" OnClick="ChangeTitleColor" />
+    </StackLayout>
+</ContentPage>
+
+@code{
+    bool navBarVisible = true;
+    bool tabBarVisible = true;
+    Color? titleColor;
+
+    List<Color> colors = new List<Color> {
+        Color.Red,
+        Color.Green,
+        Color.Blue
+    };
+
+    void ChangeTitleColor()
+    {
+        var index = (titleColor.HasValue ? colors.IndexOf(titleColor.Value) + 1 : 0) % colors.Count;
+        titleColor = colors[index];
+    }
+}
