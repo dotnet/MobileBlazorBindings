@@ -40,7 +40,7 @@ jobs:
   dependsOn:
   - Windows
   pool: ${{ parameters.windowsPool }}
-  condition: succeededOrFailed()
+  condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
   steps:
   - checkout: self
     clean: true

@@ -7,6 +7,7 @@ steps:
   continueOnError: false
   env:
     TeamName: $(_TeamName)
+  condition: ne(variables['Build.Reason'], 'PullRequest')
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
@@ -59,11 +60,13 @@ steps:
     contents: '$(System.DefaultWorkingDirectory)/**/*.nupkg'
     targetFolder: $(Build.ArtifactStagingDirectory)/SignedPackages
     flattenFolders: true
+  condition: ne(variables['Build.Reason'], 'PullRequest')
 
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: $(Build.ArtifactStagingDirectory)/SignedPackages
     artifactName: 'SignedPackages'
+  condition: ne(variables['Build.Reason'], 'PullRequest')
 
 # - task: PublishSymbols@2
 #   inputs:
@@ -86,3 +89,4 @@ steps:
 - task: MicroBuildCleanup@1
   env:
     TeamName: $(_TeamName)
+  condition: ne(variables['Build.Reason'], 'PullRequest')
