@@ -33,6 +33,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.InputView.IsSpellCheckEnabled):
                     InputViewControl.IsSpellCheckEnabled = AttributeHelper.GetBool(attributeValue, true);
                     break;
+                case nameof(XF.InputView.Keyboard):
+                    InputViewControl.Keyboard = AttributeHelper.DelegateToObject<XF.Keyboard>(attributeValue);
+                    break;
                 case nameof(XF.InputView.MaxLength):
                     InputViewControl.MaxLength = AttributeHelper.GetInt(attributeValue, int.MaxValue);
                     break;

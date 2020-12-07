@@ -23,8 +23,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </summary>
         [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
         /// <summary>
-        /// Gets the font family to which the font for the label belongs.
+        /// Gets or sets the font family to which the font for the label belongs.
         /// </summary>
+        /// <value>
+        /// The font family, or null for the platform default font family.
+        /// </value>
         [Parameter] public string FontFamily { get; set; }
         /// <summary>
         /// Gets the size of the font for the label.
@@ -72,6 +75,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </summary>
         [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
         [Parameter] public XF.TextTransform? TextTransform { get; set; }
+        /// <summary>
+        /// Determines whether the Label should display plain text or HTML text.
+        /// </summary>
         [Parameter] public XF.TextType? TextType { get; set; }
         /// <summary>
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.

@@ -97,21 +97,21 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </value>
         [Parameter] public double? Opacity { get; set; }
         /// <summary>
-        /// Gets or sets the rotation about the Z-axis (affine rotation) when the element is rendered.
+        /// Gets or sets the rotation (in degrees) about the Z-axis (affine rotation) when the element is rendered.
         /// </summary>
         /// <value>
         /// The rotation about the Z-axis in degrees.
         /// </value>
         [Parameter] public double? Rotation { get; set; }
         /// <summary>
-        /// Gets or sets the rotation about the X-axis (perspective rotation) when the element is rendered.
+        /// Gets or sets the rotation (in degrees) about the X-axis (perspective rotation) when the element is rendered.
         /// </summary>
         /// <value>
         /// The rotation about the X-axis in degrees.
         /// </value>
         [Parameter] public double? RotationX { get; set; }
         /// <summary>
-        /// Gets or sets the rotation about the Y-axis (perspective rotation) when the element is rendered.
+        /// Gets or sets the rotation (in degrees) about the Y-axis (perspective rotation) when the element is rendered.
         /// </summary>
         /// <value>
         /// The rotation about the Y-axis in degrees.
