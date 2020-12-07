@@ -89,7 +89,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (ThumbImageSource != null)
             {
-                builder.AddAttribute(nameof(ThumbImageSource), AttributeHelper.ImageSourceToDelegate(ThumbImageSource));
+                builder.AddAttribute(nameof(ThumbImageSource), AttributeHelper.ObjectToDelegate(ThumbImageSource));
             }
             if (Value != null)
             {

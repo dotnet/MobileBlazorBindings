@@ -114,7 +114,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (ImageSource != null)
             {
-                builder.AddAttribute(nameof(ImageSource), AttributeHelper.ImageSourceToDelegate(ImageSource));
+                builder.AddAttribute(nameof(ImageSource), AttributeHelper.ObjectToDelegate(ImageSource));
             }
             if (Padding != null)
             {

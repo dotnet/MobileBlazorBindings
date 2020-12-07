@@ -28,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     MenuItemControl.@class = AttributeHelper.GetStringList(attributeValue);
                     break;
                 case nameof(XF.MenuItem.IconImageSource):
-                    MenuItemControl.IconImageSource = AttributeHelper.DelegateToImageSource(attributeValue);
+                    MenuItemControl.IconImageSource = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue);
                     break;
                 case nameof(XF.MenuItem.IsDestructive):
                     MenuItemControl.IsDestructive = AttributeHelper.GetBool(attributeValue);
