@@ -12,7 +12,7 @@ using System.Linq;
 namespace Microsoft.MobileBlazorBindings.WebView.Android
 {
     /// <summary>
-    /// File provider that extracts the zipfile inside the assets and then uses a regular file provider to provide the contents.
+    /// File provider that extracts the ZIP file inside the assets and then uses a regular file provider to provide the contents.
     /// </summary>
     public sealed class AssetFileProvider : IFileProvider, IDisposable
     {
@@ -25,12 +25,12 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         /// <summary>
         /// Initializes a new instance of the <see cref="AssetFileProvider"/> class.
         /// </summary>
-        /// <param name="assetManager">The android assets manager to get the zip file from.</param>
+        /// <param name="assetManager">The Android assets manager to get the zip file from.</param>
         /// <param name="contentRoot">The content root.</param>
         public AssetFileProvider(AssetManager assetManager, string contentRoot)
         {
             _assetManager = assetManager ?? throw new ArgumentNullException(nameof(assetManager));
-            _extractionPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments), this.GetType().Name, contentRoot);
+            _extractionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), GetType().Name, contentRoot);
             ExtractContents();
 
             // Create a physical file provider for the Extraction path.
@@ -94,7 +94,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
 
                     if (!destination.FullName.EndsWith("/", StringComparison.Ordinal))
                     {
-                        using var outputStream = destination.OpenWrite();
+                        // When overwriting a file, ensure its contents are reset by specifying FileMode.Create
+                        using var outputStream = new FileStream(destination.FullName, FileMode.Create, FileAccess.Write, FileShare.None);
                         using var inputStream = entry.Open();
 
                         inputStream.CopyTo(outputStream);
