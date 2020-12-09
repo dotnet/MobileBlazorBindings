@@ -11,7 +11,7 @@ namespace NewApp.Windows
         public static void Main(string[] args)
         {
             var app = new System.Windows.Application();
-            app.Run(new MainWindow());
+            app.Run(new MainWindow(args));
         }
 
         public MainWindow(string[] args)
