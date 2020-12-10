@@ -366,11 +366,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
             get
             {
-                // On Windows, we can't use a custom scheme to host the initial HTML,
+                // On Windows and Tizen, we can't use a custom scheme to host the initial HTML,
                 // because webview2 won't let you do top-level navigation to such a URL.
                 // On Linux/Mac, we must use a custom scheme, because their webviews
                 // don't have a way to intercept http:// scheme requests.
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Device.RuntimePlatform == Device.Tizen
                     ? "http"
                     : "app";
             }
