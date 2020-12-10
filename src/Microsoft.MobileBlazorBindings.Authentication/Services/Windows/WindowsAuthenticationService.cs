@@ -182,31 +182,42 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
-                            var context = await contextTask;
-                            var response = context.Response;
-                            var requestedUri = context.Request.Url;
-
-                            if (redirectUrl.IsBaseOf(requestedUri))
+                            try
                             {
-                                resultUri = requestedUri.ToString();
+                                var context = await contextTask;
 
-                                // Sends an HTTP response to the browser.
-                                string responseString = "<html><head></head><body>Please return to the app.</body></html>";
-                                var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
-                                response.ContentLength64 = buffer.Length;
-                                var responseOutput = response.OutputStream;
-                                _ = responseOutput.WriteAsync(buffer, 0, buffer.Length).ContinueWith((task) =>
+                                var response = context.Response;
+                                var requestedUri = context.Request.Url;
+
+                                if (redirectUrl.IsBaseOf(requestedUri))
                                 {
-                                    responseOutput.Close();
-                                    RestartListener();
-                                    _cancelationTokenSource.Dispose();
-                                    _cancelationTokenSource = null;
-                                }, TaskScheduler.Current);
+                                    resultUri = requestedUri.ToString();
+
+                                    // Sends an HTTP response to the browser.
+                                    string responseString = "<html><head></head><body>Please return to the app.</body></html>";
+                                    var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+                                    response.ContentLength64 = buffer.Length;
+                                    var responseOutput = response.OutputStream;
+                                    _ = responseOutput.WriteAsync(buffer, 0, buffer.Length).ContinueWith((task) =>
+                                    {
+                                        responseOutput.Close();
+                                        RestartListener();
+                                        _cancelationTokenSource.Dispose();
+                                        _cancelationTokenSource = null;
+                                    }, TaskScheduler.Current);
+                                }
+                                else
+                                {
+                                    response.StatusCode = 404;
+                                    response.OutputStream.Close();
+                                }
                             }
-                            else
+                            catch (ObjectDisposedException)
                             {
-                                response.StatusCode = 404;
-                                response.OutputStream.Close();
+                                // The http listener might be tearing down as a result of disposal / closure
+                                // which will end the GetContextAsync() method. Just return here. There is nothing
+                                // to listen for anymore.
+                                return;
                             }
                         }
                     }
