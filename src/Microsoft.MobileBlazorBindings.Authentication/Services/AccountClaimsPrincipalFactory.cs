@@ -16,7 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Authentication
     {
         private readonly IAccessTokenProviderAccessor _accessor;
 
-#pragma warning disable PUB0001 // Pubternal type in public API
         /// <summary>
         /// Initialize a new instance of <see cref="AccountClaimsPrincipalFactory{TAccount}"/>.
         /// </summary>
