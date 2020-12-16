@@ -3,18 +3,16 @@
 
 using IdentityModel.Client;
 using IdentityModel.OidcClient;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
+using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using static IdentityModel.OidcClient.OidcClientOptions;
-using System.Net.Http;
-using System.Text.Json;
-using System.Linq;
-using Microsoft.MobileBlazorBindings.ProtectedStorage;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
@@ -40,7 +38,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         private Task<Task> _initializeTask;
         private Task<Task<AccessTokenResult>> _requestAccessTokenTask;
 
-        private string RefreshTokenKey => $"{this.GetType().Name}_refresh_token";
+        private string RefreshTokenKey => $"{GetType().Name}_refresh_token";
 
         /// <summary>
         /// A cache that caches the requested tokens.
@@ -66,7 +64,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             AccountClaimsPrincipalFactory<TAccount> accountClaimsPrincipalFactory) : base(options?.Value, accountClaimsPrincipalFactory)
         {
             TokenCache = tokenCache ?? throw new ArgumentNullException(nameof(tokenCache));
-            this._protectedStorage = protectedStorage;
+            _protectedStorage = protectedStorage;
         }
 
         /// <inheritdoc />
@@ -156,7 +154,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                     // unfortunately with the OS primitives and the popup windows, there is no silent
                     // way to acquire a token with an additional scope, so we might as well tell
                     // the application to redo the sign in with the additional scope.
-                    return new AccessTokenResult(this, AccessTokenResultStatus.RequiresRedirect, null);
+                    return new AccessTokenResult(this, AccessTokenResultStatus.RequiresRedirect, token: null);
                 }
             }
 
@@ -168,7 +166,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// </summary>
         public async Task SignIn()
         {
-            await SignIn(null);
+            await SignIn(signInOptions: null);
         }
 
         /// <summary>
@@ -281,7 +279,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
             if (Options.ProviderOptions is OidcProviderOptions)
             {
-                oidcProviderOptions = this.Options.ProviderOptions as OidcProviderOptions;
+                oidcProviderOptions = Options.ProviderOptions as OidcProviderOptions;
             }
             else if (Options.ProviderOptions is ApiAuthorizationProviderOptions apiAuthorizationProviderOptions)
             {
@@ -293,7 +291,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 {
                     throw new InvalidOperationException(
                         $"Got response {response.ReasonPhrase} ({response.StatusCode}) while "
-                        + $"requesting Api Configuration from {configurationEndpoint}.");
+                        + $"requesting API Configuration from {configurationEndpoint}.");
                 }
 
                 using var stream = await response.Content.ReadAsStreamAsync();
@@ -353,14 +351,14 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         }
 
         /// <summary>
-        /// Gets the current authenticated used using JavaScript interop.
+        /// Gets the current authenticated user using JavaScript interop.
         /// </summary>
         /// <returns>A <see cref="Task{ClaimsPrincipal}"/>that will return the current authenticated user when completes.</returns>
         protected override async Task<ClaimsPrincipal> GetAuthenticatedUser()
         {
             var accessTokenResult = await RequestAccessToken();
 
-            if (accessTokenResult.Status == AccessTokenResultStatus.Success && accessTokenResult.TryGetToken(out AccessToken accessToken))
+            if (accessTokenResult.Status == AccessTokenResultStatus.Success && accessTokenResult.TryGetToken(out var accessToken))
             {
                 using var userInfoClient = CreateClient(Client.Options);
                 using var request = new UserInfoRequest

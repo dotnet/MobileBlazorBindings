@@ -1,8 +1,8 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.MobileBlazorBindings.Authentication.Internal;
 using Microsoft.Extensions.Options;
+using Microsoft.MobileBlazorBindings.Authentication.Internal;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {

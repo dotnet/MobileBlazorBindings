@@ -2,18 +2,17 @@
 // Licensed under the MIT license.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Concurrent;
+using System.IO;
 using System.IO.IsolatedStorage;
 using System.Text.Json;
-using System.Collections.Concurrent;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.ProtectedStorage
 {
     /// <summary>
-    /// An implementation of <see cref="IProtectedStorage"/> for windows.
+    /// An implementation of <see cref="IProtectedStorage"/> for Windows.
     /// </summary>
     /// <remarks>
     /// The entire dictionary is (de)serialized for a single key
@@ -47,8 +46,10 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         public async Task<TValue> GetAsync<TValue>(string key)
         {
             if (key == null)
+            {
                 throw new ArgumentNullException(nameof(key));
-            
+            }
+
             Task<Task> readTask;
 
             if ((readTask = Interlocked.CompareExchange(ref _readTask, new Task<Task>(Read), null)) == null)
@@ -59,7 +60,7 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
 
             await readTask.Unwrap().ConfigureAwait(false);
 
-            if (_values.TryGetValue(key, out string json))
+            if (_values.TryGetValue(key, out var json))
             {
                 return JsonSerializer.Deserialize<TValue>(json);
             }
@@ -80,24 +81,26 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
                 throw new ArgumentNullException(nameof(value));
             }
 
-            string stringValue = JsonSerializer.Serialize(value, value.GetType());
+            var stringValue = JsonSerializer.Serialize(value, value.GetType());
             _values.AddOrUpdate(key, stringValue, (key, oldValue) => stringValue);
 
             await SerializeDictionary().ConfigureAwait(false);
         }
 
+        private string ProtectedStorageFileName => $"{GetType().FullName}.json";
+
         /// <summary>
         /// Asynchronously read the local storage from disk.
         /// </summary>
-        /// <returns>A <see cref="Task"/>representing the asynchronous operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         private async Task Read()
         {
             try
             {
                 using var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
-                if (isolatedStorage.FileExists($"{GetType().FullName}.json"))
+                if (isolatedStorage.FileExists(ProtectedStorageFileName))
                 {
-                    using var stream = isolatedStorage.OpenFile($"{GetType().FullName}.json", System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.None);
+                    using var stream = isolatedStorage.OpenFile(ProtectedStorageFileName, FileMode.Open, FileAccess.Read, FileShare.None);
                     using var dataProtectionStream = new DataProtectionStream(stream, System.Security.Cryptography.DataProtectionScope.CurrentUser);
                     _values = await JsonSerializer.DeserializeAsync<ConcurrentDictionary<string, string>>(dataProtectionStream).ConfigureAwait(false);
                     dataProtectionStream.Close();
@@ -144,13 +147,13 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         /// <summary>
         /// Asynchronously write the local storage to disk.
         /// </summary>
-        /// <returns>A <see cref="Task"/>representing the asynchronous operation.</returns>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         private async Task Write()
         {
             try
             {
                 using var isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication();
-                using var stream = isolatedStorage.OpenFile($"{GetType().FullName}.json", System.IO.FileMode.Create, System.IO.FileAccess.Write, System.IO.FileShare.None);
+                using var stream = isolatedStorage.OpenFile(ProtectedStorageFileName, FileMode.Create, FileAccess.Write, FileShare.None);
                 using var dataProtectionStream = new DataProtectionStream(stream, System.Security.Cryptography.DataProtectionScope.CurrentUser);
                 await JsonSerializer.SerializeAsync(dataProtectionStream, _values).ConfigureAwait(false);
                 dataProtectionStream.FlushFinalBlock();

@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.MobileBlazorBindings.Authentication;
 using Microsoft.MobileBlazorBindings.Authentication.Internal;
@@ -120,7 +121,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddAuthorizationCore();
             services.TryAddScoped<AuthenticationStateProvider>(
                 sp => new MsalAuthenticationService<TAccount, PublicClientApplicationOptions>(
-                    (PublicClientApplication)create(sp), 
+                    (PublicClientApplication)create(sp),
                     sp.GetRequiredService<IProtectedStorage>(),
                     sp.GetRequiredService<AccountClaimsPrincipalFactory<TAccount>>()));
             return RegisterDependencies<TRemoteAuthenticationState, TAccount>(services);
@@ -149,7 +150,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddScoped<AccountClaimsPrincipalFactory<TAccount>>();
 
-            //services.TryAddEnumerable(ServiceDescriptor.Scoped<IPostConfigureOptions<RemoteAuthenticationOptions<MsalProviderOptions>>, MsalDefaultOptionsConfiguration>());
+            services.TryAddEnumerable(ServiceDescriptor.Scoped<IPostConfigureOptions<RemoteAuthenticationOptions<PublicClientApplicationOptions>>, MsalDefaultOptionsConfiguration>());
 
             return new MsalRemoteAuthenticationBuilder<TRemoteAuthenticationState, TAccount>(services);
         }
@@ -158,11 +159,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 where TRemoteAuthenticationState : OidcAuthenticationState, new()
                 where TRemoteUserAccount : RemoteUserAccount
         {
-
             public MsalRemoteAuthenticationBuilder(IServiceCollection services) => Services = services;
 
             public IServiceCollection Services { get; }
         }
     }
-
 }

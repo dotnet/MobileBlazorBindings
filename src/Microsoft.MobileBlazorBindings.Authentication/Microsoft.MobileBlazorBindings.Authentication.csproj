@@ -1,11 +1,9 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;monoandroid9.0;</TargetFrameworks>
-    <RazorLangVersion>3.0</RazorLangVersion>
-    <NoWarn>;CS1591;CA1054;CA1303;CA1056;CA2007</NoWarn>
+    <TargetFrameworks>netstandard2.0;monoandroid9.0</TargetFrameworks>
+    <NoWarn>CS1591;CA1054;CA1303;CA1056;CA2007;CA2237</NoWarn>
   </PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="IdentityModel.OidcClient" Version="3.1.2" />
@@ -15,12 +13,12 @@
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-   </ItemGroup>
-  
+  </ItemGroup>
+
   <ItemGroup>
     <Compile Remove="**\*.android.cs" />
     <None Include="**\*.android.cs" />
-    </ItemGroup>
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'monoandroid9.0'">
     <Compile Include="**\*.android.cs" />

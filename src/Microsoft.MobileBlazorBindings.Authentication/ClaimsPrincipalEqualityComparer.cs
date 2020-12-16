@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
@@ -54,7 +53,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             return true;
         }
 
-        private static bool ClaimEquals (Claim x, Claim y)
+        private static bool ClaimEquals(Claim x, Claim y)
         {
             return x.Type == y.Type &&
                 x.Value == y.Value &&
@@ -66,7 +65,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// <inheritdoc />
         public int GetHashCode(ClaimsPrincipal obj)
         {
-            int claimsHashcode = 0;
+            var claimsHashcode = 0;
 
             foreach (var claim in obj.Claims)
             {

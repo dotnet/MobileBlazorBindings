@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         Task Add(string key, JwtSecurityToken token);
 
         /// <summary>
-        /// Tries to get the Token from the cache using the specified key.
+        /// Tries to get the token from the cache using the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="token">The token.</param>
@@ -30,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// <summary>
         /// Clears the token cache.
         /// </summary>
-        /// <returns>A taks representing the asynchronous operation.</returns>
+        /// <returns>A task representing the asynchronous operation.</returns>
         Task Clear();
     }
 }

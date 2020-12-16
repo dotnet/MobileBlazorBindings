@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
@@ -33,11 +32,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// <inheritdoc />
         public Task<bool> TryGet(string key, out JwtSecurityToken token)
         {
-            token = null;
-
-            var result = tokens.TryGetValue(key, out var foundToken);
-
-            if (result)
+            if (tokens.TryGetValue(key, out var foundToken))
             {
                 if (foundToken.ValidTo < DateTime.UtcNow)
                 {
@@ -49,6 +44,8 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                     return Task.FromResult(true);
                 }
             }
+
+            token = null;
             return Task.FromResult(false);
         }
     }

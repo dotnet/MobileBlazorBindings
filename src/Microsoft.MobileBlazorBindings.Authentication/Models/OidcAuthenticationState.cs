@@ -1,10 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
     /// <summary>
@@ -26,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// Gets or sets the state.
         /// </summary>
         public string State { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the code verifier.
         /// </summary>

@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using System.Threading.Tasks;
+using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace Microsoft.MobileBlazorBindings.ProtectedStorage
@@ -11,8 +12,8 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
     /// An implementation of <see cref="IProtectedStorage"/> using Xamarin Essentials.
     /// </summary>
     /// <remarks>
-    /// Xamarin essentials implementation on iOS, macOS and Android
-    /// is actually synchronous and blocking. Better to run threadpool threads.
+    /// The Xamarin Essentials implementation on iOS, macOS, and Android
+    /// is synchronous and blocking. Better to run threadpool threads.
     /// </remarks>
     public class XamarinProtectedStorage : IProtectedStorage
     {
@@ -20,7 +21,9 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         public async Task<bool> DeleteAsync(string key)
         {
             if (key == null)
-                throw new System.ArgumentNullException(nameof(key));
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
             // Exceptions should bubble up because of the await.
             return await Task.Run(() => SecureStorage.Remove(key)).ConfigureAwait(false);
@@ -31,12 +34,12 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new System.ArgumentException($"'{nameof(key)}' cannot be null or empty", nameof(key));
+                throw new ArgumentException($"'{nameof(key)}' cannot be null or empty", nameof(key));
             }
 
             if (value is null)
             {
-                throw new System.ArgumentNullException(nameof(value));
+                throw new ArgumentNullException(nameof(value));
             }
 
             var serializedValue = JsonSerializer.Serialize(value, value.GetType());
@@ -49,7 +52,9 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         public async Task<TValue> GetAsync<TValue>(string key)
         {
             if (key == null)
-                throw new System.ArgumentNullException(nameof(key));
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
 
             // Exceptions should bubble up because of the await.
             var result = await Task.Run<Task<string>>(async () => await SecureStorage.GetAsync(key).ConfigureAwait(false)).Unwrap().ConfigureAwait(false);

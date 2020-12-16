@@ -2,9 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
@@ -14,11 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
     /// is not able to provision an access token.
     /// </summary>
 #pragma warning disable CA1032 // Implement standard exception constructors
-#pragma warning disable CA2237 // Mark ISerializable types with serializable
-#pragma warning disable RCS1194 // Implement exception constructors.
     public class AccessTokenNotAvailableException : Exception
-#pragma warning restore RCS1194 // Implement exception constructors.
-#pragma warning restore CA2237 // Mark ISerializable types with serializable
 #pragma warning restore CA1032 // Implement standard exception constructors
     {
         private readonly AccessTokenResult _tokenResult;
@@ -36,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                   scopes != null ? $"'{string.Join(", ", scopes ?? Array.Empty<string>())}'" : "(default scopes)")
         {
             _tokenResult = tokenResult;
-            this._scopes = scopes;
+            _scopes = scopes;
         }
 
         /// <summary>

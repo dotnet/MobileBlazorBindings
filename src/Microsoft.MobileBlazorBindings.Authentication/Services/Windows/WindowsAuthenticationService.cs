@@ -1,24 +1,21 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using IdentityModel.OidcClient;
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using System.Net.Sockets;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
     /// <summary>
-    /// The default implementation for <see cref="IAuthenticationService"/> that uses IdentityModel.OidcClient to authenticate the user.
+    /// An implementation for <see cref="IAuthenticationService"/> that uses IdentityModel.OidcClient to authenticate the user.
     /// </summary>
     /// <typeparam name="TRemoteAuthenticationState">The state to preserve across authentication operations.</typeparam>
     /// <typeparam name="TAccount">The type of the <see cref="RemoteUserAccount" />.</typeparam>
@@ -70,7 +67,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             IOptionsSnapshot<RemoteAuthenticationOptions<TProviderOptions>> options,
             ITokenCache tokenCache,
             IProtectedStorage protectedStorage,
-            AccountClaimsPrincipalFactory<TAccount> accountClaimsPrincipalFactory) : base (options, tokenCache, protectedStorage, accountClaimsPrincipalFactory)
+            AccountClaimsPrincipalFactory<TAccount> accountClaimsPrincipalFactory) : base(options, tokenCache, protectedStorage, accountClaimsPrincipalFactory)
         {
         }
 
@@ -84,9 +81,9 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
             if (redirectUri.Port != postLogoutRedirectUri.Port)
             {
-                throw new OptionsValidationException("RedirectUri", typeof(OidcProviderOptions), new string[]
+                throw new OptionsValidationException(nameof(OidcProviderOptions.RedirectUri), typeof(OidcProviderOptions), new string[]
                     {
-                        "The port of the RedirectUri must be equal to the port of the PostLogoutRedirectUri",
+                        $"The port of the {nameof(OidcProviderOptions.RedirectUri)} must be equal to the port of the {nameof(OidcProviderOptions.PostLogoutRedirectUri)}.",
                     });
             }
 
@@ -94,7 +91,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 (redirectUri.Port == 0 || redirectUri.Port == 80) && (redirectUri.Host == "localhost" || redirectUri.Host == "127.0.0.1") &&
                 (postLogoutRedirectUri.Port == 0 || postLogoutRedirectUri.Port == 80) && (postLogoutRedirectUri.Host == "localhost" || postLogoutRedirectUri.Host == "127.0.0.1"))
             {
-                int port = GetRandomUnusedPort();
+                var port = GetRandomUnusedPort();
 
                 // set ports to the random port value.
                 redirectUri.Port = port;
@@ -148,9 +145,9 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 Verb = "open"
             };
 
-            System.Diagnostics.Process.Start(ps);
+            Process.Start(ps);
 
-            string resultUri = string.Empty;
+            var resultUri = string.Empty;
 
             // a method to restart the listener as start stop has a bug in .NET core 3.1 LTS.
             // It's fixed in net5, but we aren't there yet.
@@ -178,7 +175,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                         var contextTask = _httpListener.GetContextAsync();
                         // use WhenAny and task.delay to return from the listening task as GetContextAsync is
                         // not cancelable.
-                        await Task.WhenAny (contextTask, Task.Delay(-1, cancellationToken));
+                        await Task.WhenAny(contextTask, Task.Delay(-1, cancellationToken));
 
                         if (!cancellationToken.IsCancellationRequested)
                         {
@@ -194,7 +191,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                                     resultUri = requestedUri.ToString();
 
                                     // Sends an HTTP response to the browser.
-                                    string responseString = "<html><head></head><body>Please return to the app.</body></html>";
+                                    var responseString = "<html><head></head><body>Please return to the app.</body></html>";
                                     var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
                                     response.ContentLength64 = buffer.Length;
                                     var responseOutput = response.OutputStream;

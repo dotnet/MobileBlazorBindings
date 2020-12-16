@@ -10,7 +10,6 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -145,7 +144,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IServiceCollection"/> where the services were registered.</returns>
         public static IRemoteAuthenticationBuilder<OidcAuthenticationState, RemoteUserAccount> AddApiAuthorization(this IServiceCollection services, string apiBaseUrl)
         {
-            return AddApiauthorizationCore<OidcAuthenticationState, RemoteUserAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<OidcAuthenticationState, RemoteUserAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
         }
 
         /// <summary>
@@ -158,7 +157,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IRemoteAuthenticationBuilder<TRemoteAuthenticationState, RemoteUserAccount> AddApiAuthorization<TRemoteAuthenticationState>(this IServiceCollection services, string apiBaseUrl)
             where TRemoteAuthenticationState : OidcAuthenticationState, new()
         {
-            return AddApiauthorizationCore<TRemoteAuthenticationState, RemoteUserAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<TRemoteAuthenticationState, RemoteUserAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
         }
 
         /// <summary>
@@ -173,7 +172,7 @@ namespace Microsoft.Extensions.DependencyInjection
             where TRemoteAuthenticationState : OidcAuthenticationState, new()
             where TAccount : RemoteUserAccount
         {
-            return AddApiauthorizationCore<TRemoteAuthenticationState, TAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<TRemoteAuthenticationState, TAccount>(services, configure: null, apiBaseUrl, Assembly.GetCallingAssembly().GetName().Name);
         }
 
         /// <summary>
@@ -184,7 +183,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The <see cref="IServiceCollection"/> where the services were registered.</returns>
         public static IRemoteAuthenticationBuilder<OidcAuthenticationState, RemoteUserAccount> AddApiAuthorization(this IServiceCollection services, Action<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> configure)
         {
-            return AddApiauthorizationCore<OidcAuthenticationState, RemoteUserAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<OidcAuthenticationState, RemoteUserAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
         }
 
         /// <summary>
@@ -197,7 +196,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IRemoteAuthenticationBuilder<TRemoteAuthenticationState, RemoteUserAccount> AddApiAuthorization<TRemoteAuthenticationState>(this IServiceCollection services, Action<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> configure)
             where TRemoteAuthenticationState : OidcAuthenticationState, new()
         {
-            return AddApiauthorizationCore<TRemoteAuthenticationState, RemoteUserAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<TRemoteAuthenticationState, RemoteUserAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
         }
 
         /// <summary>
@@ -212,10 +211,10 @@ namespace Microsoft.Extensions.DependencyInjection
             where TRemoteAuthenticationState : OidcAuthenticationState, new()
             where TAccount : RemoteUserAccount
         {
-            return AddApiauthorizationCore<TRemoteAuthenticationState, TAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
+            return AddApiAuthorizationCore<TRemoteAuthenticationState, TAccount>(services, configure, null, Assembly.GetCallingAssembly().GetName().Name);
         }
 
-        private static IRemoteAuthenticationBuilder<TRemoteAuthenticationState, TAccount> AddApiauthorizationCore<TRemoteAuthenticationState, TAccount>(
+        private static IRemoteAuthenticationBuilder<TRemoteAuthenticationState, TAccount> AddApiAuthorizationCore<TRemoteAuthenticationState, TAccount>(
             IServiceCollection services,
             Action<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> configure,
             string apiBaseUrl,
@@ -233,7 +232,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
         /// <summary>
-        /// Base Uri for authentication
+        /// Base URI for authentication
         /// </summary>
         private static string AuthenticationBaseUri => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? "http://localhost:0/" : "app://0.0.0.0/";
     }

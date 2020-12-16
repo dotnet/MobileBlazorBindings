@@ -1,7 +1,6 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,13 +32,15 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             if (request == null)
+            {
                 throw new ArgumentNullException(nameof(request));
+            }
 
             var now = DateTimeOffset.Now;
             if (_authorizedUris == null)
             {
                 throw new InvalidOperationException($"The '{nameof(AuthorizationMessageHandler)}' is not configured. " +
-                    $"Call '{nameof(AuthorizationMessageHandler.ConfigureHandler)}' and provide a list of endpoint urls to attach the token to.");
+                    $"Call '{nameof(AuthorizationMessageHandler.ConfigureHandler)}' and provide a list of endpoint URLs to attach the token to.");
             }
 
             var authorizedUri = _authorizedUris.SingleOrDefault(uri => uri.IsBaseOf(request.RequestUri));
@@ -50,7 +51,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
                 if (!TokenProviders.TryGetValue(key, out var tokenProvider))
                 {
-                    throw new HttpRequestException($"No token provider registered for url {authorizedUri}");
+                    throw new HttpRequestException($"No token provider registered for URL {authorizedUri}");
                 }
 
                 var tokenResult = _tokenOptions != null ?
@@ -60,7 +61,8 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 if (tokenResult.TryGetToken(out var token))
                 {
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.Value);
-                } else
+                }
+                else
                 {
                     throw new AccessTokenNotAvailableException(tokenResult, _tokenOptions?.Scopes);
                 }
@@ -84,7 +86,6 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             {
                 throw new InvalidOperationException("Handler already configured.");
             }
-
             if (authorizedUrls == null)
             {
                 throw new ArgumentNullException(nameof(authorizedUrls));
@@ -110,9 +111,9 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         }
 
         /// <summary>
-        /// Registers a token provider for the specified urls.
+        /// Registers a token provider for the specified URLs.
         /// </summary>
-        /// <param name="authorizedUrls">The urls to register a token provider for.</param>
+        /// <param name="authorizedUrls">The URLs to register a token provider for.</param>
         /// <param name="accessTokenProvider">The <see cref="IAccessTokenProvider"/> instance to use.</param>
         public static void RegisterTokenProvider(IEnumerable<string> authorizedUrls, IAccessTokenProvider accessTokenProvider)
         {
@@ -120,7 +121,6 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             {
                 throw new ArgumentNullException(nameof(authorizedUrls));
             }
-
             if (accessTokenProvider is null)
             {
                 throw new ArgumentNullException(nameof(accessTokenProvider));

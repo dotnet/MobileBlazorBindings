@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Microsoft.MobileBlazorBindings.Authentication.Msal
 {

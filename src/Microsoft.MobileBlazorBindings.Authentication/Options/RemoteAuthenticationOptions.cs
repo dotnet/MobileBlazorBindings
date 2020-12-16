@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// <summary>
         /// Gets or sets the provider options.
         /// </summary>
-        public TRemoteAuthenticationProviderOptions ProviderOptions { get; set;  } = new TRemoteAuthenticationProviderOptions();
+        public TRemoteAuthenticationProviderOptions ProviderOptions { get; set; } = new TRemoteAuthenticationProviderOptions();
 
         /// <summary>
         /// Gets or sets the <see cref="RemoteAuthenticationApplicationPathsOptions"/>.

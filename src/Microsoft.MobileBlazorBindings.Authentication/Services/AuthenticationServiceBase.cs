@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
     /// </summary>
     /// <typeparam name="TAccount">The account type.</typeparam>
     /// <typeparam name="TProviderOptions">The provider options.</typeparam>
-    public abstract class AuthenticationServiceBase<TAccount, TProviderOptions> 
+    public abstract class AuthenticationServiceBase<TAccount, TProviderOptions>
         : AuthenticationStateProvider, IDisposable
         where TAccount : RemoteUserAccount
         where TProviderOptions : new()
@@ -92,12 +91,13 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 if (!useCache)
                 {
                     throw;
-                } else
+                }
+                else
                 {
                     // pass through the AccountClaimsPrincipalFactory to facilitate possible restore from storage.
                     // this is equal to silent fail of the authentication in the javascript version where a user
                     // is returned from javascript.
-                    var recreatedUser = await AccountClaimsPrincipalFactory.CreateUserAsync(null, this.Options.UserOptions);
+                    var recreatedUser = await AccountClaimsPrincipalFactory.CreateUserAsync(null, Options.UserOptions);
                     if (!ClaimsPrincipalEqualityComparer.Equals(_cachedUser, recreatedUser))
                     {
                         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(recreatedUser)));

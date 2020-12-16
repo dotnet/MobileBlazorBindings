@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
@@ -22,7 +21,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
     /// </summary>
     /// <typeparam name="TAccount">The type of the <see cref="RemoteUserAccount" />.</typeparam>
     /// <typeparam name="TProviderOptions">The options to be passed down to the underlying Authentication library handling the authentication operations.</typeparam>
-    public class MsalAuthenticationService<TAccount, TProviderOptions> 
+    public class MsalAuthenticationService<TAccount, TProviderOptions>
         : AuthenticationServiceBase<TAccount, TProviderOptions>, IAuthenticationService, IAccessTokenProvider
         where TAccount : RemoteUserAccount, new()
         where TProviderOptions : PublicClientApplicationOptions, new()
@@ -33,7 +32,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
 
         private readonly PublicClientApplication _clientApplication;
 
-        private string TokenCacheKey => $"{this.GetType().Name}_token_cache";
+        private string TokenCacheKey => $"{GetType().Name}_token_cache";
 
         private IEnumerable<string> _currentScopes = DefaultScopes;
         private IAccount _currentAccount;
@@ -56,25 +55,22 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
 #pragma warning disable CA1062 // Validate arguments of public methods
                     ClientCapabilities = clientApplication.AppConfig.ClientCapabilities,
                     ClientId = clientApplication.AppConfig.ClientId,
-                     ClientName = clientApplication.AppConfig.ClientName,
-                     ClientVersion = clientApplication.AppConfig.ClientVersion,
-                     EnablePiiLogging = clientApplication.AppConfig.EnablePiiLogging,
-                     IsDefaultPlatformLoggingEnabled= clientApplication.AppConfig.IsDefaultPlatformLoggingEnabled,
-                     LogLevel = clientApplication.AppConfig.LogLevel,
-                     RedirectUri = clientApplication.AppConfig.RedirectUri,
-                     TenantId = clientApplication.AppConfig.TenantId,
+                    ClientName = clientApplication.AppConfig.ClientName,
+                    ClientVersion = clientApplication.AppConfig.ClientVersion,
+                    EnablePiiLogging = clientApplication.AppConfig.EnablePiiLogging,
+                    IsDefaultPlatformLoggingEnabled = clientApplication.AppConfig.IsDefaultPlatformLoggingEnabled,
+                    LogLevel = clientApplication.AppConfig.LogLevel,
+                    RedirectUri = clientApplication.AppConfig.RedirectUri,
+                    TenantId = clientApplication.AppConfig.TenantId,
 #pragma warning restore CA1062 // Validate arguments of public methods
                 },
             }, accountClaimsPrincipalFactory)
         {
-            if (clientApplication == null)
-                throw new System.ArgumentNullException(nameof(clientApplication));
-
-            _clientApplication = clientApplication;
+            _clientApplication = clientApplication ?? throw new ArgumentNullException(nameof(clientApplication));
 
             MsalDefaultOptionsConfiguration.Configure(Options as RemoteAuthenticationOptions<PublicClientApplicationOptions>);
 
-            SetupSerializationHandlers(protectedStorage);
+            SetUpSerializationHandlers(protectedStorage);
         }
 
         /// <summary>
@@ -91,10 +87,10 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
         {
             _clientApplication = (PublicClientApplication)PublicClientApplicationBuilder.CreateWithApplicationOptions(Options.ProviderOptions).Build();
 
-            SetupSerializationHandlers(protectedStorage);
+            SetUpSerializationHandlers(protectedStorage);
         }
 
-        private void SetupSerializationHandlers(IProtectedStorage protectedStorage)
+        private void SetUpSerializationHandlers(IProtectedStorage protectedStorage)
         {
             // these platforms have their own secure storage.
             if (Device.RuntimePlatform == Device.iOS ||
@@ -103,7 +99,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
                 return;
             }
 
-            // setup serialization handlers.
+            // set up serialization handlers.
             _clientApplication.UserTokenCache.SetBeforeAccessAsync(async args =>
             {
                 if (args.HasStateChanged)
@@ -150,20 +146,20 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
         /// </remarks>
         public async Task SignIn(SignInOptions signInOptions)
         {
-           await SignIn(c =>
-           {
-               var builder = c.AcquireTokenInteractive(
-                   _currentScopes = signInOptions?.Scopes != null ?
-                   _currentScopes.Union(signInOptions.Scopes) :
-                   _currentScopes)
-               .WithPrompt(Prompt.ForceLogin);
+            await SignIn(c =>
+            {
+                var builder = c.AcquireTokenInteractive(
+                    _currentScopes = signInOptions?.Scopes != null ?
+                    _currentScopes.Union(signInOptions.Scopes) :
+                    _currentScopes)
+                .WithPrompt(Prompt.ForceLogin);
 
 #if MONOANDROID
                builder = builder.WithParentActivityOrWindow(Xamarin.Essentials.Platform.CurrentActivity);
 #endif
-               return builder;
+                return builder;
 
-               }).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -197,7 +193,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
         /// </summary>
         /// <remarks>We only clean the local token cache because Microsoft Identity does not support logout.</remarks>
         public async Task SignOut()
-        { 
+        {
             var accounts = (await _clientApplication.GetAccountsAsync().ConfigureAwait(false)).ToList();
 
             // clear the cache
@@ -241,7 +237,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
                     .AcquireTokenSilent(_currentScopes = options?.Scopes != null ? _currentScopes.Union(options.Scopes) : _currentScopes, _currentAccount)
                     .ExecuteAsync()
                     .ConfigureAwait(false);
-            } 
+            }
             catch (MsalUiRequiredException)
             {
             }
@@ -286,7 +282,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
                         using var stream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                         account = await JsonSerializer.DeserializeAsync<TAccount>(stream).ConfigureAwait(false);
                     }
-                } 
+                }
                 else
                 {
                     account = new TAccount();

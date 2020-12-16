@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
+
 namespace Microsoft.MobileBlazorBindings.ProtectedStorage
 {
-    using System;
-    using System.IO;
-    using System.Runtime.Serialization.Formatters.Binary;
-    using System.Security.Cryptography;
-
     /// <summary>
-    /// A stream That uses the Dataprotection Api to encrypt / decrypt Aes
+    /// A stream That uses the DataProtection API to encrypt / decrypt AES
     /// keys and store them into a stream.
     /// </summary>
     /// <remarks>With the entropy inside isolated storage and
@@ -27,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         /// <summary>
         /// The crypto stream.
         /// </summary>
-        private CryptoStream _cryptoStream;
+        private readonly CryptoStream _cryptoStream;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataProtectionStream"/> class.
@@ -64,14 +64,14 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
                 keyAndIv.PaddingMode = aes.Padding;
                 keyAndIv.CipherMode = aes.Mode;
 
-                formatter.Serialize(this._innerStream, keyAndIv);
+                formatter.Serialize(_innerStream, keyAndIv);
 
                 var encryptor = aes.CreateEncryptor();
-                _cryptoStream = new CryptoStream(this._innerStream, encryptor, CryptoStreamMode.Write);
+                _cryptoStream = new CryptoStream(_innerStream, encryptor, CryptoStreamMode.Write);
             }
             else
             {
-                var keyAndIv = formatter.Deserialize(this._innerStream) as KeyAndIv;
+                var keyAndIv = (KeyAndIv)formatter.Deserialize(_innerStream);
                 aes.KeySize = keyAndIv.KeySize;
                 aes.BlockSize = keyAndIv.BlockSize;
                 aes.Padding = keyAndIv.PaddingMode;
@@ -81,7 +81,7 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
                 aes.IV = ProtectedData.Unprotect(keyAndIv.IV, keyAndIv.Entropy, dataProtectionScope);
 
                 var decryptor = aes.CreateDecryptor();
-                _cryptoStream = new CryptoStream(this._innerStream, decryptor, CryptoStreamMode.Read);
+                _cryptoStream = new CryptoStream(_innerStream, decryptor, CryptoStreamMode.Read);
             }
         }
 
@@ -125,9 +125,9 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         /// </summary>
         public void FlushFinalBlock()
         {
-            if (!this._cryptoStream.HasFlushedFinalBlock)
+            if (!_cryptoStream.HasFlushedFinalBlock)
             {
-                this._cryptoStream.FlushFinalBlock();
+                _cryptoStream.FlushFinalBlock();
             }
         }
 
@@ -185,13 +185,13 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         {
             if (disposing)
             {
-                if (!this._cryptoStream.HasFlushedFinalBlock)
+                if (!_cryptoStream.HasFlushedFinalBlock)
                 {
-                    this._cryptoStream.FlushFinalBlock();
+                    _cryptoStream.FlushFinalBlock();
                 }
 
-                this._cryptoStream.Dispose();
-                this._innerStream.Dispose();
+                _cryptoStream.Dispose();
+                _innerStream.Dispose();
             }
 
             base.Dispose(disposing);

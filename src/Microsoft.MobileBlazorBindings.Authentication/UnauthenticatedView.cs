@@ -4,14 +4,12 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
     /// <summary>
-    /// A component that will handle an unauthenticated situation in Mobile Blazor Bindings.
+    /// A component that will handle an unauthenticated state in Mobile Blazor Bindings.
     /// </summary>
     public class UnauthenticatedView : ComponentBase
     {

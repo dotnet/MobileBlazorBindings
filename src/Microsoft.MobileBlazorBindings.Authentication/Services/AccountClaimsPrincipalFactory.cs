@@ -1,10 +1,10 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.MobileBlazorBindings.Authentication.Internal;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.MobileBlazorBindings.Authentication.Internal;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
@@ -38,7 +38,9 @@ namespace Microsoft.MobileBlazorBindings.Authentication
             RemoteAuthenticationUserOptions options)
         {
             if (options == null)
+            {
                 throw new System.ArgumentNullException(nameof(options));
+            }
 
             var identity = account != null ? new ClaimsIdentity(
             options.AuthenticationType,

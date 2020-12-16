@@ -1,18 +1,18 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using Microsoft.Extensions.Options;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
     /// <summary>
-    /// The default implementation for <see cref="IAuthenticationService"/> that uses IdentityModel.OidcClient to authenticate the user.
+    /// An implementation for <see cref="IAuthenticationService"/> that uses Xamarin.Essentials WebAuthenticator to authenticate the user.
     /// </summary>
     /// <typeparam name="TRemoteAuthenticationState">The state to preserve across authentication operations.</typeparam>
     /// <typeparam name="TAccount">The type of the <see cref="RemoteUserAccount" />.</typeparam>
@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 return string.Empty;
             }
 
-            return $"?{string.Join("&",authenticationResult.Properties.Select(x => $"{x.Key}={x.Value}"))}";
+            return $"?{string.Join("&", authenticationResult.Properties.Select(x => $"{x.Key}={x.Value}"))}";
         }
     }
 }
