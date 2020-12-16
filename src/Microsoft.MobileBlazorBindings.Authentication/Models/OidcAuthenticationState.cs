@@ -7,35 +7,29 @@ using System.Text;
 
 namespace Microsoft.MobileBlazorBindings.Authentication
 {
+    /// <summary>
+    /// State that is maintained between the Oidc Authorization call and the callback.
+    /// </summary>
     public class OidcAuthenticationState
     {
-        //
-        // Summary:
-        //     Gets or sets the start URL.
-        //
-        // Value:
-        //     The start URL.
+        /// <summary>
+        /// Gets or sets the start URL
+        /// </summary>
         public string StartUrl { get; set; }
-        //
-        // Summary:
-        //     Gets or sets the nonce.
-        //
-        // Value:
-        //     The nonce.
+
+        /// <summary>
+        /// Gets or sets the nonce.
+        /// </summary>
         public string Nonce { get; set; }
-        //
-        // Summary:
-        //     Gets or sets the state.
-        //
-        // Value:
-        //     The state.
+
+        /// <summary>
+        /// Gets or sets the state.
+        /// </summary>
         public string State { get; set; }
-        //
-        // Summary:
-        //     Gets or sets the code verifier.
-        //
-        // Value:
-        //     The code verifier.
+        
+        /// <summary>
+        /// Gets or sets the code verifier.
+        /// </summary>
         public string CodeVerifier { get; set; }
 
         /// <summary>
