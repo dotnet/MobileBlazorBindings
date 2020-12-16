@@ -46,8 +46,7 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
             if (authorizedUri != null)
             {
-                // need to intern it to make sure that reference equals succeeds.
-                var key = string.Intern(authorizedUri.ToString());
+                var key = authorizedUri.ToString();
 
                 if (!TokenProviders.TryGetValue(key, out var tokenProvider))
                 {
