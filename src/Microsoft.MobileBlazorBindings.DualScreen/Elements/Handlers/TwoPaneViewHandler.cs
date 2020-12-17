@@ -28,5 +28,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new InvalidOperationException($"Unknown child type {child.GetType().FullName} being added to parent element type {GetType().FullName}.");
             }
         }
+
+        public override void RemoveChild(XF.Element child)
+        {
+            if (child == TwoPaneViewControl.Pane1)
+            {
+                TwoPaneViewControl.Pane1 = null;
+            }
+            else if (child == TwoPaneViewControl.Pane2)
+            {
+                TwoPaneViewControl.Pane2 = null;
+            }
+        }
     }
 }

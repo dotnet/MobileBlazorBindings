@@ -12,5 +12,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             var childAsView = child as XF.View;
             ContentViewControl.Content = childAsView;
         }
+
+        public override void RemoveChild(XF.Element child)
+        {
+            if (ContentViewControl.Content == child)
+            {
+                ContentViewControl.Content = null;
+            }
+        }
     }
 }
