@@ -12,5 +12,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             var childAsView = child as XF.View;
             ScrollViewControl.Content = childAsView;
         }
+
+        public override void RemoveChild(XF.Element child)
+        {
+            if (ScrollViewControl.Content == child)
+            {
+                ScrollViewControl.Content = null;
+            }
+        }
     }
 }
