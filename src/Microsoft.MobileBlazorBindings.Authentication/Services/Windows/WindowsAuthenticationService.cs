@@ -265,6 +265,10 @@ namespace Microsoft.MobileBlazorBindings.Authentication
 
                 if (_httpListener != null)
                 {
+                    if (_httpListener.IsListening)
+                    {
+                        _httpListener.Close();
+                    }
                     ((IDisposable)_httpListener).Dispose();
                     _httpListener = null;
                 }
