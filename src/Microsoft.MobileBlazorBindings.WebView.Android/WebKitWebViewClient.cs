@@ -196,10 +196,18 @@ namespace Microsoft.MobileBlazorBindings.WebView.Android
         private void RunBlazorStartupScripts(AWebView view)
         {
             Log.Info("RunBlazorStartupScripts", "attaching Blazor init script.");
+            // we need to protect against reinsertion of the script tag because the
+            // OnPageFinished event refires after the app is brought back from the 
+            // foreground and the webview is brought back into view, without it actually
+            // getting reloaded.
             view.EvaluateJavascript(@"
-                var blazorScript = document.createElement('script');
-                blazorScript.src = 'framework://blazor.desktop.js';
-                document.head.appendChild(blazorScript);
+                if (document.getElementById('blazorDesktopFrameworkScriptTag') == null)
+                {
+                    var blazorScript = document.createElement('script');
+                    blazorScript.id = 'blazorDesktopFrameworkScriptTag';
+                    blazorScript.src = 'framework://blazor.desktop.js';
+                    document.head.appendChild(blazorScript);
+                }
             ", this);
         }
 

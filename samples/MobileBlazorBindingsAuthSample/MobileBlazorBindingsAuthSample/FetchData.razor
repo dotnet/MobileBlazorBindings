@@ -1,0 +1,41 @@
+@inject HttpClient Http
+@attribute [Authorize]
+
+<Frame CornerRadius="10" BackgroundColor="Color.LightBlue">
+
+    @if (claims == null)
+    {
+        <StackLayout Orientation="StackOrientation.Horizontal" HorizontalOptions="LayoutOptions.Center">
+            <Label Text="@("Loading...")"
+                   FontAttributes="FontAttributes.Bold"
+                   VerticalTextAlignment="TextAlignment.Center" />
+        </StackLayout>
+    }
+    else
+    {   
+        <StackLayout>
+            @foreach (var forecast in claims)
+            {
+            <ClaimTemplate Type="@forecast.Type" Value="@forecast.Value"></ClaimTemplate>
+            }
+        </StackLayout>
+    }
+
+</Frame>
+
+
+@code {
+    private Claim[] claims;
+
+    protected override async Task OnInitializedAsync()
+    {
+        claims = await Http.GetFromJsonAsync<Claim[]>("test");
+    }
+
+    public class Claim
+    {
+        public string Type { get; set; }
+
+        public string Value { get; set; }
+    }
+}

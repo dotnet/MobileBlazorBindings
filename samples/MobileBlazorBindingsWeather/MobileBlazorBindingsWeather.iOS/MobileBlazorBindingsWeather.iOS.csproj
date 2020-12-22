@@ -121,12 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MobileBlazorBindingsWeather\MobileBlazorBindingsWeather.csproj">
-      <Project>{6FAD20B5-A708-4CD9-84F0-A1009376B2AE}</Project>
+      <Project>{0F4EF5E2-91EA-49B2-8124-420F4B66A6DB}</Project>
       <Name>MobileBlazorBindingsWeather</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,0 +1,48 @@
+@page "/fetchdata"
+@inject HttpClient Http
+@attribute [Authorize]
+
+<h1>Available claims</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (claims == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in claims)
+            {
+                <tr>
+                    <td>@forecast.Type</td>
+                    <td>@forecast.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Claim[] claims;
+
+    protected override async Task OnInitializedAsync()
+    {
+        claims = await Http.GetFromJsonAsync<Claim[]>("test");
+    }
+
+    public class Claim
+    {
+        public string Type { get; set; }
+
+        public string Value { get; set; }
+    }
+}

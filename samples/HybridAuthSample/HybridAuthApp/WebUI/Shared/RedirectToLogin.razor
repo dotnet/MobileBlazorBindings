@@ -1,0 +1,8 @@
+﻿@inject IAuthenticationService AuthenticationService
+@using Microsoft.MobileBlazorBindings.Authentication
+@code {
+    protected override void OnInitialized()
+    {
+        var result = AuthenticationService.SignIn();
+    }
+}
