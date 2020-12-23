@@ -25,7 +25,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         // should be no-ops.
         public XF.Element ElementControl => null;
         public object TargetElement => null;
-        public int GetPhysicalSiblingIndex() => 0;
         public bool IsParented() => false;
         public bool IsParentedTo(XF.Element parent) => false;
 
