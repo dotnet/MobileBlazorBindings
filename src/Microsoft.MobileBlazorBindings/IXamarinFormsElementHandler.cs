@@ -13,11 +13,5 @@ namespace Microsoft.MobileBlazorBindings
         bool IsParented();
         bool IsParentedTo(XF.Element parent);
         void SetParent(XF.Element parent);
-
-        /// <summary>
-        /// Returns the index of this handler's target element within its parent's set of children.
-        /// </summary>
-        /// <returns></returns>
-        int GetPhysicalSiblingIndex();
     }
 }

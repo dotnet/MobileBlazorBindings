@@ -25,6 +25,14 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;
+            var childAsView = child as XF.View;
+
+            return layoutControlOfView.Children.IndexOf(childAsView);
+        }
+
         public virtual void RemoveChild(XF.Element child)
         {
             var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;

@@ -48,11 +48,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetPhysicalSiblingIndex()
-        {
-            return 0;
-        }
-
         public bool IsParented()
         {
             return _parentVisualElement != null;

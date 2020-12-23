@@ -106,7 +106,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             throw new NotSupportedException();
         }
 
-        public int GetPhysicalSiblingIndex()
+        public int GetChildIndex(XF.Element child)
         {
             // Because this is a 'fake' element, all matters related to physical trees
             // should be no-ops.
