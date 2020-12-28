@@ -1,0 +1,45 @@
+﻿@using ControlGallery.Models
+@page "/pickerplayground"
+
+<ContentView>
+    <StackLayout>
+
+        <Label Text="Picker Playground">
+
+        </Label>
+        <Picker
+            ItemsSource="Models"
+            Title="Select an Item"
+            ItemDisplayBinding="Name"
+            @bind-SelectedItem="Item"
+        >
+
+        </Picker>
+
+        <DatePicker/>
+
+        <Label Text="@(Item?.Name ?? "Select an item")"></Label>
+    </StackLayout>
+</ContentView>
+
+@code 
+{
+    private static Model item = new Model { Name = "Another" };
+    public Model Item     {           get;            set;     } = item; 
+    public List<string> Items { get; set; } = new List<string>
+    {
+        "Item 1",
+        "Item 2",
+        "Item 3",
+    };
+
+    public List<Model> Models => new List<Model>
+    {
+        new Model{Name = "Model 1"},
+        new Model{Name = "Model 2"},
+        new Model{Name = "Model 3"},
+        item
+    };
+
+
+}
