@@ -61,10 +61,11 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-        protected override int GetPhysicalSiblingIndex(
-            IXamarinFormsElementHandler handler)
+        protected override int GetChildElementIndex(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
         {
-            return handler.GetPhysicalSiblingIndex();
+            return parentHandler is IXamarinFormsContainerElementHandler containerHandler
+                ? containerHandler.GetChildIndex(childHandler.ElementControl)
+                : -1;
         }
 
         protected override void RemoveChildElement(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)

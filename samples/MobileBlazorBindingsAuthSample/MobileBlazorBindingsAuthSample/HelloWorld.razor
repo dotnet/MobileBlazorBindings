@@ -1,0 +1,40 @@
+﻿@inject IAuthenticationService AuthenticationService
+ 
+<CascadingAuthenticationState>
+    <ContentView>
+        <ScrollView>
+            <AuthorizeView>
+                <NotAuthorized>
+                    <StackLayout Margin="new Thickness(20)">
+                        <Label Text="Hello, World!"
+                               FontSize="40" />
+                        <Button Text="Login" OnClick="Login"></Button>
+                    </StackLayout>
+                </NotAuthorized>
+                <Authorized>
+                    <StackLayout Margin="new Thickness(20)">
+
+                        <Label Text="@($"Hello, {context.User.Identity.Name}!")"
+                               FontSize="40" />
+                        <Button Text="Logout" OnClick="Logout"></Button>
+                        <FetchData />
+                    </StackLayout>
+                </Authorized>
+            </AuthorizeView>
+            </ScrollView>
+    </ContentView>
+</CascadingAuthenticationState>
+
+@code
+{
+    async Task Login()
+    {
+        await AuthenticationService.SignIn();
+    }
+
+    async Task Logout()
+    {
+        await AuthenticationService.SignOut();
+    }
+
+}

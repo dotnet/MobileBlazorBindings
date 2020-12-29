@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
     <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
@@ -104,7 +104,7 @@
       <Name>Microsoft.MobileBlazorBindings.WebView.macOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\HybridApp\HybridApp.csproj">
-      <Project>{de71f6d4-9950-472a-90b2-f4074810ae6d}</Project>
+      <Project>{01A7CEE6-B551-41CE-99F7-2C6B29566C9B}</Project>
       <Name>HybridApp</Name>
     </ProjectReference>
   </ItemGroup>

@@ -23,6 +23,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            return TabbedPageControl.Children.IndexOf(child as XF.Page);
+        }
+
         public virtual void RemoveChild(XF.Element child)
         {
             TabbedPageControl.Children.Remove(child as XF.Page);

@@ -29,9 +29,9 @@ namespace BlinForms.Framework
             }
         }
 
-        protected override int GetPhysicalSiblingIndex(IWindowsFormsControlHandler handler)
+        protected override int GetChildElementIndex(IWindowsFormsControlHandler parentHandler, IWindowsFormsControlHandler childHandler)
         {
-            return handler.Control.Parent.Controls.GetChildIndex(handler.Control);
+            return parentHandler.Control.Controls.GetChildIndex(childHandler.Control);
         }
 
         protected override bool IsParented(IWindowsFormsControlHandler handler)

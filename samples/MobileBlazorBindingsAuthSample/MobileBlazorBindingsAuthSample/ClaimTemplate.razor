@@ -1,0 +1,20 @@
+﻿<Grid Padding="new Thickness(10)" ColumnDefinitions="Auto, *">
+    <GridCell>
+        <Label Text="@Type"
+               FontAttributes="FontAttributes.Bold" />
+    </GridCell>
+
+    <GridCell Column="1">
+        <Label Text="@Value"
+               FontAttributes="FontAttributes.Italic"
+               VerticalOptions="LayoutOptions.End" />
+    </GridCell>
+</Grid>
+
+@code {
+
+    [Parameter]
+    public string Type { get; set; }
+    [Parameter]
+    public string Value { get; set; }
+}

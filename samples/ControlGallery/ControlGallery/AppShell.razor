@@ -1,7 +1,7 @@
 ﻿@using ControlGallery.Views
 
-<Shell FlyoutBehavior="FlyoutBehavior.Disabled">
-    <TabBar>
+<Shell>
+    <FlyoutItem Title="Main">
         <Tab Title="Gallery">
             <ShellContent>
                 <PlaygroundList />
@@ -14,32 +14,53 @@
             <ContentPage Title="Adder">
                 <StackLayout>
                     <Button OnClick="AddTab">Add Tab</Button>
-                    <Button IsEnabled="(count > 1)" OnClick="RemoveTab">Remove tab</Button>
+                    <Button IsEnabled="(tabCount > 1)" OnClick="RemoveTab">Remove tab</Button>
+                    <Button OnClick="AddMenuItem">Add MenuItem</Button>
+                    <Button IsEnabled="(menuItemCount > 0)" OnClick="RemoveMenuItem">Remove MenuItem</Button>
                 </StackLayout>
             </ContentPage>
         </Tab>
 
-        @for (int i = 0; i < count; i++)
+        @for (int i = 0; i < tabCount; i++)
         {
             var currentIndex = i;
             <ShellTab Title="@($"Tab #{currentIndex + 1}")" />
         }
-    </TabBar>
+    </FlyoutItem>
+
+    @for (int i = 0; i < menuItemCount; i++)
+    {
+        <MenuItem Text="@($"MenuItem #{i + 1}")" />
+    }
 </Shell>
 
 @code {
-    int count = 1;
+    int tabCount = 1;
+    int menuItemCount = 2;
 
     void AddTab()
     {
-        count++;
+        tabCount++;
     }
 
     void RemoveTab()
     {
-        if (count > 1)
+        if (tabCount > 1)
         {
-            count--;
+            tabCount--;
+        }
+    }
+
+    void AddMenuItem()
+    {
+        menuItemCount++;
+    }
+
+    void RemoveMenuItem()
+    {
+        if (menuItemCount > 0)
+        {
+            menuItemCount--;
         }
     }
 }

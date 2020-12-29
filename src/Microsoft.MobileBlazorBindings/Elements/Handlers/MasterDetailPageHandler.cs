@@ -67,5 +67,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new InvalidOperationException($"Unknown child type {child.GetType().FullName} being removed from parent element type {GetType().FullName}.");
             }
         }
+
+        public int GetChildIndex(XF.Element child)
+        {
+            // Not sure whether elements "order" matters here
+            return child switch
+            {
+                _ when child == MasterDetailPageControl.Master => 0,
+                _ when child == MasterDetailPageControl.Detail => 1,
+                _ => -1
+            };
+        }
     }
 }

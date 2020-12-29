@@ -1,0 +1,22 @@
+﻿@inject CounterState CounterState
+
+<ContentView>
+    <StackLayout>
+        <BlazorWebView VerticalOptions="LayoutOptions.FillAndExpand">
+            <HybridAuthApp.WebUI.App />
+        </BlazorWebView>
+    </StackLayout>
+</ContentView>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        CounterState.StateChanged += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        CounterState.StateChanged -= StateHasChanged;
+    }
+}

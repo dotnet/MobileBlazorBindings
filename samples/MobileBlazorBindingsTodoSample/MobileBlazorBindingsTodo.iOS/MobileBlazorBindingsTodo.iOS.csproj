@@ -131,12 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
     <ProjectReference Include="..\MobileBlazorBindingsTodo\MobileBlazorBindingsTodo.csproj">
-      <Project>{6FDD7B7F-5F55-492F-A294-70C0BACE2B7D}</Project>
+      <Project>{E1B7618A-C873-44C1-A20F-94D9068EBB3C}</Project>
       <Name>MobileBlazorBindingsTodo</Name>
     </ProjectReference>
   </ItemGroup>

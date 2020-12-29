@@ -1,0 +1,26 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<AuthorizeView>
+    <Authorized>
+        <ul>
+            @foreach (var claim in context.User.Claims)
+            {
+                <li><b>@claim.Type</b> @claim.Value.</li>
+            }
+        </ul>
+    </Authorized>
+    <NotAuthorized>
+    </NotAuthorized>
+</AuthorizeView>
+
+<a href="https://gaohaoyang.github.io/history-pjax-demo/">History demo</a>
+
+<button @onclick="@( () => this.NavigationManager.NavigateTo("", true))"> Force Reload </button>
+
+<button @onclick="@( () => this.NavigationManager.NavigateTo("/counter", true))"> Force reload to counter </button>

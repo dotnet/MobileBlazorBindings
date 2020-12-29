@@ -24,6 +24,21 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
+        public int GetChildIndex(XF.Element child)
+        {
+            // There are two cases to consider:
+            // 1. A Xamarin.Forms Label can have only 1 child (a FormattedString), so the child's index is always 0.
+            // 2. But to simplify things, in MobileBlazorBindings a Label can contain a Span directly, so if the child
+            //    is a Span, we have to compute its sibling index.
+
+            return child switch
+            {
+                XF.Span span => LabelControl.FormattedText?.Spans.IndexOf(span) ?? -1,
+                XF.FormattedString formattedString when LabelControl.FormattedText == formattedString => 0,
+                _ => -1
+            };
+        }
+
         public virtual void RemoveChild(XF.Element child)
         {
             var childAsSpan = child as XF.Span;

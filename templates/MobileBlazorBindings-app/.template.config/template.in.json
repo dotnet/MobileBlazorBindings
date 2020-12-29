@@ -87,7 +87,7 @@
             "type": "parameter",
             "dataType": "string",
             "replaces": "XamarinFormsVersion",
-            "defaultValue": "4.8.0.1451"
+            "defaultValue": "4.8.0.1687"
         },
         "XamarinEssentialsSdk": {
             "type": "parameter",
