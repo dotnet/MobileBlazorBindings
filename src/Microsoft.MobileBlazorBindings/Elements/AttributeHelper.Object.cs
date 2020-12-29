@@ -19,5 +19,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             return AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
         }
+
+        public static T DelegateToObject<T>(object item, object defaultValueIfNull = default)
+        {
+            return (T) AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
+        }
     }
 }

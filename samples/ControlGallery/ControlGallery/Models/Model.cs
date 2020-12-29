@@ -4,9 +4,9 @@ using System.Text;
 
 namespace ControlGallery.Models
 {
-    //public class Model
-    //{
-    //    public string Name { get; set; }
-    //    public int Id { get; set; }
-    //}
+    public class Model
+    {
+        public string Name { get; set; }
+        public int Id { get; set; }
+    }
 }

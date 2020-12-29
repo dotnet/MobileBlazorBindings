@@ -10,24 +10,56 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Model
-    {
-        public string Name { get; set; }
-        public int Id { get; set; }
-    }
+    
 
-    public class Picker : View
+    public class Picker<T> : View
     {
         public new XF.Picker NativeControl => base.NativeControl as XF.Picker;
 
-        [Parameter] public IList ItemsSource { get; set; }
+        //Changing source at run time is valid behaviour so do not make readonly
+#pragma warning disable CA2227 // Collection properties should be read only
+        [Parameter] public IList<T> ItemsSource { get; set; }
+#pragma warning restore CA2227 // Collection properties should be read only
         [Parameter] public string Title { get; set; }
         [Parameter] public string ItemDisplayBinding { get; set; }
-        [Parameter] public object SelectedItem { get; set; }
-        [Parameter] public EventCallback<Model> SelectedItemChanged { get; set; }
+        [Parameter] public T SelectedItem { get; set; }
+        [Parameter] public int SelectedIndex { get; set; } = -1;
+        [Parameter] public EventCallback<T> SelectedItemChanged { get; set; }
+        [Parameter] public EventCallback<int> SelectedIndexChanged { get; set; }
+        [Parameter] public double? CharacterSpacing { get; set; }
+        /// <summary>
+        /// Gets a value that indicates whether the font for the label is bold, italic, or neither.
+        /// </summary>
+        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        /// <summary>
+        /// Gets the font family to which the font for the label belongs.
+        /// </summary>
+        [Parameter] public string FontFamily { get; set; }
+        /// <summary>
+        /// Gets the size of the font for the label.
+        /// </summary>
+        [Parameter] public double? FontSize { get; set; }
+        /// <summary>
+        /// Gets or sets the horizontal alignment of the Text property. This is a bindable property.
+        /// </summary>
+        [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the text of this Label. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The <see cref="T:Xamarin.Forms.Color" /> value.
+        /// </value>
+        [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public XF.Color? TitleColor { get; set; }
+        [Parameter] public XF.TextTransform? TextTransform { get; set; }
+        /// <summary>
+        /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
+        /// </summary>
+        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+
         static Picker()
         {
-            ElementHandlerRegistry.RegisterElementHandler<Picker>(renderer => new PickerHandler(renderer, new XF.Picker()));
+            ElementHandlerRegistry.RegisterElementHandler<Picker<T>>(renderer => new PickerHandler(renderer, new XF.Picker()));
         }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -36,7 +68,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (ItemsSource != null)
             {
-                builder.AddAttribute(nameof(ItemsSource), AttributeHelper.IListToDelegate(ItemsSource));
+                builder.AddAttribute(nameof(ItemsSource), AttributeHelper.ObjectToDelegate(ItemsSource));
             }
             if(Title != null)
             {
@@ -46,17 +78,64 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(ItemDisplayBinding), ItemDisplayBinding);
             }
+            if (SelectedIndex != -1)
+            {
+                builder.AddAttribute(nameof(SelectedIndex), SelectedIndex.ToString());
+            }
             if (SelectedItem != null)
             {
                 builder.AddAttribute(nameof(SelectedItem), AttributeHelper.ObjectToDelegate(SelectedItem));
             }
+            if (CharacterSpacing != null)
+            {
+                builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
+            }
+            if (FontAttributes != null)
+            {
+                builder.AddAttribute(nameof(FontAttributes), (int)FontAttributes.Value);
+            }
+            if (FontFamily != null)
+            {
+                builder.AddAttribute(nameof(FontFamily), FontFamily);
+            }
+            if (FontSize != null)
+            {
+                builder.AddAttribute(nameof(FontSize), AttributeHelper.DoubleToString(FontSize.Value));
+            }
+            if (HorizontalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment.Value);
+            }
+            if (TextColor != null)
+            {
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+            }
+            if (TextTransform != null)
+            {
+                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
+            }
+            if (TitleColor != null)
+            {
+                builder.AddAttribute(nameof(TitleColor), AttributeHelper.ColorToString(TitleColor.Value));
+            }
+            if (VerticalTextAlignment != null)
+            {
+                builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
+            }
 
             builder.AddAttribute("onselecteditemchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleSelectedItemChanged));
+
+            builder.AddAttribute("onselectedindexchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleSelectedIndexChanged));
         }
 
         private Task HandleSelectedItemChanged(ChangeEventArgs evt)
         {
-            return SelectedItemChanged.InvokeAsync((Model)evt.Value);
+            return SelectedItemChanged.InvokeAsync((T)evt.Value);
+        }
+
+        private Task HandleSelectedIndexChanged(ChangeEventArgs evt)
+        {
+            return SelectedIndexChanged.InvokeAsync((int)evt.Value);
         }
     }
 }
