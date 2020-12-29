@@ -59,30 +59,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
-                case nameof(XF.Picker.Title):
-                    PickerControl.Title = (string)attributeValue;
-                    break;
-                case nameof(XF.Picker.ItemsSource):
-                    var items = AttributeHelper.DelegateToObject<IList>(attributeValue);
-
-                    //IMPORTANT! don't set ItemsSource again if it is already set
-                    //Resetting ItemsSource will confuse the SelectedItem property and cause and infinite loop
-                    if (PickerControl.ItemsSource != items)
-                        PickerControl.ItemsSource = items;
-                    break;
-                case nameof(XF.Picker.ItemDisplayBinding):
-                    PickerControl.ItemDisplayBinding = new XF.Binding((string)attributeValue);
-                    break;
-                case nameof(XF.Picker.SelectedItem):
-                    var item = AttributeHelper.DelegateToObject(attributeValue);
-                    if(PickerControl.SelectedItem != item)
-                        PickerControl.SelectedItem = item;
-                    break;
-                case nameof(XF.Picker.SelectedIndex):
-                    var index = AttributeHelper.GetInt(attributeValue);
-                    if (PickerControl.SelectedIndex != index)
-                        PickerControl.SelectedIndex = index;
-                    break;
                 case nameof(XF.Picker.CharacterSpacing):
                     PickerControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue, 0.0);
                     break;
@@ -98,14 +74,37 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Picker.HorizontalTextAlignment):
                     PickerControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.Picker.ItemDisplayBinding):
+                    PickerControl.ItemDisplayBinding = new XF.Binding((string)attributeValue);
+                    break;
+                case nameof(XF.Picker.ItemsSource):
+                    var items = AttributeHelper.DelegateToObject<IList>(attributeValue);
+                    //IMPORTANT! don't set ItemsSource again if it is already set
+                    //Resetting ItemsSource will confuse the SelectedItem property and cause and infinite loop
+                    if (PickerControl.ItemsSource != items)
+                        PickerControl.ItemsSource = items;
+                    break;
                 case nameof(XF.Picker.TextColor):
                     PickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
                 case nameof(XF.Picker.TextTransform):
                     PickerControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
                     break;
+                case nameof(XF.Picker.Title):
+                    PickerControl.Title = (string)attributeValue;
+                    break;
                 case nameof(XF.Picker.TitleColor):
                     PickerControl.TitleColor = AttributeHelper.StringToColor((string)attributeValue);
+                    break;
+                case nameof(XF.Picker.SelectedIndex):
+                    var index = AttributeHelper.GetInt(attributeValue);
+                    if (PickerControl.SelectedIndex != index)
+                        PickerControl.SelectedIndex = index;
+                    break;
+                case nameof(XF.Picker.SelectedItem):
+                    var item = AttributeHelper.DelegateToObject(attributeValue);
+                    if (PickerControl.SelectedItem != item)
+                        PickerControl.SelectedItem = item;
                     break;
                 case nameof(XF.Label.VerticalTextAlignment):
                     PickerControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);

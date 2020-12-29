@@ -85,6 +85,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
+        /// Helper method to serialize <see cref="int" /> objects.
+        /// </summary>
+        public static string IntToString(int value)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
         /// Parses the attribute value as a space-separated string. Entries are trimmed and empty entries are removed.
         /// </summary>
         /// <param name="attributeValue"></param>
@@ -92,6 +100,25 @@ namespace Microsoft.MobileBlazorBindings.Elements
         public static IList<string> GetStringList(object attributeValue)
         {
             return ((string)attributeValue)?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+        }
+
+        public static AttributeValueHolder ObjectToDelegate(object item)
+        {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+            return AttributeValueHolderFactory.FromObject(item);
+        }
+
+        public static object DelegateToObject(object item, object defaultValueIfNull = default)
+        {
+            return AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
+        }
+
+        public static T DelegateToObject<T>(object item, object defaultValueIfNull = default)
+        {
+            return (T)AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
         }
     }
 }

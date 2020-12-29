@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    
-
     public class Picker<T> : View
     {
         public new XF.Picker NativeControl => base.NativeControl as XF.Picker;
@@ -50,6 +45,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The <see cref="T:Xamarin.Forms.Color" /> value.
         /// </value>
         [Parameter] public XF.Color? TextColor { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the tite of this Label. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The <see cref="T:Xamarin.Forms.Color" /> value.
+        /// </value>
         [Parameter] public XF.Color? TitleColor { get; set; }
         [Parameter] public XF.TextTransform? TextTransform { get; set; }
         /// <summary>
@@ -66,26 +67,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
-            if (ItemsSource != null)
-            {
-                builder.AddAttribute(nameof(ItemsSource), AttributeHelper.ObjectToDelegate(ItemsSource));
-            }
-            if(Title != null)
-            {
-                builder.AddAttribute(nameof(Title), Title);
-            }
-            if (ItemDisplayBinding != null)
-            {
-                builder.AddAttribute(nameof(ItemDisplayBinding), ItemDisplayBinding);
-            }
-            if (SelectedIndex != -1)
-            {
-                builder.AddAttribute(nameof(SelectedIndex), SelectedIndex.ToString());
-            }
-            if (SelectedItem != null)
-            {
-                builder.AddAttribute(nameof(SelectedItem), AttributeHelper.ObjectToDelegate(SelectedItem));
-            }
             if (CharacterSpacing != null)
             {
                 builder.AddAttribute(nameof(CharacterSpacing), AttributeHelper.DoubleToString(CharacterSpacing.Value));
@@ -106,6 +87,22 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(HorizontalTextAlignment), (int)HorizontalTextAlignment.Value);
             }
+            if (ItemDisplayBinding != null)
+            {
+                builder.AddAttribute(nameof(ItemDisplayBinding), ItemDisplayBinding);
+            }
+            if (ItemsSource != null)
+            {
+                builder.AddAttribute(nameof(ItemsSource), AttributeHelper.ObjectToDelegate(ItemsSource));
+            }
+            if (SelectedIndex != -1)
+            {
+                builder.AddAttribute(nameof(SelectedIndex), AttributeHelper.IntToString(SelectedIndex));
+            }
+            if (SelectedItem != null)
+            {
+                builder.AddAttribute(nameof(SelectedItem), AttributeHelper.ObjectToDelegate(SelectedItem));
+            }
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
@@ -113,6 +110,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextTransform != null)
             {
                 builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
+            }
+            if(Title != null)
+            {
+                builder.AddAttribute(nameof(Title), Title);
             }
             if (TitleColor != null)
             {
