@@ -1,0 +1,59 @@
+﻿@inherits InputViewWrapper
+
+<Entry @bind-Text="@CurrentText"
+       OnUnfocused="OnUnfocused"
+       @attributes="Properties" />
+
+@code
+{
+    private FieldIdentifier _fieldIdentifier;
+    [CascadingParameter] EditContext CascadedEditContext { get; set; }
+
+    [Parameter] public string Text { get; set; }
+    [Parameter] public EventCallback<string> TextChanged { get; set; }
+    [Parameter] public Expression<Func<string>> TextExpression { get; set; }
+
+    public bool IsValid => !CascadedEditContext.GetValidationMessages(_fieldIdentifier).Any();
+
+    private string CurrentText
+    {
+        get => Text;
+        set
+        {
+            if (Text != value)
+            {
+                Text = value;
+                _ = TextChanged.InvokeAsync(value);
+
+                // Reflect changes immediately only if field already has validations
+                if (!IsValid)
+                {
+                    CascadedEditContext.NotifyFieldChanged(_fieldIdentifier);
+                }
+            }
+        }
+    }
+
+    private void OnUnfocused()
+    {
+        CascadedEditContext.NotifyFieldChanged(_fieldIdentifier);
+    }
+
+    protected override void OnInitialized()
+    {
+        if (CascadedEditContext is null)
+        {
+            throw new InvalidOperationException($"{GetType()} requires a cascading parameter " +
+                $"of type {nameof(EditContext)}. For example, you can use {GetType().FullName} inside " +
+                $"an {nameof(CascadedEditContext)}.");
+        }
+
+        if (TextExpression is null)
+        {
+            throw new InvalidOperationException($"{GetType()} requires a value for the 'TextExpression' " +
+                $"parameter. Normally this is provided automatically when using 'bind-Text'.");
+        }
+
+        _fieldIdentifier = FieldIdentifier.Create(TextExpression);
+    }
+}
