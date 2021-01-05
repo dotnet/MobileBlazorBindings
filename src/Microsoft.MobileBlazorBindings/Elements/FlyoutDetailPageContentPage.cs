@@ -5,7 +5,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    internal sealed class MasterDetailDetailPageContentPage : XF.ContentPage
+    internal sealed class FlyoutDetailPageContentPage : XF.ContentPage
     {
     }
 }

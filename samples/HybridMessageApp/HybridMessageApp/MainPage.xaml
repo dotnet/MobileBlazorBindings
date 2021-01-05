@@ -10,23 +10,23 @@
              xmlns:pages="clr-namespace:HybridMessageApp">
 
     <Application.MainPage>
-        <MasterDetailPage x:Name="MasterDetails">
+        <FlyoutPage x:Name="Flyout">
 
-            <MasterDetailPage.Master>
+            <FlyoutPage.Flyout>
                 <ContentPage Title="Folders">
                     <b:BlazorWebView x:TypeArguments="app:FolderList" x:Name="FolderWebView" VerticalOptions="FillAndExpand" />
                 </ContentPage>
-            </MasterDetailPage.Master>
+            </FlyoutPage.Flyout>
 
-            <MasterDetailPage.Detail>
+            <FlyoutPage.Detail>
                 <NavigationPage>
                     <x:Arguments>
                         <pages:MessageListPage />
                     </x:Arguments>
                 </NavigationPage>
-            </MasterDetailPage.Detail>
+            </FlyoutPage.Detail>
 
-        </MasterDetailPage>
+        </FlyoutPage>
     </Application.MainPage>
 
     <Application.Resources>

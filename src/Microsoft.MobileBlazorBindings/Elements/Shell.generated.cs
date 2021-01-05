@@ -31,6 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Setting the FlyoutHeaderBehavior to CollapseOnScroll collapses the flyout as scrolling occurs. The other valid FlyoutHeaderBehavior values are Default, Fixed, and Scroll (scroll with the menu items).
         /// </summary>
         [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
+        [Parameter] public double? FlyoutHeight { get; set; }
         /// <summary>
         /// Gets or sets the icon that, when pressed, opens the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
         /// </summary>
@@ -43,6 +44,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </summary>
         [Parameter] public bool? FlyoutIsPresented { get; set; }
         [Parameter] public XF.ScrollMode? FlyoutVerticalScrollMode { get; set; }
+        [Parameter] public double? FlyoutWidth { get; set; }
 
         public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
 
@@ -70,6 +72,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(FlyoutHeaderBehavior), (int)FlyoutHeaderBehavior.Value);
             }
+            if (FlyoutHeight != null)
+            {
+                builder.AddAttribute(nameof(FlyoutHeight), AttributeHelper.DoubleToString(FlyoutHeight.Value));
+            }
             if (FlyoutIcon != null)
             {
                 builder.AddAttribute(nameof(FlyoutIcon), AttributeHelper.ObjectToDelegate(FlyoutIcon));
@@ -81,6 +87,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (FlyoutVerticalScrollMode != null)
             {
                 builder.AddAttribute(nameof(FlyoutVerticalScrollMode), (int)FlyoutVerticalScrollMode.Value);
+            }
+            if (FlyoutWidth != null)
+            {
+                builder.AddAttribute(nameof(FlyoutWidth), AttributeHelper.DoubleToString(FlyoutWidth.Value));
             }
 
             RenderAdditionalAttributes(builder);

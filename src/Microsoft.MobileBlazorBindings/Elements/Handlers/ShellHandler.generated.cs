@@ -39,6 +39,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Shell.FlyoutHeaderBehavior):
                     ShellControl.FlyoutHeaderBehavior = (XF.FlyoutHeaderBehavior)AttributeHelper.GetInt(attributeValue);
                     break;
+                case nameof(XF.Shell.FlyoutHeight):
+                    ShellControl.FlyoutHeight = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
+                    break;
                 case nameof(XF.Shell.FlyoutIcon):
                     ShellControl.FlyoutIcon = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue);
                     break;
@@ -47,6 +50,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.Shell.FlyoutVerticalScrollMode):
                     ShellControl.FlyoutVerticalScrollMode = (XF.ScrollMode)AttributeHelper.GetInt(attributeValue, (int)XF.ScrollMode.Auto);
+                    break;
+                case nameof(XF.Shell.FlyoutWidth):
+                    ShellControl.FlyoutWidth = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
