@@ -34,6 +34,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </value>
         [Parameter] public bool? IsSpellCheckEnabled { get; set; }
         /// <summary>
+        /// Gets or sets the Keyboard for the InputView. This is a bindable property.
+        /// </summary>
+        /// <value>
+        /// The <see cref="T:Xamarin.Forms.Keyboard" /> to use for the InputView.
+        /// </value>
+        [Parameter] public XF.Keyboard Keyboard { get; set; }
+        /// <summary>
         /// Gets or sets the maximum allowed length of input.
         /// </summary>
         /// <value>
@@ -84,6 +91,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (IsSpellCheckEnabled != null)
             {
                 builder.AddAttribute(nameof(IsSpellCheckEnabled), IsSpellCheckEnabled.Value);
+            }
+            if (Keyboard != null)
+            {
+                builder.AddAttribute(nameof(Keyboard), AttributeHelper.ObjectToDelegate(Keyboard));
             }
             if (MaxLength != null)
             {
