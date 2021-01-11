@@ -2,6 +2,8 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,7 @@ namespace Microsoft.MobileBlazorBindings
     {
         private readonly IServiceProvider _services;
         private readonly List<StructuredRoute> Routes = new List<StructuredRoute>();
+        private readonly Dictionary<string, MBBRouteFactory> RouteFactories = new Dictionary<string, MBBRouteFactory>();
         private readonly Dictionary<Type, StructuredRouteResult> NavigationParameters = new Dictionary<Type, StructuredRouteResult>();
 
         public ShellNavigationManager(IServiceProvider services)
@@ -42,10 +45,12 @@ namespace Microsoft.MobileBlazorBindings
                         var structuredRoute = new StructuredRoute(route.Template, page);
 
                         //Register with XamarinForms so it can handle Navigation.
-                        Routing.RegisterRoute(structuredRoute.BaseUri, new MBBRouteFactory(page, this));
+                        var routeFactory = new MBBRouteFactory(page, this);
+                        Routing.RegisterRoute(structuredRoute.BaseUri, routeFactory);
 
                         //Also register route in our own list for setting parameters and tracking if it is registered;
                         Routes.Add(structuredRoute);
+                        RouteFactories[structuredRoute.BaseUri] = routeFactory;
                     }
                     else
                     {
@@ -76,8 +81,9 @@ namespace Microsoft.MobileBlazorBindings
             if (route != null)
             {
                 NavigationParameters[route.Route.Type] = route;
-
-                await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
+                var routeFactory = RouteFactories[route.Route.BaseUri];
+                await routeFactory.CreateAsync().ConfigureAwait(true);
+                await Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
             }
             else
             {
@@ -85,20 +91,22 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-
-        internal XF.ContentPage BuildPage(Type type)
+        internal async Task<XF.Page> BuildPage(Type type)
         {
-            var page = new XF.ContentPage();
-            //Fire and forget is not ideal, could consider a Task.Wait but that's probably worse.
-            _ = PopulatePage(page, type);
-            return page;
-        }
-
-        private async Task PopulatePage(XF.ContentPage page, Type type)
-        {
+            var container = new RootContainerHandler();
             var route = NavigationParameters[type];
-            await _services.AddComponent(page, type, route.Parameters).ConfigureAwait(false);
+            var renderer = _services.GetRequiredService<MobileBlazorBindingsRenderer>();
+
+            await renderer.AddComponent(type, container, route.Parameters).ConfigureAwait(false);
+
+            if (container.Elements.Count > 1)
+            {
+                throw new InvalidOperationException("Navigation target component is not allowed to have more than one root element.");
+            }
+
+            var page = container.Elements.FirstOrDefault() as XF.Page;
+
+            return page ?? throw new InvalidOperationException("Navigation target componenent should have Page root element.");
         }
     }
-
 }

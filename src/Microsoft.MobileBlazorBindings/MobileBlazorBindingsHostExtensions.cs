@@ -33,10 +33,7 @@ namespace Microsoft.MobileBlazorBindings
             }
 
             var services = host.Services;
-
-#pragma warning disable CA2000 // Dispose objects before losing scope
-            var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+            var renderer = services.GetRequiredService<MobileBlazorBindingsRenderer>();
 
             // TODO: This call is an async call, but is called as "fire-and-forget," which is not ideal.
             // We need to figure out how to get Xamarin.Forms to run this startup code asynchronously, which

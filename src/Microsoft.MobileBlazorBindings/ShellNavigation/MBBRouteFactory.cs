@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using System;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 
@@ -12,6 +13,7 @@ namespace Microsoft.MobileBlazorBindings.ShellNavigation
     {
         private readonly Type _type;
         private readonly ShellNavigationManager _navigationManager;
+        private XF.Element _element;
 
         public MBBRouteFactory(Type type, ShellNavigationManager navigationManager)
         {
@@ -21,7 +23,13 @@ namespace Microsoft.MobileBlazorBindings.ShellNavigation
 
         public override XF.Element GetOrCreate()
         {
-            return _navigationManager.BuildPage(_type);// new XF.ContentPage();
+            return _element
+                ?? throw new InvalidOperationException("Element is supposed to be created at this point.");
+        }
+
+        public async Task CreateAsync()
+        {
+            _element = await _navigationManager.BuildPage(_type).ConfigureAwait(false);
         }
 
         public override bool Equals(object obj)

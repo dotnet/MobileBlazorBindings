@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.IO;
@@ -59,6 +60,11 @@ namespace Microsoft.MobileBlazorBindings
             });
 
             EnableStyleSheetSupport();
+
+            builder.ConfigureServices(serviceCollection =>
+            {
+                serviceCollection.AddSingleton<MobileBlazorBindingsRenderer>();
+            });
 
             return builder;
         }
