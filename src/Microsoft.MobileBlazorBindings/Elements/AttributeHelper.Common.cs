@@ -101,24 +101,5 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             return ((string)attributeValue)?.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
         }
-
-        public static AttributeValueHolder ObjectToDelegate(object item)
-        {
-            if (item is null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-            return AttributeValueHolderFactory.FromObject(item);
-        }
-
-        public static object DelegateToObject(object item, object defaultValueIfNull = default)
-        {
-            return AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
-        }
-
-        public static T DelegateToObject<T>(object item, object defaultValueIfNull = default)
-        {
-            return (T)AttributeValueHolderFactory.ToValue(item, defaultValueIfNull);
-        }
     }
 }

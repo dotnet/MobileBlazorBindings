@@ -95,10 +95,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(ItemsSource), AttributeHelper.ObjectToDelegate(ItemsSource));
             }
-            if (SelectedIndex != -1)
-            {
-                builder.AddAttribute(nameof(SelectedIndex), AttributeHelper.IntToString(SelectedIndex));
-            }
             if (SelectedItem != null)
             {
                 builder.AddAttribute(nameof(SelectedItem), AttributeHelper.ObjectToDelegate(SelectedItem));
@@ -123,6 +119,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
             }
+
+            builder.AddAttribute(nameof(SelectedIndex), AttributeHelper.IntToString(SelectedIndex));
 
             builder.AddAttribute("onselecteditemchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleSelectedItemChanged));
 

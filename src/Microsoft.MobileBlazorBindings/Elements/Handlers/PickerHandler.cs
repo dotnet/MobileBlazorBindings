@@ -102,7 +102,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                         PickerControl.SelectedIndex = index;
                     break;
                 case nameof(XF.Picker.SelectedItem):
-                    var item = AttributeHelper.DelegateToObject(attributeValue);
+                    var item = AttributeHelper.DelegateToObject<object>(attributeValue);
                     if (PickerControl.SelectedItem != item)
                         PickerControl.SelectedItem = item;
                     break;

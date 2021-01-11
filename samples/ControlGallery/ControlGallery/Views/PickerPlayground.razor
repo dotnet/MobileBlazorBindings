@@ -41,16 +41,6 @@
             ItemsSource="ModelsWithDefault"/>
         <Label Text="@(SelectedModelDefault?.Name ?? "Select a model")"></Label>
 
-        <Label Text="Picker that can be null"/>
-        <Picker
-            ItemsSource="ModelsWithNull"
-            Title="Select a model or nothing"
-            ItemDisplayBinding="Name"
-            @bind-SelectedItem="SelectedModelWithNull"
-        >
-        </Picker>
-        <Label Text="@(SelectedModelWithNull?.Name ?? "Select a model")"></Label>
-
         <Label Text="Index Based Picker"/>
         <Picker
             ItemsSource="Models"
@@ -98,22 +88,11 @@
         new Model{Name = "Model 3"},
     };
 
-    public Model SelectedModelWithNull {get;set;}
-
-    public List<Model> ModelsWithNull {get;set;} = new List<Model>
-    {
-        null,
-        new Model{Name = "Model 1"},
-        new Model{Name = "Model 2"},
-        new Model{Name = "Model 3"},
-    };
-
     public void ButtonClicked()
     {
         SelectedModel = Models.LastOrDefault();
         SelectedString = Strings.LastOrDefault();
         SelectedModelDefault = ModelsWithDefault.LastOrDefault();
-        SelectedModelWithNull = null;
-        SelectedIndex = 2;
+        SelectedIndex = -1;
     }
 }
