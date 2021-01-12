@@ -12,8 +12,8 @@ steps:
 - task: BatchScript@1
   displayName: 'Install Android SDK'
   inputs:
-    filename: 'C:\Program Files (x86)\Android\android-sdk\tools\bin\sdkmanager.bat'
-    arguments: 'platforms;android-29'
+    filename: 'install-android-sdk.cmd'
+    #arguments: '' # Optional
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
