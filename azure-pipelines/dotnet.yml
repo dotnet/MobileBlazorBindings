@@ -12,7 +12,7 @@ steps:
 - task: BatchScript@1
   displayName: 'Install Android SDK'
   inputs:
-    filename: 'install-android-sdk.cmd'
+    filename: './azure-pipelines/install-android-sdk.cmd'
     #arguments: '' # Optional
 
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
