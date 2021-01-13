@@ -47,6 +47,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 case Device.WPF:
                     services.TryAddScoped<AuthenticationStateProvider, WindowsAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
                     break;
+                case Device.Tizen:
+                    services.TryAddScoped<AuthenticationStateProvider, TizenAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
+                    break;
                 default:
                     throw new PlatformNotSupportedException($"Platform {Device.RuntimePlatform} is not supported by {ThisAssembly.AssemblyName}");
             }
