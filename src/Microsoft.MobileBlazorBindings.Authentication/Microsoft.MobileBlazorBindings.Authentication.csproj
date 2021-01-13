@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;monoandroid10.0</TargetFrameworks>
     <NoWarn>CS1591;CA1054;CA1303;CA1056;CA2007;CA2237</NoWarn>
+    <Title>Authentication support for Mobile Blazor Bindings applications using OpenID Connect</Title>
+    <Description>Add support for authentication in your Mobile Blazor Bindings application with OpenID Connect.</Description>
+    <PackageTags>blazor;mobileblazorbindings;authentication;openidconnect</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,5 +30,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.ProtectedStorage\Microsoft.MobileBlazorBindings.ProtectedStorage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Authentication.dll">
+      <Authenticode>Microsoft400</Authenticode>
+    </FilesToSign>
   </ItemGroup>
 </Project>

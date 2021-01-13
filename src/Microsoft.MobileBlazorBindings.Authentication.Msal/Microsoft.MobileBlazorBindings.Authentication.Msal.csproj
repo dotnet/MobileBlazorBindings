@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;monoandroid10.0</TargetFrameworks>
+    <Title>Authentication support for Mobile Blazor Bindings applications using MSAL with Azure Active Directory and Azure Active Directory B2Cs</Title>
+    <Description>Add support for authentication in your Mobile Blazor Bindings application using MSAL with Azure Active Directory and Azure Active Directory B2C.</Description>
+    <PackageTags>blazor;mobileblazorbindings;authentication;msal</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,4 +15,9 @@
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Authentication\Microsoft.MobileBlazorBindings.Authentication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Authentication.Msal.dll">
+      <Authenticode>Microsoft400</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
 </Project>
