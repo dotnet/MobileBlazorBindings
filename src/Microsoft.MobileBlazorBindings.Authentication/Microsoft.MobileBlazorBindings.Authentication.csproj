@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;monoandroid9.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;monoandroid10.0</TargetFrameworks>
     <NoWarn>CS1591;CA1054;CA1303;CA1056;CA2007;CA2237</NoWarn>
   </PropertyGroup>
 
@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.10" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.0-pre5" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,9 +20,9 @@
     <None Include="**\*.android.cs" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'monoandroid9.0'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'monoandroid10.0'">
     <Compile Include="**\*.android.cs" />
-    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" Condition="'$(TargetFramework)' == 'monoandroid9.0'" />
+    <AndroidResource Include="Resources\**\*.xml" SubType="Designer" Generator="MSBuild:UpdateAndroidResources" Condition="'$(TargetFramework)' == 'monoandroid10.0'" />
   </ItemGroup>
 
   <ItemGroup>

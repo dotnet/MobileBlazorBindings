@@ -21,9 +21,9 @@ ImageButton
 InputView
 Label
 Layout
-#MasterDetailDetailPage // Not based on real XF type
-#MasterDetailMasterPage // Not based on real XF type
-MasterDetailPage
+#FlyoutDetailPage // Not based on real XF type
+#FlyoutFlyoutPage // Not based on real XF type
+FlyoutPage
 MenuItem
 #ModalContainer // Not based on real XF type
 NavigableElement

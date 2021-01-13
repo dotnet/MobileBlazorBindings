@@ -83,7 +83,7 @@ namespace Microsoft.MobileBlazorBindings
                 XF.ContentPage contentPage => new ContentPageHandler(renderer, contentPage),
                 XF.ContentView contentView => new ContentViewHandler(renderer, contentView),
                 XF.Label label => new LabelHandler(renderer, label),
-                XF.MasterDetailPage masterDetailPage => new MasterDetailPageHandler(renderer, masterDetailPage),
+                XF.FlyoutPage flyoutPage => new FlyoutPageHandler(renderer, flyoutPage),
                 XF.ScrollView scrollView => new ScrollViewHandler(renderer, scrollView),
                 XF.ShellContent shellContent => new ShellContentHandler(renderer, shellContent),
                 XF.Shell shell => new ShellHandler(renderer, shell),

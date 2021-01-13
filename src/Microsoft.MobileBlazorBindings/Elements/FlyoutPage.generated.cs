@@ -9,27 +9,28 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class MasterDetailPage : Page
+    public partial class FlyoutPage : Page
     {
-        static MasterDetailPage()
+        static FlyoutPage()
         {
-            ElementHandlerRegistry.RegisterElementHandler<MasterDetailPage>(
-                renderer => new MasterDetailPageHandler(renderer, new XF.MasterDetailPage()));
+            ElementHandlerRegistry.RegisterElementHandler<FlyoutPage>(
+                renderer => new FlyoutPageHandler(renderer, new XF.FlyoutPage()));
         }
 
+        [Parameter] public XF.FlyoutLayoutBehavior? FlyoutLayoutBehavior { get; set; }
         [Parameter] public bool? IsGestureEnabled { get; set; }
         [Parameter] public bool? IsPresented { get; set; }
-        /// <summary>
-        /// Gets or sets a value that indicates how detail content is displayed.
-        /// </summary>
-        [Parameter] public XF.MasterBehavior? MasterBehavior { get; set; }
 
-        public new XF.MasterDetailPage NativeControl => ((MasterDetailPageHandler)ElementHandler).MasterDetailPageControl;
+        public new XF.FlyoutPage NativeControl => ((FlyoutPageHandler)ElementHandler).FlyoutPageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
 
+            if (FlyoutLayoutBehavior != null)
+            {
+                builder.AddAttribute(nameof(FlyoutLayoutBehavior), (int)FlyoutLayoutBehavior.Value);
+            }
             if (IsGestureEnabled != null)
             {
                 builder.AddAttribute(nameof(IsGestureEnabled), IsGestureEnabled.Value);
@@ -37,10 +38,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (IsPresented != null)
             {
                 builder.AddAttribute(nameof(IsPresented), IsPresented.Value);
-            }
-            if (MasterBehavior != null)
-            {
-                builder.AddAttribute(nameof(MasterBehavior), (int)MasterBehavior.Value);
             }
 
             RenderAdditionalAttributes(builder);

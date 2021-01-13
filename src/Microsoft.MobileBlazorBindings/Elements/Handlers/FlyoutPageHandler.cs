@@ -7,7 +7,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class MasterDetailPageHandler : PageHandler, IXamarinFormsContainerElementHandler
+    public partial class FlyoutPageHandler : PageHandler, IXamarinFormsContainerElementHandler
     {
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable CA1801 // Parameter is never used
@@ -15,15 +15,15 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 #pragma warning restore CA1801 // Parameter is never used
 #pragma warning restore IDE0060 // Remove unused parameter
         {
-            // Set dummy Master and Detail because this element cannot be parented unless both are set.
-            // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L199
+            // Set dummy Flyout and Detail because this element cannot be parented unless both are set.
+            // https://github.com/xamarin/Xamarin.Forms/blob/5.0.0/Xamarin.Forms.Core/FlyoutPage.cs#L199
             // In Blazor, parents are created before children, whereas this doesn't appear to be the case in
             // Xamarin.Forms. Once the Blazor children get created, they will overwrite these dummy elements.
 
-            // The Master page must have its Title set:
-            // https://github.com/xamarin/Xamarin.Forms/blob/ff63ef551d9b2b5736092eb48aaf954f54d63417/Xamarin.Forms.Core/MasterDetailPage.cs#L72
-            MasterDetailPageControl.Master = new XF.Page() { Title = "Title" };
-            MasterDetailPageControl.Detail = new XF.Page();
+            // The Flyout page must have its Title set:
+            // https://github.com/xamarin/Xamarin.Forms/blob/5.0.0/Xamarin.Forms.Core/FlyoutPage.cs#L72
+            FlyoutPageControl.Flyout = new XF.Page() { Title = "Title" };
+            FlyoutPageControl.Detail = new XF.Page();
         }
 
         public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
@@ -33,13 +33,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            if (child is MasterDetailMasterPageContentPage masterPage)
+            if (child is FlyoutFlyoutPageContentPage masterPage)
             {
-                MasterDetailPageControl.Master = masterPage;
+                FlyoutPageControl.Flyout = masterPage;
             }
-            else if (child is MasterDetailDetailPageContentPage detailPage)
+            else if (child is FlyoutDetailPageContentPage detailPage)
             {
-                MasterDetailPageControl.Detail = detailPage;
+                FlyoutPageControl.Detail = detailPage;
             }
             else
             {
@@ -54,13 +54,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(child));
             }
 
-            if (child == MasterDetailPageControl.Master)
+            if (child == FlyoutPageControl.Flyout)
             {
-                MasterDetailPageControl.Master = new XF.Page() { Title = "Title" };
+                FlyoutPageControl.Flyout = new XF.Page() { Title = "Title" };
             }
-            else if (child == MasterDetailPageControl.Detail)
+            else if (child == FlyoutPageControl.Detail)
             {
-                MasterDetailPageControl.Detail = new XF.Page();
+                FlyoutPageControl.Detail = new XF.Page();
             }
             else
             {
@@ -73,8 +73,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             // Not sure whether elements "order" matters here
             return child switch
             {
-                _ when child == MasterDetailPageControl.Master => 0,
-                _ when child == MasterDetailPageControl.Detail => 1,
+                _ when child == FlyoutPageControl.Flyout => 0,
+                _ when child == FlyoutPageControl.Detail => 1,
                 _ => -1
             };
         }

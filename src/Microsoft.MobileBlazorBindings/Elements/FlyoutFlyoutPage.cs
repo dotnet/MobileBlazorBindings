@@ -7,13 +7,13 @@ using Microsoft.MobileBlazorBindings.Elements.Handlers;
 namespace Microsoft.MobileBlazorBindings.Elements
 {
 #pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is instantiated generically
-    internal class MasterDetailMasterPage : ContentPage
+    internal class FlyoutFlyoutPage : ContentPage
 #pragma warning restore CA1812 // Internal class that is apparently never instantiated
     {
-        static MasterDetailMasterPage()
+        static FlyoutFlyoutPage()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<MasterDetailMasterPage>(renderer => new MasterPageHandler(renderer, new MasterDetailMasterPageContentPage()));
+                .RegisterElementHandler<FlyoutFlyoutPage>(renderer => new FlyoutFlyoutPageHandler(renderer, new FlyoutFlyoutPageContentPage()));
         }
     }
 }

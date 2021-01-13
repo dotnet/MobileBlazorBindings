@@ -27,6 +27,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.BaseShellItem.FlyoutIcon):
                     BaseShellItemControl.FlyoutIcon = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue);
                     break;
+                case nameof(XF.BaseShellItem.FlyoutItemIsVisible):
+                    BaseShellItemControl.FlyoutItemIsVisible = AttributeHelper.GetBool(attributeValue);
+                    break;
                 case nameof(XF.BaseShellItem.Icon):
                     BaseShellItemControl.Icon = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue);
                     break;

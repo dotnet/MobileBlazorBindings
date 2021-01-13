@@ -42,7 +42,7 @@ namespace HybridMessageApp
 
             FolderWebView.Host = Host;
 
-            MasterDetails.IsPresented = false;
+            Flyout.IsPresented = false;
             WorkaroundDisplayIssue();
         }
 
@@ -51,12 +51,12 @@ namespace HybridMessageApp
             await Task.Delay(1000);
             Dispatcher.BeginInvokeOnMainThread(() =>
             {
-                MasterDetails.IsPresented = false;
+                Flyout.IsPresented = false;
             });
             await Task.Delay(1);
             Dispatcher.BeginInvokeOnMainThread(() =>
             {
-                MasterDetails.IsPresented = true;
+                Flyout.IsPresented = true;
             });
         }
 
