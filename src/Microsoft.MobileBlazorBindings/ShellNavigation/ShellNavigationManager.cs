@@ -23,10 +23,9 @@ namespace Microsoft.MobileBlazorBindings
 
         public ShellNavigationManager(IServiceProvider services)
         {
-            _services = services;
+            _services = services ?? throw new ArgumentNullException(nameof(services));
             FindRoutes();
         }
-
 
         //TODO This route matching could be better. Can we use the ASPNEt version?
         private void FindRoutes()
@@ -80,23 +79,26 @@ namespace Microsoft.MobileBlazorBindings
             if (route != null)
             {
                 NavigationParameters[route.Route.Type] = route;
-                var routeFactory = RouteFactories[route.Route.BaseUri];
+                if (!RouteFactories.TryGetValue(route.Route.BaseUri, out var routeFactory))
+                {
+                    throw new InvalidOperationException($"A route factory for URI '{uri}' could not be found. It should have been registered automatically in the {nameof(ShellNavigationManager)} constructor.");
+                }
                 await routeFactory.CreateAsync().ConfigureAwait(true);
                 await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
             }
             else
             {
-                throw new InvalidOperationException($"Cannot find route for Navigation. {uri} is not registered, please register it using an @page directive.");
+                throw new InvalidOperationException($"The route '{uri}' is not registered. Register page routes using the '@page' directive in the page.");
             }
         }
 
-        internal async Task<XF.Page> BuildPage(Type type)
+        internal async Task<XF.Page> BuildPage(Type componentType)
         {
             var container = new RootContainerHandler();
-            var route = NavigationParameters[type];
+            var route = NavigationParameters[componentType];
             var renderer = _services.GetRequiredService<MobileBlazorBindingsRenderer>();
 
-            await renderer.AddComponent(type, container, route.Parameters).ConfigureAwait(false);
+            await renderer.AddComponent(componentType, container, route.Parameters).ConfigureAwait(false);
 
             if (container.Elements.Count != 1)
             {
