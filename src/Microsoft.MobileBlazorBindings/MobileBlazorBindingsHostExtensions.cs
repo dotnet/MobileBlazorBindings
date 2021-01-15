@@ -4,7 +4,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
 using System.Threading.Tasks;
@@ -33,10 +32,7 @@ namespace Microsoft.MobileBlazorBindings
             }
 
             var services = host.Services;
-
-#pragma warning disable CA2000 // Dispose objects before losing scope
-            var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+            var renderer = services.GetRequiredService<MobileBlazorBindingsRenderer>();
 
             // TODO: This call is an async call, but is called as "fire-and-forget," which is not ideal.
             // We need to figure out how to get Xamarin.Forms to run this startup code asynchronously, which
@@ -69,9 +65,7 @@ namespace Microsoft.MobileBlazorBindings
                 throw new InvalidOperationException($"Cannot add {type.Name} to {parent.GetType().Name}. {type.Name} is not an IComponent. If you are trying to add a Xamarin.Forms type, try adding the Mobile Blazor Bindings equivalent instead.");
             }
 
-#pragma warning disable CA2000 // Dispose objects before losing scope
-            var renderer = new MobileBlazorBindingsRenderer(services, services.GetRequiredService<ILoggerFactory>());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+            var renderer = services.GetRequiredService<MobileBlazorBindingsRenderer>();
 
             return await renderer.AddComponent(type, CreateHandler(parent, renderer), parameters).ConfigureAwait(false);
         }
