@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
@@ -46,7 +45,7 @@ namespace Microsoft.MobileBlazorBindings
 
                         //Register with XamarinForms so it can handle Navigation.
                         var routeFactory = new MBBRouteFactory(page, this);
-                        Routing.RegisterRoute(structuredRoute.BaseUri, routeFactory);
+                        XF.Routing.RegisterRoute(structuredRoute.BaseUri, routeFactory);
 
                         //Also register route in our own list for setting parameters and tracking if it is registered;
                         Routes.Add(structuredRoute);
@@ -83,7 +82,7 @@ namespace Microsoft.MobileBlazorBindings
                 NavigationParameters[route.Route.Type] = route;
                 var routeFactory = RouteFactories[route.Route.BaseUri];
                 await routeFactory.CreateAsync().ConfigureAwait(true);
-                await Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
+                await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
             }
             else
             {
@@ -99,14 +98,14 @@ namespace Microsoft.MobileBlazorBindings
 
             await renderer.AddComponent(type, container, route.Parameters).ConfigureAwait(false);
 
-            if (container.Elements.Count > 1)
+            if (container.Elements.Count != 1)
             {
-                throw new InvalidOperationException("Navigation target component is not allowed to have more than one root element.");
+                throw new InvalidOperationException("The target component of a Shell navigation must have exactly one root element.");
             }
 
             var page = container.Elements.FirstOrDefault() as XF.Page;
 
-            return page ?? throw new InvalidOperationException("Navigation target componenent should have Page root element.");
+            return page ?? throw new InvalidOperationException("The target component of a Shell navigation must derive from the Page component.");
         }
     }
 }

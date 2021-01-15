@@ -9,8 +9,8 @@ using XF = Xamarin.Forms;
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
-    /// Fake element handler, which is used as a root for a renderer to get native Xamarin elements
-    /// from Blazor component.
+    /// Fake element handler, which is used as a root for a renderer to get native Xamarin.Forms elements
+    /// from a Blazor component.
     /// </summary>
     public class RootContainerHandler : IXamarinFormsContainerElementHandler
     {
