@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using System;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using XF = Xamarin.Forms;
@@ -41,6 +42,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.UrlWebViewSource):
                     Control.Source = new XF.UrlWebViewSource { Url = (string)attributeValue };
+                    break;
+                case "OnNavigationStarting":
+                    Control.OnNavigationStarting += (EventHandler<Uri>)attributeValue;
+                    break;
+                case "OnNavigationFinished":
+                    Control.OnNavigationFinished += (EventHandler<Uri>)attributeValue;
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

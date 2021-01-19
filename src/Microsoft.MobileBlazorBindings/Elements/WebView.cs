@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public XF.WebViewSource Source { get; set; }
         [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
+        [Parameter] public EventHandler<Uri> OnNavigationStarting { get; set; }
+        [Parameter] public EventHandler<Uri> OnNavigationFinished { get; set; }
 
         public void SendMessage(string message)
         {
@@ -34,7 +36,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
             base.RenderAttributes(builder);
 
             builder.AddAttribute("onwebmessagereceived", EventCallback.Factory.Create<WebMessageEventArgs>(this, HandleOnWebMessageReceived));
-
+            builder.AddAttribute("OnNavigationStarting", OnNavigationStarting);
+            builder.AddAttribute("OnNavigationFinished", OnNavigationFinished);
+            
             switch (Source)
             {
                 case XF.HtmlWebViewSource htmlWebViewSource:
