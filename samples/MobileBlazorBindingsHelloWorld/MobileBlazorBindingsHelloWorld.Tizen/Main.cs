@@ -1,5 +1,6 @@
-using System;
-using MobileBlazorBindingsHelloWorld;
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Tizen;
 

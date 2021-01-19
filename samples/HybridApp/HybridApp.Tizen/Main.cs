@@ -15,7 +15,7 @@ namespace HybridApp.Tizen
         protected override void OnCreate()
         {
             base.OnCreate();
-            System.IO.Directory.SetCurrentDirectory(Current.DirectoryInfo.Resource);
+            Directory.SetCurrentDirectory(Current.DirectoryInfo.Resource);
             LoadApplication(new App());
         }
 
@@ -27,7 +27,7 @@ namespace HybridApp.Tizen
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
             {
                 var asmName = e.Name.Split(",")[0];
-                var dllPath = System.IO.Path.Combine(app.ApplicationInfo.ExecutablePath, "../", asmName + ".dll");
+                var dllPath = Path.Combine(app.ApplicationInfo.ExecutablePath, "../", asmName + ".dll");
                 return File.Exists(dllPath) ? Assembly.LoadFile(dllPath) : null;
             };
 #endif

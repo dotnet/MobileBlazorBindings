@@ -133,11 +133,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Tizen
                 throw new ArgumentNullException(nameof(message));
             }
 
-#pragma warning disable CA1307 // Specify StringComparison for clarity
-#pragma warning disable CA1309 // Use ordinal string comparison
-            if (message.Name.Equals("BlazorHandler"))
-#pragma warning restore CA1309 // Use ordinal string comparison
-#pragma warning restore CA1307 // Specify StringComparison for clarity
+            if (message.Name.Equals("BlazorHandler", StringComparison.Ordinal))
             {
                 Element.HandleWebMessageReceived(message.GetBodyAsString());
             }
@@ -240,14 +236,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.Tizen
 
         private void OnLoadError(object sender, global::Tizen.WebView.SmartCallbackLoadErrorArgs e)
         {
-            string url = e.Url;
+            var url = e.Url;
             if (!string.IsNullOrEmpty(url))
+            {
                 SendNavigated(new UrlWebViewSource { Url = url }, _eventState, WebNavigationResult.Failure);
+            }
         }
 
         private void OnLoadStarted(object sender, EventArgs e)
         {
-            string url = NativeWebView.Url;
+            var url = NativeWebView.Url;
 
             if (!string.IsNullOrEmpty(url))
             {
@@ -264,9 +262,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Tizen
 
         private void OnLoadFinished(object sender, EventArgs e)
         {
-            string url = NativeWebView.Url;
+            var url = NativeWebView.Url;
             if (!string.IsNullOrEmpty(url))
+            {
                 SendNavigated(new UrlWebViewSource { Url = url }, _eventState, WebNavigationResult.Success);
+            }
 
             NativeWebView.SetFocus(true);
             UpdateCanGoBackForward();
@@ -278,7 +278,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Tizen
         private void Load()
         {
             if (_isUpdating)
+            {
                 return;
+            }
 
             if (Element.Source != null)
             {
