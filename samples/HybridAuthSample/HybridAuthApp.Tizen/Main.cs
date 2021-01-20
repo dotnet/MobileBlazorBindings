@@ -1,33 +1,36 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
 using System;
 using System.IO;
 using System.Reflection;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using Microsoft.MobileBlazorBindings.WebView.Tizen;
 using Xamarin.Forms;
+using Xamarin.Forms.Platform.Tizen;
 
 [assembly: ExportRenderer(typeof(WebViewExtended), typeof(WebViewExtendedRenderer))]
 
 namespace HybridAuthApp.Tizen
 {
-    class Program : global::Xamarin.Forms.Platform.Tizen.FormsApplication
+    class Program : FormsApplication
     {
         protected override void OnCreate()
         {
             base.OnCreate();
-            System.IO.Directory.SetCurrentDirectory(Current.DirectoryInfo.Resource);
+            Directory.SetCurrentDirectory(Current.DirectoryInfo.Resource);
             LoadApplication(new App());
         }
 
         static void Main(string[] args)
         {
-
             var app = new Program();
 
 #if !TIZEN80
             AppDomain.CurrentDomain.AssemblyResolve += (s, e) =>
             {
                 var asmName = e.Name.Split(",")[0];
-                var dllPath = System.IO.Path.Combine(app.ApplicationInfo.ExecutablePath, "../", asmName + ".dll");
+                var dllPath = Path.Combine(app.ApplicationInfo.ExecutablePath, "../", asmName + ".dll");
                 return File.Exists(dllPath) ? Assembly.LoadFile(dllPath) : null;
             };
 #endif
