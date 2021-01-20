@@ -23,6 +23,7 @@
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.Android\Microsoft.MobileBlazorBindings.WebView.Android.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.iOS\Microsoft.MobileBlazorBindings.WebView.iOS.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.macOS\Microsoft.MobileBlazorBindings.WebView.macOS.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.WebView.Tizen\Microsoft.MobileBlazorBindings.WebView.Tizen.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.DualScreen\Microsoft.MobileBlazorBindings.DualScreen.csproj" />
