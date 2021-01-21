@@ -13,6 +13,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public WebViewExtended Control { get; }
 
         private ulong _onWebMessageReceivedEventHandlerId;
+        private ulong _onNavigationStartingEventHandlerId;
+        private ulong _onNavigationFinishedEventHandlerId;
 
         public WebViewHandler(NativeComponentRenderer renderer, WebViewExtended control)
             : base(renderer, control)
@@ -31,6 +33,33 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(_onWebMessageReceivedEventHandlerId, null, new WebView.WebMessageEventArgs { Message = message }));
                 }
             };
+
+            ConfigureEvent(
+                eventName: "onnavigationstarting",
+                setId: id => _onNavigationStartingEventHandlerId = id,
+                clearId: id => { if (_onNavigationStartingEventHandlerId == id) { _onNavigationStartingEventHandlerId = 0; } });
+
+            Control.OnNavigationStarting += (sender, uri) =>
+            {
+                if (_onNavigationStartingEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(_onNavigationStartingEventHandlerId, null, new WebView.NavigationEventArgs() { Uri = uri }));
+                }
+            };
+
+            ConfigureEvent(
+                eventName: "onnavigationfinished",
+                setId: id => _onNavigationFinishedEventHandlerId = id,
+                clearId: id => { if (_onNavigationFinishedEventHandlerId == id) { _onNavigationFinishedEventHandlerId = 0; } });
+
+            Control.OnNavigationFinished += (sender, uri) =>
+            {
+                if (_onNavigationFinishedEventHandlerId != default)
+                {
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(_onNavigationFinishedEventHandlerId, null, new WebView.NavigationEventArgs() { Uri = uri }));
+                }
+            };
+            
         }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
@@ -42,12 +71,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.UrlWebViewSource):
                     Control.Source = new XF.UrlWebViewSource { Url = (string)attributeValue };
-                    break;
-                case "OnNavigationStarting":
-                    Control.OnNavigationStarting += (EventHandler<Uri>)attributeValue;
-                    break;
-                case "OnNavigationFinished":
-                    Control.OnNavigationFinished += (EventHandler<Uri>)attributeValue;
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
