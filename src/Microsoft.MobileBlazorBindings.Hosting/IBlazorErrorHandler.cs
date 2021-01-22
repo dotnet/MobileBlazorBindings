@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Microsoft.MobileBlazorBindings.WebView.Elements
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
     public interface IBlazorErrorHandler
     {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using Microsoft.MobileBlazorBindings.Hosting;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System.Threading.Tasks;
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
+using Microsoft.MobileBlazorBindings.Hosting;
 using System;
 using System.IO;
 using System.Reflection;
@@ -19,7 +20,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using XF = Xamarin.Forms;
 
 [assembly: InternalsVisibleTo("Microsoft.MobileBlazorBindings")]
@@ -103,7 +103,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         internal void SetInitialSource()
         {
-            _webView.Source = new UrlWebViewSource() { Url = $"{BlazorAppScheme}://0.0.0.0/" };
+            _webView.Source = new XF.UrlWebViewSource() { Url = $"{BlazorAppScheme}://0.0.0.0/" };
         }
 
         protected BlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
@@ -336,11 +336,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 return;
             }
 
-            var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
-            await _blazorHybridRenderer.DispatchEventAsync(
-                webEvent.EventHandlerId,
-                webEvent.EventFieldInfo,
-                webEvent.EventArgs).ConfigureAwait(false);
+            await _blazorHybridRenderer.DispatchEventAsync(eventDescriptor, eventArgsJson).ConfigureAwait(false);
         }
 
         [JSInvokable(nameof(NotifyLocationChanged))]
@@ -370,7 +366,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 // because webview2 won't let you do top-level navigation to such a URL.
                 // On Linux/Mac, we must use a custom scheme, because their webviews
                 // don't have a way to intercept http:// scheme requests.
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || Device.RuntimePlatform == Device.Tizen
+                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || XF.Device.RuntimePlatform == XF.Device.Tizen
                     ? "http"
                     : "app";
             }

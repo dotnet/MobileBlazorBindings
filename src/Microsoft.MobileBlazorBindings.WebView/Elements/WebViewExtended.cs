@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.MobileBlazorBindings.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;

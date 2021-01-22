@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.MobileBlazorBindings.Hosting;
 using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.WebView
 {
-    internal sealed class IPC : IDisposable
+    internal sealed class IPC : IPCBase, IDisposable
     {
         private readonly WebViewExtended _webView;
         private readonly Dictionary<string, List<Action<object>>> _registrations = new();
@@ -21,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             _webView.OnWebMessageReceived += HandleScriptNotify;
         }
 
-        public void Send(string eventName, params object[] args)
+        public override void Send(string eventName, params object[] args)
         {
             try
             {
