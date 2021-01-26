@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
-using Microsoft.MobileBlazorBindings.WebView;
+using Microsoft.MobileBlazorBindings.Hosting;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

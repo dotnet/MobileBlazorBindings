@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
-    internal class BlazorHybridNavigationManager : NavigationManager
+    // TODO: This used to be internal. Is it OK to be public now?
+    public class BlazorHybridNavigationManager : NavigationManager
     {
         private const string InteropPrefix = "Blazor._internal.navigationManager.";
         private const string InteropNavigateTo = InteropPrefix + "navigateTo";

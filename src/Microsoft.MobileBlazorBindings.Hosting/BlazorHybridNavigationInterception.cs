@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Components.Routing;
 using System.Threading.Tasks;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
     internal class BlazorHybridNavigationInterception : INavigationInterception
     {

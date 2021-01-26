@@ -1,9 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -12,30 +9,205 @@ using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using Microsoft.JSInterop.Infrastructure;
 using Microsoft.MobileBlazorBindings.Hosting;
+using Microsoft.Web.WebView2.Core;
+using Microsoft.Web.WebView2.Wpf;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using System.Windows;
+using System.Windows.Controls;
 
-[assembly: InternalsVisibleTo("Microsoft.MobileBlazorBindings")]
-
-namespace Microsoft.MobileBlazorBindings.WebView.Elements
+namespace WpfBlazorSample
 {
-    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
+    public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
+
+    /// <summary>
+    /// Custom dispatcher for WPF apps to ensure all UI work is done on the UI (main) thread.
+    /// </summary>
+    internal class WPFDeviceDispatcher : Dispatcher
     {
+        public static WPFDeviceDispatcher Instance { get; } = new WPFDeviceDispatcher();
+
+        public override bool CheckAccess()
+        {
+            return System.Windows.Threading.Dispatcher.CurrentDispatcher.CheckAccess();
+        }
+
+        public override Task InvokeAsync(Action workItem)
+        {
+            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Task;
+        }
+
+        public override Task InvokeAsync(Func<Task> workItem)
+        {
+            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Result;
+        }
+
+        public override Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)
+        {
+            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Task;
+        }
+
+        public override Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> workItem)
+        {
+            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Result;
+        }
+    }
+
+    public class WpfBlazorWebView : Control
+    {
+        private WebView2 _webView2;
+        private CoreWebView2Environment _coreWebView2Environment;
+
+        public WebView2 WebView => _webView2;
+
+        public static readonly DependencyProperty ComponentTypeProperty =
+            DependencyProperty.Register(
+                name: "ComponentType",
+                propertyType: typeof(Type),
+                ownerType: typeof(WpfBlazorWebView),
+                typeMetadata: new FrameworkPropertyMetadata(
+                    defaultValue: null,
+                    flags: FrameworkPropertyMetadataOptions.AffectsRender,
+                    propertyChangedCallback: new PropertyChangedCallback(OnComponentTypeChanged))
+            );
+
+        public Type ComponentType
+        {
+            get { return (Type)GetValue(ComponentTypeProperty); }
+            set { SetValue(ComponentTypeProperty, value); }
+        }
+
+        private static void OnComponentTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+        }
+
+        public WpfBlazorWebView() : this(WPFDeviceDispatcher.Instance, initOnParentSet: true)
+        {
+            var template = new ControlTemplate
+            {
+                VisualTree = new FrameworkElementFactory(typeof(WebView2), "WebView2")
+            };
+
+            Template = template;
+        }
+
+        private const string LoadBlazorJSScript =
+    "window.onload = (function blazorInitScript() {" +
+    "    var blazorScript = document.createElement('script');" +
+    "    blazorScript.src = 'framework://blazor.desktop.js';" +
+    "    document.head.appendChild(blazorScript);" +
+    "});";
+
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            var x = GetTemplateChild("WebView2");
+            _webView2 = (WebView2)x;
+
+            //_webView.Source = new Uri("https://bing.com/");
+
+            Dispatcher.InvokeAsync(async () =>
+            {
+                _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
+
+                await _webView2.EnsureCoreWebView2Async(_coreWebView2Environment).ConfigureAwait(true);
+
+                await _webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
+                await _webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
+                SubscribeToControlEvents();
+
+                OnParentSet();
+
+                Load();
+
+                SubscribeToElementEvents();
+
+            });
+        }
+
+        private void SubscribeToElementEvents()
+        {
+            SendMessageFromJSToDotNetRequested += OnSendMessageFromJSToDotNetRequested;
+        }
+
+        private void SubscribeToControlEvents()
+        {
+            _webView2.NavigationStarting += HandleNavigationStarting;
+            _webView2.NavigationCompleted += HandleNavigationCompleted;
+            _webView2.WebMessageReceived += HandleWebMessageReceived;
+            _webView2.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
+            _webView2.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
+        }
+
+        private void HandleNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
+        {
+            //if (e.NavigationId == _navigationId)
+            //{
+            //    Element.HandleNavigationFinished(_currentUri);
+            //}
+        }
+
+        private void HandleNavigationStarting(object sender, CoreWebView2NavigationStartingEventArgs e)
+        {
+            //_navigationId = e.NavigationId;
+            //_currentUri = new Uri(e.Uri);
+
+            //Element.HandleNavigationStarting(_currentUri);
+        }
+
+        private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
+        {
+            _webView2.CoreWebView2.PostWebMessageAsString(message);
+        }
+
+        private void HandleWebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs args)
+        {
+            HandleWebMessageReceived(args.TryGetWebMessageAsString());
+        }
+
+        private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
+        {
+            var uriString = args.Request.Uri;
+            var uri = new Uri(uriString);
+            if (SchemeHandlers.TryGetValue(uri.Scheme, out var handler) && _coreWebView2Environment != null)
+            {
+                var responseStream = handler(uriString, out var responseContentType);
+                if (responseStream != null) // If null, the handler doesn't want to handle it
+                {
+                    responseStream.Position = 0;
+                    args.Response = _coreWebView2Environment.CreateWebResourceResponse(responseStream, StatusCode: 200, ReasonPhrase: "OK", Headers: $"Content-Type: {responseContentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store");
+                }
+            }
+        }
+
+        private string _webViewSource;
+
+        private void Load()
+        {
+            if (_webViewSource != null && _webView2?.CoreWebView2 != null)
+            {
+                _webView2.CoreWebView2.Navigate(_webViewSource);
+            }
+        }
+
+
+        // From BlazorWebView
+
+
         private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
         private static readonly RenderFragment EmptyRenderFragment = builder => { };
 
         private readonly Dispatcher _dispatcher;
         private readonly bool _initOnParentSet;
 
-        private WebViewExtended _webView;
-        private IPC _ipc;
+        private WPFIPC _ipc;
         private JSRuntime _jsRuntime;
         private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
@@ -65,17 +237,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         /// </summary>
         private IServiceProvider RootServiceProvider => Host?.Services ?? DefaultServices.Value;
 
-        // This is the constructor used when created from XAML
-        // so we know we have to init as soon as the parent is set
-        public BlazorWebView()
-            : this(XamarinDeviceDispatcher.Instance, initOnParentSet: true)
+        private void OnParentSet()
         {
-        }
-
-        protected override void OnParentSet()
-        {
-            base.OnParentSet();
-
             if (_initOnParentSet)
             {
                 // TODO: Report errors
@@ -85,7 +248,12 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                     {
                         try
                         {
-                            builder.OpenComponent<TComponent>(0);
+                            // Call this with non-generic:
+                            //      TComponent builder.OpenComponent<TComponent>(0);
+                            var openComponentUnconstructedMethod = typeof(RenderTreeBuilder).GetMethod(nameof(RenderTreeBuilder.OpenComponent), genericParameterCount: 1, types: new[] { typeof(int) });
+                            var openComponentMethod = openComponentUnconstructedMethod.MakeGenericMethod(ComponentType);
+                            openComponentMethod.Invoke(builder, new object[] { 0 });
+
                             builder.CloseComponent();
 #pragma warning disable CA1031 // Do not catch general exception types
                         }
@@ -103,18 +271,16 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         internal void SetInitialSource()
         {
-            _webView.Source = new XF.UrlWebViewSource() { Url = $"{BlazorAppScheme}://0.0.0.0/" };
+            _webViewSource = $"{BlazorAppScheme}://0.0.0.0/";
         }
 
-        protected BlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
+        private WpfBlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
         {
             _initOnParentSet = initOnParentSet;
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
-            _webView = new WebViewExtended(this.ErrorHandler);
-
-            _webView.OnNavigationStarting += HandleNavigationStarting;
-            _webView.OnNavigationFinished += HandleNavigationFinished;
+            OnNavigationStarting += HandleNavigationStarting;
+            OnNavigationFinished += HandleNavigationFinished;
 
             static bool TryGetFile(IFileProvider fileProvider, string filename, out Stream fileStream)
             {
@@ -128,7 +294,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 return false;
             }
 
-            _webView.SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
+            SchemeHandlers.Add(BlazorAppScheme, (string url, out string contentType) =>
             {
                 var environment = RootServiceProvider.GetRequiredService<IHostEnvironment>();
                 var fileProvider = RootServiceProvider.GetRequiredService<IFileProvider>();
@@ -189,20 +355,18 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             });
 
             // framework:// is resolved as embedded resources
-            _webView.SchemeHandlers.Add("framework", (string url, out string contentType) =>
+            SchemeHandlers.Add("framework", (string url, out string contentType) =>
             {
                 contentType = GetContentType(url);
                 return SupplyFrameworkFile(url);
             });
-
-            Content = _webView;
 
             Start();
         }
 
         private void Start()
         {
-            _ipc = new IPC(_webView);
+            _ipc = new WPFIPC(this);
         }
 
         private void HandleNavigationStarting(object sender, Uri e)
@@ -213,7 +377,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             if (e.Host.Equals("0.0.0.0", StringComparison.Ordinal))
             {
                 Start();
-                XamarinDeviceDispatcher.Instance.InvokeAsync(async () =>
+                WPFDeviceDispatcher.Instance.InvokeAsync(async () =>
                 {
                     await InitAsync().ConfigureAwait(false);
                     RerenderAction?.Invoke();
@@ -366,13 +530,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 // because webview2 won't let you do top-level navigation to such a URL.
                 // On Linux/Mac, we must use a custom scheme, because their webviews
                 // don't have a way to intercept http:// scheme requests.
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || XF.Device.RuntimePlatform == XF.Device.Tizen
-                    ? "http"
-                    : "app";
+                return "http";
             }
         }
-
-        public IBlazorErrorHandler ErrorHandler { get; set; }
 
         /// <summary>
         /// Gets the content type for the url.
@@ -398,26 +558,26 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             };
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        //public void Dispose()
+        //{
+        //    Dispose(true);
+        //    GC.SuppressFinalize(this);
+        //}
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                Stop();
-                if (_webView != null)
-                {
-                    _webView.OnNavigationStarting -= HandleNavigationStarting;
-                    _webView.OnNavigationFinished -= HandleNavigationFinished;
-                    _webView = null;
-                    Content = null;
-                }
-            }
-        }
+        //protected virtual void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        Stop();
+        //        if (_webView != null)
+        //        {
+        //            _webView.OnNavigationStarting -= HandleNavigationStarting;
+        //            _webView.OnNavigationFinished -= HandleNavigationFinished;
+        //            _webView = null;
+        //            Content = null;
+        //        }
+        //    }
+        //}
 
         private void Stop()
         {
@@ -453,5 +613,46 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 InitialUri = initialUri;
             }
         }
+
+
+
+
+
+        // From WebViewExtended
+
+        public EventHandler<string> OnWebMessageReceived { get; set; }
+        public EventHandler<string> SendMessageFromJSToDotNetRequested { get; set; }
+
+        // Unfortunately since the orginal Navigating and Navigated event invoke methods are internal
+        // the events cannot be invoked and we have to duplicate those.
+        public EventHandler<Uri> OnNavigationStarting { get; set; }
+
+        public EventHandler<Uri> OnNavigationFinished { get; set; }
+
+        public IDictionary<string, ResolveWebResourceDelegate> SchemeHandlers { get; }
+            = new Dictionary<string, ResolveWebResourceDelegate>();
+
+        public IBlazorErrorHandler ErrorHandler { get; }
+
+        public void HandleWebMessageReceived(string webMessageAsString)
+        {
+            OnWebMessageReceived?.Invoke(this, webMessageAsString);
+        }
+
+        public void SendMessage(string message)
+        {
+            SendMessageFromJSToDotNetRequested?.Invoke(this, message);
+        }
+
+        public void HandleNavigationStarting(Uri url)
+        {
+            OnNavigationStarting?.Invoke(this, url);
+        }
+
+        public void HandleNavigationFinished(Uri url)
+        {
+            OnNavigationFinished?.Invoke(this, url);
+        }
+
     }
 }

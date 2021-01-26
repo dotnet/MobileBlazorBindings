@@ -4,12 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfBlazorSample"
-        xmlns:blazorapp="clr-namespace:HybridApp.WebUI.Pages;assembly=HybridApp"
         xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel>
-        <Button Click="Button_Click">Click me</Button>
-        <local:WpfBlazorWebView  />
+    <DockPanel Margin="20">
+        <StackPanel Margin="20" Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Click="Button_Click">Click me</Button>
+            <Label>Hey</Label>
+        </StackPanel>
+        <local:WpfBlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
     </DockPanel>
 </Window>

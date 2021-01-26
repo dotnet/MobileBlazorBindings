@@ -19,13 +19,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-
-    <EmbeddedResource Include="../Microsoft.MobileBlazorBindings.WebView.JS/dist/blazor.desktop.js" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Hosting\Microsoft.MobileBlazorBindings.Hosting.csproj" />
-    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView.JS\Microsoft.MobileBlazorBindings.WebView.JS.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
