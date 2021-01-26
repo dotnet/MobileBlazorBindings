@@ -25,39 +25,6 @@ namespace WpfBlazorSample
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 
-    /// <summary>
-    /// Custom dispatcher for WPF apps to ensure all UI work is done on the UI (main) thread.
-    /// </summary>
-    internal class WPFDeviceDispatcher : Dispatcher
-    {
-        public static WPFDeviceDispatcher Instance { get; } = new WPFDeviceDispatcher();
-
-        public override bool CheckAccess()
-        {
-            return System.Windows.Threading.Dispatcher.CurrentDispatcher.CheckAccess();
-        }
-
-        public override Task InvokeAsync(Action workItem)
-        {
-            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Task;
-        }
-
-        public override Task InvokeAsync(Func<Task> workItem)
-        {
-            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Result;
-        }
-
-        public override Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)
-        {
-            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Task;
-        }
-
-        public override Task<TResult> InvokeAsync<TResult>(Func<Task<TResult>> workItem)
-        {
-            return System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeAsync(workItem).Result;
-        }
-    }
-
     public class WpfBlazorWebView : Control
     {
         private WebView2 _webView2;
@@ -84,6 +51,7 @@ namespace WpfBlazorSample
 
         private static void OnComponentTypeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            // TODO: How to handle this?
         }
 
         public WpfBlazorWebView() : this(WPFDeviceDispatcher.Instance, initOnParentSet: true)
@@ -159,7 +127,18 @@ namespace WpfBlazorSample
             //_navigationId = e.NavigationId;
             //_currentUri = new Uri(e.Uri);
 
-            //Element.HandleNavigationStarting(_currentUri);
+            // We stop blazor when we navigate away
+            // and we restart it if our host is 0.0.0.0 again.
+            Stop();
+            if (new Uri(e.Uri).Host.Equals("0.0.0.0", StringComparison.Ordinal))
+            {
+                Start();
+                WPFDeviceDispatcher.Instance.InvokeAsync(async () =>
+                {
+                    await InitAsync().ConfigureAwait(false);
+                    RerenderAction?.Invoke();
+                });
+            }
         }
 
         private void OnSendMessageFromJSToDotNetRequested(object sender, string message)
@@ -248,7 +227,7 @@ namespace WpfBlazorSample
                     {
                         try
                         {
-                            // Call this with non-generic:
+                            // Call this with generic method with a Type instance:
                             //      TComponent builder.OpenComponent<TComponent>(0);
                             var openComponentUnconstructedMethod = typeof(RenderTreeBuilder).GetMethod(nameof(RenderTreeBuilder.OpenComponent), genericParameterCount: 1, types: new[] { typeof(int) });
                             var openComponentMethod = openComponentUnconstructedMethod.MakeGenericMethod(ComponentType);
@@ -278,9 +257,6 @@ namespace WpfBlazorSample
         {
             _initOnParentSet = initOnParentSet;
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-
-            OnNavigationStarting += HandleNavigationStarting;
-            OnNavigationFinished += HandleNavigationFinished;
 
             static bool TryGetFile(IFileProvider fileProvider, string filename, out Stream fileStream)
             {
@@ -369,26 +345,6 @@ namespace WpfBlazorSample
             _ipc = new WPFIPC(this);
         }
 
-        private void HandleNavigationStarting(object sender, Uri e)
-        {
-            // We stop blazor when we navigate away
-            // and we restart it if our host is 0.0.0.0 again.
-            Stop();
-            if (e.Host.Equals("0.0.0.0", StringComparison.Ordinal))
-            {
-                Start();
-                WPFDeviceDispatcher.Instance.InvokeAsync(async () =>
-                {
-                    await InitAsync().ConfigureAwait(false);
-                    RerenderAction?.Invoke();
-                });
-            }
-        }
-
-        private void HandleNavigationFinished(object sender, Uri e)
-        {
-        }
-
         private static string GetResourceFilenameFromUri(Uri uri)
         {
             return Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
@@ -464,6 +420,17 @@ namespace WpfBlazorSample
                 // and direct them to our own instance. This is to avoid needing a static BlazorHybridRenderer.Instance.
                 // Similar temporary hack for navigation notifications
                 // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
+
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // TODO TODO TODO: This is the wrong assembly name. Change to final name.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 if (assemblyName == "Microsoft.MobileBlazorBindings.WebView")
                 {
                     assemblyName = null;
@@ -553,7 +520,7 @@ namespace WpfBlazorSample
         {
             return uri switch
             {
-                "framework://blazor.desktop.js" => Microsoft.MobileBlazorBindings.Hosting.BlazorAssets.GetBlazorDesktopJS(),
+                "framework://blazor.desktop.js" => BlazorAssets.GetBlazorDesktopJS(),
                 _ => throw new ArgumentException($"Unknown framework file: {uri}"),
             };
         }
@@ -643,16 +610,5 @@ namespace WpfBlazorSample
         {
             SendMessageFromJSToDotNetRequested?.Invoke(this, message);
         }
-
-        public void HandleNavigationStarting(Uri url)
-        {
-            OnNavigationStarting?.Invoke(this, url);
-        }
-
-        public void HandleNavigationFinished(Uri url)
-        {
-            OnNavigationFinished?.Invoke(this, url);
-        }
-
     }
 }
