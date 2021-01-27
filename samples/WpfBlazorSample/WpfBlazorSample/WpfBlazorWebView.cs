@@ -81,6 +81,8 @@ namespace WpfBlazorSample
 
             //_webView.Source = new Uri("https://bing.com/");
 
+            OnParentSet();
+
             Dispatcher.InvokeAsync(async () =>
             {
                 _coreWebView2Environment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
@@ -90,8 +92,6 @@ namespace WpfBlazorSample
                 await _webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
                 await _webView2.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(LoadBlazorJSScript).ConfigureAwait(true);
                 SubscribeToControlEvents();
-
-                OnParentSet();
 
                 Load();
 
@@ -218,6 +218,12 @@ namespace WpfBlazorSample
 
         private void OnParentSet()
         {
+            // Need to be careful when we read the ComponentType property because it must
+            // be read on the correct thread. So we capture it here to construct the generic
+            // method, then later use the constructed generic method in the render fragment.
+            var openComponentUnconstructedMethod = typeof(RenderTreeBuilder).GetMethod(nameof(RenderTreeBuilder.OpenComponent), genericParameterCount: 1, types: new[] { typeof(int) });
+            var openComponentMethod = openComponentUnconstructedMethod.MakeGenericMethod(ComponentType);
+
             if (_initOnParentSet)
             {
                 // TODO: Report errors
@@ -229,8 +235,6 @@ namespace WpfBlazorSample
                         {
                             // Call this with generic method with a Type instance:
                             //      TComponent builder.OpenComponent<TComponent>(0);
-                            var openComponentUnconstructedMethod = typeof(RenderTreeBuilder).GetMethod(nameof(RenderTreeBuilder.OpenComponent), genericParameterCount: 1, types: new[] { typeof(int) });
-                            var openComponentMethod = openComponentUnconstructedMethod.MakeGenericMethod(ComponentType);
                             openComponentMethod.Invoke(builder, new object[] { 0 });
 
                             builder.CloseComponent();
@@ -384,7 +388,9 @@ namespace WpfBlazorSample
                 return;
             }
 
-            await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
+            // TODO: For some reason calling Render using Dispatcher.InvokeAsync() doesn't work. The render fragment never gets called
+            capturedRender.RootRenderHandle.Render(fragment);
+            //await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 
         private Task<InteropHandshakeResult> AttachInteropAsync()
