@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace WpfBlazorSample
+namespace Microsoft.MobileBlazorBindings.WPF
 {
     /// <summary>
     /// Custom dispatcher for WPF apps to ensure all UI work is done on the UI (main) thread.

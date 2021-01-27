@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace WpfBlazorSample
+namespace Microsoft.MobileBlazorBindings.WPF
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 

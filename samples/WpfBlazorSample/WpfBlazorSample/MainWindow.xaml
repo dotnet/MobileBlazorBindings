@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfBlazorSample"
-        xmlns:wv2="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:blazorwpf="clr-namespace:Microsoft.MobileBlazorBindings.WPF;assembly=Microsoft.MobileBlazorBindings.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel Margin="20">
@@ -12,6 +12,6 @@
             <Button Click="Button_Click">Click me</Button>
             <Label>Hey</Label>
         </StackPanel>
-        <local:WpfBlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
+        <blazorwpf:WpfBlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
     </DockPanel>
 </Window>

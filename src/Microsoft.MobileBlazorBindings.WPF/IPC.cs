@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WpfBlazorSample
+namespace Microsoft.MobileBlazorBindings.WPF
 {
     internal sealed class WPFIPC : IPCBase, IDisposable
     {
