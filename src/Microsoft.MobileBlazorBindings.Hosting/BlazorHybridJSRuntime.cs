@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
     // TODO: This used to be internal. Is it OK to be public now?
     public class BlazorHybridJSRuntime : JSRuntime
     {
-        private IPCBase _ipc;
+        private WebViewIPC _ipc;
         private static readonly Type VoidTaskResultType = typeof(Task).Assembly
             .GetType("System.Threading.Tasks.VoidTaskResult", true);
 
@@ -51,7 +51,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             return result?.GetType() == VoidTaskResultType ? null : result;
         }
 
-        public void AttachToIpcChannel(IPCBase ipc)
+        public void AttachToIpcChannel(WebViewIPC ipc)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
         }

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.StaticFiles;
@@ -25,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 
-    public class WpfBlazorWebView : Control
+    public class WpfBlazorWebView : Control, IWebViewIPCAdapter
     {
         private WebView2 _webView2;
         private CoreWebView2Environment _coreWebView2Environment;
@@ -54,7 +57,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             // TODO: How to handle this?
         }
 
-        public WpfBlazorWebView() : this(WPFDeviceDispatcher.Instance, initOnParentSet: true)
+        public WpfBlazorWebView() : this(WPFDispatcher.Instance, initOnParentSet: true)
         {
             var template = new ControlTemplate
             {
@@ -133,7 +136,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             if (new Uri(e.Uri).Host.Equals("0.0.0.0", StringComparison.Ordinal))
             {
                 Start();
-                WPFDeviceDispatcher.Instance.InvokeAsync(async () =>
+                WPFDispatcher.Instance.InvokeAsync(async () =>
                 {
                     await InitAsync().ConfigureAwait(false);
                     RerenderAction?.Invoke();
@@ -186,9 +189,8 @@ namespace Microsoft.MobileBlazorBindings.WPF
         private readonly Dispatcher _dispatcher;
         private readonly bool _initOnParentSet;
 
-        private WPFIPC _ipc;
+        private WebViewIPC _ipc;
         private JSRuntime _jsRuntime;
-        private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
         private BlazorHybridRenderer _blazorHybridRenderer;
         private BlazorHybridNavigationManager _navigationManager;
@@ -346,7 +348,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 
         private void Start()
         {
-            _ipc = new WPFIPC(this);
+            _ipc = new WebViewIPC(this, _dispatcher);
         }
 
         private static string GetResourceFilenameFromUri(Uri uri)
@@ -366,8 +368,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             webViewJSRuntime.AttachToIpcChannel(_ipc);
             _jsRuntime = webViewJSRuntime;
 
-            _attachInteropTask ??= AttachInteropAsync();
-            var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
+            var handshakeResult = await _ipc.AttachInteropAsync(_jsRuntime).ConfigureAwait(false);
 
             var loggerFactory = scopeServiceProvider.GetRequiredService<ILoggerFactory>();
             _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
@@ -393,74 +394,6 @@ namespace Microsoft.MobileBlazorBindings.WPF
             //await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 
-        private Task<InteropHandshakeResult> AttachInteropAsync()
-        {
-            var resultTcs = new TaskCompletionSource<InteropHandshakeResult>();
-
-            // These hacks can go away once there's a proper IPC channel for event notifications etc.
-            var selfAsDotNetObjectReference = typeof(DotNetObjectReference).GetMethod(nameof(DotNetObjectReference.Create))
-                .MakeGenericMethod(GetType())
-                .Invoke(null, new[] { this });
-            var selfAsDotnetObjectReferenceId = (long)typeof(JSRuntime).GetMethod("TrackObjectReference", BindingFlags.NonPublic | BindingFlags.Instance)
-                .MakeGenericMethod(GetType())
-                .Invoke(_jsRuntime, new[] { selfAsDotNetObjectReference });
-
-            _ipc.Once("components:init", args =>
-            {
-                var argsArray = (object[])args;
-                var initialUriAbsolute = ((JsonElement)argsArray[0]).GetString();
-                var baseUriAbsolute = ((JsonElement)argsArray[1]).GetString();
-                resultTcs.TrySetResult(new InteropHandshakeResult(baseUriAbsolute, initialUriAbsolute));
-            });
-
-            _ipc.On("BeginInvokeDotNetFromJS", args =>
-            {
-                var argsArray = (object[])args;
-                var assemblyName = argsArray[1] != null ? ((JsonElement)argsArray[1]).GetString() : null;
-                var methodIdentifier = ((JsonElement)argsArray[2]).GetString();
-                var dotNetObjectId = ((JsonElement)argsArray[3]).GetInt64();
-                var callId = ((JsonElement)argsArray[0]).GetString();
-                var argsJson = ((JsonElement)argsArray[4]).GetString();
-
-                // As a temporary hack, intercept blazor.desktop.js's JS interop calls for event notifications,
-                // and direct them to our own instance. This is to avoid needing a static BlazorHybridRenderer.Instance.
-                // Similar temporary hack for navigation notifications
-                // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
-
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // TODO TODO TODO: This is the wrong assembly name. Change to final name.!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-                if (assemblyName == "Microsoft.MobileBlazorBindings.WebView")
-                {
-                    assemblyName = null;
-                    dotNetObjectId = selfAsDotnetObjectReferenceId;
-                }
-
-                DotNetDispatcher.BeginInvokeDotNet(
-                    _jsRuntime,
-                    new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
-                    argsJson);
-            });
-
-            _ipc.On("EndInvokeJSFromDotNet", args =>
-            {
-                var argsArray = (object[])args;
-                DotNetDispatcher.EndInvokeJS(
-                    _jsRuntime,
-                    ((JsonElement)argsArray[2]).GetString());
-            });
-
-            return resultTcs.Task;
-        }
-
-        [JSInvokable(nameof(DispatchEvent))]
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
         {
             if (eventDescriptor is null)
@@ -476,7 +409,6 @@ namespace Microsoft.MobileBlazorBindings.WPF
             await _blazorHybridRenderer.DispatchEventAsync(eventDescriptor, eventArgsJson).ConfigureAwait(false);
         }
 
-        [JSInvokable(nameof(NotifyLocationChanged))]
 #pragma warning disable CA1054 // Uri parameters should not be strings
         public void NotifyLocationChanged(string uri, bool isInterceptedLink)
 #pragma warning restore CA1054 // Uri parameters should not be strings
@@ -484,7 +416,6 @@ namespace Microsoft.MobileBlazorBindings.WPF
             _navigationManager.SetLocation(uri, isInterceptedLink);
         }
 
-        [JSInvokable(nameof(OnRenderCompleted))]
         public async Task OnRenderCompleted(long renderId, string errorMessageOrNull)
         {
             if (_blazorHybridRenderer == null)
@@ -569,10 +500,6 @@ namespace Microsoft.MobileBlazorBindings.WPF
                 _ipc.Dispose();
                 _ipc = null;
             }
-            if (_attachInteropTask != null)
-            {
-                _attachInteropTask = null;
-            }
         }
 
         private class InteropHandshakeResult
@@ -615,6 +542,11 @@ namespace Microsoft.MobileBlazorBindings.WPF
         public void SendMessage(string message)
         {
             SendMessageFromJSToDotNetRequested?.Invoke(this, message);
+        }
+
+        public void BeginInvoke(Action action)
+        {
+            Dispatcher.BeginInvoke(action);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
         private static readonly Task _canceledTask = Task.FromCanceled(new CancellationToken(canceled: true));
 
         private const int RendererId = 0; // No need for more than one renderer per webview
-        private readonly IPCBase _ipc;
+        private readonly WebViewIPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
         private readonly IBlazorErrorHandler _blazorErrorHandler;
@@ -40,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
         }
 
-        public BlazorHybridRenderer(IPCBase ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler, string rootComponentElementSelector)
+        public BlazorHybridRenderer(WebViewIPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler, string rootComponentElementSelector)
             : base(serviceProvider, loggerFactory)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));

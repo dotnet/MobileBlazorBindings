@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 
@@ -7,9 +10,9 @@ namespace Microsoft.MobileBlazorBindings.WPF
     /// <summary>
     /// Custom dispatcher for WPF apps to ensure all UI work is done on the UI (main) thread.
     /// </summary>
-    internal class WPFDeviceDispatcher : Dispatcher
+    internal class WPFDispatcher : Dispatcher
     {
-        public static WPFDeviceDispatcher Instance { get; } = new WPFDeviceDispatcher();
+        public static WPFDispatcher Instance { get; } = new();
 
         public override bool CheckAccess()
         {
