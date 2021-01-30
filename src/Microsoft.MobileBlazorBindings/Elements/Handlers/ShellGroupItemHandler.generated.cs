@@ -9,6 +9,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellGroupItemHandler : BaseShellItemHandler
     {
+        #region Default values
+
+        private static readonly XF.FlyoutDisplayOptions FlyoutDisplayOptionsDefaultValue = XF.ShellGroupItem.FlyoutDisplayOptionsProperty.DefaultValue is XF.FlyoutDisplayOptions value ? value : default;
+
+        #endregion Default values
+
         public ShellGroupItemHandler(NativeComponentRenderer renderer, XF.ShellGroupItem shellGroupItemControl) : base(renderer, shellGroupItemControl)
         {
             ShellGroupItemControl = shellGroupItemControl ?? throw new ArgumentNullException(nameof(shellGroupItemControl));
@@ -25,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.ShellGroupItem.FlyoutDisplayOptions):
-                    ShellGroupItemControl.FlyoutDisplayOptions = (XF.FlyoutDisplayOptions)AttributeHelper.GetInt(attributeValue);
+                    ShellGroupItemControl.FlyoutDisplayOptions = (XF.FlyoutDisplayOptions)AttributeHelper.GetInt(attributeValue, (int)FlyoutDisplayOptionsDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

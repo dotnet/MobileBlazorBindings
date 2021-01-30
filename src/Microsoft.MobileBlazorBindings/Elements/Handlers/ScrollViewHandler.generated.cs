@@ -9,6 +9,14 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ScrollViewHandler : LayoutHandler
     {
+        #region Default values
+
+        private static readonly XF.ScrollBarVisibility HorizontalScrollBarVisibilityDefaultValue = XF.ScrollView.HorizontalScrollBarVisibilityProperty.DefaultValue is XF.ScrollBarVisibility value ? value : default;
+        private static readonly XF.ScrollOrientation OrientationDefaultValue = XF.ScrollView.OrientationProperty.DefaultValue is XF.ScrollOrientation value ? value : default;
+        private static readonly XF.ScrollBarVisibility VerticalScrollBarVisibilityDefaultValue = XF.ScrollView.VerticalScrollBarVisibilityProperty.DefaultValue is XF.ScrollBarVisibility value ? value : default;
+
+        #endregion Default values
+
         public ScrollViewHandler(NativeComponentRenderer renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
         {
             ScrollViewControl = scrollViewControl ?? throw new ArgumentNullException(nameof(scrollViewControl));
@@ -25,13 +33,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.ScrollView.HorizontalScrollBarVisibility):
-                    ScrollViewControl.HorizontalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                    ScrollViewControl.HorizontalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue, (int)HorizontalScrollBarVisibilityDefaultValue);
                     break;
                 case nameof(XF.ScrollView.Orientation):
-                    ScrollViewControl.Orientation = (XF.ScrollOrientation)AttributeHelper.GetInt(attributeValue);
+                    ScrollViewControl.Orientation = (XF.ScrollOrientation)AttributeHelper.GetInt(attributeValue, (int)OrientationDefaultValue);
                     break;
                 case nameof(XF.ScrollView.VerticalScrollBarVisibility):
-                    ScrollViewControl.VerticalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                    ScrollViewControl.VerticalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue, (int)VerticalScrollBarVisibilityDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

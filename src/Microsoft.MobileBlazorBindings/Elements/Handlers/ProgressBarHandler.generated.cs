@@ -9,6 +9,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ProgressBarHandler : ViewHandler
     {
+        #region Default values
+
+        private static readonly double ProgressDefaultValue = XF.ProgressBar.ProgressProperty.DefaultValue is double value ? value : default;
+        private static readonly XF.Color ProgressColorDefaultValue = XF.ProgressBar.ProgressColorProperty.DefaultValue is XF.Color value ? value : default;
+
+        #endregion Default values
+
         public ProgressBarHandler(NativeComponentRenderer renderer, XF.ProgressBar progressBarControl) : base(renderer, progressBarControl)
         {
             ProgressBarControl = progressBarControl ?? throw new ArgumentNullException(nameof(progressBarControl));
@@ -25,10 +32,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.ProgressBar.Progress):
-                    ProgressBarControl.Progress = AttributeHelper.StringToDouble((string)attributeValue);
+                    ProgressBarControl.Progress = AttributeHelper.StringToDouble((string)attributeValue, ProgressDefaultValue);
                     break;
                 case nameof(XF.ProgressBar.ProgressColor):
-                    ProgressBarControl.ProgressColor = AttributeHelper.StringToColor((string)attributeValue);
+                    ProgressBarControl.ProgressColor = AttributeHelper.StringToColor((string)attributeValue, ProgressColorDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
