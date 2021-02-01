@@ -62,6 +62,11 @@ namespace Microsoft.MobileBlazorBindings.Hosting
         }
 
         public async Task DispatchEventAsync(WebEventDescriptor eventDescriptor, string eventArgsJson) {
+            if (eventDescriptor is null)
+            {
+                throw new ArgumentNullException(nameof(eventDescriptor));
+            }
+
             var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
             await DispatchEventAsync(
                 webEvent.EventHandlerId,

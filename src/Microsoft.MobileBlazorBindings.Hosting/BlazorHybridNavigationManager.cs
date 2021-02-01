@@ -16,7 +16,9 @@ namespace Microsoft.MobileBlazorBindings.Hosting
         private IJSRuntime _jsRuntime;
         private bool _isInitialized;
 
+#pragma warning disable CA1054 // URI-like parameters should not be strings
         public void Initialize(IJSRuntime jsRuntime, string baseUri, string initialUri)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
         {
             Initialize(baseUri, initialUri);
             _jsRuntime = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
@@ -38,7 +40,9 @@ namespace Microsoft.MobileBlazorBindings.Hosting
 #pragma warning restore CA2012 // Use ValueTasks correctly
         }
 
+#pragma warning disable CA1054 // URI-like parameters should not be strings
         public void SetLocation(string uri, bool isInterceptedLink)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
         {
             Uri = uri;
             NotifyLocationChanged(isInterceptedLink);

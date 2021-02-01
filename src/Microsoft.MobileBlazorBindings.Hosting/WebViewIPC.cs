@@ -20,6 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
         private readonly Dispatcher _dispatcher;
 
         private readonly Dictionary<string, List<Action<object>>> _registrations = new();
+        private bool _isDisposed;
 
         public WebViewIPC(IWebViewIPCAdapter webViewIPCAdapter, Dispatcher dispatcher)
         {
@@ -194,11 +195,6 @@ namespace Microsoft.MobileBlazorBindings.Hosting
                 TaskScheduler.Default);
         }
 
-        public void Dispose()
-        {
-            _webViewIPCAdapter.OnWebMessageReceived -= HandleScriptNotify;
-        }
-
         [JSInvokable(nameof(DispatchEvent))]
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
         {
@@ -221,6 +217,27 @@ namespace Microsoft.MobileBlazorBindings.Hosting
         public async Task OnRenderCompleted(long renderId, string errorMessageOrNull)
         {
             await _webViewIPCAdapter.OnRenderCompleted(renderId, errorMessageOrNull).ConfigureAwait(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed state (managed objects)
+                    _webViewIPCAdapter.OnWebMessageReceived -= HandleScriptNotify;
+                }
+
+                _isDisposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
