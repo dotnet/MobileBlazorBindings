@@ -281,7 +281,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 
                     if (TryGetFile(fileProvider, GetResourceFilenameFromUri(uri), out var fileStream))
                     {
-                        contentType = GetContentType(uri.AbsolutePath.Substring(1));
+                        contentType = GetContentType(uri.AbsolutePath[1..]);
                         return fileStream;
                     }
                     else
@@ -347,7 +347,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 
         private static string GetResourceFilenameFromUri(Uri uri)
         {
-            return Uri.UnescapeDataString(uri.AbsolutePath.Substring(1));
+            return Uri.UnescapeDataString(uri.AbsolutePath[1..]);
         }
 
         // TODO: This isn't the right way to trigger the init, because it wouldn't happen naturally if consuming
@@ -495,21 +495,6 @@ namespace Microsoft.MobileBlazorBindings.WPF
                 _ipc = null;
             }
         }
-
-        private class InteropHandshakeResult
-        {
-            public string BaseUri { get; }
-            public string InitialUri { get; }
-
-            public InteropHandshakeResult(string baseUri, string initialUri)
-            {
-                BaseUri = baseUri;
-                InitialUri = initialUri;
-            }
-        }
-
-
-
 
 
         // From WebViewExtended

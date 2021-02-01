@@ -3,22 +3,18 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Microsoft.JSInterop.Infrastructure;
 using Microsoft.MobileBlazorBindings.Hosting;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
@@ -332,7 +328,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
             return uri switch
             {
-                "framework://blazor.desktop.js" => Microsoft.MobileBlazorBindings.Hosting.BlazorAssets.GetBlazorDesktopJS(),
+                "framework://blazor.desktop.js" => BlazorAssets.GetBlazorDesktopJS(),
                 _ => throw new ArgumentException($"Unknown framework file: {uri}"),
             };
         }
