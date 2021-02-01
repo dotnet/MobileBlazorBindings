@@ -1,12 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Microsoft.MobileBlazorBindings.Hosting
 {
@@ -22,17 +26,40 @@ namespace Microsoft.MobileBlazorBindings.Hosting
 
             builder.UseContentRoot(Directory.GetCurrentDirectory());
             builder.UseWebRoot("wwwroot");
+            builder.ConfigureAppConfiguration((hostingContext, config) =>
+            {
+                var env = hostingContext.HostingEnvironment;
 
-            builder.UseDefaultServiceProvider((context, options) =>
+                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: RuntimeInformation.IsOSPlatform(OSPlatform.Windows));
+
+                if (env.IsDevelopment())
+                {
+                    var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
+                    if (appAssembly != null)
+                    {
+                        config.AddUserSecrets(appAssembly, optional: true);
+                    }
+                }
+
+                config.AddEnvironmentVariables();
+
+                if (args != null)
+                {
+                    config.AddCommandLine(args);
+                }
+            });
+            builder.ConfigureLogging((hostingContext, logging) =>
+            {
+                logging.AddConsole(configure => configure.DisableColors = true);
+                logging.AddDebug();
+                logging.AddEventSourceLogger();
+            })
+            .UseDefaultServiceProvider((context, options) =>
             {
                 var isDevelopment = context.HostingEnvironment.IsDevelopment();
                 options.ValidateScopes = isDevelopment;
                 options.ValidateOnBuild = isDevelopment;
-            });
-
-            builder.ConfigureServices(serviceCollection =>
-            {
-                serviceCollection.AddSingleton<BlazorHybridRenderer>();
             });
 
             return builder;
@@ -82,8 +109,8 @@ namespace Microsoft.MobileBlazorBindings.Hosting
                 }
 
                 rootProvider = new PhysicalFileProvider(
-                    System.IO.Path.Combine(hostBuilderContext.HostingEnvironment.ContentRootPath, (string)webRoot),
-                    Microsoft.Extensions.FileProviders.Physical.ExclusionFilters.Sensitive);
+                    Path.Combine(hostBuilderContext.HostingEnvironment.ContentRootPath, (string)webRoot),
+                    Extensions.FileProviders.Physical.ExclusionFilters.Sensitive);
 
                 configurationBuilder.Properties[BlazorHybridDefaults.WebRootFileProvider] = rootProvider;
             });

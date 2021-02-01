@@ -1,4 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WPF\build\Microsoft.MobileBlazorBindings.WPF.props" />
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,20 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="wwwroot\app.css" />
-    <None Remove="wwwroot\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="wwwroot\css\app.css">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <Content Update="wwwroot\index.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="wwwroot\index.html">
+    <Content Update="wwwroot\css\app.css">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
 
@@ -29,4 +22,7 @@
     <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WPF\Microsoft.MobileBlazorBindings.WPF.csproj" />
     <ProjectReference Include="..\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
   </ItemGroup>
+
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WPF\build\Microsoft.MobileBlazorBindings.WPF.targets" />
 </Project>

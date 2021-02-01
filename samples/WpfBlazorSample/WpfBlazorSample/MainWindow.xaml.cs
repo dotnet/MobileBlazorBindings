@@ -13,9 +13,8 @@ namespace WpfBlazorSample
         public MainWindow()
         {
             InitializeComponent();
+
             MyBlazorWebView.ComponentType = typeof(RazorClassLibrarySample.SampleWebComponent);
-
-
 
             var hostBuilder = BlazorWebHost.CreateDefaultBuilder()
                 .ConfigureServices((hostContext, services) =>
@@ -28,14 +27,7 @@ namespace WpfBlazorSample
                 })
                 .UseWebRoot("wwwroot");
 
-            //if (fileProvider != null)
-            //{
-            //    hostBuilder.UseStaticFiles(fileProvider);
-            //}
-            //else
-            {
-                hostBuilder.UseStaticFiles();
-            }
+            hostBuilder.UseStaticFiles();
 
             MyBlazorWebView.Host = hostBuilder.Build();
         }
