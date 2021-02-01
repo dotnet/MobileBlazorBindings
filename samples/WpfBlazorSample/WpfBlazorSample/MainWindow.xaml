@@ -7,10 +7,10 @@
         xmlns:blazorwpf="clr-namespace:Microsoft.MobileBlazorBindings.WPF;assembly=Microsoft.MobileBlazorBindings.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <DockPanel Margin="20">
-        <StackPanel Margin="20" Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Click="Button_Click">Click me</Button>
-            <Label>Hey</Label>
+    <DockPanel Margin="6">
+        <StackPanel Margin="6" Orientation="Horizontal" DockPanel.Dock="Top" Background="CadetBlue">
+            <Label>This is native WPF UI</Label>
+            <Button Click="Button_Click" Padding="6" Margin="3">Click to see counter value</Button>
         </StackPanel>
         <blazorwpf:BlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
     </DockPanel>

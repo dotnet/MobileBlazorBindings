@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.MobileBlazorBindings.Hosting;
+using RazorClassLibrarySample;
 using System;
 using System.Windows;
 
@@ -10,6 +11,8 @@ namespace WpfBlazorSample
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly AppState _appState;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -23,18 +26,22 @@ namespace WpfBlazorSample
                     services.AddBlazorHybrid();
 
                     // Register app-specific services
-                    //services.AddSingleton<AppState>();
+                    services.AddSingleton<AppState>();
                 })
                 .UseWebRoot("wwwroot");
 
             hostBuilder.UseStaticFiles();
 
-            MyBlazorWebView.Host = hostBuilder.Build();
+            var host = hostBuilder.Build();
+
+            _appState = host.Services.GetRequiredService<AppState>();
+
+            MyBlazorWebView.Host = host;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MyBlazorWebView.WebView.Source = new Uri("https://google.com");
+            MessageBox.Show($"Current counter value is {_appState.Counter}", "Counter Value");
         }
     }
 }
