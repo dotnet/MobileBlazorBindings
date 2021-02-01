@@ -10,16 +10,13 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Microsoft.JSInterop.Infrastructure;
 using Microsoft.MobileBlazorBindings.Hosting;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -79,10 +76,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
         {
             base.OnApplyTemplate();
 
-            var x = GetTemplateChild("WebView2");
-            _webView2 = (WebView2)x;
-
-            //_webView.Source = new Uri("https://bing.com/");
+            _webView2 = (WebView2)GetTemplateChild("WebView2");
 
             OnParentSet();
 
