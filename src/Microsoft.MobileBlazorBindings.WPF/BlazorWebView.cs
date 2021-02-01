@@ -25,7 +25,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 
-    public class WpfBlazorWebView : Control, IWebViewIPCAdapter
+    public class BlazorWebView : Control, IWebViewIPCAdapter
     {
         private WebView2 _webView2;
         private CoreWebView2Environment _coreWebView2Environment;
@@ -36,7 +36,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             DependencyProperty.Register(
                 name: "ComponentType",
                 propertyType: typeof(Type),
-                ownerType: typeof(WpfBlazorWebView),
+                ownerType: typeof(BlazorWebView),
                 typeMetadata: new FrameworkPropertyMetadata(
                     defaultValue: null,
                     flags: FrameworkPropertyMetadataOptions.AffectsRender,
@@ -54,7 +54,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             // TODO: How to handle this?
         }
 
-        public WpfBlazorWebView() : this(WPFDispatcher.Instance, initOnParentSet: true)
+        public BlazorWebView() : this(WPFDispatcher.Instance, initOnParentSet: true)
         {
             var template = new ControlTemplate
             {
@@ -253,7 +253,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             _webViewSource = $"{BlazorAppScheme}://0.0.0.0/";
         }
 
-        private WpfBlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
+        private BlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
         {
             _initOnParentSet = initOnParentSet;
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));

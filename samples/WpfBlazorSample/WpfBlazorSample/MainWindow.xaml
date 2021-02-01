@@ -12,6 +12,6 @@
             <Button Click="Button_Click">Click me</Button>
             <Label>Hey</Label>
         </StackPanel>
-        <blazorwpf:WpfBlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
+        <blazorwpf:BlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="MyBlazorWebView" />
     </DockPanel>
 </Window>
