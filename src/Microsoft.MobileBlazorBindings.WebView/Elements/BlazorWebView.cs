@@ -197,7 +197,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         private void Start()
         {
-            _ipc = new WebViewIPC(this, _dispatcher);
+            _ipc = new WebViewIPC(this);
         }
 
         private void HandleNavigationStarting(object sender, Uri e)

@@ -342,7 +342,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
 
         private void Start()
         {
-            _ipc = new WebViewIPC(this, _dispatcher);
+            _ipc = new WebViewIPC(this);
         }
 
         private static string GetResourceFilenameFromUri(Uri uri)

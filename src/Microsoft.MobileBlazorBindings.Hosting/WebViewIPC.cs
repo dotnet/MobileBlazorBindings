@@ -17,15 +17,13 @@ namespace Microsoft.MobileBlazorBindings.Hosting
     public class WebViewIPC : IDisposable
     {
         private readonly IWebViewIPCAdapter _webViewIPCAdapter;
-        private readonly Dispatcher _dispatcher;
 
         private readonly Dictionary<string, List<Action<object>>> _registrations = new();
         private bool _isDisposed;
 
-        public WebViewIPC(IWebViewIPCAdapter webViewIPCAdapter, Dispatcher dispatcher)
+        public WebViewIPC(IWebViewIPCAdapter webViewIPCAdapter)
         {
             _webViewIPCAdapter = webViewIPCAdapter ?? throw new ArgumentNullException(nameof(webViewIPCAdapter));
-            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
             _webViewIPCAdapter.OnWebMessageReceived += HandleScriptNotify;
         }
