@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings.WPF\Microsoft.MobileBlazorBindings.WPF.csproj" />
-    <ProjectReference Include="..\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
+    <ProjectReference Include="..\..\SharedProjects\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
   </ItemGroup>
 
   <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
