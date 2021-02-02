@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>tizen60</TargetFramework>
   </PropertyGroup>
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Tizen\build\Microsoft.MobileBlazorBindings.WebView.Tizen.props" />
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>portable</DebugType>
@@ -27,4 +29,6 @@
     </None>
   </ItemGroup>
 
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\..\src\Microsoft.MobileBlazorBindings.WebView.Tizen\build\Microsoft.MobileBlazorBindings.WebView.Tizen.targets" />
 </Project>
