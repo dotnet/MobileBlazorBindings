@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace Microsoft.MobileBlazorBindings
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
     public static class BlazorHybridDefaults
     {

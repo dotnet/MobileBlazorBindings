@@ -4,6 +4,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.MobileBlazorBindings.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;

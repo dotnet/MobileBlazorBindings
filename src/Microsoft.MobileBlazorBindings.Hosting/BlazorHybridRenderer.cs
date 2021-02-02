@@ -4,9 +4,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Server.Circuits;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -14,16 +14,16 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Microsoft.MobileBlazorBindings.WebView
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
-    internal class BlazorHybridRenderer : Renderer
+    public class BlazorHybridRenderer : Renderer
     {
         private static readonly Type _writer;
         private static readonly MethodInfo _writeMethod;
         private static readonly Task _canceledTask = Task.FromCanceled(new CancellationToken(canceled: true));
 
         private const int RendererId = 0; // No need for more than one renderer per webview
-        private readonly IPC _ipc;
+        private readonly WebViewIPC _ipc;
         private readonly IJSRuntime _jsRuntime;
         private readonly Dispatcher _dispatcher;
         private readonly IBlazorErrorHandler _blazorErrorHandler;
@@ -40,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             _writeMethod = _writer.GetMethod("Write", new[] { typeof(RenderBatch).MakeByRefType() });
         }
 
-        public BlazorHybridRenderer(IPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler, string rootComponentElementSelector)
+        public BlazorHybridRenderer(WebViewIPC ipc, IServiceProvider serviceProvider, ILoggerFactory loggerFactory, JSRuntime jsRuntime, Dispatcher dispatcher, IBlazorErrorHandler blazorErrorHandler, string rootComponentElementSelector)
             : base(serviceProvider, loggerFactory)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
@@ -59,6 +59,19 @@ namespace Microsoft.MobileBlazorBindings.WebView
                 rootComponentId,
                 RendererId);
             CaptureAsyncExceptions(initTask);
+        }
+
+        public async Task DispatchEventAsync(WebEventDescriptor eventDescriptor, string eventArgsJson) {
+            if (eventDescriptor is null)
+            {
+                throw new ArgumentNullException(nameof(eventDescriptor));
+            }
+
+            var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
+            await DispatchEventAsync(
+                webEvent.EventHandlerId,
+                webEvent.EventFieldInfo,
+                webEvent.EventArgs).ConfigureAwait(false);
         }
 
         /// <summary>

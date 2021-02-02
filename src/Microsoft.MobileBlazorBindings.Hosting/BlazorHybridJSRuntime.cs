@@ -7,11 +7,12 @@ using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.Threading.Tasks;
 
-namespace Microsoft.MobileBlazorBindings.WebView
+namespace Microsoft.MobileBlazorBindings.Hosting
 {
-    internal class BlazorHybridJSRuntime : JSRuntime
+    // TODO: This used to be internal. Is it OK to be public now?
+    public class BlazorHybridJSRuntime : JSRuntime
     {
-        private IPC _ipc;
+        private WebViewIPC _ipc;
         private static readonly Type VoidTaskResultType = typeof(Task).Assembly
             .GetType("System.Threading.Tasks.VoidTaskResult", true);
 
@@ -50,7 +51,7 @@ namespace Microsoft.MobileBlazorBindings.WebView
             return result?.GetType() == VoidTaskResultType ? null : result;
         }
 
-        internal void AttachToIpcChannel(IPC ipc)
+        public void AttachToIpcChannel(WebViewIPC ipc)
         {
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
         }
