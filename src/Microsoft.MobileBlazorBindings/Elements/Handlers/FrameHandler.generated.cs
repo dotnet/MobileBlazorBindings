@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class FrameHandler : ContentViewHandler
     {
-        #region Default values
-
         private static readonly XF.Color BorderColorDefaultValue = XF.Frame.BorderColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly float CornerRadiusDefaultValue = XF.Frame.CornerRadiusProperty.DefaultValue is float value ? value : default;
         private static readonly bool HasShadowDefaultValue = XF.Frame.HasShadowProperty.DefaultValue is bool value ? value : default;
-
-        #endregion Default values
 
         public FrameHandler(NativeComponentRenderer renderer, XF.Frame frameControl) : base(renderer, frameControl)
         {

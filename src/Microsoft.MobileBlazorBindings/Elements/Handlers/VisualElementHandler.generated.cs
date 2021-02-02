@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class VisualElementHandler : NavigableElementHandler
     {
-        #region Default values
-
         private static readonly double AnchorXDefaultValue = XF.VisualElement.AnchorXProperty.DefaultValue is double value ? value : default;
         private static readonly double AnchorYDefaultValue = XF.VisualElement.AnchorYProperty.DefaultValue is double value ? value : default;
         private static readonly XF.Color BackgroundColorDefaultValue = XF.VisualElement.BackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
@@ -33,8 +31,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly double TranslationXDefaultValue = XF.VisualElement.TranslationXProperty.DefaultValue is double value ? value : default;
         private static readonly double TranslationYDefaultValue = XF.VisualElement.TranslationYProperty.DefaultValue is double value ? value : default;
         private static readonly double WidthRequestDefaultValue = XF.VisualElement.WidthRequestProperty.DefaultValue is double value ? value : default;
-
-        #endregion Default values
 
         public VisualElementHandler(NativeComponentRenderer renderer, XF.VisualElement visualElementControl) : base(renderer, visualElementControl)
         {

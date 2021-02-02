@@ -497,7 +497,8 @@ namespace {Settings.RootNamespace}
 namespace {Settings.RootNamespace}.Handlers
 {{
     public {classModifiers}partial class {componentHandlerName} : {componentHandlerBaseName}
-    {{{propsDefaultValues}
+    {{
+{propsDefaultValues}
         public {componentName}Handler(NativeComponentRenderer renderer, {componentNamespacePrefix}{componentName} {componentVarName}Control) : base(renderer, {componentVarName}Control)
         {{
             {componentName}Control = {componentVarName}Control ?? throw new ArgumentNullException(nameof({componentVarName}Control));
@@ -573,11 +574,6 @@ namespace {Settings.RootNamespace}.Handlers
             var stringBuilder = new StringBuilder();
             var typeName = GetTypeNameAndAddNamespace(type, usings);
 
-            stringBuilder
-                .AppendLine()
-                .AppendLine("        #region Default values")
-                .AppendLine();
-
             foreach (var prop in bindableProps)
             {
                 var propTypeName = GetTypeNameAndAddNamespace(prop.PropertyType, usings);
@@ -586,10 +582,6 @@ namespace {Settings.RootNamespace}.Handlers
                 stringBuilder.AppendLine($"        private static readonly {propTypeName} {prop.Name}DefaultValue = " +
                     $"{propertyDefaultValue} is {propTypeName} value ? value : default;");
             }
-
-            stringBuilder
-                .AppendLine()
-                .AppendLine("        #endregion Default values");
 
             return stringBuilder.ToString();
         }

@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class FlyoutPageHandler : PageHandler
     {
-        #region Default values
-
         private static readonly XF.FlyoutLayoutBehavior FlyoutLayoutBehaviorDefaultValue = XF.FlyoutPage.FlyoutLayoutBehaviorProperty.DefaultValue is XF.FlyoutLayoutBehavior value ? value : default;
         private static readonly bool IsGestureEnabledDefaultValue = XF.FlyoutPage.IsGestureEnabledProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsPresentedDefaultValue = XF.FlyoutPage.IsPresentedProperty.DefaultValue is bool value ? value : default;
-
-        #endregion Default values
 
         public FlyoutPageHandler(NativeComponentRenderer renderer, XF.FlyoutPage flyoutPageControl) : base(renderer, flyoutPageControl)
         {

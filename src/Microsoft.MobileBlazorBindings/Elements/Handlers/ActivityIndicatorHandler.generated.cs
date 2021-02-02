@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ActivityIndicatorHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Color ColorDefaultValue = XF.ActivityIndicator.ColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly bool IsRunningDefaultValue = XF.ActivityIndicator.IsRunningProperty.DefaultValue is bool value ? value : default;
-
-        #endregion Default values
 
         public ActivityIndicatorHandler(NativeComponentRenderer renderer, XF.ActivityIndicator activityIndicatorControl) : base(renderer, activityIndicatorControl)
         {

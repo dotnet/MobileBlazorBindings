@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class EntryHandler : InputViewHandler
     {
-        #region Default values
-
         private static readonly XF.ClearButtonVisibility ClearButtonVisibilityDefaultValue = XF.Entry.ClearButtonVisibilityProperty.DefaultValue is XF.ClearButtonVisibility value ? value : default;
         private static readonly int CursorPositionDefaultValue = XF.Entry.CursorPositionProperty.DefaultValue is int value ? value : default;
         private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.Entry.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
@@ -22,8 +20,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XF.ReturnType ReturnTypeDefaultValue = XF.Entry.ReturnTypeProperty.DefaultValue is XF.ReturnType value ? value : default;
         private static readonly int SelectionLengthDefaultValue = XF.Entry.SelectionLengthProperty.DefaultValue is int value ? value : default;
         private static readonly XF.TextAlignment VerticalTextAlignmentDefaultValue = XF.Entry.VerticalTextAlignmentProperty.DefaultValue is XF.TextAlignment value ? value : default;
-
-        #endregion Default values
 
         public EntryHandler(NativeComponentRenderer renderer, XF.Entry entryControl) : base(renderer, entryControl)
         {

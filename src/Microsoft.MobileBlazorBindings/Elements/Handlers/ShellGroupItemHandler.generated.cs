@@ -9,11 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellGroupItemHandler : BaseShellItemHandler
     {
-        #region Default values
-
         private static readonly XF.FlyoutDisplayOptions FlyoutDisplayOptionsDefaultValue = XF.ShellGroupItem.FlyoutDisplayOptionsProperty.DefaultValue is XF.FlyoutDisplayOptions value ? value : default;
-
-        #endregion Default values
 
         public ShellGroupItemHandler(NativeComponentRenderer renderer, XF.ShellGroupItem shellGroupItemControl) : base(renderer, shellGroupItemControl)
         {

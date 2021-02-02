@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class DatePickerHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double CharacterSpacingDefaultValue = XF.DatePicker.CharacterSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly DateTime DateDefaultValue = XF.DatePicker.DateProperty.DefaultValue is DateTime value ? value : default;
         private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.DatePicker.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
@@ -21,8 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly DateTime MinimumDateDefaultValue = XF.DatePicker.MinimumDateProperty.DefaultValue is DateTime value ? value : default;
         private static readonly XF.Color TextColorDefaultValue = XF.DatePicker.TextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.DatePicker.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-
-        #endregion Default values
 
         public DatePickerHandler(NativeComponentRenderer renderer, XF.DatePicker datePickerControl) : base(renderer, datePickerControl)
         {

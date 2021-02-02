@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ImageButtonHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Aspect AspectDefaultValue = XF.ImageButton.AspectProperty.DefaultValue is XF.Aspect value ? value : default;
         private static readonly XF.Color BorderColorDefaultValue = XF.ImageButton.BorderColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly double BorderWidthDefaultValue = XF.ImageButton.BorderWidthProperty.DefaultValue is double value ? value : default;
@@ -18,8 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly bool IsOpaqueDefaultValue = XF.ImageButton.IsOpaqueProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.Thickness PaddingDefaultValue = XF.ImageButton.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
         private static readonly XF.ImageSource SourceDefaultValue = XF.ImageButton.SourceProperty.DefaultValue is XF.ImageSource value ? value : default;
-
-        #endregion Default values
 
         public ImageButtonHandler(NativeComponentRenderer renderer, XF.ImageButton imageButtonControl) : base(renderer, imageButtonControl)
         {

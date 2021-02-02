@@ -9,15 +9,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class PageHandler : VisualElementHandler
     {
-        #region Default values
-
         private static readonly XF.ImageSource BackgroundImageSourceDefaultValue = XF.Page.BackgroundImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly XF.ImageSource IconImageSourceDefaultValue = XF.Page.IconImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly bool IsBusyDefaultValue = XF.Page.IsBusyProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.Thickness PaddingDefaultValue = XF.Page.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
         private static readonly string TitleDefaultValue = XF.Page.TitleProperty.DefaultValue is string value ? value : default;
-
-        #endregion Default values
 
         public PageHandler(NativeComponentRenderer renderer, XF.Page pageControl) : base(renderer, pageControl)
         {

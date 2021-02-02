@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ViewHandler : VisualElementHandler
     {
-        #region Default values
-
         private static readonly XF.LayoutOptions HorizontalOptionsDefaultValue = XF.View.HorizontalOptionsProperty.DefaultValue is XF.LayoutOptions value ? value : default;
         private static readonly XF.Thickness MarginDefaultValue = XF.View.MarginProperty.DefaultValue is XF.Thickness value ? value : default;
         private static readonly XF.LayoutOptions VerticalOptionsDefaultValue = XF.View.VerticalOptionsProperty.DefaultValue is XF.LayoutOptions value ? value : default;
-
-        #endregion Default values
 
         public ViewHandler(NativeComponentRenderer renderer, XF.View viewControl) : base(renderer, viewControl)
         {

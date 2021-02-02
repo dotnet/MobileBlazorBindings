@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class NavigableElementHandler : ElementHandler
     {
+
         public NavigableElementHandler(NativeComponentRenderer renderer, XF.NavigableElement navigableElementControl) : base(renderer, navigableElementControl)
         {
             NavigableElementControl = navigableElementControl ?? throw new ArgumentNullException(nameof(navigableElementControl));

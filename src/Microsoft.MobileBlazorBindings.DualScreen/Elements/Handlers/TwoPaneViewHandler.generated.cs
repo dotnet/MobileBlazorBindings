@@ -10,8 +10,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TwoPaneViewHandler : GridHandler
     {
-        #region Default values
-
         private static readonly double MinTallModeHeightDefaultValue = XFD.TwoPaneView.MinTallModeHeightProperty.DefaultValue is double value ? value : default;
         private static readonly double MinWideModeWidthDefaultValue = XFD.TwoPaneView.MinWideModeWidthProperty.DefaultValue is double value ? value : default;
         private static readonly XF.GridLength Pane1LengthDefaultValue = XFD.TwoPaneView.Pane1LengthProperty.DefaultValue is XF.GridLength value ? value : default;
@@ -19,8 +17,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XFD.TwoPaneViewPriority PanePriorityDefaultValue = XFD.TwoPaneView.PanePriorityProperty.DefaultValue is XFD.TwoPaneViewPriority value ? value : default;
         private static readonly XFD.TwoPaneViewTallModeConfiguration TallModeConfigurationDefaultValue = XFD.TwoPaneView.TallModeConfigurationProperty.DefaultValue is XFD.TwoPaneViewTallModeConfiguration value ? value : default;
         private static readonly XFD.TwoPaneViewWideModeConfiguration WideModeConfigurationDefaultValue = XFD.TwoPaneView.WideModeConfigurationProperty.DefaultValue is XFD.TwoPaneViewWideModeConfiguration value ? value : default;
-        
-        #endregion Default values
 
         public TwoPaneViewHandler(NativeComponentRenderer renderer, XFD.TwoPaneView twoPaneViewControl) : base(renderer, twoPaneViewControl)
         {

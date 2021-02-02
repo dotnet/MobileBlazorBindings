@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class BoxViewHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Color ColorDefaultValue = XF.BoxView.ColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.CornerRadius CornerRadiusDefaultValue = XF.BoxView.CornerRadiusProperty.DefaultValue is XF.CornerRadius value ? value : default;
-
-        #endregion Default values
 
         public BoxViewHandler(NativeComponentRenderer renderer, XF.BoxView boxViewControl) : base(renderer, boxViewControl)
         {

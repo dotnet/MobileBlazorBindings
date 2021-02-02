@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ScrollViewHandler : LayoutHandler
     {
-        #region Default values
-
         private static readonly XF.ScrollBarVisibility HorizontalScrollBarVisibilityDefaultValue = XF.ScrollView.HorizontalScrollBarVisibilityProperty.DefaultValue is XF.ScrollBarVisibility value ? value : default;
         private static readonly XF.ScrollOrientation OrientationDefaultValue = XF.ScrollView.OrientationProperty.DefaultValue is XF.ScrollOrientation value ? value : default;
         private static readonly XF.ScrollBarVisibility VerticalScrollBarVisibilityDefaultValue = XF.ScrollView.VerticalScrollBarVisibilityProperty.DefaultValue is XF.ScrollBarVisibility value ? value : default;
-
-        #endregion Default values
 
         public ScrollViewHandler(NativeComponentRenderer renderer, XF.ScrollView scrollViewControl) : base(renderer, scrollViewControl)
         {

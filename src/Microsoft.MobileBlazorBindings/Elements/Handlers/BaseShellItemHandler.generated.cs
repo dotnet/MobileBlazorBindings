@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class BaseShellItemHandler : NavigableElementHandler
     {
-        #region Default values
-
         private static readonly XF.ImageSource FlyoutIconDefaultValue = XF.BaseShellItem.FlyoutIconProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly XF.ImageSource IconDefaultValue = XF.BaseShellItem.IconProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly bool IsEnabledDefaultValue = XF.BaseShellItem.IsEnabledProperty.DefaultValue is bool value ? value : default;
@@ -18,8 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly bool IsVisibleDefaultValue = XF.BaseShellItem.IsVisibleProperty.DefaultValue is bool value ? value : default;
         private static readonly int TabIndexDefaultValue = XF.BaseShellItem.TabIndexProperty.DefaultValue is int value ? value : default;
         private static readonly string TitleDefaultValue = XF.BaseShellItem.TitleProperty.DefaultValue is string value ? value : default;
-
-        #endregion Default values
 
         public BaseShellItemHandler(NativeComponentRenderer renderer, XF.BaseShellItem baseShellItemControl) : base(renderer, baseShellItemControl)
         {

@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellSectionHandler : ShellGroupItemHandler
     {
+
         public ShellSectionHandler(NativeComponentRenderer renderer, XF.ShellSection shellSectionControl) : base(renderer, shellSectionControl)
         {
             ShellSectionControl = shellSectionControl ?? throw new ArgumentNullException(nameof(shellSectionControl));

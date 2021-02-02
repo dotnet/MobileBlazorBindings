@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class GestureElementHandler : ElementHandler
     {
+
         public GestureElementHandler(NativeComponentRenderer renderer, XF.GestureElement gestureElementControl) : base(renderer, gestureElementControl)
         {
             GestureElementControl = gestureElementControl ?? throw new ArgumentNullException(nameof(gestureElementControl));

@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class GridHandler : LayoutHandler
     {
-        #region Default values
-
         private static readonly double ColumnSpacingDefaultValue = XF.Grid.ColumnSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly double RowSpacingDefaultValue = XF.Grid.RowSpacingProperty.DefaultValue is double value ? value : default;
-
-        #endregion Default values
 
         public GridHandler(NativeComponentRenderer renderer, XF.Grid gridControl) : base(renderer, gridControl)
         {

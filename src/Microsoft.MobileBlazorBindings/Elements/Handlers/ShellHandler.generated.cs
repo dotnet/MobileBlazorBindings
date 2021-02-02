@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellHandler : PageHandler
     {
-        #region Default values
-
         private static readonly XF.Color FlyoutBackgroundColorDefaultValue = XF.Shell.FlyoutBackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.ImageSource FlyoutBackgroundImageDefaultValue = XF.Shell.FlyoutBackgroundImageProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly XF.Aspect FlyoutBackgroundImageAspectDefaultValue = XF.Shell.FlyoutBackgroundImageAspectProperty.DefaultValue is XF.Aspect value ? value : default;
@@ -21,8 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly bool FlyoutIsPresentedDefaultValue = XF.Shell.FlyoutIsPresentedProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.ScrollMode FlyoutVerticalScrollModeDefaultValue = XF.Shell.FlyoutVerticalScrollModeProperty.DefaultValue is XF.ScrollMode value ? value : default;
         private static readonly double FlyoutWidthDefaultValue = XF.Shell.FlyoutWidthProperty.DefaultValue is double value ? value : default;
-
-        #endregion Default values
 
         public ShellHandler(NativeComponentRenderer renderer, XF.Shell shellControl) : base(renderer, shellControl)
         {

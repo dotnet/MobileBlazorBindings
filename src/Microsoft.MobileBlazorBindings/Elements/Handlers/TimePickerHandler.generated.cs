@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TimePickerHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double CharacterSpacingDefaultValue = XF.TimePicker.CharacterSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.TimePicker.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
         private static readonly string FontFamilyDefaultValue = XF.TimePicker.FontFamilyProperty.DefaultValue is string value ? value : default;
@@ -19,8 +17,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XF.Color TextColorDefaultValue = XF.TimePicker.TextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.TimePicker.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
         private static readonly TimeSpan TimeDefaultValue = XF.TimePicker.TimeProperty.DefaultValue is TimeSpan value ? value : default;
-
-        #endregion Default values
 
         public TimePickerHandler(NativeComponentRenderer renderer, XF.TimePicker timePickerControl) : base(renderer, timePickerControl)
         {

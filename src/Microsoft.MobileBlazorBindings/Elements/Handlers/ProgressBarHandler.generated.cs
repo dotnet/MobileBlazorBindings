@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ProgressBarHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double ProgressDefaultValue = XF.ProgressBar.ProgressProperty.DefaultValue is double value ? value : default;
         private static readonly XF.Color ProgressColorDefaultValue = XF.ProgressBar.ProgressColorProperty.DefaultValue is XF.Color value ? value : default;
-
-        #endregion Default values
 
         public ProgressBarHandler(NativeComponentRenderer renderer, XF.ProgressBar progressBarControl) : base(renderer, progressBarControl)
         {

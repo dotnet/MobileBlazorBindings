@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class LayoutHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly bool CascadeInputTransparentDefaultValue = XF.Layout.CascadeInputTransparentProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsClippedToBoundsDefaultValue = XF.Layout.IsClippedToBoundsProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.Thickness PaddingDefaultValue = XF.Layout.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
-
-        #endregion Default values
 
         public LayoutHandler(NativeComponentRenderer renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
         {

@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SpanHandler : GestureElementHandler
     {
-        #region Default values
-
         private static readonly XF.Color BackgroundColorDefaultValue = XF.Span.BackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly double CharacterSpacingDefaultValue = XF.Span.CharacterSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.Span.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
@@ -22,8 +20,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XF.Color TextColorDefaultValue = XF.Span.TextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.TextDecorations TextDecorationsDefaultValue = XF.Span.TextDecorationsProperty.DefaultValue is XF.TextDecorations value ? value : default;
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.Span.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-
-        #endregion Default values
 
         public SpanHandler(NativeComponentRenderer renderer, XF.Span spanControl) : base(renderer, spanControl)
         {

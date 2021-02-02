@@ -9,13 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SwitchHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly bool IsToggledDefaultValue = XF.Switch.IsToggledProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.Color OnColorDefaultValue = XF.Switch.OnColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.Color ThumbColorDefaultValue = XF.Switch.ThumbColorProperty.DefaultValue is XF.Color value ? value : default;
-
-        #endregion Default values
 
         public SwitchHandler(NativeComponentRenderer renderer, XF.Switch switchControl) : base(renderer, switchControl)
         {

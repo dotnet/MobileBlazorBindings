@@ -9,14 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class MenuItemHandler : BaseMenuItemHandler
     {
-        #region Default values
-
         private static readonly XF.ImageSource IconImageSourceDefaultValue = XF.MenuItem.IconImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly bool IsDestructiveDefaultValue = XF.MenuItem.IsDestructiveProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsEnabledDefaultValue = XF.MenuItem.IsEnabledProperty.DefaultValue is bool value ? value : default;
         private static readonly string TextDefaultValue = XF.MenuItem.TextProperty.DefaultValue is string value ? value : default;
-
-        #endregion Default values
 
         public MenuItemHandler(NativeComponentRenderer renderer, XF.MenuItem menuItemControl) : base(renderer, menuItemControl)
         {

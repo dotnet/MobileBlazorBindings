@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class LabelHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double CharacterSpacingDefaultValue = XF.Label.CharacterSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.Label.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
         private static readonly string FontFamilyDefaultValue = XF.Label.FontFamilyProperty.DefaultValue is string value ? value : default;
@@ -26,8 +24,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.Label.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
         private static readonly XF.TextType TextTypeDefaultValue = XF.Label.TextTypeProperty.DefaultValue is XF.TextType value ? value : default;
         private static readonly XF.TextAlignment VerticalTextAlignmentDefaultValue = XF.Label.VerticalTextAlignmentProperty.DefaultValue is XF.TextAlignment value ? value : default;
-
-        #endregion Default values
 
         public LabelHandler(NativeComponentRenderer renderer, XF.Label labelControl) : base(renderer, labelControl)
         {

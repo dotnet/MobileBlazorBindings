@@ -9,14 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ImageHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Aspect AspectDefaultValue = XF.Image.AspectProperty.DefaultValue is XF.Aspect value ? value : default;
         private static readonly bool IsAnimationPlayingDefaultValue = XF.Image.IsAnimationPlayingProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsOpaqueDefaultValue = XF.Image.IsOpaqueProperty.DefaultValue is bool value ? value : default;
         private static readonly XF.ImageSource SourceDefaultValue = XF.Image.SourceProperty.DefaultValue is XF.ImageSource value ? value : default;
-
-        #endregion Default values
 
         public ImageHandler(NativeComponentRenderer renderer, XF.Image imageControl) : base(renderer, imageControl)
         {

@@ -9,14 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TabbedPageHandler : PageHandler
     {
-        #region Default values
-
         private static readonly XF.Color BarBackgroundColorDefaultValue = XF.TabbedPage.BarBackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.Color BarTextColorDefaultValue = XF.TabbedPage.BarTextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.Color SelectedTabColorDefaultValue = XF.TabbedPage.SelectedTabColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.Color UnselectedTabColorDefaultValue = XF.TabbedPage.UnselectedTabColorProperty.DefaultValue is XF.Color value ? value : default;
-
-        #endregion Default values
 
         public TabbedPageHandler(NativeComponentRenderer renderer, XF.TabbedPage tabbedPageControl) : base(renderer, tabbedPageControl)
         {

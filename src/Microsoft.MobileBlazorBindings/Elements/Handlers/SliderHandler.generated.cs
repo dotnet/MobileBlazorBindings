@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SliderHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double MaximumDefaultValue = XF.Slider.MaximumProperty.DefaultValue is double value ? value : default;
         private static readonly XF.Color MaximumTrackColorDefaultValue = XF.Slider.MaximumTrackColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly double MinimumDefaultValue = XF.Slider.MinimumProperty.DefaultValue is double value ? value : default;
@@ -18,8 +16,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly XF.Color ThumbColorDefaultValue = XF.Slider.ThumbColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.ImageSource ThumbImageSourceDefaultValue = XF.Slider.ThumbImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
         private static readonly double ValueDefaultValue = XF.Slider.ValueProperty.DefaultValue is double value ? value : default;
-
-        #endregion Default values
 
         public SliderHandler(NativeComponentRenderer renderer, XF.Slider sliderControl) : base(renderer, sliderControl)
         {

@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ContentViewHandler : TemplatedViewHandler
     {
+
         public ContentViewHandler(NativeComponentRenderer renderer, XF.ContentView contentViewControl) : base(renderer, contentViewControl)
         {
             ContentViewControl = contentViewControl ?? throw new ArgumentNullException(nameof(contentViewControl));

@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class InputViewHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly double CharacterSpacingDefaultValue = XF.InputView.CharacterSpacingProperty.DefaultValue is double value ? value : default;
         private static readonly bool IsReadOnlyDefaultValue = XF.InputView.IsReadOnlyProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsSpellCheckEnabledDefaultValue = XF.InputView.IsSpellCheckEnabledProperty.DefaultValue is bool value ? value : default;
@@ -21,8 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly string TextDefaultValue = XF.InputView.TextProperty.DefaultValue is string value ? value : default;
         private static readonly XF.Color TextColorDefaultValue = XF.InputView.TextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.InputView.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-
-        #endregion Default values
 
         public InputViewHandler(NativeComponentRenderer renderer, XF.InputView inputViewControl) : base(renderer, inputViewControl)
         {

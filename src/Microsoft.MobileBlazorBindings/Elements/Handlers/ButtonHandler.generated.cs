@@ -9,8 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ButtonHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Color BorderColorDefaultValue = XF.Button.BorderColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly double BorderWidthDefaultValue = XF.Button.BorderWidthProperty.DefaultValue is double value ? value : default;
         private static readonly double CharacterSpacingDefaultValue = XF.Button.CharacterSpacingProperty.DefaultValue is double value ? value : default;
@@ -23,8 +21,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly string TextDefaultValue = XF.Button.TextProperty.DefaultValue is string value ? value : default;
         private static readonly XF.Color TextColorDefaultValue = XF.Button.TextColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly XF.TextTransform TextTransformDefaultValue = XF.Button.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-
-        #endregion Default values
 
         public ButtonHandler(NativeComponentRenderer renderer, XF.Button buttonControl) : base(renderer, buttonControl)
         {

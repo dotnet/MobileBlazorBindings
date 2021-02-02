@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class StackLayoutHandler : LayoutHandler
     {
-        #region Default values
-
         private static readonly XF.StackOrientation OrientationDefaultValue = XF.StackLayout.OrientationProperty.DefaultValue is XF.StackOrientation value ? value : default;
         private static readonly double SpacingDefaultValue = XF.StackLayout.SpacingProperty.DefaultValue is double value ? value : default;
-
-        #endregion Default values
 
         public StackLayoutHandler(NativeComponentRenderer renderer, XF.StackLayout stackLayoutControl) : base(renderer, stackLayoutControl)
         {

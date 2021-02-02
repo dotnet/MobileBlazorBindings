@@ -9,12 +9,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class CheckBoxHandler : ViewHandler
     {
-        #region Default values
-
         private static readonly XF.Color ColorDefaultValue = XF.CheckBox.ColorProperty.DefaultValue is XF.Color value ? value : default;
         private static readonly bool IsCheckedDefaultValue = XF.CheckBox.IsCheckedProperty.DefaultValue is bool value ? value : default;
-
-        #endregion Default values
 
         public CheckBoxHandler(NativeComponentRenderer renderer, XF.CheckBox checkBoxControl) : base(renderer, checkBoxControl)
         {
