@@ -456,6 +456,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             };
         }
 
+        // TODO: There isn't a standard disposal pattern for WPF controls. So how/when do we do the disposal?
         //public void Dispose()
         //{
         //    Dispose(true);
