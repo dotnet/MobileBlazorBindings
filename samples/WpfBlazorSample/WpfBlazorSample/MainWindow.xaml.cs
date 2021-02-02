@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.Hosting;
 using RazorClassLibrarySample;
-using System;
 using System.Windows;
 
 namespace WpfBlazorSample

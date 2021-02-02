@@ -2,12 +2,8 @@
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -63,62 +59,6 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             });
 
             return builder;
-        }
-    }
-
-    public static class BlazorHybridHostExtensions
-    {
-        /// <summary>
-        /// Specify the webroot directory to be used by the hybrid host.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
-        /// <param name="webRoot">Path to the root directory used by the hybrid host.</param>
-        /// <returns>The <see cref="IHostBuilder"/>.</returns>
-        public static IHostBuilder UseWebRoot(this IHostBuilder hostBuilder, string webRoot)
-        {
-            if (hostBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(hostBuilder));
-            }
-
-            if (string.IsNullOrEmpty(webRoot))
-            {
-                throw new ArgumentException($"'{nameof(webRoot)}' cannot be null or empty", nameof(webRoot));
-            }
-
-            return hostBuilder.ConfigureAppConfiguration((hostBuilderContext, configurationBuilder) =>
-            {
-                configurationBuilder.Properties[BlazorHybridDefaults.WebRootKey] = webRoot;
-            });
-        }
-
-        public static IHostBuilder UseStaticFiles(this IHostBuilder hostBuilder)
-        {
-            if (hostBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(hostBuilder));
-            }
-
-            IFileProvider rootProvider = null;
-
-            hostBuilder.ConfigureAppConfiguration((hostBuilderContext, configurationBuilder) =>
-            {
-                if (!configurationBuilder.Properties.TryGetValue(BlazorHybridDefaults.WebRootKey, out object webRoot))
-                {
-                    throw new KeyNotFoundException("WebRoot not set.");
-                }
-
-                rootProvider = new PhysicalFileProvider(
-                    Path.Combine(hostBuilderContext.HostingEnvironment.ContentRootPath, (string)webRoot),
-                    Extensions.FileProviders.Physical.ExclusionFilters.Sensitive);
-
-                configurationBuilder.Properties[BlazorHybridDefaults.WebRootFileProvider] = rootProvider;
-            });
-
-            return hostBuilder.ConfigureServices(serviceCollection =>
-            {
-                serviceCollection.AddSingleton<IFileProvider>(rootProvider);
-            });
         }
     }
 }
