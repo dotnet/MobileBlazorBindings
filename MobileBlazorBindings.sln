@@ -182,6 +182,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedProjects", "SharedPro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorClassLibrarySample", "samples\SharedProjects\RazorClassLibrarySample\RazorClassLibrarySample.csproj", "{E6B4FC81-FCE7-49CE-A86D-7578EC8B6F61}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinFormsBlazorSample", "WinFormsBlazorSample", "{965EEC08-D454-44D3-8E53-5DC12CB8801C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsBlazorSample", "samples\WinFormsBlazorSample\WinFormsBlazorSample.csproj", "{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WindowsForms", "src\Microsoft.MobileBlazorBindings.WindowsForms\Microsoft.MobileBlazorBindings.WindowsForms.csproj", "{1D22DA82-38EB-410C-88EA-37D3D786CCC5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1037,6 +1043,30 @@ Global
 		{E6B4FC81-FCE7-49CE-A86D-7578EC8B6F61}.Release|iPhone.Build.0 = Release|Any CPU
 		{E6B4FC81-FCE7-49CE-A86D-7578EC8B6F61}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{E6B4FC81-FCE7-49CE-A86D-7578EC8B6F61}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|iPhone.Build.0 = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|iPhone.Build.0 = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1121,6 +1151,9 @@ Global
 		{CF7A062B-E840-4E2E-9991-AC22BE7DCBC3} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
 		{DF1D6DD1-E916-48C9-874A-3B93DB5BDB48} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
 		{E6B4FC81-FCE7-49CE-A86D-7578EC8B6F61} = {DF1D6DD1-E916-48C9-874A-3B93DB5BDB48}
+		{965EEC08-D454-44D3-8E53-5DC12CB8801C} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
+		{DA6F7E8F-9A53-42BB-B29E-169C07EA1FD0} = {965EEC08-D454-44D3-8E53-5DC12CB8801C}
+		{1D22DA82-38EB-410C-88EA-37D3D786CCC5} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A645A7FF-3F09-414D-A391-7E50C3597F05}

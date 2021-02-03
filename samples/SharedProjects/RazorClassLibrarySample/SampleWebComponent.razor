@@ -1,9 +1,6 @@
 ﻿@inject AppState AppState
 
 <div class="my-component">
-@{
-        var x = 7;
-}
     This Blazor Web component is defined in the <strong>RazorClassLibrarySample</strong> package.
     <div>Count = @AppState.Counter</div>
     <button @onclick="DoIncrement">+1</button>
