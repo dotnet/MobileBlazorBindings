@@ -68,10 +68,12 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             }
 
             var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
-            await DispatchEventAsync(
-                webEvent.EventHandlerId,
-                webEvent.EventFieldInfo,
-                webEvent.EventArgs).ConfigureAwait(false);
+            await Dispatcher.InvokeAsync(async () =>
+                await DispatchEventAsync(
+                    webEvent.EventHandlerId,
+                    webEvent.EventFieldInfo,
+                    webEvent.EventArgs).ConfigureAwait(false))
+                .ConfigureAwait(false);
         }
 
         /// <summary>

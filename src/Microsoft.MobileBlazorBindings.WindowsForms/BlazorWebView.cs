@@ -363,9 +363,7 @@ namespace Microsoft.MobileBlazorBindings.WindowsForms
                 return;
             }
 
-            // TODO: For some reason calling Render using Dispatcher.InvokeAsync() doesn't work. The render fragment never gets called
-            capturedRender.RootRenderHandle.Render(fragment);
-            //await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
+            await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
