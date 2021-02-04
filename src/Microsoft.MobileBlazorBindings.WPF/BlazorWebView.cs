@@ -25,7 +25,9 @@ namespace Microsoft.MobileBlazorBindings.WPF
 {
     public delegate Stream ResolveWebResourceDelegate(string url, out string contentType);
 
+#pragma warning disable CA1001 // Types that own disposable fields should be disposable; WPF controls don't have a standard dispose pattern, so for now this is not disposable
     public class BlazorWebView : Control, IWebViewIPCAdapter
+#pragma warning restore CA1001 // Types that own disposable fields should be disposable
     {
         private WebView2 _webView2;
         private CoreWebView2Environment _coreWebView2Environment;
@@ -372,7 +374,9 @@ namespace Microsoft.MobileBlazorBindings.WPF
 
         // TODO: This is also not the right way to trigger a render, as you wouldn't be able to call this if consuming
         // BlazorWebView directly from Xamarin Forms XAML. It only works from MBB.
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously; this method is supposed to be async but the await'ed call below isn't working right now (see comment below)
         public async Task Render(RenderFragment fragment)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             BlazorHybridRenderer capturedRender;
 
@@ -384,7 +388,7 @@ namespace Microsoft.MobileBlazorBindings.WPF
             }
 
             // TODO: For some reason calling Render using Dispatcher.InvokeAsync() doesn't work. The render fragment never gets called
-            capturedRender.RootRenderHandle.Render(fragment);
+            capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment);
             //await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 

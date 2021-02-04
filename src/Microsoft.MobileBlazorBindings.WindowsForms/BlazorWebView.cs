@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.WindowsForms
 
     public class BlazorWebView : Control, IWebViewIPCAdapter
     {
-        private WebView2 _webView2;
+        private readonly WebView2 _webView2;
 
         public BlazorWebView()
         {
@@ -43,7 +43,9 @@ namespace Microsoft.MobileBlazorBindings.WindowsForms
 
             OnParentSet();
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
             Invoke(new Action(() => DoStart()));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed
         }
 
 
