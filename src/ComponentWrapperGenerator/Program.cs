@@ -1,25 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.CodeAnalysis;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Xml;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace ComponentWrapperGenerator
 {
     internal class Program
     {
-        private static readonly List<ComponentLocation> ComponentLocations =
-            new List<ComponentLocation>
-            {
-                new ComponentLocation(typeof(Xamarin.Forms.Element).Assembly, "Xamarin.Forms", "XF", @"bin\Debug\netcoreapp3.0\Xamarin.Forms.Core.xml"),
-                new ComponentLocation(typeof(Xamarin.Forms.DualScreen.TwoPaneView).Assembly, "Xamarin.Forms.DualScreen", "XFD", null),
-            };
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
-        internal static int Main(string[] args)
+        internal static async Task<int> Main(string[] args)
         {
             // Un-comment these lines for easier debugging
             if (args.Length == 0)
@@ -45,9 +37,8 @@ namespace ComponentWrapperGenerator
                 RootNamespace = "Microsoft.MobileBlazorBindings.Elements",
             };
 
-            var xmlDocs = LoadXmlDocs(ComponentLocations.Select(loc => loc.XmlDocFilename).Where(loc => loc != null));
-
-            var generator = new ComponentWrapperGenerator(settings, xmlDocs);
+            var compilation = await GetRoslynCompilationAsync().ConfigureAwait(false);
+            var generator = new ComponentWrapperGenerator(settings, compilation);
 
             foreach (var typeNameToGenerate in listOfTypeNamesToGenerate)
             {
@@ -62,7 +53,9 @@ namespace ComponentWrapperGenerator
                     continue;
                 }
 
-                if (!TryGetTypeToGenerate(typeNameToGenerate, out var typeToGenerate))
+                var typeToGenerate = compilation.GetTypeByMetadataName(typeNameToGenerate);
+
+                if (typeToGenerate == null)
                 {
                     Console.WriteLine($"WARNING: Couldn't find type {typeNameToGenerate}.");
                     Console.WriteLine();
@@ -75,46 +68,38 @@ namespace ComponentWrapperGenerator
             return 0;
         }
 
-        private static IList<XmlDocument> LoadXmlDocs(IEnumerable<string> xmlDocLocations)
+        private static async Task<Compilation> GetRoslynCompilationAsync()
         {
-            var xmlDocs = new List<XmlDocument>();
-            foreach (var xmlDocLocation in xmlDocLocations)
-            {
-                var xmlDoc = new XmlDocument();
+            var metadataReferences = new[] {
+                MetadataReferenceFromAssembly(typeof(Xamarin.Forms.Element).Assembly),
+                MetadataReferenceFromAssembly(typeof(Xamarin.Forms.DualScreen.TwoPaneView).Assembly),
+                MetadataReferenceFromAssembly(typeof(object).Assembly),
+                MetadataReferenceFromAssembly(Assembly.Load(new AssemblyName("System.Runtime"))),
+                MetadataReferenceFromAssembly(Assembly.Load(new AssemblyName("netstandard")))
+            };
 
-                // Depending on whether you run from VS or command line, the relative path of the XML docs will be
-                // different. There's undoubtedly a better way to do this, but this works great.
-                var xmlDocPath = Path.Combine(Directory.GetCurrentDirectory(), xmlDocLocation);
-                if (!File.Exists(xmlDocPath))
-                {
-                    xmlDocPath = Path.Combine(Directory.GetCurrentDirectory(), Path.GetFileName(xmlDocLocation));
-                }
+            var projectName = "NewProject";
+            var projectInfo = ProjectInfo.Create(ProjectId.CreateNewId(), VersionStamp.Create(), projectName, projectName, LanguageNames.CSharp,
+                metadataReferences: metadataReferences);
 
-                xmlDoc.Load(xmlDocPath);
-                xmlDocs.Add(xmlDoc);
-            }
-            return xmlDocs;
+            using var workspace = new AdhocWorkspace();
+            var project = workspace.AddProject(projectInfo);
+
+            return await project.GetCompilationAsync().ConfigureAwait(false);
+        }
+
+        private static PortableExecutableReference MetadataReferenceFromAssembly(Assembly assembly)
+        {
+            var assemblyPath = assembly.Location;
+            var xmlDocPath = Path.ChangeExtension(assemblyPath, "xml");
+            var docProvider = File.Exists(xmlDocPath) ? XmlDocumentationProvider.CreateFromFile(xmlDocPath) : null;
+
+            return MetadataReference.CreateFromFile(assemblyPath, documentation: docProvider);
         }
 
         private static bool IsCommentLine(string typeNameToGenerate)
         {
             return typeNameToGenerate[0] == '#';
-        }
-
-        private static bool TryGetTypeToGenerate(string typeName, out Type typeToGenerate)
-        {
-            foreach (var componentLocation in ComponentLocations)
-            {
-                var fullTypeName = componentLocation.NamespaceName + "." + typeName;
-                typeToGenerate = componentLocation.Assembly.GetType(fullTypeName);
-                if (typeToGenerate != null)
-                {
-                    return true;
-                }
-            }
-
-            typeToGenerate = null;
-            return false;
         }
     }
 }

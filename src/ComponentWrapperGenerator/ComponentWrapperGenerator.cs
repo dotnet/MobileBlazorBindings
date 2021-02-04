@@ -1,17 +1,16 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using ComponentWrapperGenerator.Extensions;
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Windows.Input;
 using System.Xml;
-using XF = Xamarin.Forms;
 
 namespace ComponentWrapperGenerator
 {
@@ -20,15 +19,12 @@ namespace ComponentWrapperGenerator
 #pragma warning restore CA1724 // Type name conflicts with namespace name
     {
         private GeneratorSettings Settings { get; }
-        private IList<XmlDocument> XmlDocs { get; }
-
-        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs)
+        public ComponentWrapperGenerator(GeneratorSettings settings)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            XmlDocs = xmlDocs ?? throw new ArgumentNullException(nameof(xmlDocs));
         }
 
-        public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
+        public void GenerateComponentWrapper(INamedTypeSymbol typeToGenerate, string outputFolder)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
@@ -38,7 +34,7 @@ namespace ComponentWrapperGenerator
             GenerateHandlerFile(typeToGenerate, propertiesToGenerate, outputFolder);
         }
 
-        private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
+        private void GenerateComponentFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate, string outputFolder)
         {
             var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
@@ -47,7 +43,7 @@ namespace ComponentWrapperGenerator
                 Directory.CreateDirectory(directoryName);
             }
 
-            Console.WriteLine($"Generating component for type '{typeToGenerate.FullName}' into file '{fileName}'.");
+            Console.WriteLine($"Generating component for type '{typeToGenerate.MetadataName}' into file '{fileName}'.");
 
             var componentName = typeToGenerate.Name;
             var componentHandlerName = $"{componentName}Handler";
@@ -104,10 +100,8 @@ namespace ComponentWrapperGenerator
             {
                 classModifiers += "abstract ";
             }
-            var componentHasPublicParameterlessConstructor =
-                typeToGenerate
-                    .GetConstructors()
-                    .Any(ctor => ctor.IsPublic && !ctor.GetParameters().Any());
+            var componentHasPublicParameterlessConstructor = typeToGenerate.Constructors
+                    .Any(ctor => ctor.DeclaredAccessibility == Accessibility.Public && !ctor.Parameters.Any());
 
             var staticConstructor = string.Empty;
             if (!isComponentAbstract && componentHasPublicParameterlessConstructor)
@@ -147,15 +141,17 @@ namespace {Settings.RootNamespace}
             File.WriteAllText(fileName, outputBuilder.ToString());
         }
 
-        private static string GetNamespacePrefix(Type type, List<UsingStatement> usings)
+        private static string GetNamespacePrefix(ITypeSymbol type, List<UsingStatement> usings)
         {
             // Check if there's a 'using' already. If so, check if it has an alias. If not, add a new 'using'.
             var namespaceAlias = string.Empty;
 
-            var existingUsing = usings.FirstOrDefault(u => u.Namespace == type.Namespace);
+            var namespaceName = type.ContainingNamespace.GetFullName();
+
+            var existingUsing = usings.FirstOrDefault(u => u.Namespace == namespaceName);
             if (existingUsing == null)
             {
-                usings.Add(new UsingStatement { Namespace = type.Namespace, IsUsed = true, });
+                usings.Add(new UsingStatement { Namespace = type.ContainingNamespace.GetFullName(), IsUsed = true, });
                 return string.Empty;
             }
             else
@@ -172,35 +168,36 @@ namespace {Settings.RootNamespace}
             }
         }
 
-        private static readonly List<Type> DisallowedComponentPropertyTypes = new List<Type>
+        private static readonly List<string> DisallowedComponentPropertyTypes = new List<string>
         {
-            typeof(XF.Brush),
-            typeof(XF.Button.ButtonContentLayout), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.ColumnDefinitionCollection),
-            typeof(XF.ControlTemplate),
-            typeof(XF.DataTemplate),
-            typeof(XF.Element),
-            typeof(XF.Font), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.FormattedString),
-            typeof(XF.Shapes.Geometry),
-            typeof(ICommand),
-            typeof(object),
-            typeof(XF.Page),
-            typeof(XF.ResourceDictionary),
-            typeof(XF.RowDefinitionCollection),
-            typeof(XF.ShellContent),
-            typeof(XF.ShellItem),
-            typeof(XF.ShellSection),
-            typeof(XF.Style), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.IVisual),
-            typeof(XF.View),
+            "Xamarin.Forms.Brush",
+            "Xamarin.Forms.Button.ButtonContentLayout", // TODO: This is temporary; should be possible to add support later
+            "Xamarin.Forms.ColumnDefinitionCollection",
+            "Xamarin.Forms.ControlTemplate",
+            "Xamarin.Forms.DataTemplate",
+            "Xamarin.Forms.Element",
+            "Xamarin.Forms.Font", // TODO: This is temporary; should be possible to add support later
+            "Xamarin.Forms.FormattedString",
+            "Xamarin.Forms.Shapes.Geometry",
+            "System.Windows.Input.ICommand",
+            "System.Object",
+            "Xamarin.Forms.Page",
+            "Xamarin.Forms.ResourceDictionary",
+            "Xamarin.Forms.RowDefinitionCollection",
+            "Xamarin.Forms.ShellContent",
+            "Xamarin.Forms.ShellItem",
+            "Xamarin.Forms.ShellSection",
+            "Xamarin.Forms.Style", // TODO: This is temporary; should be possible to add support later
+            "Xamarin.Forms.IVisual",
+            "Xamarin.Forms.View",
         };
 
-        private string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
+        private static string GetPropertyDeclaration(IPropertySymbol prop, IList<UsingStatement> usings)
         {
-            var propertyType = prop.PropertyType;
+            var propertyType = prop.Type;
             string propertyTypeName;
-            if (propertyType == typeof(IList<string>))
+
+            if (propertyType.GetFullName() == "System.Collections.Generic.IList<System.String>")
             {
                 // Lists of strings are special-cased because they are handled specially by the handlers as a comma-separated list
                 propertyTypeName = "string";
@@ -220,11 +217,10 @@ namespace {Settings.RootNamespace}
             return $@"{xmlDocContents}{indent}[Parameter] public {propertyTypeName} {GetIdentifierName(prop.Name)} {{ get; set; }}
 ";
         }
-
         private static string GetXmlDocText(XmlElement xmlDocElement)
         {
             var allText = xmlDocElement?.InnerXml;
-            allText = allText.Replace("To be added.", string.Empty, StringComparison.Ordinal);
+            allText = allText?.Replace("To be added.", string.Empty, StringComparison.Ordinal);
             if (string.IsNullOrWhiteSpace(allText))
             {
                 return null;
@@ -232,50 +228,52 @@ namespace {Settings.RootNamespace}
             return allText;
         }
 
-        private string GetXmlDocContents(PropertyInfo prop, string indent)
+        private static string GetXmlDocContents(IPropertySymbol prop, string indent)
         {
-            foreach (var xmlDoc in XmlDocs)
+            var xmlDocString = prop.GetDocumentationCommentXml();
+
+            if (string.IsNullOrEmpty(xmlDocString))
             {
-
-                var xmlDocContents = string.Empty;
-                // Format of XML docs we're looking for in a given property:
-                // <member name="P:Xamarin.Forms.ActivityIndicator.Color">
-                //     <summary>Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.</summary>
-                //     <value>A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.</value>
-                //     <remarks />
-                // </member>
-                var xmlDocNodeName = $"P:{prop.DeclaringType.Namespace}.{prop.DeclaringType.Name}.{prop.Name}";
-                var xmlDocNode = xmlDoc.SelectSingleNode($"//member[@name='{xmlDocNodeName}']");
-                if (xmlDocNode != null)
-                {
-                    var summaryText = GetXmlDocText(xmlDocNode["summary"]);
-                    var valueText = GetXmlDocText(xmlDocNode["value"]);
-
-                    if (summaryText != null || valueText != null)
-                    {
-                        var xmlDocContentBuilder = new StringBuilder();
-                        if (summaryText != null)
-                        {
-                            xmlDocContentBuilder.AppendLine($"{indent}/// <summary>");
-                            xmlDocContentBuilder.AppendLine($"{indent}/// {summaryText}");
-                            xmlDocContentBuilder.AppendLine($"{indent}/// </summary>");
-                        }
-                        if (valueText != null)
-                        {
-                            xmlDocContentBuilder.AppendLine($"{indent}/// <value>");
-                            xmlDocContentBuilder.AppendLine($"{indent}/// {valueText}");
-                            xmlDocContentBuilder.AppendLine($"{indent}/// </value>");
-                        }
-                        xmlDocContents = xmlDocContentBuilder.ToString();
-                    }
-                    return xmlDocContents;
-                }
+                return null;
             }
 
-            return null;
+            var xmlDoc = new XmlDocument();
+            // Returned XML doc string has no root element, which does not allow to parse it.
+            xmlDoc.LoadXml($"<member>{xmlDocString}</member>");
+            var xmlDocNode = xmlDoc.FirstChild;
+
+            var xmlDocContents = string.Empty;
+            // Format of XML docs we're looking for in a given property:
+            // <member name="P:Xamarin.Forms.ActivityIndicator.Color">
+            //     <summary>Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.</summary>
+            //     <value>A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.</value>
+            //     <remarks />
+            // </member>
+
+            var summaryText = GetXmlDocText(xmlDocNode["summary"]);
+            var valueText = GetXmlDocText(xmlDocNode["value"]);
+
+            if (summaryText != null || valueText != null)
+            {
+                var xmlDocContentBuilder = new StringBuilder();
+                if (summaryText != null)
+                {
+                    xmlDocContentBuilder.AppendLine($"{indent}/// <summary>");
+                    xmlDocContentBuilder.AppendLine($"{indent}/// {summaryText}");
+                    xmlDocContentBuilder.AppendLine($"{indent}/// </summary>");
+                }
+                if (valueText != null)
+                {
+                    xmlDocContentBuilder.AppendLine($"{indent}/// <value>");
+                    xmlDocContentBuilder.AppendLine($"{indent}/// {valueText}");
+                    xmlDocContentBuilder.AppendLine($"{indent}/// </value>");
+                }
+                xmlDocContents = xmlDocContentBuilder.ToString();
+            }
+            return xmlDocContents;
         }
 
-        private static string GetTypeNameAndAddNamespace(Type type, IList<UsingStatement> usings)
+        private static string GetTypeNameAndAddNamespace(ITypeSymbol type, IList<UsingStatement> usings)
         {
             var typeName = GetCSharpType(type);
             if (typeName != null)
@@ -286,10 +284,12 @@ namespace {Settings.RootNamespace}
             // Check if there's a 'using' already. If so, check if it has an alias. If not, add a new 'using'.
             var namespaceAlias = string.Empty;
 
-            var existingUsing = usings.FirstOrDefault(u => u.Namespace == type.Namespace);
+            var containingNamespaceName = type.ContainingNamespace.GetFullName();
+
+            var existingUsing = usings.FirstOrDefault(u => u.Namespace == containingNamespaceName);
             if (existingUsing == null)
             {
-                usings.Add(new UsingStatement { Namespace = type.Namespace, IsUsed = true, });
+                usings.Add(new UsingStatement { Namespace = containingNamespaceName, IsUsed = true, });
             }
             else
             {
@@ -303,16 +303,19 @@ namespace {Settings.RootNamespace}
             return typeName;
         }
 
-        private static string FormatTypeName(Type type, IList<UsingStatement> usings)
+        private static string FormatTypeName(ITypeSymbol type, IList<UsingStatement> usings)
         {
-            if (!type.IsGenericType)
+            var namedType = type as INamedTypeSymbol;
+
+            if (namedType == null || !namedType.IsGenericType)
             {
                 return type.Name;
             }
+
             var typeNameBuilder = new StringBuilder();
-            typeNameBuilder.Append(type.Name.Substring(0, type.Name.IndexOf('`', StringComparison.Ordinal)));
+            typeNameBuilder.Append(type.Name);
             typeNameBuilder.Append('<');
-            var genericArgs = type.GetGenericArguments();
+            var genericArgs = namedType.TypeArguments;
             for (var i = 0; i < genericArgs.Length; i++)
             {
                 if (i > 0)
@@ -326,41 +329,42 @@ namespace {Settings.RootNamespace}
             return typeNameBuilder.ToString();
         }
 
-        private static readonly Dictionary<Type, Func<string, string>> TypeToAttributeHelperGetter = new Dictionary<Type, Func<string, string>>
+        private static readonly Dictionary<string, Func<string, string>> TypeToAttributeHelperGetter = new Dictionary<string, Func<string, string>>
         {
-            { typeof(XF.Color), propValue => $"AttributeHelper.ColorToString({propValue})" },
-            { typeof(XF.CornerRadius), propValue => $"AttributeHelper.CornerRadiusToString({propValue})" },
-            { typeof(XF.GridLength), propValue => $"AttributeHelper.GridLengthToString({propValue})" },
-            { typeof(XF.ImageSource), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
-            { typeof(XF.Keyboard), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
-            { typeof(XF.LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
-            { typeof(XF.Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
-            { typeof(DateTime), propValue => $"AttributeHelper.DateTimeToString({propValue})" },
-            { typeof(TimeSpan), propValue => $"AttributeHelper.TimeSpanToString({propValue})" },
-            { typeof(bool), propValue => $"{propValue}" },
-            { typeof(double), propValue => $"AttributeHelper.DoubleToString({propValue})" },
-            { typeof(float), propValue => $"AttributeHelper.SingleToString({propValue})" },
-            { typeof(int), propValue => $"{propValue}" },
-            { typeof(string), propValue => $"{propValue}" },
-            { typeof(IList<string>), propValue => $"{propValue}" },
+            { "Xamarin.Forms.Color", propValue => $"AttributeHelper.ColorToString({propValue})" },
+            { "Xamarin.Forms.CornerRadius", propValue => $"AttributeHelper.CornerRadiusToString({propValue})" },
+            { "Xamarin.Forms.GridLength", propValue => $"AttributeHelper.GridLengthToString({propValue})" },
+            { "Xamarin.Forms.ImageSource", propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
+            { "Xamarin.Forms.Keyboard", propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
+            { "Xamarin.Forms.LayoutOptions", propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
+            { "Xamarin.Forms.Thickness", propValue => $"AttributeHelper.ThicknessToString({propValue})" },
+            { "System.DateTime", propValue => $"AttributeHelper.DateTimeToString({propValue})" },
+            { "System.TimeSpan", propValue => $"AttributeHelper.TimeSpanToString({propValue})" },
+            { "System.Boolean", propValue => $"{propValue}" },
+            { "System.Double", propValue => $"AttributeHelper.DoubleToString({propValue})" },
+            { "System.Single", propValue => $"AttributeHelper.SingleToString({propValue})" },
+            { "System.Int32", propValue => $"{propValue}" },
+            { "System.String", propValue => $"{propValue}" },
+            { "System.Collections.Generic.IList<System.String>", propValue => $"{propValue}" },
         };
 
-        private static string GetPropertyRenderAttribute(PropertyInfo prop)
+        private static string GetPropertyRenderAttribute(IPropertySymbol prop)
         {
-            var propValue = prop.PropertyType.IsValueType ? $"{GetIdentifierName(prop.Name)}.Value" : GetIdentifierName(prop.Name);
+            var propValue = prop.Type.IsValueType ? $"{GetIdentifierName(prop.Name)}.Value" : GetIdentifierName(prop.Name);
             var formattedValue = propValue;
-            if (TypeToAttributeHelperGetter.TryGetValue(prop.PropertyType, out var formattingFunc))
+
+            if (TypeToAttributeHelperGetter.TryGetValue(prop.Type.GetFullName(), out var formattingFunc))
             {
                 formattedValue = formattingFunc(propValue);
             }
-            else if (prop.PropertyType.IsEnum)
+            else if (prop.Type.TypeKind == TypeKind.Enum)
             {
                 formattedValue = $"(int){formattedValue}";
             }
             else
             {
                 // TODO: Error?
-                Console.WriteLine($"WARNING: Couldn't generate attribute render for {prop.DeclaringType.Name}.{prop.Name}");
+                Console.WriteLine($"WARNING: Couldn't generate attribute render for {prop.ContainingType.Name}.{prop.Name}");
             }
 
             return $@"            if ({GetIdentifierName(prop.Name)} != null)
@@ -370,28 +374,28 @@ namespace {Settings.RootNamespace}
 ";
         }
 
-        private static readonly Dictionary<Type, string> TypeToCSharpName = new Dictionary<Type, string>
+        private static readonly Dictionary<SpecialType, string> TypeToCSharpName = new Dictionary<SpecialType, string>
         {
-            { typeof(bool), "bool" },
-            { typeof(byte), "byte" },
-            { typeof(sbyte), "sbyte" },
-            { typeof(char), "char" },
-            { typeof(decimal), "decimal" },
-            { typeof(double), "double" },
-            { typeof(float), "float" },
-            { typeof(int), "int" },
-            { typeof(uint), "uint" },
-            { typeof(long), "long" },
-            { typeof(ulong), "ulong" },
-            { typeof(object), "object" },
-            { typeof(short), "short" },
-            { typeof(ushort), "ushort" },
-            { typeof(string), "string" },
+            { SpecialType.System_Boolean, "bool" },
+            { SpecialType.System_Byte, "byte" },
+            { SpecialType.System_SByte, "sbyte" },
+            { SpecialType.System_Char, "char" },
+            { SpecialType.System_Decimal, "decimal" },
+            { SpecialType.System_Double, "double" },
+            { SpecialType.System_Single, "float" },
+            { SpecialType.System_Int32, "int" },
+            { SpecialType.System_UInt32, "uint" },
+            { SpecialType.System_Int64, "long" },
+            { SpecialType.System_UInt64, "ulong" },
+            { SpecialType.System_Object, "object" },
+            { SpecialType.System_Int16, "short" },
+            { SpecialType.System_UInt16, "ushort" },
+            { SpecialType.System_String, "string" },
         };
 
-        private static string GetCSharpType(Type propertyType)
+        private static string GetCSharpType(ITypeSymbol propertyType)
         {
-            return TypeToCSharpName.TryGetValue(propertyType, out var typeName) ? typeName : null;
+            return TypeToCSharpName.TryGetValue(propertyType.SpecialType, out var typeName) ? typeName : null;
         }
 
         /// <summary>
@@ -401,7 +405,7 @@ namespace {Settings.RootNamespace}
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static Type GetBaseTypeOfInterest(Type type)
+        private static INamedTypeSymbol GetBaseTypeOfInterest(INamedTypeSymbol type)
         {
             do
             {
@@ -416,7 +420,7 @@ namespace {Settings.RootNamespace}
             return null;
         }
 
-        private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
+        private void GenerateHandlerFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate, string outputFolder)
         {
             var fileName = Path.Combine(outputFolder, "Handlers", $"{typeToGenerate.Name}Handler.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
@@ -425,7 +429,7 @@ namespace {Settings.RootNamespace}
                 Directory.CreateDirectory(directoryName);
             }
 
-            Console.WriteLine($"Generating component handler for type '{typeToGenerate.FullName}' into file '{fileName}'.");
+            Console.WriteLine($"Generating component handler for type '{typeToGenerate.Name}' into file '{fileName}'.");
 
             var componentName = typeToGenerate.Name;
             var componentVarName = char.ToLowerInvariant(componentName[0]) + componentName.Substring(1);
@@ -516,7 +520,7 @@ namespace {Settings.RootNamespace}.Handlers
             File.WriteAllText(fileName, outputBuilder.ToString());
         }
 
-        private static string GetPropertySetAttribute(PropertyInfo prop, List<UsingStatement> usings)
+        private static string GetPropertySetAttribute(IPropertySymbol prop, List<UsingStatement> usings)
         {
             // Handle null values by resetting to default value
             var resetValueParameterExpression = BindablePropertyExistsForProp(prop)
@@ -524,7 +528,7 @@ namespace {Settings.RootNamespace}.Handlers
                 : string.Empty;
 
             var formattedValue = string.Empty;
-            if (TypeToAttributeHelperSetter.TryGetValue(prop.PropertyType, out var propValueFormat))
+            if (TypeToAttributeHelperSetter.TryGetValue(prop.Type.GetFullName(), out var propValueFormat))
             {
                 var resetValueParameterExpressionAsExtraParameter = string.Empty;
                 if (!string.IsNullOrEmpty(resetValueParameterExpression))
@@ -533,17 +537,17 @@ namespace {Settings.RootNamespace}.Handlers
                 }
                 formattedValue = string.Format(CultureInfo.InvariantCulture, propValueFormat, resetValueParameterExpressionAsExtraParameter);
             }
-            else if (prop.PropertyType.IsEnum)
+            else if (prop.Type.TypeKind == TypeKind.Enum)
             {
                 var resetValueParameterExpressionAsExtraParameter = string.Empty;
                 if (!string.IsNullOrEmpty(resetValueParameterExpression))
                 {
                     resetValueParameterExpressionAsExtraParameter = ", (int)" + resetValueParameterExpression;
                 }
-                var castTypeName = GetTypeNameAndAddNamespace(prop.PropertyType, usings);
+                var castTypeName = GetTypeNameAndAddNamespace(prop.Type, usings);
                 formattedValue = $"({castTypeName})AttributeHelper.GetInt(attributeValue{resetValueParameterExpressionAsExtraParameter})";
             }
-            else if (prop.PropertyType == typeof(string))
+            else if (prop.Type.SpecialType == SpecialType.System_String)
             {
                 formattedValue =
                     string.IsNullOrEmpty(resetValueParameterExpression)
@@ -553,16 +557,16 @@ namespace {Settings.RootNamespace}.Handlers
             else
             {
                 // TODO: Error?
-                Console.WriteLine($"WARNING: Couldn't generate property set for {prop.DeclaringType.Name}.{prop.Name}");
+                Console.WriteLine($"WARNING: Couldn't generate property set for {prop.ContainingType.Name}.{prop.Name}");
             }
 
-            return $@"                case nameof({GetNamespacePrefix(prop.DeclaringType, usings)}{prop.DeclaringType.Name}.{GetIdentifierName(prop.Name)}):
-                    {prop.DeclaringType.Name}Control.{GetIdentifierName(prop.Name)} = {formattedValue};
+            return $@"                case nameof({GetNamespacePrefix(prop.ContainingType, usings)}{prop.ContainingType.Name}.{GetIdentifierName(prop.Name)}):
+                    {prop.ContainingType.Name}Control.{GetIdentifierName(prop.Name)} = {formattedValue};
                     break;
 ";
         }
 
-        private static string GetDefaultPropertyValues(Type type, IEnumerable<PropertyInfo> properties, IList<UsingStatement> usings)
+        private static string GetDefaultPropertyValues(ITypeSymbol type, IEnumerable<IPropertySymbol> properties, IList<UsingStatement> usings)
         {
             var bindableProps = properties.Where(BindablePropertyExistsForProp).ToList();
 
@@ -576,7 +580,7 @@ namespace {Settings.RootNamespace}.Handlers
 
             foreach (var prop in bindableProps)
             {
-                var propTypeName = GetTypeNameAndAddNamespace(prop.PropertyType, usings);
+                var propTypeName = GetTypeNameAndAddNamespace(prop.Type, usings);
                 var propertyDefaultValue = $"{typeName}.{prop.Name}Property.DefaultValue";
 
                 stringBuilder.AppendLine($"        private static readonly {propTypeName} {prop.Name}DefaultValue = " +
@@ -586,54 +590,55 @@ namespace {Settings.RootNamespace}.Handlers
             return stringBuilder.ToString();
         }
 
-        private static bool BindablePropertyExistsForProp(PropertyInfo prop)
+        private static bool BindablePropertyExistsForProp(IPropertySymbol prop)
         {
-            var bindablePropertyField = prop.DeclaringType.GetField(prop.Name + "Property");
-            return bindablePropertyField != null;
+            return prop.ContainingType.GetMembers(prop.Name + "Property").Length > 0;
         }
 
-        private static readonly Dictionary<Type, string> TypeToAttributeHelperSetter = new Dictionary<Type, string>
+        private static readonly Dictionary<string, string> TypeToAttributeHelperSetter = new Dictionary<string, string>
         {
-            { typeof(XF.Color), "AttributeHelper.StringToColor((string)attributeValue{0})" },
-            { typeof(XF.CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
-            { typeof(XF.GridLength), "AttributeHelper.StringToGridLength(attributeValue{0})" },
-            { typeof(XF.ImageSource), "AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue{0})" },
-            { typeof(XF.Keyboard), "AttributeHelper.DelegateToObject<XF.Keyboard>(attributeValue{0})" },
-            { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
-            { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
-            { typeof(DateTime), "AttributeHelper.StringToDateTime(attributeValue{0})" },
-            { typeof(TimeSpan), "AttributeHelper.StringToTimeSpan(attributeValue{0})" },
-            { typeof(bool), "AttributeHelper.GetBool(attributeValue{0})" },
-            { typeof(double), "AttributeHelper.StringToDouble((string)attributeValue{0})" },
-            { typeof(float), "AttributeHelper.StringToSingle((string)attributeValue{0})" },
-            { typeof(int), "AttributeHelper.GetInt(attributeValue{0})" },
-            { typeof(IList<string>), "AttributeHelper.GetStringList(attributeValue)" },
+            { "Xamarin.Forms.Color", "AttributeHelper.StringToColor((string)attributeValue{0})" },
+            { "Xamarin.Forms.CornerRadius", "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
+            { "Xamarin.Forms.GridLength", "AttributeHelper.StringToGridLength(attributeValue{0})" },
+            { "Xamarin.Forms.ImageSource", "AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue{0})" },
+            { "Xamarin.Forms.Keyboard", "AttributeHelper.DelegateToObject<XF.Keyboard>(attributeValue{0})" },
+            { "Xamarin.Forms.LayoutOptions", "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
+            { "Xamarin.Forms.Thickness", "AttributeHelper.StringToThickness(attributeValue{0})" },
+            { "System.DateTime", "AttributeHelper.StringToDateTime(attributeValue{0})" },
+            { "System.TimeSpan", "AttributeHelper.StringToTimeSpan(attributeValue{0})" },
+            { "System.Boolean", "AttributeHelper.GetBool(attributeValue{0})" },
+            { "System.Double", "AttributeHelper.StringToDouble((string)attributeValue{0})" },
+            { "System.Single", "AttributeHelper.StringToSingle((string)attributeValue{0})" },
+            { "System.Int32", "AttributeHelper.GetInt(attributeValue{0})" },
+            { "System.Collections.Generic.IList<System.String>", "AttributeHelper.GetStringList(attributeValue)" },
         };
 
-        private static IEnumerable<PropertyInfo> GetPropertiesToGenerate(Type componentType)
+        private static IEnumerable<IPropertySymbol> GetPropertiesToGenerate(ITypeSymbol componentType)
         {
-            var allPublicProperties = componentType.GetProperties();
+            var allPublicProperties = componentType.GetMembers()
+                .OfType<IPropertySymbol>()
+                .Where(p => p.DeclaredAccessibility == Accessibility.Public);
 
-            return
-                allPublicProperties
-                    .Where(HasPublicGetAndSet)
-                    .Where(prop => prop.DeclaringType == componentType)
-                    .Where(prop => !DisallowedComponentPropertyTypes.Contains(prop.PropertyType))
-                    .Where(IsPropertyBrowsable)
-                    .OrderBy(prop => prop.Name, StringComparer.OrdinalIgnoreCase)
-                    .ToList();
+            return allPublicProperties
+                .Where(HasPublicGetAndSet)
+                .Where(IsPropertyBrowsable)
+                .Where(prop => !DisallowedComponentPropertyTypes.Contains(prop.Type.GetFullName()))
+                .OrderBy(prop => prop.Name, StringComparer.OrdinalIgnoreCase)
+                .ToList();
         }
 
-        private static bool HasPublicGetAndSet(PropertyInfo propInfo)
+        private static bool HasPublicGetAndSet(IPropertySymbol propInfo)
         {
-            return propInfo.GetGetMethod() != null && propInfo.GetSetMethod() != null;
+            return propInfo.GetMethod?.DeclaredAccessibility == Accessibility.Public
+                && propInfo.SetMethod?.DeclaredAccessibility == Accessibility.Public;
         }
 
-        private static bool IsPropertyBrowsable(PropertyInfo propInfo)
+        private static bool IsPropertyBrowsable(IPropertySymbol propInfo)
         {
             // [EditorBrowsable(EditorBrowsableState.Never)]
-            var attr = (EditorBrowsableAttribute)Attribute.GetCustomAttribute(propInfo, typeof(EditorBrowsableAttribute));
-            return (attr == null) || (attr.State != EditorBrowsableState.Never);
+            return !propInfo.GetAttributes().Any(a => a.AttributeClass?.Name == nameof(EditorBrowsableAttribute)
+                && a.ConstructorArguments.Length == 1
+                && a.ConstructorArguments[0].Value?.Equals((int)EditorBrowsableState.Never) == true);
         }
 
         private static string GetIdentifierName(string possibleIdentifier)

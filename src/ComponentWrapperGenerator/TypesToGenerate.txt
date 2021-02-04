@@ -1,56 +1,52 @@
 # Xamarin.Forms components
-ActivityIndicator
-BaseMenuItem
-BaseShellItem
-BoxView
-Button
-CheckBox
-ContentPage
-ContentView
-DatePicker
-#Element // Element is special so we don't generate it
-Entry
-FlyoutItem
-#FormattedString // Not used anymore because Label directly contains Span elements
-Frame
-GestureElement
-Grid
+Xamarin.Forms.ActivityIndicator
+Xamarin.Forms.BaseMenuItem
+Xamarin.Forms.BaseShellItem
+Xamarin.Forms.BoxView
+Xamarin.Forms.Button
+Xamarin.Forms.CheckBox
+Xamarin.Forms.ContentPage
+Xamarin.Forms.ContentView
+Xamarin.Forms.DatePicker
+#Xamarin.Forms.Element // Element is special so we don't generate it
+Xamarin.Forms.Entry
+Xamarin.Forms.FlyoutItem
+#Xamarin.Forms.FormattedString // Not used anymore because Label directly contains Span elements
+Xamarin.Forms.Frame
+Xamarin.Forms.GestureElement
+Xamarin.Forms.Grid
 #GridCell // Not based on real XF type
-Image
-ImageButton
-InputView
-Label
-Layout
-#FlyoutDetailPage // Not based on real XF type
-#FlyoutFlyoutPage // Not based on real XF type
-FlyoutPage
-MenuItem
+Xamarin.Forms.Image
+Xamarin.Forms.ImageButton
+Xamarin.Forms.InputView
+Xamarin.Forms.Label
+Xamarin.Forms.Layout
+Xamarin.Forms.FlyoutPage
+Xamarin.Forms.MenuItem
 #ModalContainer // Not based on real XF type
-NavigableElement
-Page
-#Picker // Manually written to use custom logic for generics and binding
-ProgressBar
-ScrollView
-Shell
-ShellContent
+Xamarin.Forms.NavigableElement
+Xamarin.Forms.Page
+#Xamarin.Forms.Picker // Manually written to use custom logic for generics and binding
+Xamarin.Forms.ProgressBar
+Xamarin.Forms.ScrollView
+Xamarin.Forms.Shell
+Xamarin.Forms.ShellContent
 #ShellFlyoutHeader // Not based on real XF type
-ShellGroupItem
-ShellItem
-ShellSection
-Slider
-Span
-StackLayout
-Stepper
+Xamarin.Forms.ShellGroupItem
+Xamarin.Forms.ShellItem
+Xamarin.Forms.ShellSection
+Xamarin.Forms.Slider
+Xamarin.Forms.Span
+Xamarin.Forms.StackLayout
+Xamarin.Forms.Stepper
 #StyleSheet // Not based on real XF type
-Switch
-Tab
-TabBar
-TabbedPage
-TemplatedPage
-TemplatedView
-TimePicker
-View
-VisualElement
-
-# Xamarin.Forms.DualScreen components
-TwoPaneView
+Xamarin.Forms.Switch
+Xamarin.Forms.Tab
+Xamarin.Forms.TabBar
+Xamarin.Forms.TabbedPage
+Xamarin.Forms.TemplatedPage
+Xamarin.Forms.TemplatedView
+Xamarin.Forms.TimePicker
+Xamarin.Forms.View
+Xamarin.Forms.VisualElement
+Xamarin.Forms.DualScreen.TwoPaneView
