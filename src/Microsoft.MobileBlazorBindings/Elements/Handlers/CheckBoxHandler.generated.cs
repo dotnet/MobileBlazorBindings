@@ -9,6 +9,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class CheckBoxHandler : ViewHandler
     {
+        private static readonly XF.Color ColorDefaultValue = XF.CheckBox.ColorProperty.DefaultValue is XF.Color value ? value : default;
+        private static readonly bool IsCheckedDefaultValue = XF.CheckBox.IsCheckedProperty.DefaultValue is bool value ? value : default;
+
         public CheckBoxHandler(NativeComponentRenderer renderer, XF.CheckBox checkBoxControl) : base(renderer, checkBoxControl)
         {
             CheckBoxControl = checkBoxControl ?? throw new ArgumentNullException(nameof(checkBoxControl));
@@ -25,10 +28,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.CheckBox.Color):
-                    CheckBoxControl.Color = AttributeHelper.StringToColor((string)attributeValue);
+                    CheckBoxControl.Color = AttributeHelper.StringToColor((string)attributeValue, ColorDefaultValue);
                     break;
                 case nameof(XF.CheckBox.IsChecked):
-                    CheckBoxControl.IsChecked = AttributeHelper.GetBool(attributeValue);
+                    CheckBoxControl.IsChecked = AttributeHelper.GetBool(attributeValue, IsCheckedDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

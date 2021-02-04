@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellItemHandler : ShellGroupItemHandler
     {
+
         public ShellItemHandler(NativeComponentRenderer renderer, XF.ShellItem shellItemControl) : base(renderer, shellItemControl)
         {
             ShellItemControl = shellItemControl ?? throw new ArgumentNullException(nameof(shellItemControl));

@@ -449,6 +449,8 @@ namespace {Settings.RootNamespace}
             var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
             // props
+            var propsDefaultValues = GetDefaultPropertyValues(typeToGenerate, propertiesToGenerate, usings);
+
             var propertySettersBuilder = new StringBuilder();
             foreach (var prop in propertiesToGenerate)
             {
@@ -496,6 +498,7 @@ namespace {Settings.RootNamespace}.Handlers
 {{
     public {classModifiers}partial class {componentHandlerName} : {componentHandlerBaseName}
     {{
+{propsDefaultValues}
         public {componentName}Handler(NativeComponentRenderer renderer, {componentNamespacePrefix}{componentName} {componentVarName}Control) : base(renderer, {componentVarName}Control)
         {{
             {componentName}Control = {componentVarName}Control ?? throw new ArgumentNullException(nameof({componentVarName}Control));
@@ -516,24 +519,9 @@ namespace {Settings.RootNamespace}.Handlers
         private static string GetPropertySetAttribute(PropertyInfo prop, List<UsingStatement> usings)
         {
             // Handle null values by resetting to default value
-            var resetValueParameterExpression = string.Empty;
-            var bindablePropertyForProp = GetBindablePropertyForProp(prop);
-            if (bindablePropertyForProp != null)
-            {
-                var declaredDefaultValue = bindablePropertyForProp.DefaultValue;
-                var defaultValueForType = GetDefaultValueForType(prop.PropertyType);
-                var needsCustomResetValue = declaredDefaultValue == null ? false : !declaredDefaultValue.Equals(defaultValueForType);
-
-                if (needsCustomResetValue)
-                {
-                    var valueExpression = GetValueExpression(declaredDefaultValue, usings);
-                    if (string.IsNullOrEmpty(valueExpression))
-                    {
-                        Console.WriteLine($"WARNING: Couldn't get value expression for {prop.DeclaringType.Name}.{prop.Name} of type {prop.PropertyType.FullName}.");
-                    }
-                    resetValueParameterExpression = valueExpression;
-                }
-            }
+            var resetValueParameterExpression = BindablePropertyExistsForProp(prop)
+                ? $"{prop.Name}DefaultValue"
+                : string.Empty;
 
             var formattedValue = string.Empty;
             if (TypeToAttributeHelperSetter.TryGetValue(prop.PropertyType, out var propValueFormat))
@@ -574,78 +562,34 @@ namespace {Settings.RootNamespace}.Handlers
 ";
         }
 
-        private static string GetValueExpression(object declaredDefaultValue, List<UsingStatement> usings)
+        private static string GetDefaultPropertyValues(Type type, IEnumerable<PropertyInfo> properties, IList<UsingStatement> usings)
         {
-            if (declaredDefaultValue is null)
+            var bindableProps = properties.Where(BindablePropertyExistsForProp).ToList();
+
+            if (bindableProps.Count == 0)
             {
-                throw new ArgumentNullException(nameof(declaredDefaultValue));
+                return string.Empty;
             }
 
-            return declaredDefaultValue switch
+            var stringBuilder = new StringBuilder();
+            var typeName = GetTypeNameAndAddNamespace(type, usings);
+
+            foreach (var prop in bindableProps)
             {
-                bool boolValue => boolValue ? "true" : "false",
-                int intValue => GetIntValueExpression(intValue),
-                float floatValue => floatValue.ToString("F", CultureInfo.InvariantCulture) + "f", // "Fixed-Point": https://docs.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
-                double doubleValue => doubleValue.ToString("F", CultureInfo.InvariantCulture), // "Fixed-Point": https://docs.microsoft.com/dotnet/standard/base-types/standard-numeric-format-strings#the-fixed-point-f-format-specifier
-                Enum enumValue => GetTypeNameAndAddNamespace(enumValue.GetType(), usings) + "." + Enum.GetName(enumValue.GetType(), declaredDefaultValue),
-                XF.GridLength gridLengthValue => GetGridLengthValueExpression(gridLengthValue, usings),
-                XF.LayoutOptions layoutOptionsValue => GetLayoutOptionsValueExpression(layoutOptionsValue, usings),
-                string stringValue => $@"""{stringValue}""",
-                DateTime dateTimeValue => $"global::System.DateTime.Parse(\"{dateTimeValue.ToString("o", CultureInfo.InvariantCulture)}\", null, global::System.Globalization.DateTimeStyles.RoundtripKind)", // "Round-trip": https://docs.microsoft.com/dotnet/standard/base-types/how-to-round-trip-date-and-time-values
-                TimeSpan timeSpanValue => timeSpanValue.Ticks.ToString(CultureInfo.InvariantCulture),
-                // TODO: More types here
-                _ => null,
-            };
-        }
+                var propTypeName = GetTypeNameAndAddNamespace(prop.PropertyType, usings);
+                var propertyDefaultValue = $"{typeName}.{prop.Name}Property.DefaultValue";
 
-        private static string GetGridLengthValueExpression(XF.GridLength gridLengthValue, List<UsingStatement> usings)
-        {
-            var namespacePrefix = GetNamespacePrefix(typeof(XF.GridUnitType), usings);
-
-            return gridLengthValue.GridUnitType switch
-            {
-                XF.GridUnitType.Absolute => string.Format(CultureInfo.InvariantCulture, "new {0}GridLength({1})", namespacePrefix, gridLengthValue.Value),
-                XF.GridUnitType.Star => $"{namespacePrefix}GridLength.Star",
-                XF.GridUnitType.Auto => $"{namespacePrefix}GridLength.Auto",
-                _ => null, // TODO: Error
-            };
-        }
-
-        private static string GetLayoutOptionsValueExpression(XF.LayoutOptions layoutOptionsValue, List<UsingStatement> usings)
-        {
-            var namespacePrefix = GetNamespacePrefix(typeof(XF.GridUnitType), usings);
-
-            var expandSuffix = layoutOptionsValue.Expands ? "AndExpand" : string.Empty;
-            return $"{namespacePrefix}LayoutOptions.{layoutOptionsValue.Alignment}{expandSuffix}";
-        }
-
-        private static string GetIntValueExpression(int intValue)
-        {
-            return intValue switch
-            {
-                int.MinValue => "int.MinValue",
-                int.MaxValue => "int.MaxValue",
-                _ => intValue.ToString(CultureInfo.InvariantCulture),
-            };
-        }
-
-        private static object GetDefaultValueForType(Type propertyType)
-        {
-            if (propertyType.IsValueType)
-            {
-                return Activator.CreateInstance(propertyType);
+                stringBuilder.AppendLine($"        private static readonly {propTypeName} {prop.Name}DefaultValue = " +
+                    $"{propertyDefaultValue} is {propTypeName} value ? value : default;");
             }
-            return null;
+
+            return stringBuilder.ToString();
         }
 
-        private static XF.BindableProperty GetBindablePropertyForProp(PropertyInfo prop)
+        private static bool BindablePropertyExistsForProp(PropertyInfo prop)
         {
             var bindablePropertyField = prop.DeclaringType.GetField(prop.Name + "Property");
-            if (bindablePropertyField == null)
-            {
-                return null;
-            }
-            return (XF.BindableProperty)bindablePropertyField.GetValue(null);
+            return bindablePropertyField != null;
         }
 
         private static readonly Dictionary<Type, string> TypeToAttributeHelperSetter = new Dictionary<Type, string>

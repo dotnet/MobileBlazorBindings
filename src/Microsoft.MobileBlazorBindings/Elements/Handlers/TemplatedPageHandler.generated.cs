@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TemplatedPageHandler : PageHandler
     {
+
         public TemplatedPageHandler(NativeComponentRenderer renderer, XF.TemplatedPage templatedPageControl) : base(renderer, templatedPageControl)
         {
             TemplatedPageControl = templatedPageControl ?? throw new ArgumentNullException(nameof(templatedPageControl));

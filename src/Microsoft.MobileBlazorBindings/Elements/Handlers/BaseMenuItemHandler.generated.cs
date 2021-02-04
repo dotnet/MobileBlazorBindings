@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class BaseMenuItemHandler : ElementHandler
     {
+
         public BaseMenuItemHandler(NativeComponentRenderer renderer, XF.BaseMenuItem baseMenuItemControl) : base(renderer, baseMenuItemControl)
         {
             BaseMenuItemControl = baseMenuItemControl ?? throw new ArgumentNullException(nameof(baseMenuItemControl));

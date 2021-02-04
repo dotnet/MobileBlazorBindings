@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TemplatedViewHandler : LayoutHandler
     {
+
         public TemplatedViewHandler(NativeComponentRenderer renderer, XF.TemplatedView templatedViewControl) : base(renderer, templatedViewControl)
         {
             TemplatedViewControl = templatedViewControl ?? throw new ArgumentNullException(nameof(templatedViewControl));
