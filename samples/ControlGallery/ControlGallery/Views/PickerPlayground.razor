@@ -3,51 +3,45 @@
 
 @page "/pickerplayground"
 
-<ContentView>
+<ContentPage>
     <StackLayout>
         <Label Text="Picker Playground">
         </Label>
-        <Label Text="Picker with models and all display properties"/>
-        <Picker
-            CharacterSpacing="3"
-            FontAttributes="@FontAttributes.Bold"
-            FontFamily="MarkerFelt-Thin"
-            FontSize="20"
-            HorizontalTextAlignment="@TextAlignment.Center"
-            TextColor="@Color.Red"
-            ItemsSource="Models"
-            Title="Select a model"
-            TitleColor="@Color.Blue"
-            VerticalTextAlignment="@TextAlignment.End"
-            ItemDisplayBinding="Name"
-            @bind-SelectedItem="SelectedModel"
-        >
+        <Label Text="Picker with models and all display properties" />
+        <Picker CharacterSpacing="3"
+                FontAttributes="@FontAttributes.Bold"
+                FontFamily="MarkerFelt-Thin"
+                FontSize="20"
+                HorizontalTextAlignment="@TextAlignment.Center"
+                TextColor="@Color.Red"
+                ItemsSource="Models"
+                Title="Select a model"
+                TitleColor="@Color.Blue"
+                VerticalTextAlignment="@TextAlignment.End"
+                ItemDisplayBinding="Name"
+                @bind-SelectedItem="SelectedModel">
         </Picker>
         <Label Text="@(SelectedModel?.Name ?? "Select a model")"></Label>
-        
-        <Label Text="Picker with string"/>
-        <Picker
-            @bind-SelectedItem="SelectedString"
-            Title="Select a string"
-            ItemsSource="Strings"/>
+
+        <Label Text="Picker with string" />
+        <Picker @bind-SelectedItem="SelectedString"
+                Title="Select a string"
+                ItemsSource="Strings" />
 
         <Label Text="@(SelectedString ?? "Select a string")"></Label>
 
-        <Label Text="Picker with models and default item selected"/>
-        <Picker
-            @bind-SelectedItem="SelectedModelDefault"
-            Title="Select a model"
-            ItemDisplayBinding="Name"
-            ItemsSource="ModelsWithDefault"/>
+        <Label Text="Picker with models and default item selected" />
+        <Picker @bind-SelectedItem="SelectedModelDefault"
+                Title="Select a model"
+                ItemDisplayBinding="Name"
+                ItemsSource="ModelsWithDefault" />
         <Label Text="@(SelectedModelDefault?.Name ?? "Select a model")"></Label>
 
-        <Label Text="Index Based Picker"/>
-        <Picker
-            ItemsSource="Models"
-            Title="Select a model and the index will bind"
-            ItemDisplayBinding="Name"
-            @bind-SelectedIndex="SelectedIndex"
-        >
+        <Label Text="Index Based Picker" />
+        <Picker ItemsSource="Models"
+                Title="Select a model and the index will bind"
+                ItemDisplayBinding="Name"
+                @bind-SelectedIndex="SelectedIndex">
         </Picker>
         <Label Text="@(Models.ElementAtOrDefault(SelectedIndex)?.Name ?? "Select a model")"></Label>
 
@@ -55,12 +49,13 @@
 
         <Button Text="Set pickers from code" OnClick="ButtonClicked"></Button>
     </StackLayout>
-</ContentView>
+</ContentPage>
 
-@code 
+@code
 {
-    
-    public Model SelectedModel { get; set; }    public int SelectedIndex { get; set; } = -1;
+    public Model SelectedModel { get; set; }
+
+    public int SelectedIndex { get; set; } = -1;
 
     public List<Model> Models { get; set; } = new List<Model>
     {
@@ -69,7 +64,12 @@
         new Model{Name = "Model 3"},
     };
 
-    public string SelectedString     {           get;            set;     } 
+    public string SelectedString
+    {
+        get;
+        set;
+    }
+
     public List<string> Strings { get; set; } = new List<string>
     {
         "String 1",
@@ -77,10 +77,10 @@
         "String 3",
     };
 
-    static Model defaultModel = new Model{Name = "Default Model"};
-    public Model SelectedModelDefault {get;set;} = defaultModel;
+    static Model defaultModel = new Model { Name = "Default Model" };
+    public Model SelectedModelDefault { get; set; } = defaultModel;
 
-    public List<Model> ModelsWithDefault {get;set;} = new List<Model>
+    public List<Model> ModelsWithDefault { get; set; } = new List<Model>
     {
         new Model{Name = "Model 1"},
         new Model{Name = "Model 2"},
