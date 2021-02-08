@@ -4,64 +4,72 @@
 @page "/pickerplayground"
 
 <ContentPage>
-    <StackLayout>
-        <Label Text="Picker Playground">
-        </Label>
-        <Label Text="Picker with models and all display properties" />
-        <Picker CharacterSpacing="3"
-                FontAttributes="@FontAttributes.Bold"
-                FontFamily="MarkerFelt-Thin"
-                FontSize="20"
-                HorizontalTextAlignment="@TextAlignment.Center"
-                TextColor="@Color.Red"
-                ItemsSource="Models"
-                Title="Select a model"
-                TitleColor="@Color.Blue"
-                VerticalTextAlignment="@TextAlignment.End"
-                ItemDisplayBinding="Name"
-                @bind-SelectedItem="SelectedModel">
-        </Picker>
-        <Label Text="@(SelectedModel?.Name ?? "Select a model")"></Label>
+    <ScrollView>
+        <StackLayout Padding="10">
+            <Label Text="Picker Playground" FontSize="30">
+            </Label>
 
-        <Label Text="Picker with string" />
-        <Picker @bind-SelectedItem="SelectedString"
-                Title="Select a string"
-                ItemsSource="Strings" />
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
 
-        <Label Text="@(SelectedString ?? "Select a string")"></Label>
+            <Label Padding="5" FontAttributes="FontAttributes.Bold" Text="Picker with models and all display properties" />
+            <Picker CharacterSpacing="3"
+                    FontAttributes="FontAttributes.Bold"
+                    FontFamily="MarkerFelt-Thin"
+                    FontSize="20"
+                    HorizontalTextAlignment="TextAlignment.Center"
+                    TextColor="Color.Red"
+                    ItemsSource="Models"
+                    Title="Select a model"
+                    TitleColor="Color.Blue"
+                    VerticalTextAlignment="TextAlignment.End"
+                    ItemDisplayBinding="Name"
+                    @bind-SelectedItem="SelectedModel">
+            </Picker>
+            <Label Padding="5" Text="@("Selected model: " + SelectedModel?.Name ?? "(none)")"></Label>
 
-        <Label Text="Picker with models and default item selected" />
-        <Picker @bind-SelectedItem="SelectedModelDefault"
-                Title="Select a model"
-                ItemDisplayBinding="Name"
-                ItemsSource="ModelsWithDefault" />
-        <Label Text="@(SelectedModelDefault?.Name ?? "Select a model")"></Label>
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
 
-        <Label Text="Index Based Picker" />
-        <Picker ItemsSource="Models"
-                Title="Select a model and the index will bind"
-                ItemDisplayBinding="Name"
-                @bind-SelectedIndex="SelectedIndex">
-        </Picker>
-        <Label Text="@(Models.ElementAtOrDefault(SelectedIndex)?.Name ?? "Select a model")"></Label>
+            <Label FontAttributes="FontAttributes.Bold" Text="Picker with string" />
+            <Picker @bind-SelectedItem="SelectedString"
+                    Title="Select a string"
+                    ItemsSource="Strings" />
+            <Label Text="@("Selected string: " + SelectedString ?? "(none)")"></Label>
 
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
 
+            <Label FontAttributes="FontAttributes.Bold" Text="Picker with models and default item selected" />
+            <Picker @bind-SelectedItem="SelectedModelDefault"
+                    Title="Select a model"
+                    ItemDisplayBinding="Name"
+                    ItemsSource="ModelsWithDefault" />
+            <Label Text="@("Selected model: " + SelectedModelDefault?.Name ?? "(none)")"></Label>
 
-        <Button Text="Set pickers from code" OnClick="ButtonClicked"></Button>
-    </StackLayout>
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+
+            <Label FontAttributes="FontAttributes.Bold" Text="Index Based Picker" />
+            <Picker ItemsSource="Models"
+                    Title="Select a model and the index will bind"
+                    ItemDisplayBinding="Name"
+                    @bind-SelectedIndex="SelectedIndex">
+            </Picker>
+            <Label Text="@("Selected model: " + Models.ElementAtOrDefault(SelectedIndex)?.Name ?? "(none)")"></Label>
+
+            <Button Padding="20" Text="Set pickers from code" OnClick="ButtonClicked"></Button>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>
 
 @code
 {
-    public Model SelectedModel { get; set; }
+    public PickerModel SelectedModel { get; set; }
 
     public int SelectedIndex { get; set; } = -1;
 
-    public List<Model> Models { get; set; } = new List<Model>
+    public List<PickerModel> Models { get; set; } = new List<PickerModel>
     {
-        new Model{Name = "Model 1"},
-        new Model{Name = "Model 2"},
-        new Model{Name = "Model 3"},
+        new PickerModel{Name = "Model 1"},
+        new PickerModel{Name = "Model 2"},
+        new PickerModel{Name = "Model 3"},
     };
 
     public string SelectedString
@@ -77,15 +85,15 @@
         "String 3",
     };
 
-    static Model defaultModel = new Model { Name = "Default Model" };
-    public Model SelectedModelDefault { get; set; } = defaultModel;
+    static PickerModel defaultModel = new PickerModel { Name = "Default Model" };
+    public PickerModel SelectedModelDefault { get; set; } = defaultModel;
 
-    public List<Model> ModelsWithDefault { get; set; } = new List<Model>
+    public List<PickerModel> ModelsWithDefault { get; set; } = new List<PickerModel>
     {
-        new Model{Name = "Model 1"},
-        new Model{Name = "Model 2"},
+        new PickerModel{Name = "Model 1"},
+        new PickerModel{Name = "Model 2"},
         defaultModel,
-        new Model{Name = "Model 3"},
+        new PickerModel{Name = "Model 3"},
     };
 
     public void ButtonClicked()
