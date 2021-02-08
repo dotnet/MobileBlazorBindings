@@ -6,7 +6,7 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class PickerHandler : ViewHandler
+    public class PickerHandler : ViewHandler
     {
         public PickerHandler(NativeComponentRenderer renderer, XF.Picker pickerControl) : base(renderer, pickerControl)
         {
