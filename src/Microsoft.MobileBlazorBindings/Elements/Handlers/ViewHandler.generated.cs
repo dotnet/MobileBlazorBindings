@@ -9,6 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ViewHandler : VisualElementHandler
     {
+        private static readonly XF.LayoutOptions HorizontalOptionsDefaultValue = XF.View.HorizontalOptionsProperty.DefaultValue is XF.LayoutOptions value ? value : default;
+        private static readonly XF.Thickness MarginDefaultValue = XF.View.MarginProperty.DefaultValue is XF.Thickness value ? value : default;
+        private static readonly XF.LayoutOptions VerticalOptionsDefaultValue = XF.View.VerticalOptionsProperty.DefaultValue is XF.LayoutOptions value ? value : default;
+
         public ViewHandler(NativeComponentRenderer renderer, XF.View viewControl) : base(renderer, viewControl)
         {
             ViewControl = viewControl ?? throw new ArgumentNullException(nameof(viewControl));
@@ -25,13 +29,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.View.HorizontalOptions):
-                    ViewControl.HorizontalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, XF.LayoutOptions.Fill);
+                    ViewControl.HorizontalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, HorizontalOptionsDefaultValue);
                     break;
                 case nameof(XF.View.Margin):
-                    ViewControl.Margin = AttributeHelper.StringToThickness(attributeValue);
+                    ViewControl.Margin = AttributeHelper.StringToThickness(attributeValue, MarginDefaultValue);
                     break;
                 case nameof(XF.View.VerticalOptions):
-                    ViewControl.VerticalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, XF.LayoutOptions.Fill);
+                    ViewControl.VerticalOptions = AttributeHelper.StringToLayoutOptions(attributeValue, VerticalOptionsDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

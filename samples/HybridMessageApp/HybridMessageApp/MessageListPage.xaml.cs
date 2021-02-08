@@ -38,10 +38,10 @@ namespace HybridMessageApp
             //  3. Rotate to landscape
             //  4. Click 'back'
             // This property assignment results in a call to UpdateTitleArea on NavigationRenderer
-            var master = ((MasterDetailPage)Parent.Parent).Master;
-            var originalValue = master.IconImageSource;
-            master.IconImageSource = "temp.png";
-            master.IconImageSource = originalValue;
+            var flyout = ((FlyoutPage)Parent.Parent).Flyout;
+            var originalValue = flyout.IconImageSource;
+            flyout.IconImageSource = "temp.png";
+            flyout.IconImageSource = originalValue;
         }
 
         protected override void OnDisappearing()

@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class FlyoutItemHandler : ShellItemHandler
     {
+
         public FlyoutItemHandler(NativeComponentRenderer renderer, XF.FlyoutItem flyoutItemControl) : base(renderer, flyoutItemControl)
         {
             FlyoutItemControl = flyoutItemControl ?? throw new ArgumentNullException(nameof(flyoutItemControl));

@@ -1,6 +1,6 @@
 ﻿@page "/commoncontrols"
 
-<ContentView>
+<ContentPage>
     <StackLayout Margin="new Thickness(20)">
 
         <Slider Minimum="0" Maximum="20" @bind-Value="SliderValue" />
@@ -14,7 +14,7 @@
             <Image Source="@(ImageSource.FromResource(isFavorite ? "ControlGallery.images.favorite.png" : "ControlGallery.images.not-favorite.png"))" />
         </StackLayout>
     </StackLayout>
-</ContentView>
+</ContentPage>
 
 @code
 {

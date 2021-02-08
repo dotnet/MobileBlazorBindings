@@ -9,6 +9,12 @@ steps:
     TeamName: $(_TeamName)
   condition: ne(variables['Build.Reason'], 'PullRequest')
 
+- task: BatchScript@1
+  displayName: 'Install Android SDK'
+  inputs:
+    filename: './azure-pipelines/install-android-sdk.cmd'
+    #arguments: '' # Optional
+
 # Note: 2019-12 Even though 'dotnet build' can build this, it's not compatible with MicroBuild Signing. Must use MSBuild.
 - task: MSBuild@1
   displayName: 'Build src projects'

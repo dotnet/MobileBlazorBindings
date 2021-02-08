@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="4.8.0.1687">
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="5.0.0.1874">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
@@ -31,7 +32,7 @@
   <Target Name="CopyXmlDocsToOutput" AfterTargets="Build">
     <Message Text="Xamarin.Forms package location: $(PkgXamarin_Forms)" />
     <Copy SourceFiles="$(PkgXamarin_Forms)\lib\netstandard2.0\Xamarin.Forms.Core.xml" DestinationFolder="$(OutDir)" />
-    
+
     <!-- Xamarin.Forms.DualScreen doesn't have any XML docs at this time -->
     <!--<Message Text="Xamarin.Forms.DualScreen package location: $(PkgXamarin_Forms_DualScreen)" />
     <Copy SourceFiles="$(PkgXamarin_Forms_DualScreen)\lib\netstandard2.0\Xamarin.Forms.DualScreen.xml" DestinationFolder="$(OutDir)" />-->

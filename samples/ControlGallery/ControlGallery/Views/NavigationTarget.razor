@@ -9,7 +9,7 @@
 @page "/guid/{Guid}"
 @page "/bool/{Bool}"
 
-<ContentView>
+<ContentPage>
     <StackLayout>
         <Label Text="Successfully navigated using Shell"></Label>
         @if (Name != null)
@@ -25,7 +25,7 @@
         <Label Text="@($"Guid = {Guid}")"></Label>
         <Label Text="@($"Bool = {Bool}")"></Label>
     </StackLayout>
-</ContentView>
+</ContentPage>
 
 @code {
 

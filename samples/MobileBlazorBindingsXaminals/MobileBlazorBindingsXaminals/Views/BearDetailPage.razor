@@ -1,6 +1,6 @@
 ﻿@page "/beardetails/{Name}"
 
-<ContentView>
+<ContentPage>
     <ScrollView>
         <StackLayout>
             <Label Text="@Bear.Name"></Label>
@@ -9,7 +9,7 @@
             <Label Text="@Bear.Details"></Label>
         </StackLayout>
     </ScrollView>
-</ContentView>
+</ContentPage>
 @code {
     Animal Bear;
 

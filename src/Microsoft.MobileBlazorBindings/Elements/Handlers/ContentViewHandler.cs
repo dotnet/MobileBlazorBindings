@@ -13,6 +13,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ContentViewControl.Content = childAsView;
         }
 
+        public override int GetChildIndex(XF.Element child)
+        {
+            return ContentViewControl.Content == child ? 0 : -1;
+        }
+
         public override void RemoveChild(XF.Element child)
         {
             if (ContentViewControl.Content == child)

@@ -9,6 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TabBarHandler : ShellItemHandler
     {
+
         public TabBarHandler(NativeComponentRenderer renderer, XF.TabBar tabBarControl) : base(renderer, tabBarControl)
         {
             TabBarControl = tabBarControl ?? throw new ArgumentNullException(nameof(tabBarControl));

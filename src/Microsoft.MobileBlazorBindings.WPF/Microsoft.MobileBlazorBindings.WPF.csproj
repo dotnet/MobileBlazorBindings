@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <UseWPF>true</UseWPF>
+
+    <Title>Windows (WPF) host for Blazor components in hybrid (native+web) applications.</Title>
+    <Description>WPF WebView component for hosting Blazor components in hybrid (native + web) applications.</Description>
+    <PackageTags>blazor;mobileblazorbindings;wpf</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="build/**/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="build/**/*">
+      <Pack>true</Pack>
+      <PackagePath>build</PackagePath>
+      <IncludeInPackage>true</IncludeInPackage>
+      <CopyToOutput>true</CopyToOutput>
+      <BuildAction>Content</BuildAction>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.664.37" />
+    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Hosting\Microsoft.MobileBlazorBindings.Hosting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.WPF.dll">
+      <Authenticode>Microsoft400</Authenticode>
+    </FilesToSign>
+  </ItemGroup>
+
+</Project>

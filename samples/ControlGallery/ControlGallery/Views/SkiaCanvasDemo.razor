@@ -1,6 +1,6 @@
 ﻿@using Microsoft.MobileBlazorBindings.SkiaSharp
 @page "/skia/canvas"
-<ContentView>
+<ContentPage>
     <StackLayout Padding="20">
         <Slider Margin="20" ValueChanged="RotationSliderChanged" />
         <SKCanvasView @ref="CanvasView"
@@ -10,4 +10,4 @@
                       OnPaintSurface="PaintSurface2"
                       VerticalOptions="LayoutOptions.FillAndExpand" />
     </StackLayout>
-</ContentView>
+</ContentPage>

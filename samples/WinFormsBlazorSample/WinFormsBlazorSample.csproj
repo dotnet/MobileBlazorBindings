@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\src\Microsoft.MobileBlazorBindings.WindowsForms\build\Microsoft.MobileBlazorBindings.WindowsForms.props" />
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\css\app.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings.WindowsForms\Microsoft.MobileBlazorBindings.WindowsForms.csproj" />
+    <ProjectReference Include="..\SharedProjects\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
+  </ItemGroup>
+
+  <!-- Normally this import would be automatic through the nuget package. We do it manually for projects inside this solution. -->
+  <Import Project="..\..\src\Microsoft.MobileBlazorBindings.WindowsForms\build\Microsoft.MobileBlazorBindings.WindowsForms.targets" />
+
+</Project>
