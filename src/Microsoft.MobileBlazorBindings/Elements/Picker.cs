@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Collections.Generic;
@@ -38,6 +41,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the horizontal alignment of the Text property. This is a bindable property.
         /// </summary>
         [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
+
+#pragma warning disable CA1200 // Avoid using cref tags with a prefix; these are copied from Xamarin.Forms as-is
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the text of this Label. This is a bindable property.
         /// </summary>
@@ -57,6 +62,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
         /// </summary>
         [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+#pragma warning restore CA1200 // Avoid using cref tags with a prefix
 
         static Picker()
         {
@@ -107,7 +113,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
-            if(Title != null)
+            if (Title != null)
             {
                 builder.AddAttribute(nameof(Title), Title);
             }
@@ -120,7 +126,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(VerticalTextAlignment), (int)VerticalTextAlignment.Value);
             }
 
-            builder.AddAttribute(nameof(SelectedIndex), AttributeHelper.IntToString(SelectedIndex));
+            builder.AddAttribute(nameof(SelectedIndex), SelectedIndex);
 
             builder.AddAttribute("onselecteditemchanged", EventCallback.Factory.Create<ChangeEventArgs>(this, HandleSelectedItemChanged));
 

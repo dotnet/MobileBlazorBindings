@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections;
@@ -19,12 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ConfigureEvent(
                 eventName: "onselecteditemchanged",
                 setId: id => SelectedItemChangedEventHandlerId = id,
-                clearId: id => { 
-                    if (SelectedItemChangedEventHandlerId == id) 
-                    { 
-                        SelectedItemChangedEventHandlerId = 0; } 
-                    });
-
+                clearId: id => { if (SelectedItemChangedEventHandlerId == id) { SelectedItemChangedEventHandlerId = 0; } });
             PickerControl.SelectedIndexChanged += (s, e) =>
             {
                 if (SelectedItemChangedEventHandlerId != default)
@@ -36,13 +34,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ConfigureEvent(
                 eventName: "onselectedindexchanged",
                 setId: id => SelectedIndexChangedEventHandlerId = id,
-                clearId: id => {
-                    if (SelectedIndexChangedEventHandlerId == id)
-                    {
-                        SelectedIndexChangedEventHandlerId = 0;
-                    }
-                });
-
+                clearId: id => { if (SelectedIndexChangedEventHandlerId == id) { SelectedIndexChangedEventHandlerId = 0; } });
             PickerControl.SelectedIndexChanged += (s, e) =>
             {
                 if (SelectedItemChangedEventHandlerId != default)
@@ -79,10 +71,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(XF.Picker.ItemsSource):
                     var items = AttributeHelper.DelegateToObject<IList>(attributeValue);
-                    //IMPORTANT! don't set ItemsSource again if it is already set
-                    //Resetting ItemsSource will confuse the SelectedItem property and cause and infinite loop
+                    // IMPORTANT! don't set ItemsSource again if it is already set
+                    // Resetting ItemsSource will confuse the SelectedItem property and cause and infinite loop
                     if (PickerControl.ItemsSource != items)
+                    {
                         PickerControl.ItemsSource = items;
+                    }
                     break;
                 case nameof(XF.Picker.TextColor):
                     PickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
@@ -99,12 +93,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(XF.Picker.SelectedIndex):
                     var index = AttributeHelper.GetInt(attributeValue);
                     if (PickerControl.SelectedIndex != index)
+                    {
                         PickerControl.SelectedIndex = index;
+                    }
                     break;
                 case nameof(XF.Picker.SelectedItem):
                     var item = AttributeHelper.DelegateToObject<object>(attributeValue);
                     if (PickerControl.SelectedItem != item)
+                    {
                         PickerControl.SelectedItem = item;
+                    }
                     break;
                 case nameof(XF.Label.VerticalTextAlignment):
                     PickerControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);

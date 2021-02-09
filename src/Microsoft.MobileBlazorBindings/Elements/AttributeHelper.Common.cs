@@ -85,14 +85,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         /// <summary>
-        /// Helper method to serialize <see cref="int" /> objects.
-        /// </summary>
-        public static string IntToString(int value)
-        {
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        /// <summary>
         /// Parses the attribute value as a space-separated string. Entries are trimmed and empty entries are removed.
         /// </summary>
         /// <param name="attributeValue"></param>
