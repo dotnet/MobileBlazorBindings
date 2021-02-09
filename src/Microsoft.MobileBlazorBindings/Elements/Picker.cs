@@ -10,19 +10,19 @@ using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public class Picker<T> : View
+    public class Picker<TItem> : View
     {
         public new XF.Picker NativeControl => base.NativeControl as XF.Picker;
 
         //Changing source at run time is valid behaviour so do not make readonly
 #pragma warning disable CA2227 // Collection properties should be read only
-        [Parameter] public IList<T> ItemsSource { get; set; }
+        [Parameter] public IList<TItem> ItemsSource { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
         [Parameter] public string Title { get; set; }
         [Parameter] public string ItemDisplayBinding { get; set; }
-        [Parameter] public T SelectedItem { get; set; }
+        [Parameter] public TItem SelectedItem { get; set; }
         [Parameter] public int SelectedIndex { get; set; } = -1;
-        [Parameter] public EventCallback<T> SelectedItemChanged { get; set; }
+        [Parameter] public EventCallback<TItem> SelectedItemChanged { get; set; }
         [Parameter] public EventCallback<int> SelectedIndexChanged { get; set; }
         [Parameter] public double? CharacterSpacing { get; set; }
         /// <summary>
@@ -66,7 +66,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         static Picker()
         {
-            ElementHandlerRegistry.RegisterElementHandler<Picker<T>>(renderer => new PickerHandler(renderer, new XF.Picker()));
+            ElementHandlerRegistry.RegisterElementHandler<Picker<TItem>>(renderer => new PickerHandler(renderer, new XF.Picker()));
         }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -135,7 +135,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         private Task HandleSelectedItemChanged(ChangeEventArgs evt)
         {
-            return SelectedItemChanged.InvokeAsync((T)evt.Value);
+            return SelectedItemChanged.InvokeAsync((TItem)evt.Value);
         }
 
         private Task HandleSelectedIndexChanged(ChangeEventArgs evt)
