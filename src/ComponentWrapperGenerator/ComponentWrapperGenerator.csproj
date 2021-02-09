@@ -31,6 +31,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.ComponentGenerator\Microsoft.MobileBlazorBindings.ComponentGenerator.csproj" />
+  </ItemGroup>
+
   <Target Name="CopyXmlDocsToOutput" AfterTargets="Build">
     <Message Text="Xamarin.Forms package location: $(PkgXamarin_Forms)" />
     <Copy SourceFiles="$(PkgXamarin_Forms)\lib\netstandard2.0\Xamarin.Forms.Core.xml" DestinationFolder="$(OutDir)" />

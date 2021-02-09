@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ComponentWrapperGenerator.Extensions
+namespace Microsoft.MobileBlazorBindings.ComponentGenerator.Extensions
 {
     internal static class ITypeOrNamespaceSymbolExtensions
     {
@@ -27,11 +27,11 @@ namespace ComponentWrapperGenerator.Extensions
                 currentNamespace = currentNamespace.ContainingNamespace;
             }
 
-            return string.Join('.', stack);
+            return string.Join(".", stack);
         }
 
         /// <summary>
-        /// Returns name with generic type arguments (is any).
+        /// Returns name with generic type arguments (if any).
         /// </summary>
         private static string GetName(INamespaceOrTypeSymbol namespaceOrType)
         {

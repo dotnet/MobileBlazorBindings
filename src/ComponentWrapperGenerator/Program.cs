@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace ComponentWrapperGenerator
 {
+    using Microsoft.MobileBlazorBindings.ComponentGenerator;
+
     internal class Program
     {
         internal static async Task<int> Main(string[] args)
@@ -38,7 +40,7 @@ namespace ComponentWrapperGenerator
             };
 
             var compilation = await GetRoslynCompilationAsync().ConfigureAwait(false);
-            var generator = new ComponentWrapperGenerator(settings, compilation);
+            var generator = new ComponentWrapperGenerator(settings);
 
             foreach (var typeNameToGenerate in listOfTypeNamesToGenerate)
             {
@@ -61,11 +63,29 @@ namespace ComponentWrapperGenerator
                     Console.WriteLine();
                     continue;
                 }
-                generator.GenerateComponentWrapper(typeToGenerate, outputFolder);
+
+                var generatedSources = generator.GenerateComponentWrapper(typeToGenerate);
+                WriteFiles(generatedSources, outputFolder);
+
                 Console.WriteLine();
             }
 
             return 0;
+        }
+
+        private static void WriteFiles((string HintName, string Source)[] generatedSources, string outputFolder)
+        {
+            foreach(var (hintName, source) in generatedSources)
+            {
+                var fileName = $"{hintName}.generated.cs";
+                var path = hintName.EndsWith("Handler", StringComparison.Ordinal)
+                    ? Path.Combine(outputFolder, "Handlers")
+                    : outputFolder;
+
+                Directory.CreateDirectory(path);
+
+                File.WriteAllText(Path.Combine(path, fileName), source);
+            }
         }
 
         private static async Task<Compilation> GetRoslynCompilationAsync()

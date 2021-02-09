@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-namespace ComponentWrapperGenerator
+namespace Microsoft.MobileBlazorBindings.ComponentGenerator
 {
     internal sealed class UsingStatement
     {

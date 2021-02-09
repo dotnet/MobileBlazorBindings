@@ -1,22 +1,19 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using ComponentWrapperGenerator.Extensions;
 using Microsoft.CodeAnalysis;
+using Microsoft.MobileBlazorBindings.ComponentGenerator.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace ComponentWrapperGenerator
+namespace Microsoft.MobileBlazorBindings.ComponentGenerator
 {
-#pragma warning disable CA1724 // Type name conflicts with namespace name
     public class ComponentWrapperGenerator
-#pragma warning restore CA1724 // Type name conflicts with namespace name
     {
         private GeneratorSettings Settings { get; }
         public ComponentWrapperGenerator(GeneratorSettings settings)
@@ -24,26 +21,23 @@ namespace ComponentWrapperGenerator
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
 
-        public void GenerateComponentWrapper(INamedTypeSymbol typeToGenerate, string outputFolder)
+        public (string HintName, string Source)[] GenerateComponentWrapper(INamedTypeSymbol typeToGenerate)
         {
             typeToGenerate = typeToGenerate ?? throw new ArgumentNullException(nameof(typeToGenerate));
 
             var propertiesToGenerate = GetPropertiesToGenerate(typeToGenerate);
 
-            GenerateComponentFile(typeToGenerate, propertiesToGenerate, outputFolder);
-            GenerateHandlerFile(typeToGenerate, propertiesToGenerate, outputFolder);
+            var componentSource = GenerateComponentFile(typeToGenerate, propertiesToGenerate);
+            var handlerSource = GenerateHandlerFile(typeToGenerate, propertiesToGenerate);
+
+            return new[] { componentSource, handlerSource };
         }
 
-        private void GenerateComponentFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate, string outputFolder)
+        private (string HintName, string Source) GenerateComponentFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate)
         {
-            var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
-            var directoryName = Path.GetDirectoryName(fileName);
-            if (!string.IsNullOrEmpty(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
+            var hintName = typeToGenerate.Name;
 
-            Console.WriteLine($"Generating component for type '{typeToGenerate.MetadataName}' into file '{fileName}'.");
+            Console.WriteLine($"Generating component for type '{typeToGenerate.MetadataName}' into file '{hintName}'.");
 
             var componentName = typeToGenerate.Name;
             var componentHandlerName = $"{componentName}Handler";
@@ -138,7 +132,7 @@ namespace {Settings.RootNamespace}
 }}
 ");
 
-            File.WriteAllText(fileName, outputBuilder.ToString());
+            return (hintName, outputBuilder.ToString());
         }
 
         private static string GetNamespacePrefix(ITypeSymbol type, List<UsingStatement> usings)
@@ -220,7 +214,7 @@ namespace {Settings.RootNamespace}
         private static string GetXmlDocText(XmlElement xmlDocElement)
         {
             var allText = xmlDocElement?.InnerXml;
-            allText = allText?.Replace("To be added.", string.Empty, StringComparison.Ordinal);
+            allText = allText?.Replace("To be added.", string.Empty);
             if (string.IsNullOrWhiteSpace(allText))
             {
                 return null;
@@ -420,16 +414,11 @@ namespace {Settings.RootNamespace}
             return null;
         }
 
-        private void GenerateHandlerFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate, string outputFolder)
+        private (string HintName, string Source) GenerateHandlerFile(INamedTypeSymbol typeToGenerate, IEnumerable<IPropertySymbol> propertiesToGenerate)
         {
-            var fileName = Path.Combine(outputFolder, "Handlers", $"{typeToGenerate.Name}Handler.generated.cs");
-            var directoryName = Path.GetDirectoryName(fileName);
-            if (!string.IsNullOrEmpty(directoryName))
-            {
-                Directory.CreateDirectory(directoryName);
-            }
+            var hintName = $"{typeToGenerate.Name}Handler";
 
-            Console.WriteLine($"Generating component handler for type '{typeToGenerate.Name}' into file '{fileName}'.");
+            Console.WriteLine($"Generating component handler for type '{typeToGenerate.Name}' into file '{hintName}'.");
 
             var componentName = typeToGenerate.Name;
             var componentVarName = char.ToLowerInvariant(componentName[0]) + componentName.Substring(1);
@@ -517,7 +506,7 @@ namespace {Settings.RootNamespace}.Handlers
 }}
 ");
 
-            File.WriteAllText(fileName, outputBuilder.ToString());
+            return (hintName, outputBuilder.ToString());
         }
 
         private static string GetPropertySetAttribute(IPropertySymbol prop, List<UsingStatement> usings)

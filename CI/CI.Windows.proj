@@ -35,6 +35,7 @@
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.ProtectedStorage\Microsoft.MobileBlazorBindings.ProtectedStorage.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Authentication\Microsoft.MobileBlazorBindings.Authentication.csproj" />
     <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.Authentication.Msal\Microsoft.MobileBlazorBindings.Authentication.Msal.csproj" />
+    <ProjectToBuild Include="..\src\Microsoft.MobileBlazorBindings.ComponentGenerator\Microsoft.MobileBlazorBindings.ComponentGenerator.csproj" />
     <ProjectToBuild Include="..\src\ComponentWrapperGenerator\ComponentWrapperGenerator.csproj" />
   </ItemGroup>
 </Project>
