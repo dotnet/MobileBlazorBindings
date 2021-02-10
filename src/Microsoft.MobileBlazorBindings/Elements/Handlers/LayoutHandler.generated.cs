@@ -9,6 +9,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class LayoutHandler : ViewHandler
     {
+        private static readonly bool CascadeInputTransparentDefaultValue = XF.Layout.CascadeInputTransparentProperty.DefaultValue is bool value ? value : default;
+        private static readonly bool IsClippedToBoundsDefaultValue = XF.Layout.IsClippedToBoundsProperty.DefaultValue is bool value ? value : default;
+        private static readonly XF.Thickness PaddingDefaultValue = XF.Layout.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
+
         public LayoutHandler(NativeComponentRenderer renderer, XF.Layout layoutControl) : base(renderer, layoutControl)
         {
             LayoutControl = layoutControl ?? throw new ArgumentNullException(nameof(layoutControl));
@@ -25,13 +29,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(XF.Layout.CascadeInputTransparent):
-                    LayoutControl.CascadeInputTransparent = AttributeHelper.GetBool(attributeValue, true);
+                    LayoutControl.CascadeInputTransparent = AttributeHelper.GetBool(attributeValue, CascadeInputTransparentDefaultValue);
                     break;
                 case nameof(XF.Layout.IsClippedToBounds):
-                    LayoutControl.IsClippedToBounds = AttributeHelper.GetBool(attributeValue);
+                    LayoutControl.IsClippedToBounds = AttributeHelper.GetBool(attributeValue, IsClippedToBoundsDefaultValue);
                     break;
                 case nameof(XF.Layout.Padding):
-                    LayoutControl.Padding = AttributeHelper.StringToThickness(attributeValue);
+                    LayoutControl.Padding = AttributeHelper.StringToThickness(attributeValue, PaddingDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

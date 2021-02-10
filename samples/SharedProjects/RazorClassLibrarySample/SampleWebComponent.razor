@@ -1,0 +1,15 @@
+﻿@inject AppState AppState
+
+<div class="my-component">
+    This Blazor Web component is defined in the <strong>RazorClassLibrarySample</strong> package.
+    <div>Count = @AppState.Counter</div>
+    <button @onclick="DoIncrement">+1</button>
+</div>
+
+@code
+{
+    void DoIncrement()
+    {
+        AppState.Counter++;
+    }
+}

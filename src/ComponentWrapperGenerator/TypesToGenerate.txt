@@ -28,6 +28,7 @@ MenuItem
 #ModalContainer // Not based on real XF type
 NavigableElement
 Page
+#Picker // Manually written to use custom logic for generics and binding
 ProgressBar
 ScrollView
 Shell

@@ -25,6 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 case Device.iOS:
                 case Device.macOS:
                 case Device.Android:
+                case Device.Tizen:
                     services.TryAddSingleton<IProtectedStorage, XamarinProtectedStorage>();
                     break;
                 case Device.WPF:

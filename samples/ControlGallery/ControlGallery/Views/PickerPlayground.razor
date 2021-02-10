@@ -1,0 +1,106 @@
+﻿@using ControlGallery.Models
+@using System.Diagnostics
+
+@page "/pickerplayground"
+
+<ContentPage>
+    <ScrollView>
+        <StackLayout Padding="10">
+            <Label Text="Picker Playground" FontSize="30">
+            </Label>
+
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+
+            <Label Padding="5" FontAttributes="FontAttributes.Bold" Text="Picker with models and all display properties" />
+            <Picker CharacterSpacing="3"
+                    FontAttributes="FontAttributes.Bold"
+                    FontFamily="MarkerFelt-Thin"
+                    FontSize="20"
+                    HorizontalTextAlignment="TextAlignment.Center"
+                    TextColor="Color.Red"
+                    ItemsSource="Models"
+                    Title="Select a model"
+                    TitleColor="Color.Blue"
+                    VerticalTextAlignment="TextAlignment.End"
+                    ItemDisplayBinding="Name"
+                    @bind-SelectedItem="SelectedModel">
+            </Picker>
+            <Label Padding="5" Text="@("Selected model: " + SelectedModel?.Name ?? "(none)")"></Label>
+
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+
+            <Label FontAttributes="FontAttributes.Bold" Text="Picker with string" />
+            <Picker @bind-SelectedItem="SelectedString"
+                    Title="Select a string"
+                    ItemsSource="Strings" />
+            <Label Text="@("Selected string: " + SelectedString ?? "(none)")"></Label>
+
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+
+            <Label FontAttributes="FontAttributes.Bold" Text="Picker with models and default item selected" />
+            <Picker @bind-SelectedItem="SelectedModelDefault"
+                    Title="Select a model"
+                    ItemDisplayBinding="Name"
+                    ItemsSource="ModelsWithDefault" />
+            <Label Text="@("Selected model: " + SelectedModelDefault?.Name ?? "(none)")"></Label>
+
+            <BoxView HeightRequest="2" Color="Color.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+
+            <Label FontAttributes="FontAttributes.Bold" Text="Index Based Picker" />
+            <Picker ItemsSource="Models"
+                    Title="Select a model and the index will bind"
+                    ItemDisplayBinding="Name"
+                    @bind-SelectedIndex="SelectedIndex">
+            </Picker>
+            <Label Text="@("Selected model: " + Models.ElementAtOrDefault(SelectedIndex)?.Name ?? "(none)")"></Label>
+
+            <Button Padding="20" Text="Set pickers from code" OnClick="ButtonClicked"></Button>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code
+{
+    public PickerModel SelectedModel { get; set; }
+
+    public int SelectedIndex { get; set; } = -1;
+
+    public List<PickerModel> Models { get; set; } = new List<PickerModel>
+    {
+        new PickerModel{Name = "Model 1"},
+        new PickerModel{Name = "Model 2"},
+        new PickerModel{Name = "Model 3"},
+    };
+
+    public string SelectedString
+    {
+        get;
+        set;
+    }
+
+    public List<string> Strings { get; set; } = new List<string>
+    {
+        "String 1",
+        "String 2",
+        "String 3",
+    };
+
+    static PickerModel defaultModel = new PickerModel { Name = "Default Model" };
+    public PickerModel SelectedModelDefault { get; set; } = defaultModel;
+
+    public List<PickerModel> ModelsWithDefault { get; set; } = new List<PickerModel>
+    {
+        new PickerModel{Name = "Model 1"},
+        new PickerModel{Name = "Model 2"},
+        defaultModel,
+        new PickerModel{Name = "Model 3"},
+    };
+
+    public void ButtonClicked()
+    {
+        SelectedModel = Models.LastOrDefault();
+        SelectedString = Strings.LastOrDefault();
+        SelectedModelDefault = ModelsWithDefault.LastOrDefault();
+        SelectedIndex = -1;
+    }
+}

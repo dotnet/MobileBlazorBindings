@@ -3,30 +3,26 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.RenderTree;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
-using Microsoft.JSInterop.Infrastructure;
+using Microsoft.MobileBlazorBindings.Hosting;
 using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 using XF = Xamarin.Forms;
 
 [assembly: InternalsVisibleTo("Microsoft.MobileBlazorBindings")]
 
 namespace Microsoft.MobileBlazorBindings.WebView.Elements
 {
-    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable where TComponent : IComponent
+    public class BlazorWebView<TComponent> : XF.ContentView, IDisposable, IWebViewIPCAdapter where TComponent : IComponent
     {
         private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
         private static readonly RenderFragment EmptyRenderFragment = builder => { };
@@ -35,9 +31,8 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         private readonly bool _initOnParentSet;
 
         private WebViewExtended _webView;
-        private IPC _ipc;
+        private WebViewIPC _ipc;
         private JSRuntime _jsRuntime;
-        private Task<InteropHandshakeResult> _attachInteropTask;
         private IServiceScope _serviceScope;
         private BlazorHybridRenderer _blazorHybridRenderer;
         private BlazorHybridNavigationManager _navigationManager;
@@ -103,7 +98,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         internal void SetInitialSource()
         {
-            _webView.Source = new UrlWebViewSource() { Url = $"{BlazorAppScheme}://0.0.0.0/" };
+            _webView.Source = new XF.UrlWebViewSource() { Url = $"{BlazorAppScheme}://0.0.0.0/" };
         }
 
         protected BlazorWebView(Dispatcher dispatcher, bool initOnParentSet)
@@ -202,7 +197,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
 
         private void Start()
         {
-            _ipc = new IPC(_webView);
+            _ipc = new WebViewIPC(this);
         }
 
         private void HandleNavigationStarting(object sender, Uri e)
@@ -242,8 +237,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             webViewJSRuntime.AttachToIpcChannel(_ipc);
             _jsRuntime = webViewJSRuntime;
 
-            _attachInteropTask ??= AttachInteropAsync();
-            var handshakeResult = await _attachInteropTask.ConfigureAwait(false);
+            var handshakeResult = await _ipc.AttachInteropAsync(_jsRuntime).ConfigureAwait(false);
 
             var loggerFactory = scopeServiceProvider.GetRequiredService<ILoggerFactory>();
             _navigationManager = (BlazorHybridNavigationManager)scopeServiceProvider.GetRequiredService<NavigationManager>();
@@ -267,63 +261,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             await capturedRender.Dispatcher.InvokeAsync(() => capturedRender.RootRenderHandle.Render(fragment ?? EmptyRenderFragment)).ConfigureAwait(false);
         }
 
-        private Task<InteropHandshakeResult> AttachInteropAsync()
-        {
-            var resultTcs = new TaskCompletionSource<InteropHandshakeResult>();
-
-            // These hacks can go away once there's a proper IPC channel for event notifications etc.
-            var selfAsDotNetObjectReference = typeof(DotNetObjectReference).GetMethod(nameof(DotNetObjectReference.Create))
-                .MakeGenericMethod(GetType())
-                .Invoke(null, new[] { this });
-            var selfAsDotnetObjectReferenceId = (long)typeof(JSRuntime).GetMethod("TrackObjectReference", BindingFlags.NonPublic | BindingFlags.Instance)
-                .MakeGenericMethod(GetType())
-                .Invoke(_jsRuntime, new[] { selfAsDotNetObjectReference });
-
-            _ipc.Once("components:init", args =>
-            {
-                var argsArray = (object[])args;
-                var initialUriAbsolute = ((JsonElement)argsArray[0]).GetString();
-                var baseUriAbsolute = ((JsonElement)argsArray[1]).GetString();
-                resultTcs.TrySetResult(new InteropHandshakeResult(baseUriAbsolute, initialUriAbsolute));
-            });
-
-            _ipc.On("BeginInvokeDotNetFromJS", args =>
-            {
-                var argsArray = (object[])args;
-                var assemblyName = argsArray[1] != null ? ((JsonElement)argsArray[1]).GetString() : null;
-                var methodIdentifier = ((JsonElement)argsArray[2]).GetString();
-                var dotNetObjectId = ((JsonElement)argsArray[3]).GetInt64();
-                var callId = ((JsonElement)argsArray[0]).GetString();
-                var argsJson = ((JsonElement)argsArray[4]).GetString();
-
-                // As a temporary hack, intercept blazor.desktop.js's JS interop calls for event notifications,
-                // and direct them to our own instance. This is to avoid needing a static BlazorHybridRenderer.Instance.
-                // Similar temporary hack for navigation notifications
-                // TODO: Change blazor.desktop.js to use a dedicated IPC call for these calls, not JS interop.
-                if (assemblyName == "Microsoft.MobileBlazorBindings.WebView")
-                {
-                    assemblyName = null;
-                    dotNetObjectId = selfAsDotnetObjectReferenceId;
-                }
-
-                DotNetDispatcher.BeginInvokeDotNet(
-                    _jsRuntime,
-                    new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
-                    argsJson);
-            });
-
-            _ipc.On("EndInvokeJSFromDotNet", args =>
-            {
-                var argsArray = (object[])args;
-                DotNetDispatcher.EndInvokeJS(
-                    _jsRuntime,
-                    ((JsonElement)argsArray[2]).GetString());
-            });
-
-            return resultTcs.Task;
-        }
-
-        [JSInvokable(nameof(DispatchEvent))]
         public async Task DispatchEvent(WebEventDescriptor eventDescriptor, string eventArgsJson)
         {
             if (eventDescriptor is null)
@@ -336,14 +273,9 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 return;
             }
 
-            var webEvent = WebEventData.Parse(eventDescriptor, eventArgsJson);
-            await _blazorHybridRenderer.DispatchEventAsync(
-                webEvent.EventHandlerId,
-                webEvent.EventFieldInfo,
-                webEvent.EventArgs).ConfigureAwait(false);
+            await _blazorHybridRenderer.DispatchEventAsync(eventDescriptor, eventArgsJson).ConfigureAwait(false);
         }
 
-        [JSInvokable(nameof(NotifyLocationChanged))]
 #pragma warning disable CA1054 // Uri parameters should not be strings
         public void NotifyLocationChanged(string uri, bool isInterceptedLink)
 #pragma warning restore CA1054 // Uri parameters should not be strings
@@ -351,7 +283,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
             _navigationManager.SetLocation(uri, isInterceptedLink);
         }
 
-        [JSInvokable(nameof(OnRenderCompleted))]
         public async Task OnRenderCompleted(long renderId, string errorMessageOrNull)
         {
             if (_blazorHybridRenderer == null)
@@ -366,11 +297,11 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
             get
             {
-                // On Windows, we can't use a custom scheme to host the initial HTML,
+                // On Windows and Tizen, we can't use a custom scheme to host the initial HTML,
                 // because webview2 won't let you do top-level navigation to such a URL.
                 // On Linux/Mac, we must use a custom scheme, because their webviews
                 // don't have a way to intercept http:// scheme requests.
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows) || XF.Device.RuntimePlatform == XF.Device.Tizen
                     ? "http"
                     : "app";
             }
@@ -397,7 +328,7 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
         {
             return uri switch
             {
-                "framework://blazor.desktop.js" => typeof(BlazorWebView<>).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.WebView.blazor.desktop.js"),
+                "framework://blazor.desktop.js" => BlazorAssets.GetBlazorDesktopJS(),
                 _ => throw new ArgumentException($"Unknown framework file: {uri}"),
             };
         }
@@ -440,22 +371,22 @@ namespace Microsoft.MobileBlazorBindings.WebView.Elements
                 _ipc.Dispose();
                 _ipc = null;
             }
-            if (_attachInteropTask != null)
-            {
-                _attachInteropTask = null;
-            }
         }
 
-        private class InteropHandshakeResult
+        public void SendMessage(string message)
         {
-            public string BaseUri { get; }
-            public string InitialUri { get; }
+            _webView.SendMessage(message);
+        }
 
-            public InteropHandshakeResult(string baseUri, string initialUri)
-            {
-                BaseUri = baseUri;
-                InitialUri = initialUri;
-            }
+        public void BeginInvoke(Action action)
+        {
+            _webView.Dispatcher.BeginInvokeOnMainThread(action);
+        }
+
+        public EventHandler<string> OnWebMessageReceived
+        {
+            get => _webView.OnWebMessageReceived;
+            set => _webView.OnWebMessageReceived = value;
         }
     }
 }
