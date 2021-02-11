@@ -46,16 +46,28 @@ namespace Microsoft.MobileBlazorBindings.ComponentGenerator
             // header
             var headerText = Settings.FileHeader;
 
+            var typeNamespace = typeToGenerate.ContainingNamespace.GetFullName();
+            var typeNamespaceAlias = GetNamespaceAlias(typeToGenerate.ContainingNamespace);
+
             // usings
             var usings = new List<UsingStatement>
             {
                 new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, },
                 new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers", IsUsed = true, },
+                new UsingStatement { Namespace = $"{Settings.RootNamespace}.Handlers", IsUsed = true, },
                 new UsingStatement { Namespace = "System.Threading.Tasks", IsUsed = true, },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
-                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
+                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" }
             };
+
+            if (typeNamespace != "Xamarin.Forms")
+            {
+                usings.Add(new UsingStatement { Namespace = typeNamespace, Alias = typeNamespaceAlias });
+            }
+
+            if (Settings.RootNamespace != "Microsoft.MobileBlazorBindings.Elements")
+            {
+                usings.Add(new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements", IsUsed = true });
+            }
 
             var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
@@ -345,7 +357,7 @@ namespace {Settings.RootNamespace}
         private static string GetPropertyRenderAttribute(IPropertySymbol prop)
         {
             var propValue = prop.Type.IsValueType ? $"{GetIdentifierName(prop.Name)}.Value" : GetIdentifierName(prop.Name);
-            var formattedValue = propValue;
+            string formattedValue;
 
             if (TypeToAttributeHelperGetter.TryGetValue(prop.Type.GetFullName(), out var formattingFunc))
             {
@@ -353,12 +365,11 @@ namespace {Settings.RootNamespace}
             }
             else if (prop.Type.TypeKind == TypeKind.Enum)
             {
-                formattedValue = $"(int){formattedValue}";
+                formattedValue = $"(int){propValue}";
             }
             else
             {
-                // TODO: Error?
-                Console.WriteLine($"WARNING: Couldn't generate attribute render for {prop.ContainingType.Name}.{prop.Name}");
+                formattedValue = $"AttributeHelper.ObjectToDelegate({propValue})";
             }
 
             return $@"            if ({GetIdentifierName(prop.Name)} != null)
@@ -425,19 +436,33 @@ namespace {Settings.RootNamespace}
             var componentHandlerName = $"{componentName}Handler";
             var componentBaseName = GetBaseTypeOfInterest(typeToGenerate).Name;
             var componentHandlerBaseName = $"{componentBaseName}Handler";
+            var componentHandlerNamespace = $"{Settings.RootNamespace}.Handlers";
 
             // header
             var headerText = Settings.FileHeader;
+
+            var typeNamespace = typeToGenerate.ContainingNamespace.GetFullName();
+            var typeNamespaceAlias = GetNamespaceAlias(typeToGenerate.ContainingNamespace);
 
             // usings
             var usings = new List<UsingStatement>
             {
                 //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, }, // Typically needed only when there are event handlers for the EventArgs types
                 new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
+                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements", IsUsed = true, },
                 new UsingStatement { Namespace = "System", IsUsed = true, },
                 new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
-                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
             };
+
+            if(typeNamespace != "Xamarin.Forms")
+            {
+                usings.Add(new UsingStatement { Namespace = typeNamespace, Alias = typeNamespaceAlias });
+            }
+
+            if (componentHandlerNamespace != "Microsoft.MobileBlazorBindings.Elements.Handlers")
+            {
+                usings.Add(new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers", IsUsed = true });
+            }
 
             var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
@@ -487,7 +512,7 @@ namespace {Settings.RootNamespace}
             outputBuilder.Append($@"{headerText}
 {usingsText}
 
-namespace {Settings.RootNamespace}.Handlers
+namespace {componentHandlerNamespace}
 {{
     public {classModifiers}partial class {componentHandlerName} : {componentHandlerBaseName}
     {{
@@ -545,8 +570,7 @@ namespace {Settings.RootNamespace}.Handlers
             }
             else
             {
-                // TODO: Error?
-                Console.WriteLine($"WARNING: Couldn't generate property set for {prop.ContainingType.Name}.{prop.Name}");
+                formattedValue = $"AttributeHelper.DelegateToObject<{GetTypeNameAndAddNamespace(prop.Type, usings)}>(attributeValue)";
             }
 
             return $@"                case nameof({GetNamespacePrefix(prop.ContainingType, usings)}{prop.ContainingType.Name}.{GetIdentifierName(prop.Name)}):
@@ -635,6 +659,18 @@ namespace {Settings.RootNamespace}.Handlers
             return ReservedKeywords.Contains(possibleIdentifier, StringComparer.Ordinal)
                 ? $"@{possibleIdentifier}"
                 : possibleIdentifier;
+        }
+
+        private static string GetNamespaceAlias(INamespaceSymbol namespaceSymbol)
+        {
+            var alias = "";
+            while (!namespaceSymbol.IsGlobalNamespace)
+            {
+                alias = namespaceSymbol.Name[0] + alias;
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+            }
+
+            return alias;
         }
 
         private static readonly List<string> ReservedKeywords = new List<string>
