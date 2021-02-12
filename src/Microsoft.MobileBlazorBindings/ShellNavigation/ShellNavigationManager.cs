@@ -98,7 +98,10 @@ namespace Microsoft.MobileBlazorBindings
             var route = NavigationParameters[componentType];
             var renderer = _services.GetRequiredService<MobileBlazorBindingsRenderer>();
 
-            await renderer.AddComponent(componentType, container, route.Parameters).ConfigureAwait(false);
+            var addComponentTask = renderer.AddComponent(componentType, container, route.Parameters);
+            var elementAddedTask = container.WaitForElementAsync();
+
+            await Task.WhenAny(addComponentTask, elementAddedTask).ConfigureAwait(false);
 
             if (container.Elements.Count != 1)
             {

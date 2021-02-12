@@ -4,6 +4,7 @@
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
@@ -16,10 +17,31 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     {
         public List<XF.Element> Elements { get; } = new List<XF.Element>();
 
+        public Task WaitForElementAsync()
+        {
+            if (Elements.Count > 0)
+            {
+                return Task.CompletedTask;
+            }
+
+            var taskCompletionSource = new TaskCompletionSource<XF.Element>();
+            ChildAdded += SetTaskResult;
+            return taskCompletionSource.Task;
+
+            void SetTaskResult(XF.Element element)
+            {
+                ChildAdded -= SetTaskResult;
+                taskCompletionSource.TrySetResult(element);
+            }
+        }
+
+        private event Action<XF.Element> ChildAdded;
+
         void IXamarinFormsContainerElementHandler.AddChild(XF.Element child, int physicalSiblingIndex)
         {
             var index = Math.Min(physicalSiblingIndex, Elements.Count);
             Elements.Insert(index, child);
+            ChildAdded?.Invoke(child);
         }
 
         void IXamarinFormsContainerElementHandler.RemoveChild(XF.Element child)
