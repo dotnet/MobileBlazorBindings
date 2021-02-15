@@ -3,6 +3,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
@@ -96,7 +97,11 @@ namespace Microsoft.MobileBlazorBindings
         {
             var container = new RootContainerHandler();
             var route = NavigationParameters[componentType];
-            var renderer = _services.GetRequiredService<MobileBlazorBindingsRenderer>();
+
+            var loggerFactory = _services.GetRequiredService<ILoggerFactory>();
+#pragma warning disable CA2000 // Dispose objects before losing scope
+            var renderer = new MobileBlazorBindingsRenderer(_services, loggerFactory);
+#pragma warning restore CA2000 // Dispose objects before losing scope
 
             var addComponentTask = renderer.AddComponent(componentType, container, route.Parameters);
             var elementAddedTask = container.WaitForElementAsync();

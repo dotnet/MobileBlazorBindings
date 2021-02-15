@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.MobileBlazorBindings.Hosting;
 
@@ -14,11 +13,6 @@ namespace Microsoft.MobileBlazorBindings
             var builder = BlazorWebHost.CreateDefaultBuilder(args);
 
             EnableStyleSheetSupport();
-
-            builder.ConfigureServices(serviceCollection =>
-            {
-                serviceCollection.AddSingleton<MobileBlazorBindingsRenderer>();
-            });
 
             return builder;
         }
