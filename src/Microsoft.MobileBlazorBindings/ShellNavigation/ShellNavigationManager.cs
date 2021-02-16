@@ -39,6 +39,12 @@ namespace Microsoft.MobileBlazorBindings
                 var routes = page.GetCustomAttributes<RouteAttribute>();
                 foreach (var route in routes)
                 {
+                    if (route.Template == "/")
+                    {
+                        // This route can be used in Hybrid apps and should be ignored by Shell (because Shell doesn't support empty routes anyway)
+                        continue;
+                    }
+
                     if (page.IsSubclassOf(typeof(ComponentBase)))
                     {
                         var structuredRoute = new StructuredRoute(route.Template, page);
