@@ -36,6 +36,13 @@ Get started by reading the Getting Started section in the [docs](https://docs.mi
 
 As an experimental project, there are several active areas of development and we're looking for your feedback to help set the direction for this project. Please check it out and let us know any feedback you have on the project by logging issues in this repo.
 
+# Code of Conduct
+
+This project has adopted the code of conduct defined by the Contributor Covenant
+to clarify expected behavior in our community.
+
+For more information, see the [.NET Foundation Code of Conduct](https://dotnetfoundation.org/code-of-conduct).
+
 Thank you!
 
  [1]: https://dotnet.microsoft.com/download/dotnet-core/3.1
