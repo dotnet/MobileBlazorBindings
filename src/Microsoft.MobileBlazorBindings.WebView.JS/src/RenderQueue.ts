@@ -1,4 +1,4 @@
-﻿import '@dotnet/jsinterop/dist/Microsoft.JSInterop';
+﻿import { DotNet } from '@microsoft/dotnet-js-interop';
 import { renderBatch } from '@browserjs/Rendering/Renderer';
 import { OutOfProcessRenderBatch } from '@browserjs/Rendering/RenderBatch/OutOfProcessRenderBatch';
 
