@@ -24,6 +24,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
 
             Dispatcher.InvokeAsync(async () =>
             {
+                // TODO: Figure out how to ensure any exceptions propagate from here.
+                // Currently they are just lost.
                 await _webview.EnsureCoreWebView2Async().ConfigureAwait(true);
                 _webview.Source = new System.Uri("https://microsoft.com");
             });
