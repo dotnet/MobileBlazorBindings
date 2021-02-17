@@ -21,11 +21,11 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             JsonSerializerOptions.Converters.Add(new ElementReferenceJsonConverter());
         }
 
-        protected override void BeginInvokeJS(long asyncHandle, string identifier, string argsJson)
+        protected override void BeginInvokeJS(long taskId, string identifier, string argsJson, JSCallResultType resultType, long targetInstanceId)
         {
             ThrowIfIpcNotSet();
 
-            _ipc.Send("JS.BeginInvokeJS", asyncHandle, identifier, argsJson);
+            _ipc.Send("JS.BeginInvokeJS", taskId, identifier, argsJson, resultType, targetInstanceId);
         }
 
         protected override void EndInvokeDotNet(DotNetInvocationInfo invocationInfo, in DotNetInvocationResult invocationResult)

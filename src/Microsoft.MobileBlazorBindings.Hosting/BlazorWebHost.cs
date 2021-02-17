@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.Hosting
             });
             builder.ConfigureLogging((hostingContext, logging) =>
             {
-                logging.AddConsole(configure => configure.DisableColors = true);
+                logging.AddConsole();
                 logging.AddDebug();
                 logging.AddEventSourceLogger();
             })

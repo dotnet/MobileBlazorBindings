@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Title>Hosting APIs for Mobile Blazor Bindings</Title>
     <Description>Hosting APIs for Mobile Blazor Bindings native, hybrid, and desktop applications.</Description>
@@ -13,10 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0-preview.2.21116.24" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.0-preview.2.21116.24" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-preview.2.21117.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-preview.2.21117.2" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
