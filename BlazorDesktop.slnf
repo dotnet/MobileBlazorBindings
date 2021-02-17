@@ -1,0 +1,13 @@
+{
+  "solution": {
+    "path": "MobileBlazorBindings.sln",
+    "projects": [
+      "samples\\WpfBlazorSample\\WpfBlazorSample\\WpfBlazorSample.csproj",
+      "samples\\WpfNewBlazorSample\\WpfNewBlazorSample.csproj",
+      "src\\Microsoft.MobileBlazorBindings.Hosting\\Microsoft.MobileBlazorBindings.Hosting.csproj",
+      "src\\Microsoft.MobileBlazorBindings.WPFNew\\Microsoft.MobileBlazorBindings.WPFNew.csproj",
+      "src\\Microsoft.MobileBlazorBindings.WPF\\Microsoft.MobileBlazorBindings.WPF.csproj",
+      "test\\Microsoft.MobileBlazorBindings.WPFNew.Test\\Microsoft.MobileBlazorBindings.WPFNew.Test.csproj"
+    ]
+  }
+}
