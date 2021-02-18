@@ -9,4 +9,8 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.664.37" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Hosting\Microsoft.MobileBlazorBindings.Hosting.csproj" />
+  </ItemGroup>
+
 </Project>

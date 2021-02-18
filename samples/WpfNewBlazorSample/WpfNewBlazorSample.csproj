@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings.WPFNew\Microsoft.MobileBlazorBindings.WPFNew.csproj" />
+    <ProjectReference Include="..\SharedProjects\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
   </ItemGroup>
 
 </Project>

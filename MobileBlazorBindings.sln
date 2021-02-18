@@ -188,9 +188,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsBlazorSample", "sam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WindowsForms", "src\Microsoft.MobileBlazorBindings.WindowsForms\Microsoft.MobileBlazorBindings.WindowsForms.csproj", "{1D22DA82-38EB-410C-88EA-37D3D786CCC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.MobileBlazorBindings.WPFNew", "src\Microsoft.MobileBlazorBindings.WPFNew\Microsoft.MobileBlazorBindings.WPFNew.csproj", "{D23945A3-1897-47BB-8E44-BB0158F8ACCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.MobileBlazorBindings.WPFNew", "src\Microsoft.MobileBlazorBindings.WPFNew\Microsoft.MobileBlazorBindings.WPFNew.csproj", "{D23945A3-1897-47BB-8E44-BB0158F8ACCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfNewBlazorSample", "samples\WpfNewBlazorSample\WpfNewBlazorSample.csproj", "{CA5ACA5A-E6D7-476A-BB6D-F0FCC80E9EC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfNewBlazorSample", "samples\WpfNewBlazorSample\WpfNewBlazorSample.csproj", "{CA5ACA5A-E6D7-476A-BB6D-F0FCC80E9EC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
