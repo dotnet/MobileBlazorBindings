@@ -42,6 +42,12 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
             _core?.Dispose();
             _core = new WebView2BlazorWebViewCore(webview, HostPage);
+            
+            // TODO: Consider respecting the observability of this collection
+            foreach (var rootComponent in RootComponents)
+            {
+                _core.AddRootComponent(rootComponent.Type, rootComponent.Selector);
+            }
 
             Dispatcher.InvokeAsync(async () =>
             {

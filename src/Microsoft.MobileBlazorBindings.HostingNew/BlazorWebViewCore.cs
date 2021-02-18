@@ -25,6 +25,11 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             _hostPageRelativeUrl = Path.GetRelativePath(_contentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
         }
 
+        public void AddRootComponent(Type type, string selector)
+        {
+            // TODO
+        }
+
         protected abstract void Navigate(Uri uri);
 
         public virtual Task StartAsync()
