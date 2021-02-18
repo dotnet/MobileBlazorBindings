@@ -19,7 +19,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         public void SetHostPage(string filePath)
         {
             var hostPageAbsolute = Path.GetFullPath(filePath);
-            ContentHost = "app";
+            ContentHost = "0.0.0.0";
             ContentRootPath = Path.GetDirectoryName(hostPageAbsolute);
             HostPageRelativeUrl = Path.GetRelativePath(ContentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
         }
