@@ -7,6 +7,7 @@ using Microsoft.Web.WebView2.Wpf;
 namespace Microsoft.MobileBlazorBindings.WPFNew
 {
     // A BlazorWebViewCore subclass that is wired up to a WebView2 instance
+    // This could be shared across all platforms that use WebView2 (not just WPF)
     class WebView2BlazorWebViewCore : BlazorWebViewCore
     {
         private readonly WebView2 _webview;
