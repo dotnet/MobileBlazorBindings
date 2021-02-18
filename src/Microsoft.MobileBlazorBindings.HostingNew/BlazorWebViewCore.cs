@@ -2,54 +2,49 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.HostingNew
 {
     /// <summary>
     /// Platform-agnostic parts of BlazorWebView
     /// </summary>
-    public sealed class BlazorWebViewCore : IDisposable
+    public abstract class BlazorWebViewCore : IDisposable
     {
         private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
-        private bool _hasStarted;
 
-        public string ContentHost { get; private set; }
-        public string ContentRootPath { get; private set; }
-        public string HostPageRelativeUrl { get; private set; }
-
-        public event EventHandler<Uri> OnNavigate;
+        private readonly string _contentHost;
+        private readonly string _contentRootPath;
+        private readonly string _hostPageRelativeUrl;
 
         public BlazorWebViewCore(string hostPageFilePath)
         {
             var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
-            ContentHost = "0.0.0.0";
-            ContentRootPath = Path.GetDirectoryName(hostPageAbsolute);
-            HostPageRelativeUrl = Path.GetRelativePath(ContentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
+            _contentHost = "0.0.0.0";
+            _contentRootPath = Path.GetDirectoryName(hostPageAbsolute);
+            _hostPageRelativeUrl = Path.GetRelativePath(_contentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
         }
 
-        public void Start()
+        protected abstract void Navigate(Uri uri);
+
+        public virtual Task StartAsync()
         {
-            if (_hasStarted)
-            {
-                throw new InvalidOperationException("Can only start once");
-            }
-
-            _hasStarted = true;
-            var startUri = new Uri(new Uri($"https://{ContentHost}/"), HostPageRelativeUrl);
-            OnNavigate?.Invoke(this, startUri);
+            var startUri = new Uri(new Uri($"https://{_contentHost}/"), _hostPageRelativeUrl);
+            Navigate(startUri);
+            return Task.CompletedTask;
         }
 
-        public bool TryGetResponseContent(Uri requestUri, out int statusCode, out string statusMessage, out Stream content, out string headers)
+        protected bool TryGetResponseContent(Uri requestUri, out int statusCode, out string statusMessage, out Stream content, out string headers)
         {
             if (requestUri is null)
             {
                 throw new ArgumentNullException(nameof(requestUri));
             }
 
-            if (string.Equals(requestUri.Host, ContentHost, StringComparison.Ordinal))
+            if (string.Equals(requestUri.Host, _contentHost, StringComparison.Ordinal))
             {
-                var filePath = Path.GetFullPath(Path.Combine(ContentRootPath, requestUri.GetComponents(UriComponents.Path, UriFormat.Unescaped)));
-                if (filePath.StartsWith(ContentRootPath, StringComparison.Ordinal)
+                var filePath = Path.GetFullPath(Path.Combine(_contentRootPath, requestUri.GetComponents(UriComponents.Path, UriFormat.Unescaped)));
+                if (filePath.StartsWith(_contentRootPath, StringComparison.Ordinal)
                     && File.Exists(filePath))
                 {
                     var responseContentType = FileExtensionContentTypeProvider.TryGetContentType(filePath, out var matchedContentType)
@@ -85,7 +80,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public void Dispose()
         {
-            // Nothing needed yet
+            // Nothing to do yet
         }
     }
 }
