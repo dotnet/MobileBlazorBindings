@@ -43,7 +43,18 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
                     await _webview.EnsureCoreWebView2Async(_webviewEnvironment).ConfigureAwait(true);
 
                     _webview.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
-                    _webview.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
+                    _webview.CoreWebView2.WebResourceRequested += (sender, args) =>
+                    {
+                        if (_core.TryGetResponseContent(new Uri(args.Request.Uri), out var statusCode, out var statusMessage, out var content, out var headers))
+                        {
+                            args.Response = _webviewEnvironment.CreateWebResourceResponse(
+                                    content,
+                                    statusCode,
+                                    statusMessage,
+                                    headers);
+                        }
+                    };
+
                     _core.Start();
                 }
                 catch (Exception ex)
@@ -60,18 +71,6 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         {
             // TODO: Find correct disposal pattern within WPF, ideally with IAsyncDisposable
             _core?.Dispose();
-        }
-
-        private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
-        {
-            if (_core.TryGetResponseContent(new Uri(args.Request.Uri), out var statusCode, out var statusMessage, out var content, out var headers))
-            {
-                args.Response = _webviewEnvironment.CreateWebResourceResponse(
-                        content,
-                        statusCode,
-                        statusMessage,
-                        headers);
-            }
         }
     }
 }
