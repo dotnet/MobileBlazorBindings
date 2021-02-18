@@ -8,20 +8,35 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
     /// <summary>
     /// Platform-agnostic parts of BlazorWebView
     /// </summary>
-    public class BlazorWebViewCore
+    public sealed class BlazorWebViewCore : IDisposable
     {
         private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
+        private bool _hasStarted;
 
         public string ContentHost { get; private set; }
         public string ContentRootPath { get; private set; }
         public string HostPageRelativeUrl { get; private set; }
 
-        public void SetHostPage(string filePath)
+        public event EventHandler<Uri> OnNavigate;
+
+        public BlazorWebViewCore(string hostPageFilePath)
         {
-            var hostPageAbsolute = Path.GetFullPath(filePath);
+            var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
             ContentHost = "0.0.0.0";
             ContentRootPath = Path.GetDirectoryName(hostPageAbsolute);
             HostPageRelativeUrl = Path.GetRelativePath(ContentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
+        }
+
+        public void Start()
+        {
+            if (_hasStarted)
+            {
+                throw new InvalidOperationException("Can only start once");
+            }
+
+            _hasStarted = true;
+            var startUri = new Uri(new Uri($"https://{ContentHost}/"), HostPageRelativeUrl);
+            OnNavigate?.Invoke(this, startUri);
         }
 
         public bool TryGetResponseContent(Uri requestUri, out int statusCode, out string statusMessage, out Stream content, out string headers)
@@ -66,6 +81,11 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             headers = default;
             content = default;
             return false;
+        }
+
+        public void Dispose()
+        {
+            // Nothing needed yet
         }
     }
 }

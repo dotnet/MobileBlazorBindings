@@ -7,10 +7,10 @@ using Microsoft.Web.WebView2.Wpf;
 
 namespace Microsoft.MobileBlazorBindings.WPFNew
 {
-    public class BlazorWebView : Control
+    public sealed class BlazorWebView : Control, IDisposable
     {
         private const string webViewTemplateChildName = "WebView";
-        private readonly BlazorWebViewCore _core = new();
+        private BlazorWebViewCore _core;
         private WebView2 _webview;
         private CoreWebView2Environment _webviewEnvironment;
 
@@ -27,9 +27,13 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
-            _core.SetHostPage(HostPage);
             _webview = (WebView2)GetTemplateChild(webViewTemplateChildName);
+
+            // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
+            _core?.Dispose();
+
+            _core = new BlazorWebViewCore(HostPage);
+            _core.OnNavigate += (sender, uri) => _webview.Source = uri;
 
             Dispatcher.InvokeAsync(async () =>
             {
@@ -40,7 +44,7 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
 
                     _webview.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
                     _webview.CoreWebView2.WebResourceRequested += HandleWebResourceRequested;
-                    _webview.Source = new Uri(new Uri($"https://{_core.ContentHost}/"), _core.HostPageRelativeUrl);
+                    _core.Start();
                 }
                 catch (Exception ex)
                 {
@@ -50,6 +54,12 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
                     throw;
                 }
             });
+        }
+
+        public void Dispose()
+        {
+            // TODO: Find correct disposal pattern within WPF, ideally with IAsyncDisposable
+            _core?.Dispose();
         }
 
         private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs args)
