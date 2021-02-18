@@ -11,6 +11,6 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="CadetBlue">
             <Label>This is native WPF UI</Label>
         </StackPanel>
-        <blazorwpf:BlazorWebView HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <blazorwpf:BlazorWebView HostPage="wwwroot\index.html" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </DockPanel>
 </Window>

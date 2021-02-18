@@ -11,4 +11,10 @@
     <ProjectReference Include="..\SharedProjects\RazorClassLibrarySample\RazorClassLibrarySample.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
