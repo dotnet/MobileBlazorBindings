@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Web.WebView2.Wpf;
 
 namespace Microsoft.MobileBlazorBindings.WPFNew
@@ -10,8 +12,16 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         private const string webViewTemplateChildName = "WebView";
         private WebView2BlazorWebViewCore _core;
 
+        public static readonly DependencyProperty RootComponentsProperty = DependencyProperty.Register(
+            nameof(RootComponents),
+            typeof(ObservableCollection<RootComponent>),
+            typeof(BlazorWebView)
+        );
+
         public BlazorWebView()
         {
+            SetValue(RootComponentsProperty, new ObservableCollection<RootComponent>());
+
             Template = new ControlTemplate
             {
                 VisualTree = new FrameworkElementFactory(typeof(WebView2), webViewTemplateChildName)
@@ -19,6 +29,9 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         }
 
         public string HostPage { get; set; }
+
+        public ObservableCollection<RootComponent> RootComponents
+            => (ObservableCollection<RootComponent>)GetValue(RootComponentsProperty);
 
         public override void OnApplyTemplate()
         {

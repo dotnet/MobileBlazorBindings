@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfNewBlazorSample"
+        xmlns:rcl="clr-namespace:RazorClassLibrarySample;assembly=RazorClassLibrarySample"
         xmlns:blazorwpf="clr-namespace:Microsoft.MobileBlazorBindings.WPFNew;assembly=Microsoft.MobileBlazorBindings.WPFNew"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -11,6 +12,10 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="CadetBlue">
             <Label>This is native WPF UI</Label>
         </StackPanel>
-        <blazorwpf:BlazorWebView HostPage="wwwroot\index.html" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <blazorwpf:BlazorWebView HostPage="wwwroot\index.html" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <blazorwpf:BlazorWebView.RootComponents>
+                <blazorwpf:RootComponent Selector="#app" Type="{x:Type rcl:SampleWebComponent}" />
+            </blazorwpf:BlazorWebView.RootComponents>
+        </blazorwpf:BlazorWebView>
     </DockPanel>
 </Window>
