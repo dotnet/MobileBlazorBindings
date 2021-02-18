@@ -58,7 +58,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
                 catch (Exception ex)
                 {
                     // TODO: Figure out how to ensure any exceptions propagate to a central handler
-                    // without needing this try/catch
+                    // without needing this try/catch. Why doesn't it propagate to the unhandled exception
+                    // event already?
                     MessageBox.Show(ex.ToString());
                     throw;
                 }
@@ -68,6 +69,7 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         public void Dispose()
         {
             // TODO: Determine correct disposal pattern for WPF
+            // How do we DisposeAsync properly?
             _core?.Dispose();
         }
     }
