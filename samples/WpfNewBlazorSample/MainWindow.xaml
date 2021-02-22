@@ -12,7 +12,7 @@
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="CadetBlue">
             <Label>This is native WPF UI</Label>
         </StackPanel>
-        <blazorwpf:BlazorWebView HostPage="wwwroot\index.html" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <blazorwpf:BlazorWebView Services="{StaticResource services}" HostPage="wwwroot\index.html" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <blazorwpf:BlazorWebView.RootComponents>
                 <blazorwpf:RootComponent Selector="#app" Type="{x:Type rcl:SampleWebComponent}" />
             </blazorwpf:BlazorWebView.RootComponents>

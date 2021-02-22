@@ -12,12 +12,6 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         private const string webViewTemplateChildName = "WebView";
         private WebView2BlazorWebViewCore _core;
 
-        public static readonly DependencyProperty RootComponentsProperty = DependencyProperty.Register(
-            nameof(RootComponents),
-            typeof(ObservableCollection<RootComponent>),
-            typeof(BlazorWebView)
-        );
-
         public BlazorWebView()
         {
             SetValue(RootComponentsProperty, new ObservableCollection<RootComponent>());
@@ -30,8 +24,24 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
 
         public string HostPage { get; set; }
 
+        public static readonly DependencyProperty RootComponentsProperty = DependencyProperty.Register(
+            nameof(RootComponents),
+            typeof(ObservableCollection<RootComponent>),
+            typeof(BlazorWebView));
+
         public ObservableCollection<RootComponent> RootComponents
             => (ObservableCollection<RootComponent>)GetValue(RootComponentsProperty);
+
+        public static readonly DependencyProperty ServicesProperty = DependencyProperty.Register(
+            nameof(Services),
+            typeof(IServiceProvider),
+            typeof(BlazorWebView));
+
+        public IServiceProvider Services
+        {
+            get { return (IServiceProvider)GetValue(ServicesProperty); }
+            set { SetValue(ServicesProperty, value); }
+        }
 
         public override void OnApplyTemplate()
         {
@@ -41,7 +51,7 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
 
             // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
             _core?.Dispose();
-            _core = new WebView2BlazorWebViewCore(webview, HostPage);
+            _core = new WebView2BlazorWebViewCore(webview, Services, HostPage);
             
             // TODO: Consider respecting the observability of this collection
             foreach (var rootComponent in RootComponents)

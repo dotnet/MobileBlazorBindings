@@ -17,8 +17,13 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         private readonly string _contentRootPath;
         private readonly string _hostPageRelativeUrl;
 
-        public BlazorWebViewCore(string hostPageFilePath)
+        public BlazorWebViewCore(IServiceProvider services, string hostPageFilePath)
         {
+            if (services is null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
             var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
             _contentHost = "0.0.0.0";
             _contentRootPath = Path.GetDirectoryName(hostPageAbsolute);

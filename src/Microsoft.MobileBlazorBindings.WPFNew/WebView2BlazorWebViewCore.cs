@@ -13,8 +13,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         private readonly WebView2 _webview;
         private CoreWebView2Environment _webviewEnvironment;
 
-        public WebView2BlazorWebViewCore(WebView2 webview, string hostPageFilePath)
-            : base(hostPageFilePath)
+        public WebView2BlazorWebViewCore(WebView2 webview, IServiceProvider services, string hostPageFilePath)
+            : base(services, hostPageFilePath)
         {
             _webview = webview;
         }
