@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
+﻿using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Text;
@@ -16,23 +19,27 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         private readonly string _contentHost;
         private readonly string _contentRootPath;
         private readonly string _hostPageRelativeUrl;
+        private readonly WebViewRenderer _renderer;
 
-        public BlazorWebViewCore(IServiceProvider services, string hostPageFilePath)
+        public BlazorWebViewCore(IServiceProvider serviceProvider, string hostPageFilePath)
         {
-            if (services is null)
+            if (serviceProvider is null)
             {
-                throw new ArgumentNullException(nameof(services));
+                throw new ArgumentNullException(nameof(serviceProvider));
             }
 
             var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
             _contentHost = "0.0.0.0";
             _contentRootPath = Path.GetDirectoryName(hostPageAbsolute);
             _hostPageRelativeUrl = Path.GetRelativePath(_contentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
+
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
+            _renderer = new WebViewRenderer(serviceProvider, loggerFactory);
         }
 
         public void AddRootComponent(Type type, string selector)
         {
-            // TODO
+            _renderer.AddRootComponent(type, selector);
         }
 
         protected abstract void Navigate(Uri uri);
@@ -90,7 +97,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public void Dispose()
         {
-            // Nothing to do yet
+            _renderer?.Dispose();
         }
     }
 }

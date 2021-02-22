@@ -3,13 +3,14 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <NoWarn>$(NoWarn);CA1056;CA1063;CA1816</NoWarn>
+    <NoWarn>$(NoWarn);CA1056;CA1063;CA1816;BL0006</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.0-preview.2.21116.24" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-preview.2.21117.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-preview.2.21117.2" />
   </ItemGroup>
 
 </Project>
