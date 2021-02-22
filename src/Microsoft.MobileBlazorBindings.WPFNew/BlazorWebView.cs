@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,6 +55,10 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
             _core?.Dispose();
             _core = new WebView2BlazorWebViewCore(webview, Services, HostPage);
+            _core.OnUnhandledException += (sender, ex) =>
+            {
+                Dispatcher.Invoke(() => ExceptionDispatchInfo.Capture(ex).Throw());
+            };
 
             // TODO: Consider respecting the observability of this collection
             var addRootComponentTasks = RootComponents.Select(

@@ -8,9 +8,12 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 {
     internal class WebViewRenderer : Renderer
     {
-        public WebViewRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+        private readonly Action<Exception> _onException;
+
+        public WebViewRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory, Action<Exception> onException)
             : base(serviceProvider, loggerFactory)
         {
+            _onException = onException ?? throw new ArgumentNullException(nameof(onException));
         }
 
         public override Dispatcher Dispatcher => throw new NotImplementedException();
@@ -27,9 +30,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         }
 
         protected override void HandleException(Exception exception)
-        {
-            throw new NotImplementedException();
-        }
+            => _onException(exception);
 
         protected override Task UpdateDisplayAsync(in RenderBatch renderBatch)
         {

@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         private readonly string _hostPageRelativeUrl;
         private readonly WebViewRenderer _renderer;
 
+        public event EventHandler<Exception> OnUnhandledException;
+
         public BlazorWebViewCore(IServiceProvider serviceProvider, string hostPageFilePath)
         {
             if (serviceProvider is null)
@@ -35,7 +38,17 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             _hostPageRelativeUrl = Path.GetRelativePath(_contentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
 
             var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-            _renderer = new WebViewRenderer(serviceProvider, loggerFactory);
+            _renderer = new WebViewRenderer(serviceProvider, loggerFactory, exception =>
+            {
+                if (OnUnhandledException != null)
+                {
+                    OnUnhandledException.Invoke(this, exception);
+                }
+                else
+                {
+                    ExceptionDispatchInfo.Capture(exception).Throw();
+                }
+            });
         }
 
         public Task AddRootComponentAsync(Type type, string selector, ParameterView parameters)
