@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.HostingNew;
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;
@@ -13,8 +14,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         private readonly WebView2 _webview;
         private CoreWebView2Environment _webviewEnvironment;
 
-        public WebView2BlazorWebViewCore(WebView2 webview, IServiceProvider services, string hostPageFilePath)
-            : base(services, hostPageFilePath)
+        public WebView2BlazorWebViewCore(WebView2 webview, IServiceProvider services, Dispatcher dispatcher, string hostPageFilePath)
+            : base(services, dispatcher, hostPageFilePath)
         {
             _webview = webview;
         }

@@ -25,7 +25,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public event EventHandler<Exception> OnUnhandledException;
 
-        public BlazorWebViewCore(IServiceProvider serviceProvider, string hostPageFilePath)
+        public BlazorWebViewCore(IServiceProvider serviceProvider, Dispatcher dispatcher, string hostPageFilePath)
         {
             if (serviceProvider is null)
             {
@@ -48,7 +48,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
                 {
                     ExceptionDispatchInfo.Capture(exception).Throw();
                 }
-            });
+            }, dispatcher);
         }
 
         public Task AddRootComponentAsync(Type type, string selector, ParameterView parameters)

@@ -9,14 +9,20 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
     internal class WebViewRenderer : Renderer
     {
         private readonly Action<Exception> _onException;
+        private readonly Dispatcher _dispatcher;
 
-        public WebViewRenderer(IServiceProvider serviceProvider, ILoggerFactory loggerFactory, Action<Exception> onException)
+        public WebViewRenderer(
+            IServiceProvider serviceProvider,
+            ILoggerFactory loggerFactory,
+            Action<Exception> onException,
+            Dispatcher dispatcher)
             : base(serviceProvider, loggerFactory)
         {
             _onException = onException ?? throw new ArgumentNullException(nameof(onException));
+            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
         }
 
-        public override Dispatcher Dispatcher => throw new NotImplementedException();
+        public override Dispatcher Dispatcher => _dispatcher;
 
         public Task AddRootComponentAsync(Type componentType, string domElementSelector, ParameterView parameters)
         {
