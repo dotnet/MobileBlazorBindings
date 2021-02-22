@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.RenderTree;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -37,10 +38,8 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             _renderer = new WebViewRenderer(serviceProvider, loggerFactory);
         }
 
-        public void AddRootComponent(Type type, string selector)
-        {
-            _renderer.AddRootComponent(type, selector);
-        }
+        public Task AddRootComponentAsync(Type type, string selector, ParameterView parameters)
+            => _renderer.AddRootComponentAsync(type, selector, parameters);
 
         protected abstract void Navigate(Uri uri);
 

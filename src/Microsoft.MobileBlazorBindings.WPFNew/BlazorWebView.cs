@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.AspNetCore.Components;
@@ -52,17 +54,16 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
             _core?.Dispose();
             _core = new WebView2BlazorWebViewCore(webview, Services, HostPage);
-            
+
             // TODO: Consider respecting the observability of this collection
-            foreach (var rootComponent in RootComponents)
-            {
-                _core.AddRootComponent(rootComponent.Type, rootComponent.Selector);
-            }
+            var addRootComponentTasks = RootComponents.Select(
+                rootComponent => _core.AddRootComponentAsync(rootComponent.Type, rootComponent.Selector, ParameterView.Empty));
 
             Dispatcher.InvokeAsync(async () =>
             {
                 try
                 {
+                    await Task.WhenAll(addRootComponentTasks).ConfigureAwait(true);
                     await _core.StartAsync().ConfigureAwait(true);
                 }
                 catch (Exception ex)

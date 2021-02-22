@@ -15,9 +15,15 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public override Dispatcher Dispatcher => throw new NotImplementedException();
 
-        public void AddRootComponent(Type type, string selector)
+        public Task AddRootComponentAsync(Type componentType, string domElementSelector, ParameterView parameters)
         {
-            throw new NotImplementedException();
+            var component = InstantiateComponent(componentType);
+            var componentId = AssignRootComponentId(component);
+
+            // TODO: At this point, notify the JS runtime that it should associate
+            // componentId with selector so the following renderbatch will work
+
+            return RenderRootComponentAsync(componentId, parameters);
         }
 
         protected override void HandleException(Exception exception)
