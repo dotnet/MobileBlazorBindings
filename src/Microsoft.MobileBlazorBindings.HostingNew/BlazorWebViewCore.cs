@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -72,30 +71,37 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
             if (string.Equals(requestUri.Host, _contentHost, StringComparison.Ordinal))
             {
-                var filePath = Path.GetFullPath(Path.Combine(_contentRootPath, requestUri.GetComponents(UriComponents.Path, UriFormat.Unescaped)));
+                // Serve _framework files
+                var requestUriPath = requestUri.GetComponents(UriComponents.Path, UriFormat.Unescaped);
+                if (TryGetFrameworkFileContent(requestUriPath, out content))
+                {
+                    statusCode = 200;
+                    statusMessage = "OK";
+                    headers = GetResponseHeaders(GetResponseContentTypeOrDefault(requestUriPath));
+                    return true;
+                }
+
+                // Serve files from disk
+                // TODO: Make this pluggable, as not all platforms have disk access
+                var filePath = Path.GetFullPath(Path.Combine(_contentRootPath, requestUriPath));
                 if (filePath.StartsWith(_contentRootPath, StringComparison.Ordinal)
                     && File.Exists(filePath))
                 {
-                    var responseContentType = FileExtensionContentTypeProvider.TryGetContentType(filePath, out var matchedContentType)
-                        ? matchedContentType
-                        : "application/octet-stream";
-
                     statusCode = 200;
                     statusMessage = "OK";
-                    headers = $"Content-Type: {responseContentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store";
+                    headers = GetResponseHeaders(GetResponseContentTypeOrDefault(filePath));
                     content = File.OpenRead(filePath);
+                    return true;
                 }
-                else
-                {
-                    // Always provide a response to requests on the virtual domain, even if no file matches
-                    var message = $"There is no file at {filePath}";
-                    statusCode = 404;
-                    statusMessage = "Not found";
-                    headers = "Content-Type: text/plain";
+
+                // Always provide a response to requests on the virtual domain, even if no file matches
+                var message = $"There is no file at {filePath}";
+                statusCode = 404;
+                statusMessage = "Not found";
+                headers = GetResponseHeaders("text/plain");
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                    content = new MemoryStream(Encoding.UTF8.GetBytes(message));
+                content = new MemoryStream(Encoding.UTF8.GetBytes(message));
 #pragma warning restore CA2000 // Dispose objects before losing scope
-                }
 
                 return true;
             }
@@ -105,6 +111,35 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             headers = default;
             content = default;
             return false;
+        }
+
+        private static bool TryGetFrameworkFileContent(string requestUriPath, out Stream content)
+        {
+            const string prefix = "_framework/";
+            if (requestUriPath.StartsWith(prefix, StringComparison.Ordinal))
+            {
+                switch (requestUriPath.Substring(prefix.Length))
+                {
+                    case "blazor.webview.js":
+                        content = typeof(BlazorWebViewCore).Assembly.GetManifestResourceStream("Microsoft.MobileBlazorBindings.HostingNew.Resources.blazor.webview.js");
+                        return true;
+                }
+            }
+
+            content = default;
+            return false;
+        }
+
+        private static string GetResponseContentTypeOrDefault(string path)
+        {
+            return FileExtensionContentTypeProvider.TryGetContentType(path, out var matchedContentType)
+                ? matchedContentType
+                : "application/octet-stream";
+        }
+
+        private static string GetResponseHeaders(string contentType)
+        {
+            return $"Content-Type: {contentType}{Environment.NewLine}Cache-Control: no-cache, max-age=0, must-revalidate, no-store";
         }
 
         public void Dispose()

@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-preview.2.21117.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="../Microsoft.MobileBlazorBindings.WebView.JS/dist/blazor.desktop.js" Link="Resources\blazor.webview.js" />
+  </ItemGroup>
+
 </Project>
