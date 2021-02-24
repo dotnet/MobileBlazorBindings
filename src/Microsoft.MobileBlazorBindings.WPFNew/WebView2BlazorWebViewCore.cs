@@ -24,6 +24,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         {
             _webviewEnvironment = await CoreWebView2Environment.CreateAsync().ConfigureAwait(true);
             await _webview.EnsureCoreWebView2Async(_webviewEnvironment).ConfigureAwait(true);
+            await _webview.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync("window.external = { sendMessage: function(message) { window.chrome.webview.postMessage(message); }, receiveMessage: function(callback) { window.chrome.webview.addEventListener(\'message\', function(e) { callback(e.data); }); } };").ConfigureAwait(true);
+            _webview.CoreWebView2.WebMessageReceived += (sender, eventArgs) => ReceiveIpcMessage(eventArgs.Source, eventArgs.WebMessageAsJson);
 
             _webview.CoreWebView2.AddWebResourceRequestedFilter("*", CoreWebView2WebResourceContext.All);
             _webview.CoreWebView2.WebResourceRequested += (sender, args) =>

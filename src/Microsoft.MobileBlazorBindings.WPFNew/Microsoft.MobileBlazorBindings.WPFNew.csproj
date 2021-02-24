@@ -4,6 +4,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <LangVersion>latest</LangVersion>
+    <NoWarn>CA1031</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

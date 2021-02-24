@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -17,41 +18,36 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
     {
         private static readonly FileExtensionContentTypeProvider FileExtensionContentTypeProvider = new();
 
+        private readonly IServiceProvider _serviceProvider;
+        private readonly Dispatcher _dispatcher;
         private readonly string _contentHost;
         private readonly string _contentRootPath;
         private readonly string _hostPageRelativeUrl;
-        private readonly WebViewRenderer _renderer;
-
-        public event EventHandler<Exception> OnUnhandledException;
+        private readonly List<(Type type, string selector, ParameterView parameters)> _rootComponents = new();
+        private WebViewPageContext _currentContext;
 
         public BlazorWebViewCore(IServiceProvider serviceProvider, Dispatcher dispatcher, string hostPageFilePath)
         {
-            if (serviceProvider is null)
-            {
-                throw new ArgumentNullException(nameof(serviceProvider));
-            }
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
             var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
             _contentHost = "0.0.0.0";
             _contentRootPath = Path.GetDirectoryName(hostPageAbsolute);
             _hostPageRelativeUrl = Path.GetRelativePath(_contentRootPath, hostPageAbsolute).Replace(Path.DirectorySeparatorChar, '/');
-
-            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-            _renderer = new WebViewRenderer(serviceProvider, loggerFactory, exception =>
-            {
-                if (OnUnhandledException != null)
-                {
-                    OnUnhandledException.Invoke(this, exception);
-                }
-                else
-                {
-                    ExceptionDispatchInfo.Capture(exception).Throw();
-                }
-            }, dispatcher);
         }
 
-        public Task AddRootComponentAsync(Type type, string selector, ParameterView parameters)
-            => _renderer.AddRootComponentAsync(type, selector, parameters);
+        public async Task AddRootComponentAsync(Type type, string selector, ParameterView parameters)
+        {
+            // Keep track of the root components so we can restore them each time the page is loaded
+            _rootComponents.Add((type, selector, parameters));
+
+            // If a page is already loaded, notify it
+            if (_currentContext != null)
+            {
+                await _currentContext.Renderer.AddRootComponentAsync(type, selector, parameters).ConfigureAwait(true);
+            }
+        }
 
         protected abstract void Navigate(Uri uri);
 
@@ -60,6 +56,29 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             var startUri = new Uri(new Uri($"https://{_contentHost}/"), _hostPageRelativeUrl);
             Navigate(startUri);
             return Task.CompletedTask;
+        }
+
+        private void NotifyUnhandledException(Exception exception)
+        {
+            _dispatcher.InvokeAsync(() => ExceptionDispatchInfo.Capture(exception).Throw());
+        }
+
+        protected void ReceiveIpcMessage(string source, string message)
+        {
+            if (source == null || message == null || !source.StartsWith($"https://{_contentHost}/", StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _dispatcher.InvokeAsync(async () =>
+            {
+                if (message.StartsWith("\"ipc:components:init", StringComparison.Ordinal))
+                {
+                    _currentContext = new WebViewPageContext(_serviceProvider, _dispatcher,
+                        onUnhandledException: NotifyUnhandledException);
+                    await _currentContext.AddRootComponents(_rootComponents).ConfigureAwait(true);
+                }
+            });
         }
 
         protected bool TryGetResponseContent(Uri requestUri, out int statusCode, out string statusMessage, out Stream content, out string headers)
@@ -144,7 +163,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public void Dispose()
         {
-            _renderer?.Dispose();
+            _currentContext?.Dispose();
         }
     }
 }
