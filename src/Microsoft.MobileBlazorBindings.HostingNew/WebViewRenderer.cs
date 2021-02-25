@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.RenderTree;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.Logging;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -11,8 +12,10 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 {
     internal class WebViewRenderer : Renderer
     {
+        private const int RendererId = 0; // Only one per WebView
         private readonly Action<Exception> _onException;
         private readonly Dispatcher _dispatcher;
+        private readonly IJSRuntime _js;
         private readonly BlazorWebViewIPC _ipc;
         private readonly ConcurrentQueue<UnacknowledgedRenderBatch> _unacknowledgedRenderBatches = new();
         private long _nextRenderId = 1;
@@ -22,25 +25,30 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             ILoggerFactory loggerFactory,
             Action<Exception> onException,
             Dispatcher dispatcher,
+            IJSRuntime jsRuntime,
             BlazorWebViewIPC ipc)
             : base(serviceProvider, loggerFactory)
         {
             _onException = onException ?? throw new ArgumentNullException(nameof(onException));
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             _ipc = ipc ?? throw new ArgumentNullException(nameof(ipc));
+            _js = jsRuntime ?? throw new ArgumentNullException(nameof(jsRuntime));
         }
 
         public override Dispatcher Dispatcher => _dispatcher;
 
-        public Task AddRootComponentAsync(Type componentType, string domElementSelector, ParameterView parameters)
+        public async Task AddRootComponentAsync(Type componentType, string domElementSelector, ParameterView parameters)
         {
             var component = InstantiateComponent(componentType);
             var componentId = AssignRootComponentId(component);
 
-            // TODO: At this point, notify the JS runtime that it should associate
-            // componentId with selector so the following renderbatch will work
+            await _js.InvokeAsync<object>(
+                "Blazor._internal.attachRootComponentToElement",
+                domElementSelector,
+                componentId,
+                RendererId).ConfigureAwait(true);
 
-            return RenderRootComponentAsync(componentId, parameters);
+            await RenderRootComponentAsync(componentId, parameters).ConfigureAwait(true);
         }
 
         protected override void HandleException(Exception exception)

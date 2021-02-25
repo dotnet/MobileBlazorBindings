@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.JSInterop;
+using Microsoft.MobileBlazorBindings.HostingNew;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -7,6 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddBlazorWebViews(this IServiceCollection serviceCollection)
         {
             serviceCollection.AddLogging();
+            serviceCollection.AddScoped<IJSRuntime, BlazorWebViewJSRuntime>();
         }
     }
 }

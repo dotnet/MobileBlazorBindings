@@ -25,6 +25,7 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
                 try
                 {
                     workItem();
+                    return Task.CompletedTask;
                 }
                 catch (Exception ex)
                 {
@@ -34,9 +35,8 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
                     {
                         ExceptionDispatchInfo.Capture(exception).Throw();
                     }), ex);
+                    return Task.FromException(ex);
                 }
-
-                return Task.CompletedTask;
             }
             else
             {
@@ -44,11 +44,30 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             }
         }
 
-        public override Task InvokeAsync(Func<Task> workItem)
+        public override async Task InvokeAsync(Func<Task> workItem)
         {
-            return CurrentDispatcher.CheckAccess()
-                ? workItem()
-                : CurrentDispatcher.InvokeAsync(workItem).Task;
+            if (CurrentDispatcher.CheckAccess())
+            {
+                try
+                {
+                    await workItem().ConfigureAwait(true);
+                }
+                catch (Exception ex)
+                {
+                    // If the intention is to rethrow an exception on the UI thread, the only way of making
+                    // the UnhandledException events fire is to do it via BeginInvoke, not InvokeAsync.
+                    CurrentDispatcher.BeginInvoke((Action<Exception>)((Exception exception) =>
+                    {
+                        ExceptionDispatchInfo.Capture(exception).Throw();
+                    }), ex);
+
+                    throw;
+                }
+            }
+            else
+            {
+                await CurrentDispatcher.InvokeAsync(workItem).Task.ConfigureAwait(true);
+            }
         }
 
         public override Task<TResult> InvokeAsync<TResult>(Func<TResult> workItem)

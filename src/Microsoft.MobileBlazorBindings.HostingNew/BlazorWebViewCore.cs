@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Microsoft.MobileBlazorBindings.HostingNew
@@ -76,11 +78,23 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
             _dispatcher.InvokeAsync(async () =>
             {
-                if (message.StartsWith("\"ipc:components:init", StringComparison.Ordinal))
+                // TODO: Untangle all this encoding. I don't know why the TS side JSON-encodes the string.
+                var messageJson = JsonSerializer.Deserialize<string>(message);
+
+                if (messageJson.StartsWith("ipc:components:init", StringComparison.Ordinal))
                 {
                     _currentContext = new WebViewPageContext(_serviceProvider, _dispatcher,
                         _ipc, onUnhandledException: NotifyUnhandledException);
                     await _currentContext.AddRootComponents(_rootComponents).ConfigureAwait(true);
+                }
+                else if (messageJson.StartsWith("ipc:EndInvokeJSFromDotNet ", StringComparison.Ordinal))
+                {
+                    var argsArray = JsonSerializer.Deserialize<object[]>(
+                        messageJson.AsSpan("ipc:EndInvokeJSFromDotNet ".Length));
+
+                    DotNetDispatcher.EndInvokeJS(
+                        _currentContext.JSRuntime,
+                        ((JsonElement)argsArray[2]).GetString());
                 }
             });
         }
