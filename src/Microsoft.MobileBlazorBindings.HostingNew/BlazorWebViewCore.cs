@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.RenderTree;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop.Infrastructure;
@@ -26,7 +28,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         private readonly string _hostPageRelativeUrl;
         private readonly List<(Type type, string selector, ParameterView parameters)> _rootComponents = new();
         private readonly BlazorWebViewIPC _ipc;
-        
+
         private WebViewPageContext _currentContext;
 
         public BlazorWebViewCore(IServiceProvider serviceProvider, Dispatcher dispatcher, string hostPageFilePath)
@@ -116,10 +118,24 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
                         return;
                     }
 
+                    if (assemblyName == "Microsoft.MobileBlazorBindings.WebView" && methodIdentifier == "DispatchEvent")
+                    {
+                        // TODO: Stop using JS interop for event dispatch. There should be a first-class
+                        // IPC method for this.
+                        var eventDispatchArgs = JsonSerializer.Deserialize<JsonElement[]>(argsJson);
+                        var webEventData = WebEventData.Parse(_currentContext.Renderer,
+                            eventDispatchArgs[0].GetRawText(),
+                            eventDispatchArgs[1].GetString());
+                        await _currentContext.Renderer.DispatchEventAsync(
+                            eventHandlerId: webEventData.EventHandlerId,
+                            fieldInfo: webEventData.EventFieldInfo,
+                            eventArgs: webEventData.EventArgs).ConfigureAwait(true);
+                    }
+
                     DotNetDispatcher.BeginInvokeDotNet(
-                        _currentContext.JSRuntime,
-                        new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
-                        argsJson);
+                    _currentContext.JSRuntime,
+                    new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
+                    argsJson);
                 }
             });
         }
