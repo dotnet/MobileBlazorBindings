@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,12 +23,15 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
         private readonly string _contentRootPath;
         private readonly string _hostPageRelativeUrl;
         private readonly List<(Type type, string selector, ParameterView parameters)> _rootComponents = new();
+        private readonly BlazorWebViewIPC _ipc;
+        
         private WebViewPageContext _currentContext;
 
         public BlazorWebViewCore(IServiceProvider serviceProvider, Dispatcher dispatcher, string hostPageFilePath)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+            _ipc = new BlazorWebViewIPC(_dispatcher, SendIpcMessageAsync);
 
             var hostPageAbsolute = Path.GetFullPath(hostPageFilePath);
             _contentHost = "0.0.0.0";
@@ -63,6 +65,8 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             _dispatcher.InvokeAsync(() => ExceptionDispatchInfo.Capture(exception).Throw());
         }
 
+        protected abstract ValueTask SendIpcMessageAsync(string message);
+
         protected void ReceiveIpcMessage(string source, string message)
         {
             if (source == null || message == null || !source.StartsWith($"https://{_contentHost}/", StringComparison.Ordinal))
@@ -75,7 +79,7 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
                 if (message.StartsWith("\"ipc:components:init", StringComparison.Ordinal))
                 {
                     _currentContext = new WebViewPageContext(_serviceProvider, _dispatcher,
-                        onUnhandledException: NotifyUnhandledException);
+                        _ipc, onUnhandledException: NotifyUnhandledException);
                     await _currentContext.AddRootComponents(_rootComponents).ConfigureAwait(true);
                 }
             });

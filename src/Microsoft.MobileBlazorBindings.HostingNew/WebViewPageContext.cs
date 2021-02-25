@@ -18,13 +18,13 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
 
         public WebViewRenderer Renderer { get; }
 
-        public WebViewPageContext(IServiceProvider serviceProvider, Dispatcher dispatcher, Action<Exception> onUnhandledException)
+        public WebViewPageContext(IServiceProvider serviceProvider, Dispatcher dispatcher, BlazorWebViewIPC ipc, Action<Exception> onUnhandledException)
         {
             _serviceScope = serviceProvider.CreateScope();
             _services = _serviceScope.ServiceProvider;
             
             var loggerFactory = _services.GetRequiredService<ILoggerFactory>();
-            Renderer = new WebViewRenderer(serviceProvider, loggerFactory, onUnhandledException, dispatcher);
+            Renderer = new WebViewRenderer(serviceProvider, loggerFactory, onUnhandledException, dispatcher, ipc);
         }
 
         public async Task AddRootComponents(List<(Type type, string selector, ParameterView parameters)> rootComponents)

@@ -47,5 +47,14 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
         {
             _webview.Source = uri;
         }
+
+        protected override ValueTask SendIpcMessageAsync(string message)
+        {
+            // TODO: Consider requiring that the message string is a valid JSON string,
+            // so that we could use PostWebMessageAsJson instead. It's possible this will
+            // result in less string manipulation on the receiving end.
+            _webview.CoreWebView2.PostWebMessageAsString(message);
+            return ValueTask.CompletedTask;
+        }
     }
 }
