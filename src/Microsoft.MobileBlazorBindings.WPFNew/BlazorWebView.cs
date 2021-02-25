@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,12 +11,32 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
 {
     public sealed class BlazorWebView : Control, IDisposable
     {
+        public static readonly DependencyProperty HostPageProperty = DependencyProperty.Register(
+            name: nameof(HostPage),
+            propertyType: typeof(string),
+            ownerType: typeof(BlazorWebView),
+            typeMetadata: new PropertyMetadata(OnHostPagePropertyChanged));
+
+        public static readonly DependencyProperty RootComponentsProperty = DependencyProperty.Register(
+            name: nameof(RootComponents),
+            propertyType: typeof(ObservableCollection<RootComponent>),
+            ownerType: typeof(BlazorWebView));
+
+        public static readonly DependencyProperty ServicesProperty = DependencyProperty.Register(
+            name: nameof(Services),
+            propertyType: typeof(IServiceProvider),
+            ownerType: typeof(BlazorWebView),
+            typeMetadata: new PropertyMetadata(OnServicesPropertyChanged));
+
+
         private const string webViewTemplateChildName = "WebView";
+        private WebView2 _webView2;
         private WebView2BlazorWebViewCore _core;
 
         public BlazorWebView()
         {
             SetValue(RootComponentsProperty, new ObservableCollection<RootComponent>());
+            RootComponents.CollectionChanged += (_, ___) => StartWebViewCoreIfPossible();
 
             Template = new ControlTemplate
             {
@@ -25,20 +44,14 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             };
         }
 
-        public string HostPage { get; set; }
-
-        public static readonly DependencyProperty RootComponentsProperty = DependencyProperty.Register(
-            nameof(RootComponents),
-            typeof(ObservableCollection<RootComponent>),
-            typeof(BlazorWebView));
+        public string HostPage
+        {
+            get { return (string)GetValue(HostPageProperty); }
+            set { SetValue(HostPageProperty, value); }
+        }
 
         public ObservableCollection<RootComponent> RootComponents
             => (ObservableCollection<RootComponent>)GetValue(RootComponentsProperty);
-
-        public static readonly DependencyProperty ServicesProperty = DependencyProperty.Register(
-            nameof(Services),
-            typeof(IServiceProvider),
-            typeof(BlazorWebView));
 
         public IServiceProvider Services
         {
@@ -46,15 +59,46 @@ namespace Microsoft.MobileBlazorBindings.WPFNew
             set { SetValue(ServicesProperty, value); }
         }
 
+        private static void OnServicesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BlazorWebView)d).OnServicesPropertyChanged(e);
+
+        private void OnServicesPropertyChanged(DependencyPropertyChangedEventArgs e) => StartWebViewCoreIfPossible();
+
+        private static void OnHostPagePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) => ((BlazorWebView)d).OnHostPagePropertyChanged(e);
+
+        private void OnHostPagePropertyChanged(DependencyPropertyChangedEventArgs e) => StartWebViewCoreIfPossible();
+
+        private bool RequiredStartupPropertiesSet =>
+            _webView2 != null &&
+            HostPage != null &&
+            (RootComponents?.Any() ?? false) &&
+            Services != null;
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            StartWebViewCoreIfPossible();
+        }
+
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
-            var webview = (WebView2)GetTemplateChild(webViewTemplateChildName);
+            _webView2 = (WebView2)GetTemplateChild(webViewTemplateChildName);
 
-            // TODO: Can OnApplyTemplate get called multiple times? Do we need to handle this more efficiently?
+            StartWebViewCoreIfPossible();
+        }
+
+        private void StartWebViewCoreIfPossible()
+        {
+            if (!RequiredStartupPropertiesSet)
+            {
+                return;
+            }
+
+            // TODO: Can this get called multiple times, such as from OnApplyTemplate or a property change? Do we need to handle this more efficiently?
             _core?.Dispose();
-            _core = new WebView2BlazorWebViewCore(webview, Services, WPFDispatcher.Instance, HostPage);
+            _core = new WebView2BlazorWebViewCore(_webView2, Services, WPFDispatcher.Instance, HostPage);
 
             // TODO: Consider respecting the observability of this collection
             var addRootComponentTasks = RootComponents.Select(
