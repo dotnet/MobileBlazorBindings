@@ -75,6 +75,24 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
             await completionSource.Task.ConfigureAwait(true);
         }
 
+        public void RenderBatchAcknowledged(long batchId)
+        {
+            if (_unacknowledgedRenderBatches.TryDequeue(out var info))
+            {
+                if (info.BatchId != batchId)
+                {
+                    throw new ArgumentException($"Received acknowledgement of batch {batchId}, but the next batch to acknowledge is {info.BatchId}");
+                }
+
+                info.Data.Dispose();
+                info.CompletionSource.SetResult();
+            }
+            else
+            {
+                throw new InvalidOperationException("There are no pending batches to acknowledge");
+            }
+        }
+
         private readonly struct UnacknowledgedRenderBatch
         {
             public UnacknowledgedRenderBatch(long batchId, ArrayBuilder<byte> data, TaskCompletionSource completionSource)

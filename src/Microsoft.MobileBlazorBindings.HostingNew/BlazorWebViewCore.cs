@@ -96,6 +96,31 @@ namespace Microsoft.MobileBlazorBindings.HostingNew
                         _currentContext.JSRuntime,
                         ((JsonElement)argsArray[2]).GetString());
                 }
+                else if (messageJson.StartsWith("ipc:BeginInvokeDotNetFromJS ", StringComparison.Ordinal))
+                {
+                    var argsArray = JsonSerializer.Deserialize<object[]>(
+                        messageJson.AsSpan("ipc:BeginInvokeDotNetFromJS ".Length));
+                    var assemblyName = argsArray[1] != null ? ((JsonElement)argsArray[1]).GetString() : null;
+                    var methodIdentifier = ((JsonElement)argsArray[2]).GetString();
+                    var dotNetObjectId = ((JsonElement)argsArray[3]).GetInt64();
+                    var callId = ((JsonElement)argsArray[0]).GetString();
+                    var argsJson = ((JsonElement)argsArray[4]).GetString();
+
+                    if (assemblyName == "Microsoft.MobileBlazorBindings.WebView" && methodIdentifier == "OnRenderCompleted")
+                    {
+                        // TODO: Stop using JS interop for renderbatch acknowledgements. There should be a first-class
+                        // IPC method for this.
+                        var renderCompletedArgs = JsonSerializer.Deserialize<object[]>(argsJson);
+                        _currentContext.Renderer.RenderBatchAcknowledged(
+                            ((JsonElement)renderCompletedArgs[0]).GetInt64());
+                        return;
+                    }
+
+                    DotNetDispatcher.BeginInvokeDotNet(
+                        _currentContext.JSRuntime,
+                        new DotNetInvocationInfo(assemblyName, methodIdentifier, dotNetObjectId, callId),
+                        argsJson);
+                }
             });
         }
 
