@@ -51,9 +51,8 @@
         },
         "AppIdentifier": {
             "type": "parameter",
-            "description": "Overrides the Info.plist's CFBundleIdentifier",
-            "datatype": "string",
-            "defaultValue": "com.companyname"
+            "description": "Overrides the app's bundle identifier",
+            "datatype": "string"
         },
         "AndroidAppIdentifier": {
             "type": "parameter",
