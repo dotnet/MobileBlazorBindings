@@ -23,6 +23,13 @@ namespace Microsoft.MobileBlazorBindings.Core
             ElementHandlers.Add(typeof(TComponent).FullName, new ElementHandlerFactory((renderer, _) => factory(renderer)));
         }
 
+        public static void RegisterPropertyContentHandler<TComponent>(string propertyName,
+            Func<NativeComponentRenderer, IElementHandler> factory) where TComponent : NativeControlComponentBase
+        {
+            var key = $"p-{typeof(TComponent).FullName}.{propertyName}";
+            ElementHandlers.Add(key, new ElementHandlerFactory((renderer, _) => factory(renderer)));
+        }
+
         public static void RegisterElementHandler<TComponent, TControlHandler>() where TComponent : NativeControlComponentBase where TControlHandler : class, IElementHandler, new()
         {
             RegisterElementHandler<TComponent>((_, __) => new TControlHandler());
