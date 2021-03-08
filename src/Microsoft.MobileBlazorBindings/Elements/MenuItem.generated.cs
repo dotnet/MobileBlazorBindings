@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<MenuItem>(
                 renderer => new MenuItemHandler(renderer, new XF.MenuItem()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public string @class { get; set; }
@@ -74,5 +76,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

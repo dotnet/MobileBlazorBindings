@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Tab>(
                 renderer => new TabHandler(renderer, new XF.Tab()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.Tab NativeControl => ((TabHandler)ElementHandler).TabControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

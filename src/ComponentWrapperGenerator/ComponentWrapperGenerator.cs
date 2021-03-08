@@ -116,6 +116,8 @@ namespace ComponentWrapperGenerator
         {{
             ElementHandlerRegistry.RegisterElementHandler<{componentName}>(
                 renderer => new {componentHandlerName}(renderer, new {componentNamespacePrefix}{componentName}()));
+
+            RegisterAdditionalHandlers();
         }}
 ";
             }
@@ -140,6 +142,8 @@ namespace {Settings.RootNamespace}
         }}
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }}
 }}
 ");

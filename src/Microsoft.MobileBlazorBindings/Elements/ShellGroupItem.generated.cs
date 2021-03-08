@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ShellGroupItem>(
                 renderer => new ShellGroupItemHandler(renderer, new XF.ShellGroupItem()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -37,5 +39,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }
