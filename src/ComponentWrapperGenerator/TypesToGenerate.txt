@@ -49,6 +49,7 @@ TabbedPage
 TemplatedPage
 TemplatedView
 TimePicker
+ToolbarItem
 View
 VisualElement
 
