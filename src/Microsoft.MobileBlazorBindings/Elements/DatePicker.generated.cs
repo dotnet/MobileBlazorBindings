@@ -16,6 +16,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<DatePicker>(
                 renderer => new DatePickerHandler(renderer, new XF.DatePicker()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public double? CharacterSpacing { get; set; }
@@ -119,5 +121,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

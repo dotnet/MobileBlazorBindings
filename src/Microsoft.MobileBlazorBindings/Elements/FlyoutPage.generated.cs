@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<FlyoutPage>(
                 renderer => new FlyoutPageHandler(renderer, new XF.FlyoutPage()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public XF.FlyoutLayoutBehavior? FlyoutLayoutBehavior { get; set; }
@@ -44,5 +46,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

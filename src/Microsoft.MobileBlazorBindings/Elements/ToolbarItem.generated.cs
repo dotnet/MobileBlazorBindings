@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ToolbarItem>(
                 renderer => new ToolbarItemHandler(renderer, new XF.ToolbarItem()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -45,5 +47,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }
