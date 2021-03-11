@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.MobileBlazorBindings.Extensions;
 using System;
 
 namespace Microsoft.MobileBlazorBindings.Elements
@@ -11,21 +12,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
     /// </summary>
     public static class AttributeValueHolderFactory
     {
-        private sealed class DataHolder<TAttributeValue>
-        {
-            private readonly TAttributeValue _attributeValue;
-
-            internal DataHolder(TAttributeValue attributeValue)
-            {
-                _attributeValue = attributeValue;
-            }
-
-            internal void ProduceValue(out object attributeValue)
-            {
-                attributeValue = _attributeValue;
-            }
-        }
-
         /// <summary>
         /// Returns an <see cref="AttributeValueHolder"/> representing the data provided in <paramref name="attributeValue"/>.
         /// </summary>
@@ -34,7 +20,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <returns></returns>
         public static AttributeValueHolder FromObject<TAttributeValue>(TAttributeValue attributeValue)
         {
-            return new AttributeValueHolder(new DataHolder<TAttributeValue>(attributeValue).ProduceValue);
+            // Creating delegate from extension method parameter preserves equality for delegate,
+            // i.e. two delegates are equal if held values are equal.
+            return attributeValue.This;
         }
 
         /// <summary>
@@ -56,7 +44,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 throw new ArgumentException("Expected parameter instance to be an attribute value holder.", nameof(attributeValue));
             }
 
-            attributeValueAsValueHolder(out var value);
+            var value = attributeValueAsValueHolder();
 
             if (!(value is TAttributeValue typedAttributeValue))
             {
