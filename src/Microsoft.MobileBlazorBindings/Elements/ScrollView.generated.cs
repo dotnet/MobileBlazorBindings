@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ScrollView>(
                 renderer => new ScrollViewHandler(renderer, new XF.ScrollView()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -59,5 +61,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

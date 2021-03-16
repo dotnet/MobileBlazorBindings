@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Switch>(
                 renderer => new SwitchHandler(renderer, new XF.Switch()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -53,5 +55,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

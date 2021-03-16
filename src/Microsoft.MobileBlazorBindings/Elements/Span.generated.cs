@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Span>(
                 renderer => new SpanHandler(renderer, new XF.Span()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -114,5 +116,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

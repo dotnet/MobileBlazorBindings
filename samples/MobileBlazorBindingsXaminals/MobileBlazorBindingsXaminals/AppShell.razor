@@ -1,6 +1,6 @@
 ﻿<Shell OnNavigated="OnNavigated"
        OnNavigating="OnNavigating"
-       FlyoutBackgroundImage="@(new FileImageSource { File = "photo.jpg" })"
+       FlyoutBackgroundImage="@Photo"
        FlyoutBackgroundImageAspect="Aspect.AspectFill"
        FlyoutHeaderBehavior="FlyoutHeaderBehavior.CollapseOnScroll">
     <FlyoutHeader>
@@ -13,56 +13,67 @@
                     FlyoutDisplayOptions="FlyoutDisplayOptions.AsMultipleItems">
             <Tab Title="Domestic"
                  Route="domestic"
-                 Icon="@(new FileImageSource { File="paw.png" })">
+                 Icon="@Paw">
                 <ShellContent Route="cats"
                               Title="Cats"
-                              Icon="@(new FileImageSource { File="cat.png" })">
+                              Icon="@Cat">
                     <CatsPage />
                 </ShellContent>
 
                 <ShellContent Route="dogs"
                               Title="Dogs"
-                              Icon="@(new FileImageSource { File="dog.png" })">
+                              Icon="@Dog">
                     <DogsPage />
                 </ShellContent>
             </Tab>
 
             <ShellContent Route="monkeys"
                           Title="Monkeys"
-                          Icon="@(new FileImageSource { File="monkey.png" })">
+                          Icon="@Monkey">
                 <MonkeysPage />
             </ShellContent>
 
             <ShellContent Route="elephants"
                           Title="Elephants"
-                          Icon="@(new FileImageSource { File="elephant.png" })">
+                          Icon="@Elephant">
                 <ElephantsPage />
             </ShellContent>
 
             <ShellContent Route="bears"
                           Title="Bears"
-                          Icon="@(new FileImageSource { File="bear.png" })">
+                          Icon="@Bear">
                 <BearsPage />
             </ShellContent>
         </FlyoutItem>
 
         <ShellContent Route="about"
                       Title="About"
-                      Icon="@(new FileImageSource { File="info.png" })">
+                      Icon="@Info">
             <AboutPage />
         </ShellContent>
 
         <MenuItem Text="Random"
-                  IconImageSource="@(new FileImageSource { File="random.png" })"
+                  IconImageSource="@Random"
                   OnClick="OnRandomClick" />
         <MenuItem Text="Help"
-                  IconImageSource="@(new FileImageSource { File="help.png" })"
+                  IconImageSource="@Help"
                   OnClick="OnHelpClick" />
     </ChildContent>
 </Shell>
 
 @code
 {
+    ImageSource Photo = new FileImageSource { File = "photo.png" };
+    ImageSource Paw = new FileImageSource { File = "paw.png" };
+    ImageSource Cat = new FileImageSource { File = "cat.png" };
+    ImageSource Dog = new FileImageSource { File = "dog.png" };
+    ImageSource Monkey = new FileImageSource { File = "monkey.png" };
+    ImageSource Elephant = new FileImageSource { File = "elephant.png" };
+    ImageSource Bear = new FileImageSource { File = "bear.png" };
+    ImageSource Info = new FileImageSource { File = "info.png" };
+    ImageSource Random = new FileImageSource { File = "random.png" };
+    ImageSource Help = new FileImageSource { File = "help.png" };
+
     void OnNavigated(ShellNavigatedEventArgs e)
     {
     }

@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ImageButton>(
                 renderer => new ImageButtonHandler(renderer, new XF.ImageButton()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public XF.Aspect? Aspect { get; set; }
@@ -64,5 +66,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

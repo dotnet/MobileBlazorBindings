@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<GestureElement>(
                 renderer => new GestureElementHandler(renderer, new XF.GestureElement()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.GestureElement NativeControl => ((GestureElementHandler)ElementHandler).GestureElementControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

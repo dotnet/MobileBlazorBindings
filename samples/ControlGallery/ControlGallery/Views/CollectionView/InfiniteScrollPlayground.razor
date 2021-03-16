@@ -1,0 +1,43 @@
+﻿@using System.Collections.ObjectModel
+
+<ContentPage Title="Infinite scroll">
+    <StackLayout>
+        <CollectionView ItemsSource="_intItems"
+                        RemainingItemsThreshold="2"
+                        OnRemainingItemsThresholdReached="LoadItems">
+            <Header>
+                <Label Text="Scroll to load more items." />
+            </Header>
+
+            <ItemTemplate>
+                <Item Value="@context" />
+            </ItemTemplate>
+
+            <Footer>
+                <ActivityIndicator IsRunning="_loading" />
+            </Footer>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
+
+@code {
+    ObservableCollection<int> _intItems = new ObservableCollection<int>(Enumerable.Range(1, 20));
+    bool _loading;
+
+    async Task LoadItems()
+    {
+        if (!_loading)
+        {
+            _loading = true;
+
+            await Task.Delay(1000);
+
+            foreach (var item in Enumerable.Range(_intItems.Max() + 1, 20))
+            {
+                _intItems.Add(item);
+            }
+
+            _loading = false;
+        }
+    }
+}

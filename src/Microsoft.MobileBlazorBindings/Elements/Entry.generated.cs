@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Entry>(
                 renderer => new EntryHandler(renderer, new XF.Entry()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public XF.ClearButtonVisibility? ClearButtonVisibility { get; set; }
@@ -126,5 +128,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

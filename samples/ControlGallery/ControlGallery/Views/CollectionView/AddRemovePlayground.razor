@@ -1,0 +1,44 @@
+﻿@using System.Collections.ObjectModel
+
+<ContentPage Title="Add/Remove">
+    <StackLayout>
+        <Button Text="Add" OnClick="Add" />
+        <Button Text="Remove selected" OnClick="Remove" />
+        <Button Text="Remove all" OnClick="RemoveAll" />
+
+        <CollectionView ItemsSource="_intItems"
+                        SelectionMode="SelectionMode.Single"
+                        @bind-SelectedItem="_selectedItem">
+            <EmptyView>
+                <Label Text="Nothing here." />
+            </EmptyView>
+
+            <ItemTemplate>
+                <Item Value="@context" />
+            </ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
+
+@code {
+    ObservableCollection<int> _intItems = new ObservableCollection<int>(Enumerable.Range(1, 100));
+    object _selectedItem;
+
+    void Add()
+    {
+        _intItems.Add(_intItems.LastOrDefault() + 1);
+    }
+
+    void Remove()
+    {
+        if (_selectedItem is int selectedInt)
+        {
+            _intItems.Remove(selectedInt);
+        }
+    }
+
+    void RemoveAll()
+    {
+        _intItems.Clear();
+    }
+}

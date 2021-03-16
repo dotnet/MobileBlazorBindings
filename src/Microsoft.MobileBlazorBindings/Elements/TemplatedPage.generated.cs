@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<TemplatedPage>(
                 renderer => new TemplatedPageHandler(renderer, new XF.TemplatedPage()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.TemplatedPage NativeControl => ((TemplatedPageHandler)ElementHandler).TemplatedPageControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

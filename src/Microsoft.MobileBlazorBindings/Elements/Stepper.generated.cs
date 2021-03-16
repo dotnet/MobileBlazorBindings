@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Stepper>(
                 renderer => new StepperHandler(renderer, new XF.Stepper()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -73,5 +75,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<BoxView>(
                 renderer => new BoxViewHandler(renderer, new XF.BoxView()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -51,5 +53,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<BaseShellItem>(
                 renderer => new BaseShellItemHandler(renderer, new XF.BaseShellItem()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -116,5 +118,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

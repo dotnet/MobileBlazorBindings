@@ -1,13 +1,10 @@
 ﻿@inject ShellNavigationManager NavigationManager
 <ContentPage>
-    <ScrollView>
-        <StackLayout>
-            @foreach (var animal in CatData.Cats)
-            {
-                <AnimalTemplate Animal="animal" OnClick="AnimalClicked" />
-            }
-        </StackLayout>
-    </ScrollView>
+    <CollectionView ItemsSource="CatData.Cats">
+        <ItemTemplate>
+            <AnimalTemplate Animal="context" OnClick="AnimalClicked" />
+        </ItemTemplate>
+    </CollectionView>
 </ContentPage>
 
 
