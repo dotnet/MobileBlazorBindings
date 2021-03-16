@@ -199,7 +199,6 @@ namespace Microsoft.MobileBlazorBindings.WebView.Tizen
             if (Element != null && Element.SchemeHandlers.TryGetValue(urlScheme, out var schemeHandler))
             {
                 var uri = new Uri(url);
-                Console.WriteLine($"uri : Host : {uri.Host} - {uri.AbsolutePath.Substring(1)} - test {uri.Host.Equals("0.0.0.0", StringComparison.Ordinal)}");
 
                 var contentStream = schemeHandler(url, out var contentType);
                 if (contentStream != null)
