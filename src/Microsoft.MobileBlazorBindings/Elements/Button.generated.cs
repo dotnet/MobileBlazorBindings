@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Button>(
                 renderer => new ButtonHandler(renderer, new XF.Button()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -137,5 +139,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

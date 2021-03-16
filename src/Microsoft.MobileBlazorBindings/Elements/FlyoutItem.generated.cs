@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<FlyoutItem>(
                 renderer => new FlyoutItemHandler(renderer, new XF.FlyoutItem()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.FlyoutItem NativeControl => ((FlyoutItemHandler)ElementHandler).FlyoutItemControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

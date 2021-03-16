@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Label>(
                 renderer => new LabelHandler(renderer, new XF.Label()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public double? CharacterSpacing { get; set; }
@@ -155,5 +157,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

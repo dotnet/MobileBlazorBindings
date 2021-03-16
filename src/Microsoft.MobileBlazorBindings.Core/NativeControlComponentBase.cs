@@ -32,10 +32,17 @@ namespace Microsoft.MobileBlazorBindings.Core
                 builder.AddContent(2, childContent);
             }
 
+            int sequence = 3;
+            RenderAdditionalElementContent(builder, ref sequence);
+
             builder.CloseElement();
         }
 
         protected virtual void RenderAttributes(AttributesBuilder builder)
+        {
+        }
+
+        protected virtual void RenderAdditionalElementContent(RenderTreeBuilder builder, ref int sequence)
         {
         }
 

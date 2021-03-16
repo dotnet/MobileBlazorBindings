@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Page>(
                 renderer => new PageHandler(renderer, new XF.Page()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public XF.ImageSource BackgroundImageSource { get; set; }
@@ -66,5 +68,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

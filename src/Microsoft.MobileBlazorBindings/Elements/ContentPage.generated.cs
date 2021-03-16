@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ContentPage>(
                 renderer => new ContentPageHandler(renderer, new XF.ContentPage()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.ContentPage NativeControl => ((ContentPageHandler)ElementHandler).ContentPageControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

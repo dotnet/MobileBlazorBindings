@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Frame>(
                 renderer => new FrameHandler(renderer, new XF.Frame()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -59,5 +61,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

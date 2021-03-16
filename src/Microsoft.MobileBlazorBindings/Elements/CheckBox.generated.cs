@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<CheckBox>(
                 renderer => new CheckBoxHandler(renderer, new XF.CheckBox()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public XF.Color? Color { get; set; }
@@ -39,5 +41,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

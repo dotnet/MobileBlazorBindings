@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ContentView>(
                 renderer => new ContentViewHandler(renderer, new XF.ContentView()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.ContentView NativeControl => ((ContentViewHandler)ElementHandler).ContentViewControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

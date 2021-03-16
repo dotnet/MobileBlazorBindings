@@ -16,6 +16,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<TimePicker>(
                 renderer => new TimePickerHandler(renderer, new XF.TimePicker()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public double? CharacterSpacing { get; set; }
@@ -97,5 +99,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ActivityIndicator>(
                 renderer => new ActivityIndicatorHandler(renderer, new XF.ActivityIndicator()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -51,5 +53,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

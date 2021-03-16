@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<TemplatedView>(
                 renderer => new TemplatedViewHandler(renderer, new XF.TemplatedView()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.TemplatedView NativeControl => ((TemplatedViewHandler)ElementHandler).TemplatedViewControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }
