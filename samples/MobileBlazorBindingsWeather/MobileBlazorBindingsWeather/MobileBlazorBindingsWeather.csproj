@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.PancakeView\Microsoft.MobileBlazorBindings.PancakeView.csproj" />
+    <ProjectReference Include="..\..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
+    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.PancakeView.SourceGenerator\Microsoft.MobileBlazorBindings.PancakeView.SourceGenerator.csproj" />
   </ItemGroup>
 </Project>

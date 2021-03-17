@@ -1,0 +1,6 @@
+{
+  "rootNamespace": "Microsoft.MobileBlazorBindings.PancakeView.Elements",
+  "typesToGenerate": [
+    "Xamarin.Forms.PancakeView.PancakeView"
+  ]
+}
