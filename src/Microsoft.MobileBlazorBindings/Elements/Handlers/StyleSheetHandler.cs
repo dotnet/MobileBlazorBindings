@@ -100,5 +100,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             UpdateParentStyleSheetIfPossible();
         }
+
+        public void Remove()
+        {
+            throw new InvalidOperationException("Removing StyleSheet element is not supported.");
+        }
     }
 }

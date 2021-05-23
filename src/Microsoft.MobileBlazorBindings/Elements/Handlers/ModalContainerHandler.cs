@@ -117,5 +117,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             _parentChildManager.SetParent((XF.Element)parentElement);
         }
+
+        public void Remove()
+        {
+            _parentChildManager.SetParent(null);
+        }
     }
 }

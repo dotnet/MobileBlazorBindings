@@ -3,18 +3,20 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
+using System.Collections.Generic;
 using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GridCellHandler : IXamarinFormsContainerElementHandler, INonChildContainerElement
     {
+        private readonly List<XF.View> _children = new List<XF.View>();
+        private XF.Grid _parentGrid;
+
         public GridCellHandler(NativeComponentRenderer renderer, GridCellPlaceholderElement gridCellPlaceholderElementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             GridCellPlaceholderElementControl = gridCellPlaceholderElementControl ?? throw new ArgumentNullException(nameof(gridCellPlaceholderElementControl));
-
-            _parentChildManager = new ParentChildManager<XF.Grid, XF.View>(AddChildViewToParentGrid);
         }
 
         public NativeComponentRenderer Renderer { get; }
@@ -22,12 +24,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public XF.Element ElementControl => GridCellPlaceholderElementControl;
         public object TargetElement => ElementControl;
 
-        public int? Column { get; set; }
-        public int? ColumnSpan { get; set; }
-        public int? Row { get; set; }
-        public int? RowSpan { get; set; }
-
-        private readonly ParentChildManager<XF.Grid, XF.View> _parentChildManager;
+        public int Column { get; set; }
+        public int ColumnSpan { get; set; } = 1;
+        public int Row { get; set; }
+        public int RowSpan { get; set; } = 1;
 
         public void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
@@ -35,15 +35,19 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 case nameof(GridCell.Column):
                     Column = AttributeHelper.GetInt(attributeValue);
+                    _children.ForEach(c => XF.Grid.SetColumn(c, Column));
                     break;
                 case nameof(GridCell.ColumnSpan):
-                    ColumnSpan = AttributeHelper.GetInt(attributeValue);
+                    ColumnSpan = AttributeHelper.GetInt(attributeValue, 1);
+                    _children.ForEach(c => XF.Grid.SetColumnSpan(c, ColumnSpan));
                     break;
                 case nameof(GridCell.Row):
                     Row = AttributeHelper.GetInt(attributeValue);
+                    _children.ForEach(c => XF.Grid.SetRow(c, Row));
                     break;
                 case nameof(GridCell.RowSpan):
-                    RowSpan = AttributeHelper.GetInt(attributeValue);
+                    RowSpan = AttributeHelper.GetInt(attributeValue, 1);
+                    _children.ForEach(c => XF.Grid.SetRowSpan(c, RowSpan));
                     break;
                 default:
                     throw new NotImplementedException($"{GetType().FullName} doesn't recognize attribute '{attributeName}'");
@@ -52,20 +56,39 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public void AddChild(XF.Element child, int physicalSiblingIndex)
         {
-            _parentChildManager.SetChild(child);
+            if (!(child is XF.View childView))
+            {
+                throw new ArgumentException($"Expected parent to be of type {typeof(XF.View).FullName} but it is of type {child?.GetType().FullName}.", nameof(child));
+            }
+
+            XF.Grid.SetColumn(childView, Column);
+            XF.Grid.SetColumnSpan(childView, ColumnSpan);
+            XF.Grid.SetRow(childView, Row);
+            XF.Grid.SetRowSpan(childView, RowSpan);
+
+            _children.Add(childView);
+            _parentGrid.Children.Add(childView);
         }
 
         public void RemoveChild(XF.Element child)
         {
-            // TODO: This could probably be implemented at some point, but it isn't needed right now
-            throw new NotImplementedException();
+            if (!(child is XF.View childView))
+            {
+                throw new ArgumentException($"Expected parent to be of type {typeof(XF.View).FullName} but it is of type {child?.GetType().FullName}.", nameof(child));
+            }
+
+            _children.Remove(childView);
+            _parentGrid.Children.Remove(childView);
         }
 
         public int GetChildIndex(XF.Element child)
         {
-            // Because this is a 'fake' element, all matters related to physical trees
-            // should be no-ops.
-            return 0;
+            if (!(child is XF.View childView))
+            {
+                return -1;
+            }
+
+            return _children.IndexOf(childView);
         }
 
         public bool IsParented()
@@ -89,19 +112,28 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             throw new NotSupportedException();
         }
 
-        private void AddChildViewToParentGrid(ParentChildManager<XF.Grid, XF.View> parentChildManager)
-        {
-            parentChildManager.Parent.Children.Add(
-                view: parentChildManager.Child,
-                left: (Column ?? 0),
-                right: (Column ?? 0) + (ColumnSpan ?? 1),
-                top: (Row ?? 0),
-                bottom: (Row ?? 0) + (RowSpan ?? 1));
-        }
-
         public void SetParent(object parentElement)
         {
-            _parentChildManager.SetParent((XF.Element)parentElement);
+            if (!(parentElement is XF.Grid parentGrid))
+            {
+                throw new ArgumentException($"Expected parent to be of type {typeof(XF.Grid).FullName} but it is of type {parentElement?.GetType().FullName}.", nameof(parentElement));
+            }
+
+            _parentGrid = parentGrid;
+        }
+
+        public void Remove()
+        {
+            if (_parentGrid != null)
+            {
+                foreach (var child in _children)
+                {
+                    _parentGrid.Children.Remove(child);
+                }
+
+                _children.Clear();
+                _parentGrid = null;
+            }
         }
     }
 }

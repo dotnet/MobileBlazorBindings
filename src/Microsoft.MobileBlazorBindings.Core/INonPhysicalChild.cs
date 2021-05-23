@@ -19,5 +19,11 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// </summary>
         /// <param name="parentElement"></param>
         void SetParent(object parentElement);
+
+        /// <summary>
+        /// This is called when this component would otherwise be removed from a parent container.
+        /// This is useful so that this component can unapply its effects from parent element.
+        /// </summary>
+        void Remove();
     }
 }

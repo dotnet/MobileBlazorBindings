@@ -10,6 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
     public class GestureRecognizerHandler : IXamarinFormsElementHandler, INonChildContainerElement
     {
         private readonly EventManager _eventManager = new EventManager();
+        private object _parentElement;
 
         public GestureRecognizerHandler(NativeComponentRenderer renderer, XF.GestureRecognizer gestureRecognizerControl)
         {
@@ -68,7 +69,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 throw new ArgumentNullException(nameof(parentElement));
             }
 
-            switch (parentElement)
+            _parentElement = parentElement;
+
+            switch (_parentElement)
             {
                 case XF.View view:
                     view.GestureRecognizers.Add(GestureRecognizerControl);
@@ -78,6 +81,21 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 default:
                     throw new InvalidOperationException($"Gesture of type {ElementControl.GetType().FullName} can't be added to parent of type {parentElement.GetType().FullName}.");
+            }
+        }
+
+        public void Remove()
+        {
+            switch (_parentElement)
+            {
+                case XF.View view:
+                    view.GestureRecognizers.Remove(GestureRecognizerControl);
+                    break;
+                case XF.GestureElement gestureElement:
+                    gestureElement.GestureRecognizers.Remove(GestureRecognizerControl);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Gesture of type {ElementControl.GetType().FullName} can't be removed from parent of type {_parentElement.GetType().FullName}.");
             }
         }
     }

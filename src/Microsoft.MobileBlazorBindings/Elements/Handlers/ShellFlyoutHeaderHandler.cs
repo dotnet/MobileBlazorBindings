@@ -85,5 +85,14 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             _parentChildManager.SetParent((XF.Element)parentElement);
         }
+
+        public void Remove()
+        {
+            var flyoutHeaderContentView = (XF.ContentView)_parentChildManager.Parent.FlyoutHeader;
+            flyoutHeaderContentView.IsVisible = false;
+            flyoutHeaderContentView.Content = null;
+
+            _parentChildManager.SetParent(null);
+        }
     }
 }

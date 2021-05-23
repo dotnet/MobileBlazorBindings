@@ -52,5 +52,20 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
             }
         }
+
+        public override void Remove()
+        {
+            XF.Shell.SetNavBarIsVisible(Target, (bool)XF.Shell.NavBarIsVisibleProperty.DefaultValue);
+            XF.Shell.SetNavBarHasShadow(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
+            XF.Shell.SetTabBarIsVisible(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
+            XF.Shell.SetBackgroundColor(Target, (XF.Color)XF.Shell.BackgroundColorProperty.DefaultValue);
+            XF.Shell.SetDisabledColor(Target, (XF.Color)XF.Shell.DisabledColorProperty.DefaultValue);
+            XF.Shell.SetForegroundColor(Target, (XF.Color)XF.Shell.ForegroundColorProperty.DefaultValue);
+            XF.Shell.SetTabBarBackgroundColor(Target, (XF.Color)XF.Shell.TabBarBackgroundColorProperty.DefaultValue);
+            XF.Shell.SetTabBarTitleColor(Target, (XF.Color)XF.Shell.TabBarTitleColorProperty.DefaultValue);
+            XF.Shell.SetTabBarUnselectedColor(Target, (XF.Color)XF.Shell.TabBarUnselectedColorProperty.DefaultValue);
+            XF.Shell.SetTitleColor(Target, (XF.Color)XF.Shell.TitleColorProperty.DefaultValue);
+            XF.Shell.SetUnselectedColor(Target, (XF.Color)XF.Shell.UnselectedColorProperty.DefaultValue);
+        }
     }
 }
