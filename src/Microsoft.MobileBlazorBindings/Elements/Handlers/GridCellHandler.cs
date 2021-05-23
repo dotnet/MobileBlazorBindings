@@ -121,5 +121,19 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             _parentGrid = parentGrid;
         }
+
+        public void Remove()
+        {
+            if (_parentGrid != null)
+            {
+                foreach (var child in _children)
+                {
+                    _parentGrid.Children.Remove(child);
+                }
+
+                _children.Clear();
+                _parentGrid = null;
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         protected XF.BindableObject Target { get; private set; }
 
         public abstract void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
+        public abstract void Remove();
 
         public void SetParent(object parentElement)
         {
