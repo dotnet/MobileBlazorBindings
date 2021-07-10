@@ -7,6 +7,7 @@
 @page "/float/{Float}"
 @page "/decimal/{Decimal}"
 @page "/guid/{Guid}"
+@page "/nullable-guid/{NullableGuid}"
 @page "/bool/{Bool}"
 
 <ContentPage>
@@ -23,6 +24,7 @@
         <Label Text="@($"Float = {Float}")"></Label>
         <Label Text="@($"Decimal = {Decimal}")"></Label>
         <Label Text="@($"Guid = {Guid}")"></Label>
+        <Label Text="@($"Guid? = {NullableGuid}")"></Label>
         <Label Text="@($"Bool = {Bool}")"></Label>
     </StackLayout>
 </ContentPage>
@@ -37,6 +39,7 @@
     [Parameter] public float Float { get; set; }
     [Parameter] public decimal Decimal { get; set; }
     [Parameter] public Guid Guid { get; set; }
+    [Parameter] public Guid? NullableGuid { get; set; }
     [Parameter] public bool Bool { get; set; }
 
 

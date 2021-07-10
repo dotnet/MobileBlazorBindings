@@ -13,6 +13,7 @@
             <Button Text="Navigate with float" OnClick="NavigateWithFloat"></Button>
             <Button Text="Navigate with decimal" OnClick="NavigateWithDecimal"></Button>
             <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
+            <Button Text="Navigate with Nullable<Guid>" OnClick="NavigateWithNullableGuid"></Button>
             <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
         </StackLayout>
     </ScrollView>
@@ -29,5 +30,6 @@
     async Task NavigateWithFloat() => await NavigationManager.NavigateToAsync("/float/55.43");
     async Task NavigateWithDecimal() => await NavigationManager.NavigateToAsync("/decimal/55.43");
     async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
+    async Task NavigateWithNullableGuid() => await NavigationManager.NavigateToAsync($"/nullable-guid/{Guid.NewGuid()}");
     async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
 }
