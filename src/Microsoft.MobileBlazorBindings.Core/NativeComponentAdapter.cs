@@ -51,22 +51,16 @@ namespace Microsoft.MobileBlazorBindings.Core
             return $"{nameof(NativeComponentAdapter)}: Name={Name ?? "<?>"}, Target={_targetElement?.GetType().Name ?? "<None>"}, #Children={Children.Count}";
         }
 
-        internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch)
+        internal void ApplyEdits(int componentId, ArrayBuilderSegment<RenderTreeEdit> edits, ArrayRange<RenderTreeFrame> referenceFrames, RenderBatch batch, HashSet<int> processedComponentIds)
         {
             Renderer.Dispatcher.AssertAccess();
-
-            if (edits.Count == 0)
-            {
-                // TODO: Without this check there's a NullRef in ArrayBuilderSegment? Possibly a Blazor bug?
-                return;
-            }
 
             foreach (var edit in edits)
             {
                 switch (edit.Type)
                 {
                     case RenderTreeEditType.PrependFrame:
-                        ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex);
+                        ApplyPrependFrame(batch, componentId, edit.SiblingIndex, referenceFrames.Array, edit.ReferenceFrameIndex, processedComponentIds);
                         break;
                     case RenderTreeEditType.RemoveFrame:
                         ApplyRemoveFrame(edit.SiblingIndex);
@@ -177,14 +171,14 @@ namespace Microsoft.MobileBlazorBindings.Core
                 attributeEventUpdatesAttributeName: null);
         }
 
-        private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex)
+        private int ApplyPrependFrame(RenderBatch batch, int componentId, int siblingIndex, RenderTreeFrame[] frames, int frameIndex, HashSet<int> processedComponentIds)
         {
             ref var frame = ref frames[frameIndex];
             switch (frame.FrameType)
             {
                 case RenderTreeFrameType.Element:
                     {
-                        InsertElement(siblingIndex, frames, frameIndex, componentId, batch);
+                        InsertElement(siblingIndex, frames, frameIndex, componentId, batch, processedComponentIds);
                         return 1;
                     }
                 case RenderTreeFrameType.Component:
@@ -193,12 +187,27 @@ namespace Microsoft.MobileBlazorBindings.Core
                         var childAdapter = Renderer.CreateAdapterForChildComponent(_targetElement ?? _closestPhysicalParent, frame.ComponentId);
                         childAdapter.Name = $"For: '{frame.Component.GetType().FullName}'";
                         childAdapter._targetComponent = frame.Component;
+
                         AddChildAdapter(siblingIndex, childAdapter);
+
+                        // Apply edits for child component recursively.
+                        // That is done to fully initialize elements before adding to the UI tree.
+                        processedComponentIds.Add(frame.ComponentId);
+
+                        for (var i = 0; i < batch.UpdatedComponents.Count; i++)
+                        {
+                            var componentEdits = batch.UpdatedComponents.Array[i];
+                            if (componentEdits.ComponentId == frame.ComponentId && componentEdits.Edits.Count > 0)
+                            {
+                                childAdapter.ApplyEdits(frame.ComponentId, componentEdits.Edits, batch.ReferenceFrames, batch, processedComponentIds);
+                            }
+                        }
+
                         return 1;
                     }
                 case RenderTreeFrameType.Region:
                     {
-                        return InsertFrameRange(batch, componentId, siblingIndex, frames, frameIndex + 1, frameIndex + frame.RegionSubtreeLength);
+                        return InsertFrameRange(batch, componentId, siblingIndex, frames, frameIndex + 1, frameIndex + frame.RegionSubtreeLength, processedComponentIds);
                     }
                 case RenderTreeFrameType.Markup:
                     {
@@ -244,7 +253,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             return new NativeComponentAdapter(Renderer, physicalParent);
         }
 
-        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch)
+        private void InsertElement(int siblingIndex, RenderTreeFrame[] frames, int frameIndex, int componentId, RenderBatch batch, HashSet<int> processedComponentIds)
         {
             // Elements represent native elements
             ref var frame = ref frames[frameIndex];
@@ -264,19 +273,14 @@ namespace Microsoft.MobileBlazorBindings.Core
                 throw new NotSupportedException($"Currently we assume all adapter elements render exactly zero or one elements. Found an element with sibling index {siblingIndex}");
             }
 
-            // TODO: Consider in the future calling a new API to check if the elementHandler represents a native UI component:
-            // if (Renderer.ElementManager.IsNativeElement(elementHandler)) { add to UI tree }
-            // else { do something with non-native element, e.g. notify parent to handle it }
-
-            // For the location in the physical UI tree, find the last preceding-sibling adapter that has
-            // a physical descendant (if any). If there is one, we physically insert after that one. If not,
-            // we'll insert as the first child of the closest physical parent.
-            if (!Renderer.ElementManager.IsParented(elementHandler))
-            {
-                var elementIndex = GetIndexForElement();
-                Renderer.ElementManager.AddChildElement(_closestPhysicalParent, elementHandler, elementIndex);
-            }
             _targetElement = elementHandler;
+
+            // For most elements we should add element as child after all properties to have them fully initialized before rendering.
+            // However, INonPhysicalChild elements are not real elements, but apply to parent instead, therefore should be added as child before any properties are set.
+            if (elementHandler is INonPhysicalChild)
+            {
+                AddElementAsChildElement();
+            }
 
             var endIndexExcl = frameIndex + frames[frameIndex].ElementSubtreeLength;
             for (var descendantIndex = frameIndex + 1; descendantIndex < endIndexExcl; descendantIndex++)
@@ -290,9 +294,34 @@ namespace Microsoft.MobileBlazorBindings.Core
                 {
                     // As soon as we see a non-attribute child, all the subsequent child frames are
                     // not attributes, so bail out and insert the remnants recursively
-                    InsertFrameRange(batch, componentId, childIndex: 0, frames, descendantIndex, endIndexExcl);
+                    InsertFrameRange(batch, componentId, childIndex: 0, frames, descendantIndex, endIndexExcl, processedComponentIds);
                     break;
                 }
+            }
+
+            if (!(elementHandler is INonPhysicalChild))
+            {
+                AddElementAsChildElement();
+            }
+        }
+
+        /// <summary>
+        /// Add element as a child element for closest physical parent.
+        /// </summary>
+        private void AddElementAsChildElement()
+        {
+            // TODO: Consider in the future calling a new API to check if the elementHandler represents a native UI component:
+            // if (Renderer.ElementManager.IsNativeElement(elementHandler)) { add to UI tree }
+            // else { do something with non-native element, e.g. notify parent to handle it }
+
+            // For the location in the physical UI tree, find the last preceding-sibling adapter that has
+            // a physical descendant (if any). If there is one, we physically insert after that one. If not,
+            // we'll insert as the first child of the closest physical parent.
+
+            if (!Renderer.ElementManager.IsParented(_targetElement))
+            {
+                var elementIndex = GetIndexForElement();
+                Renderer.ElementManager.AddChildElement(_closestPhysicalParent, _targetElement, elementIndex);
             }
         }
 
@@ -406,17 +435,17 @@ namespace Microsoft.MobileBlazorBindings.Core
             return null;
         }
 
-        private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl)
+        private int InsertFrameRange(RenderBatch batch, int componentId, int childIndex, RenderTreeFrame[] frames, int startIndex, int endIndexExcl, HashSet<int> processedComponentIds)
         {
             var origChildIndex = childIndex;
-            for (var index = startIndex; index < endIndexExcl; index++)
+            for (var frameIndex = startIndex; frameIndex < endIndexExcl; frameIndex++)
             {
-                ref var frame = ref batch.ReferenceFrames.Array[index];
-                var numChildrenInserted = ApplyPrependFrame(batch, componentId, childIndex, frames, index);
+                ref var frame = ref batch.ReferenceFrames.Array[frameIndex];
+                var numChildrenInserted = ApplyPrependFrame(batch, componentId, childIndex, frames, frameIndex, processedComponentIds);
                 childIndex += numChildrenInserted;
 
                 // Skip over any descendants, since they are already dealt with recursively
-                index += CountDescendantFrames(frame);
+                frameIndex += CountDescendantFrames(frame);
             }
 
             return (childIndex - origChildIndex); // Total number of children inserted     
