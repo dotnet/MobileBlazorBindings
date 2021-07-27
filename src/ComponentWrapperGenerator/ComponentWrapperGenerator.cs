@@ -189,6 +189,7 @@ namespace {Settings.RootNamespace}
             typeof(XF.Font), // TODO: This is temporary; should be possible to add support later
             typeof(XF.FormattedString),
             typeof(XF.Shapes.Geometry),
+            typeof(XF.GradientStopCollection),
             typeof(ICommand),
             typeof(object),
             typeof(XF.Page),
@@ -340,6 +341,7 @@ namespace {Settings.RootNamespace}
             { typeof(XF.ImageSource), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
             { typeof(XF.Keyboard), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
             { typeof(XF.LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
+            { typeof(XF.Point), propValue => $"AttributeHelper.PointToString({propValue})" },
             { typeof(XF.Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
             { typeof(DateTime), propValue => $"AttributeHelper.DateTimeToString({propValue})" },
             { typeof(TimeSpan), propValue => $"AttributeHelper.TimeSpanToString({propValue})" },
@@ -606,6 +608,7 @@ namespace {Settings.RootNamespace}.Handlers
             { typeof(XF.ImageSource), "AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue{0})" },
             { typeof(XF.Keyboard), "AttributeHelper.DelegateToObject<XF.Keyboard>(attributeValue{0})" },
             { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
+            { typeof(XF.Point), "AttributeHelper.StringToPoint(attributeValue{0})" },
             { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
             { typeof(DateTime), "AttributeHelper.StringToDateTime(attributeValue{0})" },
             { typeof(TimeSpan), "AttributeHelper.StringToTimeSpan(attributeValue{0})" },
