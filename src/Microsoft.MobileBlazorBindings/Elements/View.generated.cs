@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class View : VisualElement
     {
+        static View()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.LayoutOptions" /> that define how the element gets laid in a layout cycle. This is a bindable property.

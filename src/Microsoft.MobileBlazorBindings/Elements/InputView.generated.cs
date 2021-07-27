@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class InputView : View
     {
+        static InputView()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         /// <summary>
         /// Gets or sets a value that indicates the number of device-independent units that should be in between characters in the text displayed by the Entry. Applies to Text and Placeholder.

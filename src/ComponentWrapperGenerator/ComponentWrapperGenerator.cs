@@ -109,18 +109,16 @@ namespace ComponentWrapperGenerator
                     .GetConstructors()
                     .Any(ctor => ctor.IsPublic && !ctor.GetParameters().Any());
 
-            var staticConstructor = string.Empty;
+            var staticConstructorBody = "";
             if (!isComponentAbstract && componentHasPublicParameterlessConstructor)
             {
-                staticConstructor = $@"        static {componentName}()
-        {{
-            ElementHandlerRegistry.RegisterElementHandler<{componentName}>(
+                staticConstructorBody = $@"ElementHandlerRegistry.RegisterElementHandler<{componentName}>(
                 renderer => new {componentHandlerName}(renderer, new {componentNamespacePrefix}{componentName}()));
 
-            RegisterAdditionalHandlers();
-        }}
 ";
             }
+
+            staticConstructorBody += "            RegisterAdditionalHandlers();";
 
             var outputBuilder = new StringBuilder();
             outputBuilder.Append($@"{headerText}
@@ -130,7 +128,11 @@ namespace {Settings.RootNamespace}
 {{
     public {classModifiers}partial class {componentName} : {componentBaseName}
     {{
-{staticConstructor}{propertyDeclarations}
+        static {componentName}()
+        {{
+            {staticConstructorBody.Trim()}
+        }}
+{ propertyDeclarations}
         public new {componentNamespacePrefix}{componentName} NativeControl => (({componentHandlerName})ElementHandler).{componentName}Control;
 
         protected override void RenderAttributes(AttributesBuilder builder)
