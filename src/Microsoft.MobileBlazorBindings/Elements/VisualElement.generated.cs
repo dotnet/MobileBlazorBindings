@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class VisualElement : NavigableElement
     {
+        static VisualElement()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         /// <summary>
         /// Gets or sets the X component of the center point for any transform, relative to the bounds of the element. This is a bindable property.
