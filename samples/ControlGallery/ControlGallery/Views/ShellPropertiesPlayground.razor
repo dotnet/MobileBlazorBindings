@@ -3,6 +3,13 @@
         <ToolbarItem Text="Help" OnClick="ShowHelp" />
     </ToolbarItems>
 
+    <Background>
+        <LinearGradientBrush EndPoint="new Point(0,1)">
+            <GradientStop Color="Color.LightSkyBlue" Offset="0" />
+            <GradientStop Color="Color.White" Offset="1" />
+        </LinearGradientBrush>
+    </Background>
+
     <ChildContent>
         <ShellProperties NavBarIsVisible="navBarVisible"
                          TabBarIsVisible="tabBarVisible"
@@ -22,7 +29,7 @@
     </ChildContent>
 </ContentPage>
 
-@code{
+@code {
     Microsoft.MobileBlazorBindings.Elements.Page page;
 
     bool navBarVisible = true;
