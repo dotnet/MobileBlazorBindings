@@ -37,6 +37,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         protected override void RenderAdditionalElementContent(RenderTreeBuilder builder, ref int sequence)
         {
+            base.RenderAdditionalElementContent(builder, ref sequence);
             RenderTreeBuilderHelper.AddContentProperty(builder, sequence++, typeof(Page), nameof(ToolbarItems), ToolbarItems);
         }
 
