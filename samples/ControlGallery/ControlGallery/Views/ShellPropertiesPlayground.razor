@@ -1,35 +1,55 @@
-﻿<ContentPage Title="Shell Properties">
-    <ShellProperties NavBarIsVisible="navBarVisible"
-                     TabBarIsVisible="tabBarVisible"
-                     TitleColor="titleColor" />
+﻿<ContentPage @ref="page">
+    <ToolbarItems>
+        <ToolbarItem Text="Help" OnClick="ShowHelp" />
+    </ToolbarItems>
 
-    <StackLayout>
-        <StackLayout Orientation="StackOrientation.Horizontal">
-            <Label Text="Enable NavBar: " />
-            <CheckBox @bind-IsChecked="navBarVisible" />
+    <Background>
+        <LinearGradientBrush EndPoint="new Point(0,1)">
+            <GradientStop Color="Color.LightSkyBlue" Offset="0" />
+            <GradientStop Color="Color.White" Offset="1" />
+        </LinearGradientBrush>
+    </Background>
+
+    <ChildContent>
+        <ShellProperties NavBarIsVisible="navBarVisible"
+                         TabBarIsVisible="tabBarVisible"
+                         TitleColor="titleColor" />
+
+        <StackLayout>
+            <StackLayout Orientation="StackOrientation.Horizontal">
+                <Label Text="Enable NavBar: " />
+                <CheckBox @bind-IsChecked="navBarVisible" />
+            </StackLayout>
+            <StackLayout Orientation="StackOrientation.Horizontal">
+                <Label Text="Enable TabBar: " />
+                <CheckBox @bind-IsChecked="tabBarVisible" />
+            </StackLayout>
+            <Button Text="Change Title Color" OnClick="ChangeTitleColor" />
         </StackLayout>
-        <StackLayout Orientation="StackOrientation.Horizontal">
-            <Label Text="Enable TabBar: " />
-            <CheckBox @bind-IsChecked="tabBarVisible" />
-        </StackLayout>
-        <Button Text="Change Title Color" OnClick="ChangeTitleColor" />
-    </StackLayout>
+    </ChildContent>
 </ContentPage>
 
-@code{
+@code {
+    Microsoft.MobileBlazorBindings.Elements.Page page;
+
     bool navBarVisible = true;
     bool tabBarVisible = true;
     Color? titleColor;
 
     List<Color> colors = new List<Color> {
-        Color.Red,
-        Color.Green,
-        Color.Blue
+    Color.Red,
+    Color.Green,
+    Color.Blue
     };
 
     void ChangeTitleColor()
     {
         var index = (titleColor.HasValue ? colors.IndexOf(titleColor.Value) + 1 : 0) % colors.Count;
         titleColor = colors[index];
+    }
+
+    async Task ShowHelp()
+    {
+        await page.NativeControl.DisplayAlert("Help", "Some help message", "OK");
     }
 }

@@ -1,7 +1,7 @@
-﻿<Grid Padding="new Thickness(10)" RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
-    <TapGestureRecognizer OnTapped="Details"/>
+﻿<Grid Padding="10" RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, *">
+    <TapGestureRecognizer OnTapped="Details" />
     <GridCell RowSpan="2">
-        <Image Source="new UriImageSource { Uri=new Uri(Animal.ImageUrl) }"
+        <Image Source="imageSource"
                Aspect="Aspect.AspectFill"
                HeightRequest="60"
                WidthRequest="60" />
@@ -23,10 +23,19 @@
 @code
 {
     [Parameter] public Animal Animal { get; set; }
-    [Parameter] public EventCallback<Animal> OnClick {get; set; }
+    [Parameter] public EventCallback<Animal> OnClick { get; set; }
+
+    UriImageSource imageSource = new UriImageSource();
+
+    protected override void OnParametersSet()
+    {
+        var uri = new Uri(Animal.ImageUrl);
+        imageSource.Uri = uri;
+    }
+
     void Details()
     {
-        if(OnClick.HasDelegate)
+        if (OnClick.HasDelegate)
             OnClick.InvokeAsync(Animal);
     }
 }

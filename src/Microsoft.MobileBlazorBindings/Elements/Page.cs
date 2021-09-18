@@ -2,12 +2,21 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
+using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class Page : VisualElement
     {
+        static partial void RegisterAdditionalHandlers()
+        {
+            ElementHandlerRegistry.RegisterPropertyContentHandler<Page>(nameof(ToolbarItems),
+                _ => new ListContentPropertyHandler<XF.Page, XF.ToolbarItem>(page => page.ToolbarItems));
+        }
+
         /// <summary>
         /// Indicates that the <see cref="Xamarin.Forms.Page" /> is about to appear.
         /// </summary>
@@ -18,11 +27,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// </summary>
         [Parameter] public EventCallback OnDisappearing { get; set; }
 
+        [Parameter] public RenderFragment ToolbarItems { get; set; }
+
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }
 #pragma warning restore CA1721 // Property names should not match get methods
 
         protected override RenderFragment GetChildContent() => ChildContent;
+
+        protected override void RenderAdditionalElementContent(RenderTreeBuilder builder, ref int sequence)
+        {
+            base.RenderAdditionalElementContent(builder, ref sequence);
+            RenderTreeBuilderHelper.AddContentProperty(builder, sequence++, typeof(Page), nameof(ToolbarItems), ToolbarItems);
+        }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder)
         {

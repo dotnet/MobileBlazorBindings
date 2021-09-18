@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<TabbedPage>(
                 renderer => new TabbedPageHandler(renderer, new XF.TabbedPage()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -61,5 +63,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

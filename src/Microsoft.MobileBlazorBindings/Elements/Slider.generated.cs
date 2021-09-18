@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<Slider>(
                 renderer => new SliderHandler(renderer, new XF.Slider()));
+
+            RegisterAdditionalHandlers();
         }
 
         /// <summary>
@@ -100,5 +102,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

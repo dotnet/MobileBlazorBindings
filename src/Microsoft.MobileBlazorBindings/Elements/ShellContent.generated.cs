@@ -15,6 +15,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<ShellContent>(
                 renderer => new ShellContentHandler(renderer, new XF.ShellContent()));
+
+            RegisterAdditionalHandlers();
         }
 
         public new XF.ShellContent NativeControl => ((ShellContentHandler)ElementHandler).ShellContentControl;
@@ -28,5 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

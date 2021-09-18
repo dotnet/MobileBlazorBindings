@@ -3,8 +3,10 @@ ActivityIndicator
 BaseMenuItem
 BaseShellItem
 BoxView
+Brush
 Button
 CheckBox
+#CollectionView // Manually written to use custom logic for generics and binding
 ContentPage
 ContentView
 DatePicker
@@ -14,13 +16,18 @@ FlyoutItem
 #FormattedString // Not used anymore because Label directly contains Span elements
 Frame
 GestureElement
+GradientBrush
+GradientStop
 Grid
+#GroupableItemsView // Manually written to use custom logic for generics and binding
 #GridCell // Not based on real XF type
 Image
 ImageButton
 InputView
+#ItemsView // Manually written to use custom logic for generics and binding
 Label
 Layout
+LinearGradientBrush
 #FlyoutDetailPage // Not based on real XF type
 #FlyoutFlyoutPage // Not based on real XF type
 FlyoutPage
@@ -30,17 +37,21 @@ NavigableElement
 Page
 #Picker // Manually written to use custom logic for generics and binding
 ProgressBar
+RadialGradientBrush 
 ScrollView
+#SelectableItemsView // Manually written to use custom logic for generics and binding
 Shell
 ShellContent
 #ShellFlyoutHeader // Not based on real XF type
 ShellGroupItem
 ShellItem
 ShellSection
+SolidColorBrush
 Slider
 Span
 StackLayout
 Stepper
+#StructuredItemsView  // Manually written to use custom logic for generics and binding
 #StyleSheet // Not based on real XF type
 Switch
 Tab
@@ -49,6 +60,7 @@ TabbedPage
 TemplatedPage
 TemplatedView
 TimePicker
+ToolbarItem
 View
 VisualElement
 

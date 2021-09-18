@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public abstract partial class Layout : View
     {
+        static Layout()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         /// <summary>
         /// Gets or sets a value that controls whether child elements inherit the input transparency of <see langword="this" /> layout when the tranparency is <see langword="true" />.
@@ -57,5 +61,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

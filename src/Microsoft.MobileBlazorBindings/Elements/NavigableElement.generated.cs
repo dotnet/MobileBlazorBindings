@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public partial class NavigableElement : Element
     {
+        static NavigableElement()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         [Parameter] public string @class { get; set; }
         [Parameter] public string StyleClass { get; set; }
@@ -34,5 +38,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

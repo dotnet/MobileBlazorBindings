@@ -16,6 +16,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             ElementHandlerRegistry.RegisterElementHandler<TwoPaneView>(
                 renderer => new TwoPaneViewHandler(renderer, new XFD.TwoPaneView()));
+
+            RegisterAdditionalHandlers();
         }
 
         [Parameter] public double? MinTallModeHeight { get; set; }
@@ -65,5 +67,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }

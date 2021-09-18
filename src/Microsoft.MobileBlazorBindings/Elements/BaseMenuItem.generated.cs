@@ -11,6 +11,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public abstract partial class BaseMenuItem : Element
     {
+        static BaseMenuItem()
+        {
+            RegisterAdditionalHandlers();
+        }
 
         public new XF.BaseMenuItem NativeControl => ((BaseMenuItemHandler)ElementHandler).BaseMenuItemControl;
 
@@ -23,5 +27,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder);
+
+        static partial void RegisterAdditionalHandlers();
     }
 }
