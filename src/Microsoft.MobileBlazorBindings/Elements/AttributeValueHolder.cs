@@ -9,6 +9,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
     /// the data is wrapped in a delegate of this type, which can contain logic to return and type.
     /// Then the handler invokes that delegate to retrieve the original data.
     /// </summary>
-    /// <param name="value">The data that this delegate represents.</param>
-    public delegate void AttributeValueHolder(out object value);
+    /// <returns>The data that this delegate represents.</returns>
+    public delegate object AttributeValueHolder();
 }
