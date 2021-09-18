@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +14,6 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 using System.Xml;
-using XF = Xamarin.Forms;
 
 namespace ComponentWrapperGenerator
 {
@@ -21,11 +23,13 @@ namespace ComponentWrapperGenerator
     {
         private GeneratorSettings Settings { get; }
         private IList<XmlDocument> XmlDocs { get; }
+        private IList<string> ElementNamespaces { get; }
 
-        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs)
+        public ComponentWrapperGenerator(GeneratorSettings settings, IList<XmlDocument> xmlDocs, IList<string> namespaces)
         {
             Settings = settings ?? throw new ArgumentNullException(nameof(settings));
             XmlDocs = xmlDocs ?? throw new ArgumentNullException(nameof(xmlDocs));
+            ElementNamespaces = namespaces ?? throw new ArgumentNullException(nameof(namespaces));
         }
 
         public void GenerateComponentWrapper(Type typeToGenerate, string outputFolder)
@@ -40,7 +44,8 @@ namespace ComponentWrapperGenerator
 
         private void GenerateComponentFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
         {
-            var fileName = Path.Combine(outputFolder, $"{typeToGenerate.Name}.generated.cs");
+            var subPath = GetSubPath(typeToGenerate);
+            var fileName = Path.Combine(outputFolder, subPath, $"{typeToGenerate.Name}.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty(directoryName))
             {
@@ -51,7 +56,13 @@ namespace ComponentWrapperGenerator
 
             var componentName = typeToGenerate.Name;
             var componentHandlerName = $"{componentName}Handler";
-            var componentBaseName = GetBaseTypeOfInterest(typeToGenerate).Name;
+
+            var baseType = GetBaseTypeOfInterest(typeToGenerate);
+            var componentBaseName = GetComponentNamespace(typeToGenerate) == GetComponentNamespace(baseType)
+                ? baseType.Name
+                : $"{GetComponentNamespace(baseType)}.{baseType.Name}";
+
+            var componentNamespace = GetComponentNamespace(typeToGenerate);
 
             // header
             var headerText = Settings.FileHeader;
@@ -61,11 +72,17 @@ namespace ComponentWrapperGenerator
             {
                 new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, },
                 new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Elements.Handlers", IsUsed = true, },
+                new UsingStatement { Namespace = $"{componentNamespace}.Handlers", IsUsed = true, },
                 new UsingStatement { Namespace = "System.Threading.Tasks", IsUsed = true, },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
-                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
+                new UsingStatement { Namespace = "Microsoft.Maui.Controls", Alias = "MC" },
+                new UsingStatement { Namespace = "Microsoft.Maui.Controls.Compatibility", Alias = "MCC" },
+                //new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
             };
+
+            if (componentNamespace != Settings.RootNamespace)
+            {
+                usings.Add(new UsingStatement { Namespace = Settings.RootNamespace, IsUsed = true });
+            }
 
             var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
 
@@ -93,7 +110,7 @@ namespace ComponentWrapperGenerator
                 Environment.NewLine,
                 usings
                     .Distinct()
-                    .Where(u => u.Namespace != Settings.RootNamespace)
+                    .Where(u => u.Namespace != componentNamespace)
                     .Where(u => u.IsUsed)
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
@@ -124,7 +141,7 @@ namespace ComponentWrapperGenerator
             outputBuilder.Append($@"{headerText}
 {usingsText}
 
-namespace {Settings.RootNamespace}
+namespace {componentNamespace}
 {{
     public {classModifiers}partial class {componentName} : {componentBaseName}
     {{
@@ -180,27 +197,29 @@ namespace {Settings.RootNamespace}
 
         private static readonly List<Type> DisallowedComponentPropertyTypes = new List<Type>
         {
-            typeof(XF.Brush),
-            typeof(XF.Button.ButtonContentLayout), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.ColumnDefinitionCollection),
-            typeof(XF.ControlTemplate),
-            typeof(XF.DataTemplate),
-            typeof(XF.Element),
-            typeof(XF.Font), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.FormattedString),
-            typeof(XF.Shapes.Geometry),
-            typeof(XF.GradientStopCollection),
+            typeof(Brush),
+            typeof(Button.ButtonContentLayout), // TODO: This is temporary; should be possible to add support later
+            typeof(ColumnDefinitionCollection),
+            typeof(ControlTemplate),
+            typeof(DataTemplate),
+            typeof(Element),
+            // typeof(Maui.Font), // TODO: This is temporary; should be possible to add support later
+            typeof(FormattedString),
+            typeof(Microsoft.Maui.Controls.Shapes.Geometry),
+            typeof(GradientStopCollection),
             typeof(ICommand),
             typeof(object),
-            typeof(XF.Page),
-            typeof(XF.ResourceDictionary),
-            typeof(XF.RowDefinitionCollection),
-            typeof(XF.ShellContent),
-            typeof(XF.ShellItem),
-            typeof(XF.ShellSection),
-            typeof(XF.Style), // TODO: This is temporary; should be possible to add support later
-            typeof(XF.IVisual),
-            typeof(XF.View),
+            typeof(Page),
+            typeof(ResourceDictionary),
+            typeof(RowDefinitionCollection),
+            typeof(ShellContent),
+            typeof(ShellItem),
+            typeof(ShellSection),
+            typeof(Style), // TODO: This is temporary; should be possible to add support later
+            typeof(IVisual),
+            typeof(View),
+            typeof(IView),
+            typeof(IViewHandler)
         };
 
         private string GetPropertyDeclaration(PropertyInfo prop, IList<UsingStatement> usings)
@@ -335,14 +354,15 @@ namespace {Settings.RootNamespace}
 
         private static readonly Dictionary<Type, Func<string, string>> TypeToAttributeHelperGetter = new Dictionary<Type, Func<string, string>>
         {
-            { typeof(XF.Color), propValue => $"AttributeHelper.ColorToString({propValue})" },
-            { typeof(XF.CornerRadius), propValue => $"AttributeHelper.CornerRadiusToString({propValue})" },
-            { typeof(XF.GridLength), propValue => $"AttributeHelper.GridLengthToString({propValue})" },
-            { typeof(XF.ImageSource), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
-            { typeof(XF.Keyboard), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
-            { typeof(XF.LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
-            { typeof(XF.Point), propValue => $"AttributeHelper.PointToString({propValue})" },
-            { typeof(XF.Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
+            { typeof(Color), propValue => $"AttributeHelper.ColorToString({propValue})" },
+            { typeof(CornerRadius), propValue => $"AttributeHelper.CornerRadiusToString({propValue})" },
+            { typeof(GridLength), propValue => $"AttributeHelper.GridLengthToString({propValue})" },
+            { typeof(ImageSource), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
+            { typeof(Keyboard), propValue => $"AttributeHelper.ObjectToDelegate({propValue})" },
+            { typeof(LayoutOptions), propValue => $"AttributeHelper.LayoutOptionsToString({propValue})" },
+            { typeof(Point), propValue => $"AttributeHelper.PointToString({propValue})" },
+            { typeof(Thickness), propValue => $"AttributeHelper.ThicknessToString({propValue})" },
+            { typeof(Rectangle), propValue => $"AttributeHelper.RectangleToString({propValue})" },
             { typeof(DateTime), propValue => $"AttributeHelper.DateTimeToString({propValue})" },
             { typeof(TimeSpan), propValue => $"AttributeHelper.TimeSpanToString({propValue})" },
             { typeof(bool), propValue => $"{propValue}" },
@@ -426,7 +446,8 @@ namespace {Settings.RootNamespace}
 
         private void GenerateHandlerFile(Type typeToGenerate, IEnumerable<PropertyInfo> propertiesToGenerate, string outputFolder)
         {
-            var fileName = Path.Combine(outputFolder, "Handlers", $"{typeToGenerate.Name}Handler.generated.cs");
+            var subPath = GetSubPath(typeToGenerate);
+            var fileName = Path.Combine(outputFolder, subPath, "Handlers", $"{typeToGenerate.Name}Handler.generated.cs");
             var directoryName = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty(directoryName))
             {
@@ -438,8 +459,12 @@ namespace {Settings.RootNamespace}
             var componentName = typeToGenerate.Name;
             var componentVarName = char.ToLowerInvariant(componentName[0]) + componentName.Substring(1);
             var componentHandlerName = $"{componentName}Handler";
-            var componentBaseName = GetBaseTypeOfInterest(typeToGenerate).Name;
-            var componentHandlerBaseName = $"{componentBaseName}Handler";
+
+            var baseType = GetBaseTypeOfInterest(typeToGenerate);
+            var componentHandlerBaseName = GetComponentNamespace(typeToGenerate) == GetComponentNamespace(baseType)
+                ? $"{baseType.Name}Handler"
+                : $"{GetComponentNamespace(baseType)}.Handlers.{baseType.Name}Handler";
+            var componentHandlerNamespace = $"{GetComponentNamespace(typeToGenerate)}.Handlers";
 
             // header
             var headerText = Settings.FileHeader;
@@ -450,8 +475,9 @@ namespace {Settings.RootNamespace}
                 //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, }, // Typically needed only when there are event handlers for the EventArgs types
                 new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
                 new UsingStatement { Namespace = "System", IsUsed = true, },
-                new UsingStatement { Namespace = "Xamarin.Forms", Alias = "XF" },
-                new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "XFD" },
+                new UsingStatement { Namespace = "Microsoft.Maui.Controls", Alias = "MC" },
+                new UsingStatement { Namespace = "Microsoft.Maui.Controls.Compatibility", Alias = "MCC" },
+                //new UsingStatement { Namespace = "Xamarin.Forms.DualScreen", Alias = "MD" },
             };
 
             var componentNamespacePrefix = GetNamespacePrefix(typeToGenerate, usings);
@@ -470,7 +496,7 @@ namespace {Settings.RootNamespace}
                 Environment.NewLine,
                 usings
                     .Distinct()
-                    .Where(u => u.Namespace != Settings.RootNamespace)
+                    .Where(u => u.Namespace != componentHandlerNamespace)
                     .Where(u => u.IsUsed)
                     .OrderBy(u => u.ComparableString)
                     .Select(u => u.UsingText));
@@ -502,7 +528,7 @@ namespace {Settings.RootNamespace}
             outputBuilder.Append($@"{headerText}
 {usingsText}
 
-namespace {Settings.RootNamespace}.Handlers
+namespace {componentHandlerNamespace}
 {{
     public {classModifiers}partial class {componentHandlerName} : {componentHandlerBaseName}
     {{
@@ -602,14 +628,15 @@ namespace {Settings.RootNamespace}.Handlers
 
         private static readonly Dictionary<Type, string> TypeToAttributeHelperSetter = new Dictionary<Type, string>
         {
-            { typeof(XF.Color), "AttributeHelper.StringToColor((string)attributeValue{0})" },
-            { typeof(XF.CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
-            { typeof(XF.GridLength), "AttributeHelper.StringToGridLength(attributeValue{0})" },
-            { typeof(XF.ImageSource), "AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue{0})" },
-            { typeof(XF.Keyboard), "AttributeHelper.DelegateToObject<XF.Keyboard>(attributeValue{0})" },
-            { typeof(XF.LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
-            { typeof(XF.Point), "AttributeHelper.StringToPoint(attributeValue{0})" },
-            { typeof(XF.Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
+            { typeof(Color), "AttributeHelper.StringToColor((string)attributeValue{0})" },
+            { typeof(CornerRadius), "AttributeHelper.StringToCornerRadius(attributeValue{0})" },
+            { typeof(GridLength), "AttributeHelper.StringToGridLength(attributeValue{0})" },
+            { typeof(ImageSource), "AttributeHelper.DelegateToObject<MC.ImageSource>(attributeValue{0})" },
+            { typeof(Keyboard), "AttributeHelper.DelegateToObject<Keyboard>(attributeValue{0})" },
+            { typeof(LayoutOptions), "AttributeHelper.StringToLayoutOptions(attributeValue{0})" },
+            { typeof(Point), "AttributeHelper.StringToPoint(attributeValue{0})" },
+            { typeof(Thickness), "AttributeHelper.StringToThickness(attributeValue{0})" },
+            { typeof(Rectangle), "AttributeHelper.StringToRectangle(attributeValue{0})" },
             { typeof(DateTime), "AttributeHelper.StringToDateTime(attributeValue{0})" },
             { typeof(TimeSpan), "AttributeHelper.StringToTimeSpan(attributeValue{0})" },
             { typeof(bool), "AttributeHelper.GetBool(attributeValue{0})" },
@@ -654,5 +681,31 @@ namespace {Settings.RootNamespace}.Handlers
 
         private static readonly List<string> ReservedKeywords = new List<string>
             { "class", };
+
+        private string GetNamespacePart(Type typeToGenerate)
+        {
+            var rootNamespace = ElementNamespaces.First(n => typeToGenerate.Namespace.StartsWith(n, StringComparison.Ordinal));
+
+            var remainingNamespacePart = typeToGenerate.Namespace == rootNamespace
+                ? ""
+                : typeToGenerate.Namespace[(rootNamespace.Length + 1)..];
+
+            return remainingNamespacePart;
+        }
+
+        private string GetComponentNamespace(Type typeToGenerate)
+        {
+            var namespacePart = GetNamespacePart(typeToGenerate);
+            var componentNamespace = string.IsNullOrEmpty(namespacePart)
+                ? Settings.RootNamespace
+                : $"{Settings.RootNamespace}.{namespacePart}";
+
+            return componentNamespace;
+        }
+
+        private string GetSubPath(Type typeToGenerate)
+        {
+            return GetNamespacePart(typeToGenerate).Replace('.', Path.DirectorySeparatorChar);
+        }
     }
 }

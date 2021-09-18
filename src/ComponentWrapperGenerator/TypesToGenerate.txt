@@ -1,4 +1,4 @@
-# Xamarin.Forms components
+# Microsoft.Maui.Controls components
 ActivityIndicator
 BaseMenuItem
 BaseShellItem
@@ -19,6 +19,7 @@ GestureElement
 GradientBrush
 GradientStop
 Grid
+GridLayout
 #GroupableItemsView // Manually written to use custom logic for generics and binding
 #GridCell // Not based on real XF type
 Image
@@ -49,6 +50,7 @@ ShellSection
 SolidColorBrush
 Slider
 Span
+StackBase
 StackLayout
 Stepper
 #StructuredItemsView  // Manually written to use custom logic for generics and binding
@@ -64,5 +66,8 @@ ToolbarItem
 View
 VisualElement
 
+# Microsoft.Maui.Controls.Compatibility components
+Compatibility.Layout
+
 # Xamarin.Forms.DualScreen components
-TwoPaneView
+# TwoPaneView

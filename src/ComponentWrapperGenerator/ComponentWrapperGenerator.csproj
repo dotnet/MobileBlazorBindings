@@ -1,40 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<UseMaui>true</UseMaui>
+		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="TypesToGenerate.txt" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="TypesToGenerate.txt" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Include="TypesToGenerate.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874">
-      <IncludeAssets></IncludeAssets>
-      <PrivateAssets></PrivateAssets>
-      <GeneratePathProperty>true</GeneratePathProperty>
-    </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="5.0.0.1874">
-      <IncludeAssets></IncludeAssets>
-      <PrivateAssets></PrivateAssets>
-      <GeneratePathProperty>true</GeneratePathProperty>
-    </PackageReference>
-  </ItemGroup>
-
-  <Target Name="CopyXmlDocsToOutput" AfterTargets="Build">
-    <Message Text="Xamarin.Forms package location: $(PkgXamarin_Forms)" />
-    <Copy SourceFiles="$(PkgXamarin_Forms)\lib\netstandard2.0\Xamarin.Forms.Core.xml" DestinationFolder="$(OutDir)" />
-
-    <!-- Xamarin.Forms.DualScreen doesn't have any XML docs at this time -->
-    <!--<Message Text="Xamarin.Forms.DualScreen package location: $(PkgXamarin_Forms_DualScreen)" />
-    <Copy SourceFiles="$(PkgXamarin_Forms_DualScreen)\lib\netstandard2.0\Xamarin.Forms.DualScreen.xml" DestinationFolder="$(OutDir)" />-->
-  </Target>
+	<ItemGroup>
+		<Content Include="TypesToGenerate.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>
