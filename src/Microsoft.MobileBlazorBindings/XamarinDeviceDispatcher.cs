@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {

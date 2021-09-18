@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,12 +14,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ContentView()
         {
             ElementHandlerRegistry.RegisterElementHandler<ContentView>(
-                renderer => new ContentViewHandler(renderer, new XF.ContentView()));
+                renderer => new ContentViewHandler(renderer, new MC.ContentView()));
 
             RegisterAdditionalHandlers();
         }
 
-        public new XF.ContentView NativeControl => ((ContentViewHandler)ElementHandler).ContentViewControl;
+        public new MC.ContentView NativeControl => ((ContentViewHandler)ElementHandler).ContentViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

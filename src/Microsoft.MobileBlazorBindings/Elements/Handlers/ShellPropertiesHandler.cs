@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using XF = Xamarin.Forms;
+using Microsoft.Maui.Graphics;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
@@ -12,60 +13,60 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(ShellProperties.NavBarIsVisible):
-                    XF.Shell.SetNavBarIsVisible(Target, AttributeHelper.GetBool(attributeValue));
+                    MC.Shell.SetNavBarIsVisible(Target, AttributeHelper.GetBool(attributeValue));
                     break;
                 case nameof(ShellProperties.NavBarHasShadow):
-                    XF.Shell.SetNavBarHasShadow(Target, AttributeHelper.GetBool(attributeValue));
+                    MC.Shell.SetNavBarHasShadow(Target, AttributeHelper.GetBool(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarIsVisible):
-                    XF.Shell.SetTabBarIsVisible(Target, AttributeHelper.GetBool(attributeValue));
+                    MC.Shell.SetTabBarIsVisible(Target, AttributeHelper.GetBool(attributeValue));
                     break;
                 case nameof(ShellProperties.BackgroundColor):
-                    XF.Shell.SetBackgroundColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetBackgroundColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.DisabledColor):
-                    XF.Shell.SetDisabledColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetDisabledColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.ForegroundColor):
-                    XF.Shell.SetForegroundColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetForegroundColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarBackgroundColor):
-                    XF.Shell.SetTabBarBackgroundColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTabBarBackgroundColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarDisabledColor):
-                    XF.Shell.SetTabBarDisabledColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTabBarDisabledColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarForegroundColor):
-                    XF.Shell.SetTabBarForegroundColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTabBarForegroundColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarTitleColor):
-                    XF.Shell.SetTabBarTitleColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTabBarTitleColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TabBarUnselectedColor):
-                    XF.Shell.SetTabBarUnselectedColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTabBarUnselectedColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.TitleColor):
-                    XF.Shell.SetTitleColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetTitleColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
                 case nameof(ShellProperties.UnselectedColor):
-                    XF.Shell.SetUnselectedColor(Target, AttributeHelper.StringToColor(attributeValue));
+                    MC.Shell.SetUnselectedColor(Target, AttributeHelper.StringToColor(attributeValue));
                     break;
             }
         }
 
         public override void Remove()
         {
-            XF.Shell.SetNavBarIsVisible(Target, (bool)XF.Shell.NavBarIsVisibleProperty.DefaultValue);
-            XF.Shell.SetNavBarHasShadow(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
-            XF.Shell.SetTabBarIsVisible(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
-            XF.Shell.SetBackgroundColor(Target, (XF.Color)XF.Shell.BackgroundColorProperty.DefaultValue);
-            XF.Shell.SetDisabledColor(Target, (XF.Color)XF.Shell.DisabledColorProperty.DefaultValue);
-            XF.Shell.SetForegroundColor(Target, (XF.Color)XF.Shell.ForegroundColorProperty.DefaultValue);
-            XF.Shell.SetTabBarBackgroundColor(Target, (XF.Color)XF.Shell.TabBarBackgroundColorProperty.DefaultValue);
-            XF.Shell.SetTabBarTitleColor(Target, (XF.Color)XF.Shell.TabBarTitleColorProperty.DefaultValue);
-            XF.Shell.SetTabBarUnselectedColor(Target, (XF.Color)XF.Shell.TabBarUnselectedColorProperty.DefaultValue);
-            XF.Shell.SetTitleColor(Target, (XF.Color)XF.Shell.TitleColorProperty.DefaultValue);
-            XF.Shell.SetUnselectedColor(Target, (XF.Color)XF.Shell.UnselectedColorProperty.DefaultValue);
+            MC.Shell.SetNavBarIsVisible(Target, (bool)MC.Shell.NavBarIsVisibleProperty.DefaultValue);
+            MC.Shell.SetNavBarHasShadow(Target, (bool)MC.Shell.NavBarHasShadowProperty.DefaultValue);
+            MC.Shell.SetTabBarIsVisible(Target, (bool)MC.Shell.NavBarHasShadowProperty.DefaultValue);
+            MC.Shell.SetBackgroundColor(Target, (Color)MC.Shell.BackgroundColorProperty.DefaultValue);
+            MC.Shell.SetDisabledColor(Target, (Color)MC.Shell.DisabledColorProperty.DefaultValue);
+            MC.Shell.SetForegroundColor(Target, (Color)MC.Shell.ForegroundColorProperty.DefaultValue);
+            MC.Shell.SetTabBarBackgroundColor(Target, (Color)MC.Shell.TabBarBackgroundColorProperty.DefaultValue);
+            MC.Shell.SetTabBarTitleColor(Target, (Color)MC.Shell.TabBarTitleColorProperty.DefaultValue);
+            MC.Shell.SetTabBarUnselectedColor(Target, (Color)MC.Shell.TabBarUnselectedColorProperty.DefaultValue);
+            MC.Shell.SetTitleColor(Target, (Color)MC.Shell.TitleColorProperty.DefaultValue);
+            MC.Shell.SetUnselectedColor(Target, (Color)MC.Shell.UnselectedColorProperty.DefaultValue);
         }
     }
 }

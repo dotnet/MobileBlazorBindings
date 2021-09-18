@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -13,12 +13,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static PanGestureRecognizer()
         {
             ElementHandlerRegistry.RegisterElementHandler<PanGestureRecognizer>(
-                renderer => new PanGestureRecognizerHandler(renderer, new XF.PanGestureRecognizer()));
+                renderer => new PanGestureRecognizerHandler(renderer, new MC.PanGestureRecognizer()));
         }
 
-        [Parameter] public EventCallback<XF.PanUpdatedEventArgs> OnPanUpdated { get; set; }
+        [Parameter] public EventCallback<MC.PanUpdatedEventArgs> OnPanUpdated { get; set; }
 
-        public new XF.PanGestureRecognizer NativeControl => ((PanGestureRecognizerHandler)ElementHandler).PanGestureRecognizerControl;
+        public new MC.PanGestureRecognizer NativeControl => ((PanGestureRecognizerHandler)ElementHandler).PanGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

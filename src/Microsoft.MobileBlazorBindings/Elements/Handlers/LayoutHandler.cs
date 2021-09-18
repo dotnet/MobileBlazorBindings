@@ -1,44 +1,40 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui;
 using System.Diagnostics;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public abstract partial class LayoutHandler : ViewHandler, IXamarinFormsContainerElementHandler
+    public abstract partial class LayoutHandler : ViewHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            var childAsView = child as XF.View;
+            var childAsView = child as IView;
 
-            var layoutControlOfView = LayoutControl as XF.Layout<XF.View>;
-
-            if (physicalSiblingIndex <= layoutControlOfView.Children.Count)
+            if (physicalSiblingIndex <= LayoutControl.Children.Count)
             {
-                layoutControlOfView.Children.Insert(physicalSiblingIndex, childAsView);
+                LayoutControl.Children.Insert(physicalSiblingIndex, childAsView);
             }
             else
             {
-                Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but layoutControlOfView.Children.Count={layoutControlOfView.Children.Count}");
-                layoutControlOfView.Children.Add(childAsView);
+                Debug.WriteLine($"WARNING: {nameof(AddChild)} called with {nameof(physicalSiblingIndex)}={physicalSiblingIndex}, but layoutControlOfView.Children.Count={LayoutControl.Children.Count}");
+                LayoutControl.Children.Add(childAsView);
             }
         }
 
-        public virtual int GetChildIndex(XF.Element child)
+        public virtual int GetChildIndex(MC.Element child)
         {
-            var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;
-            var childAsView = child as XF.View;
-
-            return layoutControlOfView.Children.IndexOf(childAsView);
+            var childAsView = child as IView;
+            return LayoutControl.Children.IndexOf(childAsView);
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
-            var layoutControlOfView = (XF.Layout<XF.View>)LayoutControl;
-            var childAsView = child as XF.View;
+            var childAsView = child as IView;
 
-            layoutControlOfView.Children.Remove(childAsView);
+            LayoutControl.Children.Remove(childAsView);
         }
     }
 }

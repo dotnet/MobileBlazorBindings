@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,13 +14,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static partial void RegisterAdditionalHandlers()
         {
             ElementHandlerRegistry.RegisterPropertyContentHandler<VisualElement>(nameof(Background),
-                _ => new ContentPropertyHandler<XF.VisualElement>((visualElement, contentElement) => visualElement.Background = (XF.Brush)contentElement));
+                _ => new ContentPropertyHandler<MC.VisualElement>((visualElement, contentElement) => visualElement.Background = (MC.Brush)contentElement));
         }
 
         [Parameter] public RenderFragment Background { get; set; }
-        [Parameter] public EventCallback<XF.FocusEventArgs> OnFocused { get; set; }
+        [Parameter] public EventCallback<MC.FocusEventArgs> OnFocused { get; set; }
         [Parameter] public EventCallback OnSizeChanged { get; set; }
-        [Parameter] public EventCallback<XF.FocusEventArgs> OnUnfocused { get; set; }
+        [Parameter] public EventCallback<MC.FocusEventArgs> OnUnfocused { get; set; }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder)
         {

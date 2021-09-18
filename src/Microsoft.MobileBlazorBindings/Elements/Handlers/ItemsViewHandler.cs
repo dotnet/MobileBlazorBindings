@@ -1,40 +1,41 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract class ItemsViewHandler : ViewHandler
     {
-        public ItemsViewHandler(NativeComponentRenderer renderer, XF.ItemsView itemsViewControl) : base(renderer, itemsViewControl)
+        public ItemsViewHandler(NativeComponentRenderer renderer, MC.ItemsView itemsViewControl) : base(renderer, itemsViewControl)
         {
             ItemsViewControl = itemsViewControl ?? throw new ArgumentNullException(nameof(itemsViewControl));
 
             InitializeEventHandlers(renderer);
         }
-        public XF.ItemsView ItemsViewControl { get; }
+        public MC.ItemsView ItemsViewControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.ItemsView.HorizontalScrollBarVisibility):
-                    ItemsViewControl.HorizontalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.ItemsView.HorizontalScrollBarVisibility):
+                    ItemsViewControl.HorizontalScrollBarVisibility = (ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.ItemsView.ItemsUpdatingScrollMode):
-                    ItemsViewControl.ItemsUpdatingScrollMode = (XF.ItemsUpdatingScrollMode)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.ItemsView.ItemsUpdatingScrollMode):
+                    ItemsViewControl.ItemsUpdatingScrollMode = (MC.ItemsUpdatingScrollMode)AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.ItemsView.RemainingItemsThreshold):
+                case nameof(MC.ItemsView.RemainingItemsThreshold):
                     ItemsViewControl.RemainingItemsThreshold = AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.ItemsView.VerticalScrollBarVisibility):
-                    ItemsViewControl.VerticalScrollBarVisibility = (XF.ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.ItemsView.VerticalScrollBarVisibility):
+                    ItemsViewControl.VerticalScrollBarVisibility = (ScrollBarVisibility)AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.ItemsView.ItemsSource):
+                case nameof(MC.ItemsView.ItemsSource):
                     ItemsViewControl.ItemsSource = AttributeHelper.DelegateToObject<IEnumerable>(attributeValue);
                     break;
                 default:

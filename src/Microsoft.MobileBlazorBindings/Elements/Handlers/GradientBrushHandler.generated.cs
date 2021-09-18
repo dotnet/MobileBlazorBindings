@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class GradientBrushHandler : BrushHandler
     {
 
-        public GradientBrushHandler(NativeComponentRenderer renderer, XF.GradientBrush gradientBrushControl) : base(renderer, gradientBrushControl)
+        public GradientBrushHandler(NativeComponentRenderer renderer, MC.GradientBrush gradientBrushControl) : base(renderer, gradientBrushControl)
         {
             GradientBrushControl = gradientBrushControl ?? throw new ArgumentNullException(nameof(gradientBrushControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.GradientBrush GradientBrushControl { get; }
+        public MC.GradientBrush GradientBrushControl { get; }
     }
 }

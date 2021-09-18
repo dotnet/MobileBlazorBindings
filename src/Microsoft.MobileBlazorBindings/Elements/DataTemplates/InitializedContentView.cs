@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {
@@ -9,7 +9,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
     internal class InitializedContentView : ContentView
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        [Parameter] public new XF.ContentView NativeControl { get; set; }
+        [Parameter] public new MC.ContentView NativeControl { get; set; }
 
         static InitializedContentView()
         {

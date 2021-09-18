@@ -1,24 +1,27 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TimePickerHandler : ViewHandler
     {
-        private static readonly double CharacterSpacingDefaultValue = XF.TimePicker.CharacterSpacingProperty.DefaultValue is double value ? value : default;
-        private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.TimePicker.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
-        private static readonly string FontFamilyDefaultValue = XF.TimePicker.FontFamilyProperty.DefaultValue is string value ? value : default;
-        private static readonly double FontSizeDefaultValue = XF.TimePicker.FontSizeProperty.DefaultValue is double value ? value : default;
-        private static readonly string FormatDefaultValue = XF.TimePicker.FormatProperty.DefaultValue is string value ? value : default;
-        private static readonly XF.Color TextColorDefaultValue = XF.TimePicker.TextColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.TextTransform TextTransformDefaultValue = XF.TimePicker.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-        private static readonly TimeSpan TimeDefaultValue = XF.TimePicker.TimeProperty.DefaultValue is TimeSpan value ? value : default;
+        private static readonly double CharacterSpacingDefaultValue = MC.TimePicker.CharacterSpacingProperty.DefaultValue is double value ? value : default;
+        private static readonly MC.FontAttributes FontAttributesDefaultValue = MC.TimePicker.FontAttributesProperty.DefaultValue is MC.FontAttributes value ? value : default;
+        private static readonly bool FontAutoScalingEnabledDefaultValue = MC.TimePicker.FontAutoScalingEnabledProperty.DefaultValue is bool value ? value : default;
+        private static readonly string FontFamilyDefaultValue = MC.TimePicker.FontFamilyProperty.DefaultValue is string value ? value : default;
+        private static readonly double FontSizeDefaultValue = MC.TimePicker.FontSizeProperty.DefaultValue is double value ? value : default;
+        private static readonly string FormatDefaultValue = MC.TimePicker.FormatProperty.DefaultValue is string value ? value : default;
+        private static readonly Color TextColorDefaultValue = MC.TimePicker.TextColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly TextTransform TextTransformDefaultValue = MC.TimePicker.TextTransformProperty.DefaultValue is TextTransform value ? value : default;
+        private static readonly TimeSpan TimeDefaultValue = MC.TimePicker.TimeProperty.DefaultValue is TimeSpan value ? value : default;
 
-        public TimePickerHandler(NativeComponentRenderer renderer, XF.TimePicker timePickerControl) : base(renderer, timePickerControl)
+        public TimePickerHandler(NativeComponentRenderer renderer, MC.TimePicker timePickerControl) : base(renderer, timePickerControl)
         {
             TimePickerControl = timePickerControl ?? throw new ArgumentNullException(nameof(timePickerControl));
 
@@ -27,34 +30,37 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.TimePicker TimePickerControl { get; }
+        public MC.TimePicker TimePickerControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.TimePicker.CharacterSpacing):
+                case nameof(MC.TimePicker.CharacterSpacing):
                     TimePickerControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue, CharacterSpacingDefaultValue);
                     break;
-                case nameof(XF.TimePicker.FontAttributes):
-                    TimePickerControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
+                case nameof(MC.TimePicker.FontAttributes):
+                    TimePickerControl.FontAttributes = (MC.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
                     break;
-                case nameof(XF.TimePicker.FontFamily):
+                case nameof(MC.TimePicker.FontAutoScalingEnabled):
+                    TimePickerControl.FontAutoScalingEnabled = AttributeHelper.GetBool(attributeValue, FontAutoScalingEnabledDefaultValue);
+                    break;
+                case nameof(MC.TimePicker.FontFamily):
                     TimePickerControl.FontFamily = (string)attributeValue ?? FontFamilyDefaultValue;
                     break;
-                case nameof(XF.TimePicker.FontSize):
+                case nameof(MC.TimePicker.FontSize):
                     TimePickerControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, FontSizeDefaultValue);
                     break;
-                case nameof(XF.TimePicker.Format):
+                case nameof(MC.TimePicker.Format):
                     TimePickerControl.Format = (string)attributeValue ?? FormatDefaultValue;
                     break;
-                case nameof(XF.TimePicker.TextColor):
+                case nameof(MC.TimePicker.TextColor):
                     TimePickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue, TextColorDefaultValue);
                     break;
-                case nameof(XF.TimePicker.TextTransform):
-                    TimePickerControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
+                case nameof(MC.TimePicker.TextTransform):
+                    TimePickerControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
                     break;
-                case nameof(XF.TimePicker.Time):
+                case nameof(MC.TimePicker.Time):
                     TimePickerControl.Time = AttributeHelper.StringToTimeSpan(attributeValue, TimeDefaultValue);
                     break;
                 default:

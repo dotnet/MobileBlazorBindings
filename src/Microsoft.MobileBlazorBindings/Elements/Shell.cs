@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,8 +14,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
     {
         [Parameter] public RenderFragment FlyoutHeader { get; set; }
 
-        [Parameter] public EventCallback<XF.ShellNavigatedEventArgs> OnNavigated { get; set; }
-        [Parameter] public EventCallback<XF.ShellNavigatingEventArgs> OnNavigating { get; set; }
+        [Parameter] public EventCallback<MC.ShellNavigatedEventArgs> OnNavigated { get; set; }
+        [Parameter] public EventCallback<MC.ShellNavigatingEventArgs> OnNavigating { get; set; }
 
         partial void RenderAdditionalAttributes(AttributesBuilder builder)
         {
@@ -23,7 +23,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             builder.AddAttribute("onnavigating", OnNavigating);
         }
 
-        public async Task GoTo(XF.ShellNavigationState state, bool animate = true)
+        public async Task GoTo(MC.ShellNavigationState state, bool animate = true)
         {
             if (state is null)
             {

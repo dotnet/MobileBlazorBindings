@@ -1,15 +1,15 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Placeholder element for use with <see cref="GridCell"/> to manage the containing
-    /// <see cref="XF.Grid"/> and the child <see cref="XF.View"/>.
+    /// <see cref="MC.Grid"/> and the child <see cref="MC.View"/>.
     /// </summary>
-    public class GridCellPlaceholderElement : XF.Element
+    public class GridCellPlaceholderElement : MC.Element
     {
     }
 }

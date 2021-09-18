@@ -2,12 +2,12 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class ScrollView : Layout
+    public partial class ScrollView
     {
         /// <summary>
         /// Event that is raised after a scroll completes.

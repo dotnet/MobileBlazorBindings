@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class BrushHandler : ElementHandler
     {
 
-        public BrushHandler(NativeComponentRenderer renderer, XF.Brush brushControl) : base(renderer, brushControl)
+        public BrushHandler(NativeComponentRenderer renderer, MC.Brush brushControl) : base(renderer, brushControl)
         {
             BrushControl = brushControl ?? throw new ArgumentNullException(nameof(brushControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.Brush BrushControl { get; }
+        public MC.Brush BrushControl { get; }
     }
 }

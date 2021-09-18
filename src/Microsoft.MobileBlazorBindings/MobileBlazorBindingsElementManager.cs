@@ -1,22 +1,22 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {
-    internal class MobileBlazorBindingsElementManager : ElementManager<IXamarinFormsElementHandler>
+    internal class MobileBlazorBindingsElementManager : ElementManager<IMauiElementHandler>
     {
-        protected override bool IsParented(IXamarinFormsElementHandler handler)
+        protected override bool IsParented(IMauiElementHandler handler)
         {
             return handler.IsParented();
         }
 
         protected override void AddChildElement(
-            IXamarinFormsElementHandler parentHandler,
-            IXamarinFormsElementHandler childHandler,
+            IMauiElementHandler parentHandler,
+            IMauiElementHandler childHandler,
             int physicalSiblingIndex)
         {
             if (childHandler is INonPhysicalChild nonPhysicalChild)
@@ -43,7 +43,7 @@ namespace Microsoft.MobileBlazorBindings
                 return;
             }
 
-            if (!(parentHandler is IXamarinFormsContainerElementHandler parent))
+            if (!(parentHandler is IMauiContainerElementHandler parent))
             {
                 throw new NotSupportedException($"Handler of type '{parentHandler.GetType().FullName}' representing element type " +
                     $"'{parentHandler.ElementControl?.GetType().FullName ?? "<null>"}' doesn't support adding a child " +
@@ -61,20 +61,20 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-        protected override int GetChildElementIndex(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
+        protected override int GetChildElementIndex(IMauiElementHandler parentHandler, IMauiElementHandler childHandler)
         {
-            return parentHandler is IXamarinFormsContainerElementHandler containerHandler
+            return parentHandler is IMauiContainerElementHandler containerHandler
                 ? containerHandler.GetChildIndex(childHandler.ElementControl)
                 : -1;
         }
 
-        protected override void RemoveChildElement(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
+        protected override void RemoveChildElement(IMauiElementHandler parentHandler, IMauiElementHandler childHandler)
         {
             if (childHandler is INonPhysicalChild nonPhysicalChild)
             {
                 nonPhysicalChild.Remove();
             }
-            else if (parentHandler is IXamarinFormsContainerElementHandler parent)
+            else if (parentHandler is IMauiContainerElementHandler parent)
             {
                 parent.RemoveChild(childHandler.ElementControl);
             }
@@ -86,7 +86,7 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-        protected override bool IsParentOfChild(IXamarinFormsElementHandler parentHandler, IXamarinFormsElementHandler childHandler)
+        protected override bool IsParentOfChild(IMauiElementHandler parentHandler, IMauiElementHandler childHandler)
         {
             return childHandler.IsParentedTo(parentHandler.ElementControl);
         }

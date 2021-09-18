@@ -6,7 +6,7 @@ using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class Grid : Layout
+    public partial class Grid
     {
         /// <summary>
         /// A comma-separated list of column definitions. A column definition can be:

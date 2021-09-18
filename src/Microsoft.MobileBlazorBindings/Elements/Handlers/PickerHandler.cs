@@ -2,22 +2,23 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class PickerHandler : ViewHandler
     {
-        public PickerHandler(NativeComponentRenderer renderer, XF.Picker pickerControl) : base(renderer, pickerControl)
+        public PickerHandler(NativeComponentRenderer renderer, MC.Picker pickerControl) : base(renderer, pickerControl)
         {
             PickerControl = pickerControl ?? throw new ArgumentNullException(nameof(pickerControl));
             Initialize(renderer);
         }
 
-        void Initialize(NativeComponentRenderer renderer)
+        private void Initialize(NativeComponentRenderer renderer)
         {
             ConfigureEvent(
                 eventName: "onselecteditemchanged",
@@ -45,31 +46,31 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
         public ulong SelectedItemChangedEventHandlerId { get; set; }
         public ulong SelectedIndexChangedEventHandlerId { get; set; }
-        public XF.Picker PickerControl { get; }
+        public MC.Picker PickerControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.Picker.CharacterSpacing):
+                case nameof(MC.Picker.CharacterSpacing):
                     PickerControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue, 0.0);
                     break;
-                case nameof(XF.Picker.FontAttributes):
-                    PickerControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.Picker.FontAttributes):
+                    PickerControl.FontAttributes = (MC.FontAttributes)AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.Picker.FontFamily):
+                case nameof(MC.Picker.FontFamily):
                     PickerControl.FontFamily = (string)attributeValue;
                     break;
-                case nameof(XF.Picker.FontSize):
+                case nameof(MC.Picker.FontSize):
                     PickerControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, -1.00);
                     break;
-                case nameof(XF.Picker.HorizontalTextAlignment):
-                    PickerControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.Picker.HorizontalTextAlignment):
+                    PickerControl.HorizontalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
-                case nameof(XF.Picker.ItemDisplayBinding):
-                    PickerControl.ItemDisplayBinding = new XF.Binding((string)attributeValue);
+                case nameof(MC.Picker.ItemDisplayBinding):
+                    PickerControl.ItemDisplayBinding = new MC.Binding((string)attributeValue);
                     break;
-                case nameof(XF.Picker.ItemsSource):
+                case nameof(MC.Picker.ItemsSource):
                     var items = AttributeHelper.DelegateToObject<IList>(attributeValue);
                     // IMPORTANT! don't set ItemsSource again if it is already set
                     // Resetting ItemsSource will confuse the SelectedItem property and cause and infinite loop
@@ -78,34 +79,34 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                         PickerControl.ItemsSource = items;
                     }
                     break;
-                case nameof(XF.Picker.TextColor):
+                case nameof(MC.Picker.TextColor):
                     PickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
-                case nameof(XF.Picker.TextTransform):
-                    PickerControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)XF.TextTransform.Default);
+                case nameof(MC.Picker.TextTransform):
+                    PickerControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransform.Default);
                     break;
-                case nameof(XF.Picker.Title):
+                case nameof(MC.Picker.Title):
                     PickerControl.Title = (string)attributeValue;
                     break;
-                case nameof(XF.Picker.TitleColor):
+                case nameof(MC.Picker.TitleColor):
                     PickerControl.TitleColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
-                case nameof(XF.Picker.SelectedIndex):
+                case nameof(MC.Picker.SelectedIndex):
                     var index = AttributeHelper.GetInt(attributeValue);
                     if (PickerControl.SelectedIndex != index)
                     {
                         PickerControl.SelectedIndex = index;
                     }
                     break;
-                case nameof(XF.Picker.SelectedItem):
+                case nameof(MC.Picker.SelectedItem):
                     var item = AttributeHelper.DelegateToObject<object>(attributeValue);
                     if (PickerControl.SelectedItem != item)
                     {
                         PickerControl.SelectedItem = item;
                     }
                     break;
-                case nameof(XF.Label.VerticalTextAlignment):
-                    PickerControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.Label.VerticalTextAlignment):
+                    PickerControl.VerticalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

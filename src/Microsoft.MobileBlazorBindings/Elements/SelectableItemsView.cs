@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Collections.Generic;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -16,13 +16,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public IList<object> SelectedItems { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
         [Parameter] public object SelectedItem { get; set; }
-        [Parameter] public XF.SelectionMode? SelectionMode { get; set; }
+        [Parameter] public MC.SelectionMode? SelectionMode { get; set; }
 
-        [Parameter] public EventCallback<XF.SelectionChangedEventArgs> OnSelectionChanged { get; set; }
+        [Parameter] public EventCallback<MC.SelectionChangedEventArgs> OnSelectionChanged { get; set; }
         [Parameter] public EventCallback<IList<object>> SelectedItemsChanged { get; set; }
         [Parameter] public EventCallback<object> SelectedItemChanged { get; set; }
 
-        public new XF.SelectableItemsView NativeControl => ((SelectableItemsViewHandler)ElementHandler).SelectableItemsViewControl;
+        public new MC.SelectableItemsView NativeControl => ((SelectableItemsViewHandler)ElementHandler).SelectableItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

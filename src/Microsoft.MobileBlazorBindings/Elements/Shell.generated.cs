@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,41 +16,23 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static Shell()
         {
             ElementHandlerRegistry.RegisterElementHandler<Shell>(
-                renderer => new ShellHandler(renderer, new XF.Shell()));
+                renderer => new ShellHandler(renderer, new MC.Shell()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets the background color of the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
-        /// </summary>
-        [Parameter] public XF.Color? FlyoutBackgroundColor { get; set; }
-        [Parameter] public XF.ImageSource FlyoutBackgroundImage { get; set; }
-        [Parameter] public XF.Aspect? FlyoutBackgroundImageAspect { get; set; }
-        /// <summary>
-        /// Setting the <see cref="T:Xamarin.Forms.FlyoutBehavior" /> property to Disabled hides the flyout, which is useful when you only have one ShellItem. The other valid FlyoutBehavior values are Flyout (default), and Locked.
-        /// </summary>
-        [Parameter] public XF.FlyoutBehavior? FlyoutBehavior { get; set; }
-        /// <summary>
-        /// Setting the FlyoutHeaderBehavior to CollapseOnScroll collapses the flyout as scrolling occurs. The other valid FlyoutHeaderBehavior values are Default, Fixed, and Scroll (scroll with the menu items).
-        /// </summary>
-        [Parameter] public XF.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
+        [Parameter] public Color FlyoutBackgroundColor { get; set; }
+        [Parameter] public MC.ImageSource FlyoutBackgroundImage { get; set; }
+        [Parameter] public Aspect? FlyoutBackgroundImageAspect { get; set; }
+        [Parameter] public MC.FlyoutBehavior? FlyoutBehavior { get; set; }
+        [Parameter] public MC.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
         [Parameter] public double? FlyoutHeight { get; set; }
-        /// <summary>
-        /// Gets or sets the icon that, when pressed, opens the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
-        /// </summary>
-        /// <value>
-        /// The default icon is a "hamburger" icon.
-        /// </value>
-        [Parameter] public XF.ImageSource FlyoutIcon { get; set; }
-        /// <summary>
-        /// Gets or sets the visible status of the <see cref="P:Xamarin.Forms.Shell" /> Flyout.
-        /// </summary>
+        [Parameter] public MC.ImageSource FlyoutIcon { get; set; }
         [Parameter] public bool? FlyoutIsPresented { get; set; }
-        [Parameter] public XF.ScrollMode? FlyoutVerticalScrollMode { get; set; }
+        [Parameter] public MC.ScrollMode? FlyoutVerticalScrollMode { get; set; }
         [Parameter] public double? FlyoutWidth { get; set; }
 
-        public new XF.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
+        public new MC.Shell NativeControl => ((ShellHandler)ElementHandler).ShellControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -56,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (FlyoutBackgroundColor != null)
             {
-                builder.AddAttribute(nameof(FlyoutBackgroundColor), AttributeHelper.ColorToString(FlyoutBackgroundColor.Value));
+                builder.AddAttribute(nameof(FlyoutBackgroundColor), AttributeHelper.ColorToString(FlyoutBackgroundColor));
             }
             if (FlyoutBackgroundImage != null)
             {

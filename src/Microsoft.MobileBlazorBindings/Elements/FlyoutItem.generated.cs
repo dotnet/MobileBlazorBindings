@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,12 +14,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static FlyoutItem()
         {
             ElementHandlerRegistry.RegisterElementHandler<FlyoutItem>(
-                renderer => new FlyoutItemHandler(renderer, new XF.FlyoutItem()));
+                renderer => new FlyoutItemHandler(renderer, new MC.FlyoutItem()));
 
             RegisterAdditionalHandlers();
         }
 
-        public new XF.FlyoutItem NativeControl => ((FlyoutItemHandler)ElementHandler).FlyoutItemControl;
+        public new MC.FlyoutItem NativeControl => ((FlyoutItemHandler)ElementHandler).FlyoutItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

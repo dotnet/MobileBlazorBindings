@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class TemplatedViewHandler : LayoutHandler
+    public partial class TemplatedViewHandler : Microsoft.MobileBlazorBindings.Elements.Compatibility.Handlers.LayoutHandler
     {
 
-        public TemplatedViewHandler(NativeComponentRenderer renderer, XF.TemplatedView templatedViewControl) : base(renderer, templatedViewControl)
+        public TemplatedViewHandler(NativeComponentRenderer renderer, MC.TemplatedView templatedViewControl) : base(renderer, templatedViewControl)
         {
             TemplatedViewControl = templatedViewControl ?? throw new ArgumentNullException(nameof(templatedViewControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.TemplatedView TemplatedViewControl { get; }
+        public MC.TemplatedView TemplatedViewControl { get; }
     }
 }

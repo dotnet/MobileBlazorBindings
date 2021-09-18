@@ -2,17 +2,19 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class Picker<TItem> : View
     {
-        public new XF.Picker NativeControl => base.NativeControl as XF.Picker;
+        public new MC.Picker NativeControl => base.NativeControl as MC.Picker;
 
         //Changing source at run time is valid behaviour so do not make readonly
 #pragma warning disable CA2227 // Collection properties should be read only
@@ -28,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets a value that indicates whether the font for the label is bold, italic, or neither.
         /// </summary>
-        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
+        [Parameter] public MC.FontAttributes? FontAttributes { get; set; }
         /// <summary>
         /// Gets the font family to which the font for the label belongs.
         /// </summary>
@@ -40,7 +42,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Gets or sets the horizontal alignment of the Text property. This is a bindable property.
         /// </summary>
-        [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
+        [Parameter] public TextAlignment? HorizontalTextAlignment { get; set; }
 
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix; these are copied from Xamarin.Forms as-is
         /// <summary>
@@ -49,24 +51,24 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <value>
         /// The <see cref="T:Xamarin.Forms.Color" /> value.
         /// </value>
-        [Parameter] public XF.Color? TextColor { get; set; }
+        [Parameter] public Color TextColor { get; set; }
         /// <summary>
         /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the tite of this Label. This is a bindable property.
         /// </summary>
         /// <value>
         /// The <see cref="T:Xamarin.Forms.Color" /> value.
         /// </value>
-        [Parameter] public XF.Color? TitleColor { get; set; }
-        [Parameter] public XF.TextTransform? TextTransform { get; set; }
+        [Parameter] public Color TitleColor { get; set; }
+        [Parameter] public TextTransform? TextTransform { get; set; }
         /// <summary>
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
         /// </summary>
-        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+        [Parameter] public TextAlignment? VerticalTextAlignment { get; set; }
 #pragma warning restore CA1200 // Avoid using cref tags with a prefix
 
         static Picker()
         {
-            ElementHandlerRegistry.RegisterElementHandler<Picker<TItem>>(renderer => new PickerHandler(renderer, new XF.Picker()));
+            ElementHandlerRegistry.RegisterElementHandler<Picker<TItem>>(renderer => new PickerHandler(renderer, new MC.Picker()));
         }
 
         protected override void RenderAttributes(AttributesBuilder builder)
@@ -107,7 +109,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (TextColor != null)
             {
-                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
             }
             if (TextTransform != null)
             {
@@ -119,7 +121,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (TitleColor != null)
             {
-                builder.AddAttribute(nameof(TitleColor), AttributeHelper.ColorToString(TitleColor.Value));
+                builder.AddAttribute(nameof(TitleColor), AttributeHelper.ColorToString(TitleColor));
             }
             if (VerticalTextAlignment != null)
             {

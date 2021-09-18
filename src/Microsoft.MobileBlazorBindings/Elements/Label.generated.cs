@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,79 +16,29 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static Label()
         {
             ElementHandlerRegistry.RegisterElementHandler<Label>(
-                renderer => new LabelHandler(renderer, new XF.Label()));
+                renderer => new LabelHandler(renderer, new MC.Label()));
 
             RegisterAdditionalHandlers();
         }
 
         [Parameter] public double? CharacterSpacing { get; set; }
-        /// <summary>
-        /// Gets a value that indicates whether the font for the label is bold, italic, or neither.
-        /// </summary>
-        [Parameter] public XF.FontAttributes? FontAttributes { get; set; }
-        /// <summary>
-        /// Gets or sets the font family to which the font for the label belongs.
-        /// </summary>
-        /// <value>
-        /// The font family, or null for the platform default font family.
-        /// </value>
+        [Parameter] public MC.FontAttributes? FontAttributes { get; set; }
+        [Parameter] public bool? FontAutoScalingEnabled { get; set; }
         [Parameter] public string FontFamily { get; set; }
-        /// <summary>
-        /// Gets the size of the font for the label.
-        /// </summary>
         [Parameter] public double? FontSize { get; set; }
-        /// <summary>
-        /// Gets or sets the horizontal alignment of the Text property. This is a bindable property.
-        /// </summary>
-        [Parameter] public XF.TextAlignment? HorizontalTextAlignment { get; set; }
-        /// <summary>
-        /// Gets or sets the LineBreakMode for the Label. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T:Xamarin.Forms.LineBreakMode" /> value for the Label. The default is <see cref="F:Xamarin.Forms.LineBreakMode.WordWrap" />
-        /// </value>
-        [Parameter] public XF.LineBreakMode? LineBreakMode { get; set; }
-        /// <summary>
-        /// Gets or sets the multiplier to apply to the default line height when displaying text.
-        /// </summary>
-        /// <value>
-        /// The multiplier to apply to the default line height when displaying text.
-        /// </value>
+        [Parameter] public TextAlignment? HorizontalTextAlignment { get; set; }
+        [Parameter] public LineBreakMode? LineBreakMode { get; set; }
         [Parameter] public double? LineHeight { get; set; }
-        /// <summary>
-        /// Gets or sets the maximum number of lines allowed in the <see cref="T:Xamarin.Forms.Label" />.
-        /// </summary>
         [Parameter] public int? MaxLines { get; set; }
-        [Parameter] public XF.Thickness? Padding { get; set; }
-        /// <summary>
-        /// Gets or sets the text for the Label. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T:System.String" /> value to be displayed inside of the Label.
-        /// </value>
+        [Parameter] public Thickness? Padding { get; set; }
         [Parameter] public string Text { get; set; }
-        /// <summary>
-        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> for the text of this Label. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T:Xamarin.Forms.Color" /> value.
-        /// </value>
-        [Parameter] public XF.Color? TextColor { get; set; }
-        /// <summary>
-        /// Gets or sets the <see cref="T:Xamarin.Forms.TextDecorations" /> applied to <see cref="P:Xamarin.Forms.Label.Text" />.
-        /// </summary>
-        [Parameter] public XF.TextDecorations? TextDecorations { get; set; }
-        [Parameter] public XF.TextTransform? TextTransform { get; set; }
-        /// <summary>
-        /// Determines whether the Label should display plain text or HTML text.
-        /// </summary>
-        [Parameter] public XF.TextType? TextType { get; set; }
-        /// <summary>
-        /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
-        /// </summary>
-        [Parameter] public XF.TextAlignment? VerticalTextAlignment { get; set; }
+        [Parameter] public Color TextColor { get; set; }
+        [Parameter] public TextDecorations? TextDecorations { get; set; }
+        [Parameter] public TextTransform? TextTransform { get; set; }
+        [Parameter] public TextType? TextType { get; set; }
+        [Parameter] public TextAlignment? VerticalTextAlignment { get; set; }
 
-        public new XF.Label NativeControl => ((LabelHandler)ElementHandler).LabelControl;
+        public new MC.Label NativeControl => ((LabelHandler)ElementHandler).LabelControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -99,6 +51,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (FontAttributes != null)
             {
                 builder.AddAttribute(nameof(FontAttributes), (int)FontAttributes.Value);
+            }
+            if (FontAutoScalingEnabled != null)
+            {
+                builder.AddAttribute(nameof(FontAutoScalingEnabled), FontAutoScalingEnabled.Value);
             }
             if (FontFamily != null)
             {
@@ -134,7 +90,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (TextColor != null)
             {
-                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
             }
             if (TextDecorations != null)
             {

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,27 +15,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ActivityIndicator()
         {
             ElementHandlerRegistry.RegisterElementHandler<ActivityIndicator>(
-                renderer => new ActivityIndicatorHandler(renderer, new XF.ActivityIndicator()));
+                renderer => new ActivityIndicatorHandler(renderer, new MC.ActivityIndicator()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets the <see cref="T:Xamarin.Forms.Color" /> of the ActivityIndicator. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A <see cref="T:Xamarin.Forms.Color" /> used to display the ActivityIndicator. Default is <see cref="P:Xamarin.Forms.Color.Default" />.
-        /// </value>
-        [Parameter] public XF.Color? Color { get; set; }
-        /// <summary>
-        /// Gets or sets the value indicating if the ActivityIndicator is running. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A <see cref="T:System.Boolean" /> indicating if the ActivityIndicator is running.
-        /// </value>
+        [Parameter] public Color Color { get; set; }
         [Parameter] public bool? IsRunning { get; set; }
 
-        public new XF.ActivityIndicator NativeControl => ((ActivityIndicatorHandler)ElementHandler).ActivityIndicatorControl;
+        public new MC.ActivityIndicator NativeControl => ((ActivityIndicatorHandler)ElementHandler).ActivityIndicatorControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -42,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (Color != null)
             {
-                builder.AddAttribute(nameof(Color), AttributeHelper.ColorToString(Color.Value));
+                builder.AddAttribute(nameof(Color), AttributeHelper.ColorToString(Color));
             }
             if (IsRunning != null)
             {

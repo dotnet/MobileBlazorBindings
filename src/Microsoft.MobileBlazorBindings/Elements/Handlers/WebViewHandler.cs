@@ -2,18 +2,17 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using Microsoft.MobileBlazorBindings.WebView.Elements;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class WebViewHandler : ViewHandler
     {
-        public WebViewExtended Control { get; }
+        public MC.WebView Control { get; }
 
         private ulong _onWebMessageReceivedEventHandlerId;
 
-        public WebViewHandler(NativeComponentRenderer renderer, WebViewExtended control)
+        public WebViewHandler(NativeComponentRenderer renderer, MC.WebView control)
             : base(renderer, control)
         {
             Control = control;
@@ -23,24 +22,25 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 setId: id => _onWebMessageReceivedEventHandlerId = id,
                 clearId: id => { if (_onWebMessageReceivedEventHandlerId == id) { _onWebMessageReceivedEventHandlerId = 0; } });
 
-            Control.OnWebMessageReceived += (sender, message) =>
-            {
-                if (_onWebMessageReceivedEventHandlerId != default)
-                {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(_onWebMessageReceivedEventHandlerId, null, new WebView.WebMessageEventArgs { Message = message }));
-                }
-            };
+            // Is that still needed ?
+            //Control.OnWebMessageReceived += (sender, message) =>
+            //{
+            //    if (_onWebMessageReceivedEventHandlerId != default)
+            //    {
+            //        renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(_onWebMessageReceivedEventHandlerId, null, new WebView.WebMessageEventArgs { Message = message }));
+            //    }
+            //};
         }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.HtmlWebViewSource):
-                    Control.Source = new XF.HtmlWebViewSource { Html = (string)attributeValue };
+                case nameof(MC.HtmlWebViewSource):
+                    Control.Source = new MC.HtmlWebViewSource { Html = (string)attributeValue };
                     break;
-                case nameof(XF.UrlWebViewSource):
-                    Control.Source = new XF.UrlWebViewSource { Url = (string)attributeValue };
+                case nameof(MC.UrlWebViewSource):
+                    Control.Source = new MC.UrlWebViewSource { Url = (string)attributeValue };
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

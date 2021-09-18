@@ -3,24 +3,24 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class GroupableItemsViewHandler : SelectableItemsViewHandler
     {
-        public GroupableItemsViewHandler(NativeComponentRenderer renderer, XF.GroupableItemsView groupableItemsViewControl) : base(renderer, groupableItemsViewControl)
+        public GroupableItemsViewHandler(NativeComponentRenderer renderer, MC.GroupableItemsView groupableItemsViewControl) : base(renderer, groupableItemsViewControl)
         {
             GroupableItemsViewControl = groupableItemsViewControl ?? throw new ArgumentNullException(nameof(groupableItemsViewControl));
         }
 
-        public XF.GroupableItemsView GroupableItemsViewControl { get; }
+        public MC.GroupableItemsView GroupableItemsViewControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.GroupableItemsView.IsGrouped):
+                case nameof(MC.GroupableItemsView.IsGrouped):
                     GroupableItemsViewControl.IsGrouped = AttributeHelper.GetBool(attributeValue);
                     break;
                 default:

@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -16,69 +18,18 @@ namespace Microsoft.MobileBlazorBindings.Elements
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets a value that indicates the number of device-independent units that should be in between characters in the text displayed by the Entry. Applies to Text and Placeholder.
-        /// </summary>
-        /// <value>
-        /// The number of device-independent units that should be in between characters in the text.
-        /// </value>
         [Parameter] public double? CharacterSpacing { get; set; }
-        /// <summary>
-        /// Gets or sets a value that indicates whether user should be prevented from modifying the text. Default is <see langword="false" />.
-        /// </summary>
-        /// <value>
-        /// If <see langword="true" />, user cannot modify text. Else, <see langword="false" />.
-        /// </value>
         [Parameter] public bool? IsReadOnly { get; set; }
-        /// <summary>
-        /// Gets or sets a value that controls whether spell checking is enabled.
-        /// </summary>
-        /// <value>
-        /// <see langword="true" /> if spell checking is enabled. Otherwise <see langword="false" />.
-        /// </value>
         [Parameter] public bool? IsSpellCheckEnabled { get; set; }
-        /// <summary>
-        /// Gets or sets the Keyboard for the InputView. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// The <see cref="T:Xamarin.Forms.Keyboard" /> to use for the InputView.
-        /// </value>
-        [Parameter] public XF.Keyboard Keyboard { get; set; }
-        /// <summary>
-        /// Gets or sets the maximum allowed length of input.
-        /// </summary>
-        /// <value>
-        /// An integer in the interval [0,<c>int.MaxValue</c>]. The default value is <c>Int.MaxValue</c>.
-        /// </value>
+        [Parameter] public Keyboard Keyboard { get; set; }
         [Parameter] public int? MaxLength { get; set; }
-        /// <summary>
-        /// Gets or sets the text that is displayed when the control is empty.
-        /// </summary>
-        /// <value>
-        /// The text that is displayed when the control is empty.
-        /// </value>
         [Parameter] public string Placeholder { get; set; }
-        /// <summary>
-        /// Gets or sets the color of the placeholder text.
-        /// </summary>
-        /// <value>
-        /// The color of the placeholder text.
-        /// </value>
-        [Parameter] public XF.Color? PlaceholderColor { get; set; }
-        /// <summary>
-        /// Gets or sets the text of the input view. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A string containing the text of the input view. The default value is null.
-        /// </value>
+        [Parameter] public Color PlaceholderColor { get; set; }
         [Parameter] public string Text { get; set; }
-        /// <summary>
-        /// Gets or sets the text color.
-        /// </summary>
-        [Parameter] public XF.Color? TextColor { get; set; }
-        [Parameter] public XF.TextTransform? TextTransform { get; set; }
+        [Parameter] public Color TextColor { get; set; }
+        [Parameter] public TextTransform? TextTransform { get; set; }
 
-        public new XF.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;
+        public new MC.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -110,7 +61,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (PlaceholderColor != null)
             {
-                builder.AddAttribute(nameof(PlaceholderColor), AttributeHelper.ColorToString(PlaceholderColor.Value));
+                builder.AddAttribute(nameof(PlaceholderColor), AttributeHelper.ColorToString(PlaceholderColor));
             }
             if (Text != null)
             {
@@ -118,7 +69,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (TextColor != null)
             {
-                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor.Value));
+                builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
             }
             if (TextTransform != null)
             {

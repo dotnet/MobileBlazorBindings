@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -13,12 +13,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static PinchGestureRecognizer()
         {
             ElementHandlerRegistry.RegisterElementHandler<PinchGestureRecognizer>(
-                renderer => new PinchGestureRecognizerHandler(renderer, new XF.PinchGestureRecognizer()));
+                renderer => new PinchGestureRecognizerHandler(renderer, new MC.PinchGestureRecognizer()));
         }
 
-        [Parameter] public EventCallback<XF.PinchGestureUpdatedEventArgs> OnPinchUpdated { get; set; }
+        [Parameter] public EventCallback<MC.PinchGestureUpdatedEventArgs> OnPinchUpdated { get; set; }
 
-        public new XF.PinchGestureRecognizer NativeControl => ((PinchGestureRecognizerHandler)ElementHandler).PinchGestureRecognizerControl;
+        public new MC.PinchGestureRecognizer NativeControl => ((PinchGestureRecognizerHandler)ElementHandler).PinchGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,30 +15,18 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static Page()
         {
             ElementHandlerRegistry.RegisterElementHandler<Page>(
-                renderer => new PageHandler(renderer, new XF.Page()));
+                renderer => new PageHandler(renderer, new MC.Page()));
 
             RegisterAdditionalHandlers();
         }
 
-        [Parameter] public XF.ImageSource BackgroundImageSource { get; set; }
-        [Parameter] public XF.ImageSource IconImageSource { get; set; }
-        /// <summary>
-        /// Marks the Page as busy. This will cause the platform specific global activity indicator to show a busy state.
-        /// </summary>
-        /// <value>
-        /// A bool indicating if the Page is busy or not.
-        /// </value>
+        [Parameter] public MC.ImageSource BackgroundImageSource { get; set; }
+        [Parameter] public MC.ImageSource IconImageSource { get; set; }
         [Parameter] public bool? IsBusy { get; set; }
-        /// <summary>
-        /// The space between the content of the <see cref="T:Xamarin.Forms.Page" /> and it's border.
-        /// </summary>
-        [Parameter] public XF.Thickness? Padding { get; set; }
-        /// <summary>
-        /// The <see cref="T:Xamarin.Forms.Page" />'s title.
-        /// </summary>
+        [Parameter] public Thickness? Padding { get; set; }
         [Parameter] public string Title { get; set; }
 
-        public new XF.Page NativeControl => ((PageHandler)ElementHandler).PageControl;
+        public new MC.Page NativeControl => ((PageHandler)ElementHandler).PageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

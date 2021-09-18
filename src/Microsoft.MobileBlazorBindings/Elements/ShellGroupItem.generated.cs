@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,17 +14,14 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ShellGroupItem()
         {
             ElementHandlerRegistry.RegisterElementHandler<ShellGroupItem>(
-                renderer => new ShellGroupItemHandler(renderer, new XF.ShellGroupItem()));
+                renderer => new ShellGroupItemHandler(renderer, new MC.ShellGroupItem()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// AsSingleItem (default) will only display the title of this item in the flyout. AsMultipleItems will create a separate flyout option for each child and <see cref="T:Xamarin.Forms.MenuItem" />.
-        /// </summary>
-        [Parameter] public XF.FlyoutDisplayOptions? FlyoutDisplayOptions { get; set; }
+        [Parameter] public MC.FlyoutDisplayOptions? FlyoutDisplayOptions { get; set; }
 
-        public new XF.ShellGroupItem NativeControl => ((ShellGroupItemHandler)ElementHandler).ShellGroupItemControl;
+        public new MC.ShellGroupItem NativeControl => ((ShellGroupItemHandler)ElementHandler).ShellGroupItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,21 +14,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ToolbarItem()
         {
             ElementHandlerRegistry.RegisterElementHandler<ToolbarItem>(
-                renderer => new ToolbarItemHandler(renderer, new XF.ToolbarItem()));
+                renderer => new ToolbarItemHandler(renderer, new MC.ToolbarItem()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets a value that indicates on which of the primary, secondary, or default toolbar surfaces to display this <see cref="T:Xamarin.Forms.ToolbarItem" /> element.
-        /// </summary>
-        [Parameter] public XF.ToolbarItemOrder? Order { get; set; }
-        /// <summary>
-        /// Gets or sets the priority of this <see cref="T:Xamarin.Forms.ToolbarItem" /> element.
-        /// </summary>
+        [Parameter] public MC.ToolbarItemOrder? Order { get; set; }
         [Parameter] public int? Priority { get; set; }
 
-        public new XF.ToolbarItem NativeControl => ((ToolbarItemHandler)ElementHandler).ToolbarItemControl;
+        public new MC.ToolbarItem NativeControl => ((ToolbarItemHandler)ElementHandler).ToolbarItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

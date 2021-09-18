@@ -5,14 +5,14 @@ using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.IO;
 using System.Reflection;
-using XF = Xamarin.Forms;
-using XFS = Xamarin.Forms.StyleSheets;
+using MC = Microsoft.Maui.Controls;
+using MCS = Microsoft.Maui.Controls.StyleSheets;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class StyleSheetHandler : IXamarinFormsElementHandler, INonPhysicalChild
+    public class StyleSheetHandler : IMauiElementHandler, INonPhysicalChild
     {
-        private XF.VisualElement _parentVisualElement;
+        private MC.VisualElement _parentVisualElement;
 
         public StyleSheetHandler(NativeComponentRenderer renderer)
         {
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public NativeComponentRenderer Renderer { get; }
-        public XF.Element ElementControl => null;
+        public MC.Element ElementControl => null;
         public object TargetElement => ElementControl;
 
         public Assembly Assembly { get; private set; }
@@ -53,12 +53,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return _parentVisualElement != null;
         }
 
-        public bool IsParentedTo(XF.Element elementControl)
+        public bool IsParentedTo(MC.Element elementControl)
         {
             return _parentVisualElement == elementControl;
         }
 
-        public void SetParent(XF.Element parent)
+        public void SetParent(MC.Element parent)
         {
             throw new NotImplementedException();
         }
@@ -74,13 +74,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     {
                         throw new InvalidOperationException($"Specifying a '{nameof(Resource)}' property value '{Resource}' requires also specifying the '{nameof(Assembly)}' property to indicate the assembly containing the resource.");
                     }
-                    var styleSheet = XFS.StyleSheet.FromResource(resourcePath: Resource, assembly: Assembly);
+                    var styleSheet = MCS.StyleSheet.FromResource(resourcePath: Resource, assembly: Assembly);
                     _parentVisualElement.Resources.Add(styleSheet);
                 }
                 if (Text != null)
                 {
                     using var reader = new StringReader(Text);
-                    var styleSheet = XFS.StyleSheet.FromReader(reader);
+                    var styleSheet = MCS.StyleSheet.FromReader(reader);
                     _parentVisualElement.Resources.Add(styleSheet);
                 }
             }
@@ -92,9 +92,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 throw new ArgumentNullException(nameof(parentElement));
             }
-            if (!(parentElement is XF.VisualElement parentVisualElement))
+            if (!(parentElement is MC.VisualElement parentVisualElement))
             {
-                throw new ArgumentNullException(nameof(parentElement), $"Expected parent to be of type '{typeof(XF.VisualElement).FullName}' but it is of type '{parentElement.GetType().FullName}'.");
+                throw new ArgumentNullException(nameof(parentElement), $"Expected parent to be of type '{typeof(MC.VisualElement).FullName}' but it is of type '{parentElement.GetType().FullName}'.");
             }
             _parentVisualElement = parentVisualElement;
 

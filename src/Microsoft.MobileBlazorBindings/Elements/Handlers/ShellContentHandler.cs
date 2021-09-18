@@ -2,19 +2,19 @@
 // Licensed under the MIT license.
 
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellContentHandler : BaseShellItemHandler, IXamarinFormsContainerElementHandler
+    public partial class ShellContentHandler : BaseShellItemHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            var childAsTemplatedPage = child as XF.TemplatedPage;
+            var childAsTemplatedPage = child as MC.TemplatedPage;
             ShellContentControl.Content = childAsTemplatedPage;
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
             if (ShellContentControl.Content == child)
             {
@@ -22,12 +22,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             return child == ShellContentControl.Content ? 0 : -1;
         }
 
-        public override void SetParent(XF.Element parent)
+        public override void SetParent(MC.Element parent)
         {
             if (ElementControl.Parent == null)
             {

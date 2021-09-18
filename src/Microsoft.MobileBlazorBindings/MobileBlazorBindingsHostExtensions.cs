@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings
 {
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="host"></param>
         /// <param name="parent"></param>
-        public static void AddComponent<TComponent>(this IHost host, XF.Element parent) where TComponent : IComponent
+        public static void AddComponent<TComponent>(this IHost host, MC.Element parent) where TComponent : IComponent
         {
             if (host is null)
             {
@@ -50,7 +50,7 @@ namespace Microsoft.MobileBlazorBindings
         //This version also allows an optional set of parameters
         //The only downside is you can't have design/compiletime type safety
         //There's a lot of duplicate code between the two, can probably refactor the core of the method into a separate method that they both call
-        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type, System.Collections.Generic.Dictionary<string, string> parameters = null)
+        public static async Task<IComponent> AddComponent(this IServiceProvider services, MC.Element parent, Type type, System.Collections.Generic.Dictionary<string, string> parameters = null)
         {
             if (services is null)
             {
@@ -76,20 +76,20 @@ namespace Microsoft.MobileBlazorBindings
             return await renderer.AddComponent(type, CreateHandler(parent, renderer), parameters).ConfigureAwait(false);
         }
 
-        private static ElementHandler CreateHandler(XF.Element parent, MobileBlazorBindingsRenderer renderer)
+        public static ElementHandler CreateHandler(MC.Element parent, MobileBlazorBindingsRenderer renderer)
         {
             return parent switch
             {
-                XF.ContentPage contentPage => new ContentPageHandler(renderer, contentPage),
-                XF.ContentView contentView => new ContentViewHandler(renderer, contentView),
-                XF.Label label => new LabelHandler(renderer, label),
-                XF.FlyoutPage flyoutPage => new FlyoutPageHandler(renderer, flyoutPage),
-                XF.ScrollView scrollView => new ScrollViewHandler(renderer, scrollView),
-                XF.ShellContent shellContent => new ShellContentHandler(renderer, shellContent),
-                XF.Shell shell => new ShellHandler(renderer, shell),
-                XF.ShellItem shellItem => new ShellItemHandler(renderer, shellItem),
-                XF.ShellSection shellSection => new ShellSectionHandler(renderer, shellSection),
-                XF.TabbedPage tabbedPage => new TabbedPageHandler(renderer, tabbedPage),
+                MC.ContentPage contentPage => new ContentPageHandler(renderer, contentPage),
+                MC.ContentView contentView => new ContentViewHandler(renderer, contentView),
+                MC.Label label => new LabelHandler(renderer, label),
+                MC.FlyoutPage flyoutPage => new FlyoutPageHandler(renderer, flyoutPage),
+                MC.ScrollView scrollView => new ScrollViewHandler(renderer, scrollView),
+                MC.ShellContent shellContent => new ShellContentHandler(renderer, shellContent),
+                MC.Shell shell => new ShellHandler(renderer, shell),
+                MC.ShellItem shellItem => new ShellItemHandler(renderer, shellItem),
+                MC.ShellSection shellSection => new ShellSectionHandler(renderer, shellSection),
+                MC.TabbedPage tabbedPage => new TabbedPageHandler(renderer, tabbedPage),
                 _ => new ElementHandler(renderer, parent),
             };
         }

@@ -1,24 +1,24 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ContentViewHandler : TemplatedViewHandler
+    public partial class ContentViewHandler : TemplatedViewHandler, IMauiContainerElementHandler
     {
-        public override void AddChild(XF.Element child, int physicalSiblingIndex)
+        public void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            var childAsView = child as XF.View;
+            var childAsView = child as MC.View;
             ContentViewControl.Content = childAsView;
         }
 
-        public override int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             return ContentViewControl.Content == child ? 0 : -1;
         }
 
-        public override void RemoveChild(XF.Element child)
+        public void RemoveChild(MC.Element child)
         {
             if (ContentViewControl.Content == child)
             {

@@ -1,23 +1,25 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ImageButtonHandler : ViewHandler
     {
-        private static readonly XF.Aspect AspectDefaultValue = XF.ImageButton.AspectProperty.DefaultValue is XF.Aspect value ? value : default;
-        private static readonly XF.Color BorderColorDefaultValue = XF.ImageButton.BorderColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly double BorderWidthDefaultValue = XF.ImageButton.BorderWidthProperty.DefaultValue is double value ? value : default;
-        private static readonly int CornerRadiusDefaultValue = XF.ImageButton.CornerRadiusProperty.DefaultValue is int value ? value : default;
-        private static readonly bool IsOpaqueDefaultValue = XF.ImageButton.IsOpaqueProperty.DefaultValue is bool value ? value : default;
-        private static readonly XF.Thickness PaddingDefaultValue = XF.ImageButton.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
-        private static readonly XF.ImageSource SourceDefaultValue = XF.ImageButton.SourceProperty.DefaultValue is XF.ImageSource value ? value : default;
+        private static readonly Aspect AspectDefaultValue = MC.ImageButton.AspectProperty.DefaultValue is Aspect value ? value : default;
+        private static readonly Color BorderColorDefaultValue = MC.ImageButton.BorderColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly double BorderWidthDefaultValue = MC.ImageButton.BorderWidthProperty.DefaultValue is double value ? value : default;
+        private static readonly int CornerRadiusDefaultValue = MC.ImageButton.CornerRadiusProperty.DefaultValue is int value ? value : default;
+        private static readonly bool IsOpaqueDefaultValue = MC.ImageButton.IsOpaqueProperty.DefaultValue is bool value ? value : default;
+        private static readonly Thickness PaddingDefaultValue = MC.ImageButton.PaddingProperty.DefaultValue is Thickness value ? value : default;
+        private static readonly MC.ImageSource SourceDefaultValue = MC.ImageButton.SourceProperty.DefaultValue is MC.ImageSource value ? value : default;
 
-        public ImageButtonHandler(NativeComponentRenderer renderer, XF.ImageButton imageButtonControl) : base(renderer, imageButtonControl)
+        public ImageButtonHandler(NativeComponentRenderer renderer, MC.ImageButton imageButtonControl) : base(renderer, imageButtonControl)
         {
             ImageButtonControl = imageButtonControl ?? throw new ArgumentNullException(nameof(imageButtonControl));
 
@@ -26,32 +28,32 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.ImageButton ImageButtonControl { get; }
+        public MC.ImageButton ImageButtonControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.ImageButton.Aspect):
-                    ImageButtonControl.Aspect = (XF.Aspect)AttributeHelper.GetInt(attributeValue, (int)AspectDefaultValue);
+                case nameof(MC.ImageButton.Aspect):
+                    ImageButtonControl.Aspect = (Aspect)AttributeHelper.GetInt(attributeValue, (int)AspectDefaultValue);
                     break;
-                case nameof(XF.ImageButton.BorderColor):
+                case nameof(MC.ImageButton.BorderColor):
                     ImageButtonControl.BorderColor = AttributeHelper.StringToColor((string)attributeValue, BorderColorDefaultValue);
                     break;
-                case nameof(XF.ImageButton.BorderWidth):
+                case nameof(MC.ImageButton.BorderWidth):
                     ImageButtonControl.BorderWidth = AttributeHelper.StringToDouble((string)attributeValue, BorderWidthDefaultValue);
                     break;
-                case nameof(XF.ImageButton.CornerRadius):
+                case nameof(MC.ImageButton.CornerRadius):
                     ImageButtonControl.CornerRadius = AttributeHelper.GetInt(attributeValue, CornerRadiusDefaultValue);
                     break;
-                case nameof(XF.ImageButton.IsOpaque):
+                case nameof(MC.ImageButton.IsOpaque):
                     ImageButtonControl.IsOpaque = AttributeHelper.GetBool(attributeValue, IsOpaqueDefaultValue);
                     break;
-                case nameof(XF.ImageButton.Padding):
+                case nameof(MC.ImageButton.Padding):
                     ImageButtonControl.Padding = AttributeHelper.StringToThickness(attributeValue, PaddingDefaultValue);
                     break;
-                case nameof(XF.ImageButton.Source):
-                    ImageButtonControl.Source = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue, SourceDefaultValue);
+                case nameof(MC.ImageButton.Source):
+                    ImageButtonControl.Source = AttributeHelper.DelegateToObject<MC.ImageSource>(attributeValue, SourceDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

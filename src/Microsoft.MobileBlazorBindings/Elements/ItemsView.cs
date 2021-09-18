@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Collections.Generic;
-using XF = Xamarin.Forms;
+using M = Microsoft.Maui;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -15,27 +16,27 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ItemsView()
         {
             ElementHandlerRegistry.RegisterPropertyContentHandler<ItemsView<T>>(nameof(ItemTemplate),
-                (renderer, _, component) => new DataTemplatePropertyHandler<XF.ItemsView, T>(component,
+                (renderer, _, component) => new DataTemplatePropertyHandler<MC.ItemsView, T>(component,
                     (itemsView, dataTemplate) => itemsView.ItemTemplate = dataTemplate));
 
             ElementHandlerRegistry.RegisterPropertyContentHandler<ItemsView<T>>(nameof(EmptyView),
-                renderer => new ContentPropertyHandler<XF.ItemsView>(
+                renderer => new ContentPropertyHandler<MC.ItemsView>(
                     (itemsView, valueElement) => itemsView.EmptyView = valueElement));
         }
 
-        [Parameter] public XF.ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
+        [Parameter] public M.ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
         [Parameter] public RenderFragment<T> ItemTemplate { get; set; }
         [Parameter] public RenderFragment EmptyView { get; set; }
         [Parameter] public IEnumerable<T> ItemsSource { get; set; }
-        [Parameter] public XF.ItemsUpdatingScrollMode? ItemsUpdatingScrollMode { get; set; }
+        [Parameter] public MC.ItemsUpdatingScrollMode? ItemsUpdatingScrollMode { get; set; }
         [Parameter] public int? RemainingItemsThreshold { get; set; }
-        [Parameter] public XF.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
+        [Parameter] public M.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
         [Parameter] public EventCallback OnRemainingItemsThresholdReached { get; set; }
-        [Parameter] public EventCallback<XF.ItemsViewScrolledEventArgs> OnScrolled { get; set; }
-        [Parameter] public EventCallback<XF.ScrollToRequestEventArgs> OnScrollToRequested { get; set; }
+        [Parameter] public EventCallback<MC.ItemsViewScrolledEventArgs> OnScrolled { get; set; }
+        [Parameter] public EventCallback<MC.ScrollToRequestEventArgs> OnScrollToRequested { get; set; }
 
-        public new XF.ItemsView NativeControl => ((ItemsViewHandler)ElementHandler).ItemsViewControl;
+        public new MC.ItemsView NativeControl => ((ItemsViewHandler)ElementHandler).ItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

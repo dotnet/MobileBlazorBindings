@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,34 +14,19 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static MenuItem()
         {
             ElementHandlerRegistry.RegisterElementHandler<MenuItem>(
-                renderer => new MenuItemHandler(renderer, new XF.MenuItem()));
+                renderer => new MenuItemHandler(renderer, new MC.MenuItem()));
 
             RegisterAdditionalHandlers();
         }
 
         [Parameter] public string @class { get; set; }
-        [Parameter] public XF.ImageSource IconImageSource { get; set; }
-        /// <summary>
-        /// Gets or sets a value that indicates whether or not the menu item removes its associated UI element.
-        /// </summary>
-        /// <value>
-        /// False
-        /// </value>
+        [Parameter] public MC.ImageSource IconImageSource { get; set; }
         [Parameter] public bool? IsDestructive { get; set; }
-        /// <summary>
-        /// For internal use by the Xamarin.Forms platform.
-        /// </summary>
         [Parameter] public bool? IsEnabled { get; set; }
-        /// <summary>
-        /// Sets the StyleClass of the generated <see cref="T:Xamarin.Forms.FlyoutItem" /> when used with <see cref="T:Xamarin.Forms.Shell" />
-        /// </summary>
         [Parameter] public string StyleClass { get; set; }
-        /// <summary>
-        /// The text of the menu item.
-        /// </summary>
         [Parameter] public string Text { get; set; }
 
-        public new XF.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;
+        public new MC.MenuItem NativeControl => ((MenuItemHandler)ElementHandler).MenuItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

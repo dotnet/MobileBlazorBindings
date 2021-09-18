@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class ShellSectionHandler : ShellGroupItemHandler
     {
 
-        public ShellSectionHandler(NativeComponentRenderer renderer, XF.ShellSection shellSectionControl) : base(renderer, shellSectionControl)
+        public ShellSectionHandler(NativeComponentRenderer renderer, MC.ShellSection shellSectionControl) : base(renderer, shellSectionControl)
         {
             ShellSectionControl = shellSectionControl ?? throw new ArgumentNullException(nameof(shellSectionControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.ShellSection ShellSectionControl { get; }
+        public MC.ShellSection ShellSectionControl { get; }
     }
 }

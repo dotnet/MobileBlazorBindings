@@ -1,20 +1,21 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TabbedPageHandler : PageHandler
     {
-        private static readonly XF.Color BarBackgroundColorDefaultValue = XF.TabbedPage.BarBackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.Color BarTextColorDefaultValue = XF.TabbedPage.BarTextColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.Color SelectedTabColorDefaultValue = XF.TabbedPage.SelectedTabColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.Color UnselectedTabColorDefaultValue = XF.TabbedPage.UnselectedTabColorProperty.DefaultValue is XF.Color value ? value : default;
+        private static readonly Color BarBackgroundColorDefaultValue = MC.TabbedPage.BarBackgroundColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly Color BarTextColorDefaultValue = MC.TabbedPage.BarTextColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly Color SelectedTabColorDefaultValue = MC.TabbedPage.SelectedTabColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly Color UnselectedTabColorDefaultValue = MC.TabbedPage.UnselectedTabColorProperty.DefaultValue is Color value ? value : default;
 
-        public TabbedPageHandler(NativeComponentRenderer renderer, XF.TabbedPage tabbedPageControl) : base(renderer, tabbedPageControl)
+        public TabbedPageHandler(NativeComponentRenderer renderer, MC.TabbedPage tabbedPageControl) : base(renderer, tabbedPageControl)
         {
             TabbedPageControl = tabbedPageControl ?? throw new ArgumentNullException(nameof(tabbedPageControl));
 
@@ -23,22 +24,22 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.TabbedPage TabbedPageControl { get; }
+        public MC.TabbedPage TabbedPageControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.TabbedPage.BarBackgroundColor):
+                case nameof(MC.TabbedPage.BarBackgroundColor):
                     TabbedPageControl.BarBackgroundColor = AttributeHelper.StringToColor((string)attributeValue, BarBackgroundColorDefaultValue);
                     break;
-                case nameof(XF.TabbedPage.BarTextColor):
+                case nameof(MC.TabbedPage.BarTextColor):
                     TabbedPageControl.BarTextColor = AttributeHelper.StringToColor((string)attributeValue, BarTextColorDefaultValue);
                     break;
-                case nameof(XF.TabbedPage.SelectedTabColor):
+                case nameof(MC.TabbedPage.SelectedTabColor):
                     TabbedPageControl.SelectedTabColor = AttributeHelper.StringToColor((string)attributeValue, SelectedTabColorDefaultValue);
                     break;
-                case nameof(XF.TabbedPage.UnselectedTabColor):
+                case nameof(MC.TabbedPage.UnselectedTabColor):
                     TabbedPageControl.UnselectedTabColor = AttributeHelper.StringToColor((string)attributeValue, UnselectedTabColorDefaultValue);
                     break;
                 default:

@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -13,15 +13,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static SwipeGestureRecognizer()
         {
             ElementHandlerRegistry.RegisterElementHandler<SwipeGestureRecognizer>(
-                renderer => new SwipeGestureRecognizerHandler(renderer, new XF.SwipeGestureRecognizer()));
+                renderer => new SwipeGestureRecognizerHandler(renderer, new MC.SwipeGestureRecognizer()));
         }
 
-        [Parameter] public XF.SwipeDirection? Direction { get; set; }
+        [Parameter] public MC.SwipeDirection? Direction { get; set; }
         [Parameter] public uint? Threshold { get; set; }
 
-        [Parameter] public EventCallback<XF.SwipedEventArgs> OnSwiped { get; set; }
+        [Parameter] public EventCallback<MC.SwipedEventArgs> OnSwiped { get; set; }
 
-        public new XF.SwipeGestureRecognizer NativeControl => ((SwipeGestureRecognizerHandler)ElementHandler).SwipeGestureRecognizerControl;
+        public new MC.SwipeGestureRecognizer NativeControl => ((SwipeGestureRecognizerHandler)ElementHandler).SwipeGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

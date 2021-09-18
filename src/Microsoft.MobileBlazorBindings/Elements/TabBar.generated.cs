@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,12 +14,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static TabBar()
         {
             ElementHandlerRegistry.RegisterElementHandler<TabBar>(
-                renderer => new TabBarHandler(renderer, new XF.TabBar()));
+                renderer => new TabBarHandler(renderer, new MC.TabBar()));
 
             RegisterAdditionalHandlers();
         }
 
-        public new XF.TabBar NativeControl => ((TabBarHandler)ElementHandler).TabBarControl;
+        public new MC.TabBar NativeControl => ((TabBarHandler)ElementHandler).TabBarControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

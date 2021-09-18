@@ -1,21 +1,22 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class PageHandler : VisualElementHandler
     {
-        private static readonly XF.ImageSource BackgroundImageSourceDefaultValue = XF.Page.BackgroundImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
-        private static readonly XF.ImageSource IconImageSourceDefaultValue = XF.Page.IconImageSourceProperty.DefaultValue is XF.ImageSource value ? value : default;
-        private static readonly bool IsBusyDefaultValue = XF.Page.IsBusyProperty.DefaultValue is bool value ? value : default;
-        private static readonly XF.Thickness PaddingDefaultValue = XF.Page.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
-        private static readonly string TitleDefaultValue = XF.Page.TitleProperty.DefaultValue is string value ? value : default;
+        private static readonly MC.ImageSource BackgroundImageSourceDefaultValue = MC.Page.BackgroundImageSourceProperty.DefaultValue is MC.ImageSource value ? value : default;
+        private static readonly MC.ImageSource IconImageSourceDefaultValue = MC.Page.IconImageSourceProperty.DefaultValue is MC.ImageSource value ? value : default;
+        private static readonly bool IsBusyDefaultValue = MC.Page.IsBusyProperty.DefaultValue is bool value ? value : default;
+        private static readonly Thickness PaddingDefaultValue = MC.Page.PaddingProperty.DefaultValue is Thickness value ? value : default;
+        private static readonly string TitleDefaultValue = MC.Page.TitleProperty.DefaultValue is string value ? value : default;
 
-        public PageHandler(NativeComponentRenderer renderer, XF.Page pageControl) : base(renderer, pageControl)
+        public PageHandler(NativeComponentRenderer renderer, MC.Page pageControl) : base(renderer, pageControl)
         {
             PageControl = pageControl ?? throw new ArgumentNullException(nameof(pageControl));
 
@@ -24,25 +25,25 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.Page PageControl { get; }
+        public MC.Page PageControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.Page.BackgroundImageSource):
-                    PageControl.BackgroundImageSource = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue, BackgroundImageSourceDefaultValue);
+                case nameof(MC.Page.BackgroundImageSource):
+                    PageControl.BackgroundImageSource = AttributeHelper.DelegateToObject<MC.ImageSource>(attributeValue, BackgroundImageSourceDefaultValue);
                     break;
-                case nameof(XF.Page.IconImageSource):
-                    PageControl.IconImageSource = AttributeHelper.DelegateToObject<XF.ImageSource>(attributeValue, IconImageSourceDefaultValue);
+                case nameof(MC.Page.IconImageSource):
+                    PageControl.IconImageSource = AttributeHelper.DelegateToObject<MC.ImageSource>(attributeValue, IconImageSourceDefaultValue);
                     break;
-                case nameof(XF.Page.IsBusy):
+                case nameof(MC.Page.IsBusy):
                     PageControl.IsBusy = AttributeHelper.GetBool(attributeValue, IsBusyDefaultValue);
                     break;
-                case nameof(XF.Page.Padding):
+                case nameof(MC.Page.Padding):
                     PageControl.Padding = AttributeHelper.StringToThickness(attributeValue, PaddingDefaultValue);
                     break;
-                case nameof(XF.Page.Title):
+                case nameof(MC.Page.Title):
                     PageControl.Title = (string)attributeValue ?? TitleDefaultValue;
                     break;
                 default:

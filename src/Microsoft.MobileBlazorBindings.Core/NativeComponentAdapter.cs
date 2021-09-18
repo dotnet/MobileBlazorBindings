@@ -359,7 +359,7 @@ namespace Microsoft.MobileBlazorBindings.Core
                 {
                     if (!Renderer.ElementManager.IsParentOfChild(_closestPhysicalParent, matchedEarlierSibling._targetElement))
                     {
-                        Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target element ({matchedEarlierSibling._targetElement.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
+                        //Debug.Fail($"Expected that the item found ({matchedEarlierSibling.DebugName}) with target element ({matchedEarlierSibling._targetElement.GetType().FullName}) should necessarily be an immediate child of the closest native parent ({_closestPhysicalParent.GetType().FullName}), but it wasn't...");
                     }
 
                     // If a native element was found somewhere within this sibling, the index for the new element

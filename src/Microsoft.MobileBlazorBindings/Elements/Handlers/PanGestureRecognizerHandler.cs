@@ -3,13 +3,13 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class PanGestureRecognizerHandler : GestureRecognizerHandler
     {
-        public PanGestureRecognizerHandler(NativeComponentRenderer renderer, XF.PanGestureRecognizer panGestureRecognizerControl) : base(renderer, panGestureRecognizerControl)
+        public PanGestureRecognizerHandler(NativeComponentRenderer renderer, MC.PanGestureRecognizer panGestureRecognizerControl) : base(renderer, panGestureRecognizerControl)
         {
             PanGestureRecognizerControl = panGestureRecognizerControl ?? throw new ArgumentNullException(nameof(panGestureRecognizerControl));
 
@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        public XF.PanGestureRecognizer PanGestureRecognizerControl { get; }
+        public MC.PanGestureRecognizer PanGestureRecognizerControl { get; }
 
         public ulong PanUpdatedEventHandlerId { get; set; }
 

@@ -6,28 +6,28 @@ using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class SelectableItemsViewHandler : StructuredItemsViewHandler
     {
-        public SelectableItemsViewHandler(NativeComponentRenderer renderer, XF.SelectableItemsView selectableItemsViewControl) : base(renderer, selectableItemsViewControl)
+        public SelectableItemsViewHandler(NativeComponentRenderer renderer, MC.SelectableItemsView selectableItemsViewControl) : base(renderer, selectableItemsViewControl)
         {
             SelectableItemsViewControl = selectableItemsViewControl ?? throw new ArgumentNullException(nameof(selectableItemsViewControl));
             InitializeEventHandlers(renderer);
         }
 
-        public XF.SelectableItemsView SelectableItemsViewControl { get; }
+        public MC.SelectableItemsView SelectableItemsViewControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.SelectableItemsView.SelectedItem):
+                case nameof(MC.SelectableItemsView.SelectedItem):
                     SelectableItemsViewControl.SelectedItem = AttributeHelper.DelegateToObject<object>(attributeValue);
                     break;
-                case nameof(XF.SelectableItemsView.SelectedItems):
+                case nameof(MC.SelectableItemsView.SelectedItems):
                     // Don't assign value if lists content is equal. Otherwise leads to infinite loop when binded. 
                     var listValue = AttributeHelper.DelegateToObject<IList<object>>(attributeValue);
                     if (!Enumerable.SequenceEqual(listValue, SelectableItemsViewControl.SelectedItems))
@@ -35,8 +35,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                         SelectableItemsViewControl.SelectedItems = listValue;
                     }
                     break;
-                case nameof(XF.SelectableItemsView.SelectionMode):
-                    SelectableItemsViewControl.SelectionMode = (XF.SelectionMode)AttributeHelper.GetInt(attributeValue);
+                case nameof(MC.SelectableItemsView.SelectionMode):
+                    SelectableItemsViewControl.SelectionMode = (MC.SelectionMode)AttributeHelper.GetInt(attributeValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

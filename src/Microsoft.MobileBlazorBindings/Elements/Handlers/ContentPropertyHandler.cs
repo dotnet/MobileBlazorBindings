@@ -3,16 +3,16 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ContentPropertyHandler<TElementType> : IXamarinFormsContainerElementHandler, INonChildContainerElement
+    public class ContentPropertyHandler<TElementType> : IMauiContainerElementHandler, INonChildContainerElement
     {
-        private readonly Action<TElementType, XF.Element> _setPropertyAction;
+        private readonly Action<TElementType, MC.Element> _setPropertyAction;
         private TElementType _parent;
 
-        public ContentPropertyHandler(Action<TElementType, XF.Element> setPropertyAction)
+        public ContentPropertyHandler(Action<TElementType, MC.Element> setPropertyAction)
         {
             _setPropertyAction = setPropertyAction;
         }
@@ -22,17 +22,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _parent = (TElementType)parentElement;
         }
 
-        void IXamarinFormsContainerElementHandler.AddChild(XF.Element child, int physicalSiblingIndex)
+        void IMauiContainerElementHandler.AddChild(MC.Element child, int physicalSiblingIndex)
         {
             _setPropertyAction(_parent, child);
         }
 
-        int IXamarinFormsContainerElementHandler.GetChildIndex(XF.Element child)
+        int IMauiContainerElementHandler.GetChildIndex(MC.Element child)
         {
             return -1;
         }
 
-        void IXamarinFormsContainerElementHandler.RemoveChild(XF.Element child)
+        void IMauiContainerElementHandler.RemoveChild(MC.Element child)
         {
             _setPropertyAction(_parent, null);
         }
@@ -43,11 +43,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         object IElementHandler.TargetElement => null;
         void IElementHandler.ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName) { }
 
-        XF.Element IXamarinFormsElementHandler.ElementControl => null;
-        bool IXamarinFormsElementHandler.IsParented() => false;
-        bool IXamarinFormsElementHandler.IsParentedTo(XF.Element parent) => false;
+        MC.Element IMauiElementHandler.ElementControl => null;
+        bool IMauiElementHandler.IsParented() => false;
+        bool IMauiElementHandler.IsParentedTo(MC.Element parent) => false;
 
-        void IXamarinFormsElementHandler.SetParent(XF.Element parent)
+        void IMauiElementHandler.SetParent(MC.Element parent)
         {
             // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
             // in this class should get called.

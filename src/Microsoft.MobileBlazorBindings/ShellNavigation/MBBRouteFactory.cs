@@ -3,16 +3,16 @@
 
 using System;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.ShellNavigation
 {
     //Based on the forms TypeRouteFactory https://github.com/xamarin/Xamarin.Forms/blob/9fd882e6c598a51bffbbb2f4de72c3bd9023ab41/Xamarin.Forms.Core/Routing.cs
-    public class MBBRouteFactory : XF.RouteFactory
+    public class MBBRouteFactory : MC.RouteFactory
     {
         private readonly Type _componentType;
         private readonly ShellNavigationManager _navigationManager;
-        private XF.Element _element;
+        private MC.Element _element;
 
         public MBBRouteFactory(Type componentType, ShellNavigationManager navigationManager)
         {
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.ShellNavigation
             _navigationManager = navigationManager ?? throw new ArgumentNullException(nameof(navigationManager));
         }
 
-        public override XF.Element GetOrCreate()
+        public override MC.Element GetOrCreate()
         {
             return _element
                 ?? throw new InvalidOperationException("The target element of the Shell navigation is supposed to be created at this point.");

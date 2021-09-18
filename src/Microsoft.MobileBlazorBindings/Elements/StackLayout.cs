@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class StackLayout : Layout
+    public partial class StackLayout
     {
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }

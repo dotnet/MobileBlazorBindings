@@ -2,15 +2,15 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class LabelHandler : ViewHandler, IXamarinFormsContainerElementHandler
+    public partial class LabelHandler : ViewHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            var childAsSpan = child as XF.Span;
+            var childAsSpan = child as MC.Span;
 
             var formattedString = GetFormattedString();
             if (physicalSiblingIndex <= formattedString.Spans.Count)
@@ -24,7 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             // There are two cases to consider:
             // 1. A Xamarin.Forms Label can have only 1 child (a FormattedString), so the child's index is always 0.
@@ -33,25 +33,25 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             return child switch
             {
-                XF.Span span => LabelControl.FormattedText?.Spans.IndexOf(span) ?? -1,
-                XF.FormattedString formattedString when LabelControl.FormattedText == formattedString => 0,
+                MC.Span span => LabelControl.FormattedText?.Spans.IndexOf(span) ?? -1,
+                MC.FormattedString formattedString when LabelControl.FormattedText == formattedString => 0,
                 _ => -1
             };
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
-            var childAsSpan = child as XF.Span;
+            var childAsSpan = child as MC.Span;
 
             var formattedString = GetFormattedString();
             formattedString.Spans.Remove(childAsSpan);
         }
 
-        private XF.FormattedString GetFormattedString()
+        private MC.FormattedString GetFormattedString()
         {
             if (LabelControl.FormattedText == null)
             {
-                LabelControl.FormattedText = new XF.FormattedString();
+                LabelControl.FormattedText = new MC.FormattedString();
             }
             return LabelControl.FormattedText;
         }

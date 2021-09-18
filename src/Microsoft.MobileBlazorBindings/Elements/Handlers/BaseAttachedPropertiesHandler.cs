@@ -3,33 +3,33 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public abstract class BaseAttachedPropertiesHandler : IXamarinFormsElementHandler, INonPhysicalChild
+    public abstract class BaseAttachedPropertiesHandler : IMauiElementHandler, INonPhysicalChild
     {
         /// <summary>
         /// The target of the attached property. This will be set to the parent of the attached property container.
         /// </summary>
-        protected XF.BindableObject Target { get; private set; }
+        protected MC.BindableObject Target { get; private set; }
 
         public abstract void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName);
         public abstract void Remove();
 
         public void SetParent(object parentElement)
         {
-            Target = (XF.BindableObject)parentElement;
+            Target = (MC.BindableObject)parentElement;
         }
 
         // Because this is a 'fake' element, all matters related to physical trees
         // should be no-ops.
-        public XF.Element ElementControl => null;
+        public MC.Element ElementControl => null;
         public object TargetElement => null;
         public bool IsParented() => false;
-        public bool IsParentedTo(XF.Element parent) => false;
+        public bool IsParentedTo(MC.Element parent) => false;
 
-        public void SetParent(XF.Element parent)
+        public void SetParent(MC.Element parent)
         {
             // This should never get called. Instead, INonPhysicalChild.SetParent() implemented
             // in this class should get called.

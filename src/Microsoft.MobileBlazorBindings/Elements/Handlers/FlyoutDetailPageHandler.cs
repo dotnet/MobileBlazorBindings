@@ -3,17 +3,17 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public sealed class FlyoutDetailPageHandler : ContentPageHandler
     {
-        public FlyoutDetailPageHandler(NativeComponentRenderer renderer, XF.ContentPage flyoutPageControl) : base(renderer, flyoutPageControl)
+        public FlyoutDetailPageHandler(NativeComponentRenderer renderer, MC.ContentPage flyoutPageControl) : base(renderer, flyoutPageControl)
         {
             FlyoutPageControl = flyoutPageControl ?? throw new ArgumentNullException(nameof(flyoutPageControl));
         }
 
-        public XF.ContentPage FlyoutPageControl { get; }
+        public MC.ContentPage FlyoutPageControl { get; }
     }
 }

@@ -1,11 +1,13 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,20 +16,20 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ImageButton()
         {
             ElementHandlerRegistry.RegisterElementHandler<ImageButton>(
-                renderer => new ImageButtonHandler(renderer, new XF.ImageButton()));
+                renderer => new ImageButtonHandler(renderer, new MC.ImageButton()));
 
             RegisterAdditionalHandlers();
         }
 
-        [Parameter] public XF.Aspect? Aspect { get; set; }
-        [Parameter] public XF.Color? BorderColor { get; set; }
+        [Parameter] public Aspect? Aspect { get; set; }
+        [Parameter] public Color BorderColor { get; set; }
         [Parameter] public double? BorderWidth { get; set; }
         [Parameter] public int? CornerRadius { get; set; }
         [Parameter] public bool? IsOpaque { get; set; }
-        [Parameter] public XF.Thickness? Padding { get; set; }
-        [Parameter] public XF.ImageSource Source { get; set; }
+        [Parameter] public Thickness? Padding { get; set; }
+        [Parameter] public MC.ImageSource Source { get; set; }
 
-        public new XF.ImageButton NativeControl => ((ImageButtonHandler)ElementHandler).ImageButtonControl;
+        public new MC.ImageButton NativeControl => ((ImageButtonHandler)ElementHandler).ImageButtonControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -39,7 +41,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (BorderColor != null)
             {
-                builder.AddAttribute(nameof(BorderColor), AttributeHelper.ColorToString(BorderColor.Value));
+                builder.AddAttribute(nameof(BorderColor), AttributeHelper.ColorToString(BorderColor));
             }
             if (BorderWidth != null)
             {

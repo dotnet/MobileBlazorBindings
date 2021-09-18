@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {
@@ -9,13 +9,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
     internal class DataTemplateItemComponent<T> : ComponentBase
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        private XF.ContentView _contentView;
+        private MC.ContentView _contentView;
         private object _item;
 
         [Parameter] public RenderFragment<T> Template { get; set; }
 
         [Parameter]
-        public XF.ContentView ContentView
+        public MC.ContentView ContentView
         {
             get
             {

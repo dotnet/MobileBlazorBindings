@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,41 +14,17 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static Stepper()
         {
             ElementHandlerRegistry.RegisterElementHandler<Stepper>(
-                renderer => new StepperHandler(renderer, new XF.Stepper()));
+                renderer => new StepperHandler(renderer, new MC.Stepper()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets the increment by which Value is increased or decreased. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
         [Parameter] public double? Increment { get; set; }
-        /// <summary>
-        /// Gets or sets the maximum selectable value. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
         [Parameter] public double? Maximum { get; set; }
-        /// <summary>
-        /// Gets or sets the minimum selectabel value. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
         [Parameter] public double? Minimum { get; set; }
-        /// <summary>
-        /// Gets or sets the current value. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
         [Parameter] public double? Value { get; set; }
 
-        public new XF.Stepper NativeControl => ((StepperHandler)ElementHandler).StepperControl;
+        public new MC.Stepper NativeControl => ((StepperHandler)ElementHandler).StepperControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

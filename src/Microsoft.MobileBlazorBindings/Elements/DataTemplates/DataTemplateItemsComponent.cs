@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Collections.Generic;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {
@@ -36,9 +36,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
         [Parameter] public string ElementName { get; set; }
         [Parameter] public RenderFragment<T> Template { get; set; }
 
-        private readonly List<XF.ContentView> _itemRoots = new List<XF.ContentView>();
+        private readonly List<MC.ContentView> _itemRoots = new List<MC.ContentView>();
 
-        public void Add(XF.ContentView templateRoot)
+        public void Add(MC.ContentView templateRoot)
         {
             _itemRoots.Add(templateRoot);
             StateHasChanged();

@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net6.0;net6.0-android;net6.0-windows10.0.19041</TargetFrameworks>
+    <UseMaui>true</UseMaui>
     <Title>Experimental Forms binding for Blazor</Title>
     <Description>Experimental Mobile Blazor Bindings enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
@@ -12,17 +13,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.MobileBlazorBindings.Core\Microsoft.MobileBlazorBindings.Core.csproj" />
-    <ProjectReference Include="..\Microsoft.MobileBlazorBindings.WebView\Microsoft.MobileBlazorBindings.WebView.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-      <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.dll">
-          <Authenticode>Microsoft400</Authenticode>
-      </FilesToSign>
+    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.dll">
+      <Authenticode>Microsoft400</Authenticode>
+    </FilesToSign>
   </ItemGroup>
 </Project>

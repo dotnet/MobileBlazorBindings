@@ -4,28 +4,28 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellSectionHandler : ShellGroupItemHandler, IXamarinFormsContainerElementHandler
+    public partial class ShellSectionHandler : ShellGroupItemHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
                 throw new ArgumentNullException(nameof(child));
             }
 
-            XF.ShellContent contentToAdd = child switch
+            MC.ShellContent contentToAdd = child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => childAsTemplatedPage,  // Implicit conversion
-                XF.ShellContent childAsShellContent => childAsShellContent,
+                MC.TemplatedPage childAsTemplatedPage => childAsTemplatedPage,  // Implicit conversion
+                MC.ShellContent childAsShellContent => childAsShellContent,
                 _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').")
             };
 
             // Ensure that there is non-null Content to avoid exceptions in Xamarin.Forms
-            contentToAdd.Content ??= new XF.Page();
+            contentToAdd.Content ??= new MC.Page();
 
             if (ShellSectionControl.Items.Count >= physicalSiblingIndex)
             {
@@ -38,26 +38,26 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             var shellContent = GetContentForChild(child);
             return ShellSectionControl.Items.IndexOf(shellContent);
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
             if (child is null)
             {
                 throw new ArgumentNullException(nameof(child));
             }
 
-            XF.ShellContent contentToRemove = GetContentForChild(child)
+            MC.ShellContent contentToRemove = GetContentForChild(child)
                 ?? throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support removing a child (child type is '{child.GetType().FullName}').");
 
             ShellSectionControl.Items.Remove(contentToRemove);
         }
 
-        public override void SetParent(XF.Element parent)
+        public override void SetParent(MC.Element parent)
         {
             if (ElementControl.Parent == null)
             {
@@ -66,17 +66,17 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        private XF.ShellContent GetContentForChild(XF.Element child)
+        private MC.ShellContent GetContentForChild(MC.Element child)
         {
             return child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => GetContentForTemplatePage(childAsTemplatedPage),
-                XF.ShellContent childAsShellContent => childAsShellContent,
+                MC.TemplatedPage childAsTemplatedPage => GetContentForTemplatePage(childAsTemplatedPage),
+                MC.ShellContent childAsShellContent => childAsShellContent,
                 _ => null
             };
         }
 
-        private XF.ShellContent GetContentForTemplatePage(XF.TemplatedPage childAsTemplatedPage)
+        private MC.ShellContent GetContentForTemplatePage(MC.TemplatedPage childAsTemplatedPage)
         {
             return ShellSectionControl.Items.FirstOrDefault(content => content.Content == childAsTemplatedPage);
         }

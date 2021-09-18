@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using System;
 using System.Diagnostics;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {
@@ -13,43 +15,43 @@ namespace Microsoft.MobileBlazorBindings
         {
             Debug.WriteLine($"Fatal exception caught: '{exception?.GetType().Name}': '{exception?.Message}'");
 
-            XF.Device.InvokeOnMainThreadAsync(() =>
+            Device.InvokeOnMainThreadAsync(() =>
             {
-                XF.Application.Current.MainPage = GetErrorPageForException(exception);
+                Application.Current.MainPage = GetErrorPageForException(exception);
             });
         }
 
-        private static XF.ContentPage GetErrorPageForException(Exception exception)
+        private static ContentPage GetErrorPageForException(Exception exception)
         {
-            var errorPage = new XF.ContentPage()
+            var errorPage = new ContentPage()
             {
-                BackgroundColor = XF.Color.White,
+                BackgroundColor = Colors.White,
                 Title = "Unhandled exception",
-                Content = new XF.StackLayout
+                Content = new StackLayout
                 {
-                    Margin = new XF.Thickness(0, top: 30, 0, 0),
+                    Margin = new Thickness(0, top: 30, 0, 0),
                     Padding = 10,
                     Children =
                     {
-                        new XF.Label
+                        new Label
                         {
-                            TextColor = XF.Color.Black,
-                            FontAttributes = XF.FontAttributes.Bold,
-                            FontSize = XF.Device.GetNamedSize(XF.NamedSize.Large, typeof(XF.Label)),
+                            TextColor = Colors.Black,
+                            FontAttributes = FontAttributes.Bold,
+                            FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                             Text = "Unhandled exception",
                         },
-                        new XF.Label
+                        new Label
                         {
-                            TextColor = XF.Color.Black,
+                            TextColor = Colors.Black,
                             Text = exception?.Message,
                         },
-                        new XF.ScrollView
+                        new ScrollView
                         {
                             Content =
-                                new XF.Label
+                                new Label
                                 {
-                                    TextColor = XF.Color.Black,
-                                    FontSize = XF.Device.GetNamedSize(XF.NamedSize.Small, typeof(XF.Label)),
+                                    TextColor = Colors.Black,
+                                    FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label)),
                                     Text = exception?.StackTrace,
                                 },
 

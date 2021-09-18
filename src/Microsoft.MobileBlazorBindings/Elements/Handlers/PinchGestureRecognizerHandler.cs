@@ -3,13 +3,13 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class PinchGestureRecognizerHandler : GestureRecognizerHandler
     {
-        public PinchGestureRecognizerHandler(NativeComponentRenderer renderer, XF.PinchGestureRecognizer pinchGestureRecognizerControl) : base(renderer, pinchGestureRecognizerControl)
+        public PinchGestureRecognizerHandler(NativeComponentRenderer renderer, MC.PinchGestureRecognizer pinchGestureRecognizerControl) : base(renderer, pinchGestureRecognizerControl)
         {
             PinchGestureRecognizerControl = pinchGestureRecognizerControl ?? throw new ArgumentNullException(nameof(pinchGestureRecognizerControl));
 
@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        public XF.PinchGestureRecognizer PinchGestureRecognizerControl { get; }
+        public MC.PinchGestureRecognizer PinchGestureRecognizerControl { get; }
 
         public ulong PinchUpdatedEventHandlerId { get; set; }
 

@@ -6,13 +6,13 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellHandler : PageHandler, IXamarinFormsContainerElementHandler
+    public partial class ShellHandler : PageHandler, IMauiContainerElementHandler
     {
-        private readonly XF.ContentView _flyoutHeaderContentView = new XF.ContentView();
+        private readonly MC.ContentView _flyoutHeaderContentView = new MC.ContentView();
 
         partial void Initialize(NativeComponentRenderer renderer)
         {
@@ -49,20 +49,20 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         public ulong NavigatedEventHandlerId { get; set; }
         public ulong NavigatingEventHandlerId { get; set; }
 
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
                 throw new ArgumentNullException(nameof(child));
             }
 
-            XF.ShellItem itemToAdd = child switch
+            MC.ShellItem itemToAdd = child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => childAsTemplatedPage, // Implicit conversion
-                XF.ShellContent childAsShellContent => childAsShellContent, // Implicit conversion
-                XF.ShellSection childAsShellSection => childAsShellSection, // Implicit conversion
-                XF.MenuItem childAsMenuItem => childAsMenuItem, // Implicit conversion
-                XF.ShellItem childAsShellItem => childAsShellItem,
+                MC.TemplatedPage childAsTemplatedPage => childAsTemplatedPage, // Implicit conversion
+                MC.ShellContent childAsShellContent => childAsShellContent, // Implicit conversion
+                MC.ShellSection childAsShellSection => childAsShellSection, // Implicit conversion
+                MC.MenuItem childAsMenuItem => childAsMenuItem, // Implicit conversion
+                MC.ShellItem childAsShellItem => childAsShellItem,
                 _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').")
             };
 
@@ -77,7 +77,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
             if (child is null)
             {
@@ -90,52 +90,52 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ShellControl.Items.Remove(itemToRemove);
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             var shellItem = GetItemForElement(child);
             return ShellControl.Items.IndexOf(shellItem);
         }
 
-        private XF.ShellItem GetItemForElement(XF.Element child)
+        private MC.ShellItem GetItemForElement(MC.Element child)
         {
             return child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => GetItemForTemplatedPage(childAsTemplatedPage),
-                XF.ShellContent childAsShellContent => GetItemForContent(childAsShellContent),
-                XF.ShellSection childAsShellSection => GetItemForSection(childAsShellSection),
-                XF.MenuItem childAsMenuItem => GetItemForMenuItem(childAsMenuItem),
-                XF.ShellItem childAsShellItem => childAsShellItem,
+                MC.TemplatedPage childAsTemplatedPage => GetItemForTemplatedPage(childAsTemplatedPage),
+                MC.ShellContent childAsShellContent => GetItemForContent(childAsShellContent),
+                MC.ShellSection childAsShellSection => GetItemForSection(childAsShellSection),
+                MC.MenuItem childAsMenuItem => GetItemForMenuItem(childAsMenuItem),
+                MC.ShellItem childAsShellItem => childAsShellItem,
                 _ => null
             };
         }
 
-        private XF.ShellItem GetItemForTemplatedPage(XF.TemplatedPage childAsTemplatedPage)
+        private MC.ShellItem GetItemForTemplatedPage(MC.TemplatedPage childAsTemplatedPage)
         {
             return ShellControl.Items
                 .FirstOrDefault(item => item.Items
                     .Any(section => section.Items.Any(content => content.Content == childAsTemplatedPage)));
         }
 
-        private XF.ShellItem GetItemForContent(XF.ShellContent childAsShellContent)
+        private MC.ShellItem GetItemForContent(MC.ShellContent childAsShellContent)
         {
             return ShellControl.Items
                 .FirstOrDefault(item => item.Items
                     .Any(section => section.Items.Contains(childAsShellContent)));
         }
 
-        private XF.ShellItem GetItemForSection(XF.ShellSection childAsShellSection)
+        private MC.ShellItem GetItemForSection(MC.ShellSection childAsShellSection)
         {
             return ShellControl.Items.FirstOrDefault(item => item.Items.Contains(childAsShellSection));
         }
 
-        private XF.ShellItem GetItemForMenuItem(XF.MenuItem childAsMenuItem)
+        private MC.ShellItem GetItemForMenuItem(MC.MenuItem childAsMenuItem)
         {
             // MenuItem is wrapped in ShellMenuItem, which is internal type.
             // Not sure how to identify this item correctly.
             return ShellControl.Items.FirstOrDefault(item => IsShellItemWithMenuItem(item, childAsMenuItem));
         }
 
-        private static bool IsShellItemWithMenuItem(XF.ShellItem shellItem, XF.MenuItem menuItem)
+        private static bool IsShellItemWithMenuItem(MC.ShellItem shellItem, MC.MenuItem menuItem)
         {
             // Xamarin.Forms.MenuShellItem is internal so we have to use reflection to check that
             // its MenuItem property is the same as the MenuItem we're looking for.
@@ -147,7 +147,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return menuItemInMenuShellItem == menuItem;
         }
 
-        private static readonly Type MenuShellItemType = typeof(XF.ShellItem).Assembly.GetType("Xamarin.Forms.MenuShellItem");
+        private static readonly Type MenuShellItemType = typeof(MC.ShellItem).Assembly.GetType("Microsoft.Maui.Controls.MenuShellItem");
         private static readonly PropertyInfo MenuShellItemMenuItemProperty = MenuShellItemType.GetProperty("MenuItem");
     }
 }

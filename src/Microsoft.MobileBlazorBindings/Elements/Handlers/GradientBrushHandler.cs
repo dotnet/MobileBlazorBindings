@@ -3,15 +3,15 @@
 
 using System;
 using System.Diagnostics;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public abstract partial class GradientBrushHandler : BrushHandler, IXamarinFormsContainerElementHandler
+    public abstract partial class GradientBrushHandler : BrushHandler, IMauiContainerElementHandler
     {
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            if (!(child is XF.GradientStop gradientStopChild))
+            if (!(child is MC.GradientStop gradientStopChild))
             {
                 throw new ArgumentException($"GradientBrush support GradientStop child elements only, but {child?.GetType()} found instead.", nameof(child));
             }
@@ -27,9 +27,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
-            if (!(child is XF.GradientStop gradientStopChild))
+            if (!(child is MC.GradientStop gradientStopChild))
             {
                 throw new ArgumentException($"GradientBrush support GradientStop child elements only, but {child?.GetType()} found instead.", nameof(child));
             }
@@ -37,9 +37,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return GradientBrushControl.GradientStops.IndexOf(gradientStopChild);
         }
 
-        public void RemoveChild(XF.Element child)
+        public void RemoveChild(MC.Element child)
         {
-            if (!(child is XF.GradientStop gradientStopChild))
+            if (!(child is MC.GradientStop gradientStopChild))
             {
                 throw new ArgumentException($"GradientBrush support GradientStop child elements only, but {child?.GetType()} found instead.", nameof(child));
             }

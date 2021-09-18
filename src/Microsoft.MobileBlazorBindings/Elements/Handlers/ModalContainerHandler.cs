@@ -3,27 +3,27 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ModalContainerHandler : IXamarinFormsContainerElementHandler, INonChildContainerElement
+    public class ModalContainerHandler : IMauiContainerElementHandler, INonChildContainerElement
     {
         public ModalContainerHandler(NativeComponentRenderer renderer, DummyElement modalContainerDummyControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ModalContainerPlaceholderElementControl = modalContainerDummyControl ?? throw new ArgumentNullException(nameof(modalContainerDummyControl));
 
-            _parentChildManager = new ParentChildManager<XF.NavigableElement, XF.Page>(ShowDialogIfPossible);
+            _parentChildManager = new ParentChildManager<MC.NavigableElement, MC.Page>(ShowDialogIfPossible);
             _parentChildManager.ChildChanged += OnParentChildManagerChildChanged;
         }
 
         public NativeComponentRenderer Renderer { get; }
         public DummyElement ModalContainerPlaceholderElementControl { get; }
-        public XF.Element ElementControl => ModalContainerPlaceholderElementControl;
+        public MC.Element ElementControl => ModalContainerPlaceholderElementControl;
         public object TargetElement => ElementControl;
 
-        private readonly ParentChildManager<XF.NavigableElement, XF.Page> _parentChildManager;
+        private readonly ParentChildManager<MC.NavigableElement, MC.Page> _parentChildManager;
 
         private void OnParentChildManagerChildChanged(object sender, EventArgs e)
         {
@@ -66,7 +66,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        private void ShowDialogIfPossible(ParentChildManager<XF.NavigableElement, XF.Page> parentChildManager)
+        private void ShowDialogIfPossible(ParentChildManager<MC.NavigableElement, MC.Page> parentChildManager)
         {
             if (_parentChildManager.Parent != null && _parentChildManager.Child != null)
             {
@@ -74,12 +74,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public void AddChild(XF.Element child, int physicalSiblingIndex)
+        public void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             _parentChildManager.SetChild(child);
         }
 
-        public void RemoveChild(XF.Element child)
+        public void RemoveChild(MC.Element child)
         {
             // TODO: This could probably be implemented at some point, but it isn't needed right now
             throw new NotImplementedException();
@@ -92,21 +92,21 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return false;
         }
 
-        public bool IsParentedTo(XF.Element parent)
+        public bool IsParentedTo(MC.Element parent)
         {
             // Because this is a 'fake' element, all matters related to physical trees
             // should be no-ops.
             return false;
         }
 
-        public void SetParent(XF.Element parent)
+        public void SetParent(MC.Element parent)
         {
             // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
             // in this class should get called.
             throw new NotSupportedException();
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             // Because this is a 'fake' element, all matters related to physical trees
             // should be no-ops.
@@ -115,7 +115,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public void SetParent(object parentElement)
         {
-            _parentChildManager.SetParent((XF.Element)parentElement);
+            _parentChildManager.SetParent((MC.Element)parentElement);
         }
 
         public void Remove()
