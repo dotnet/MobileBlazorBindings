@@ -1,0 +1,105 @@
+﻿<Shell FlyoutBackgroundImage="@Photo"
+	   FlyoutBackgroundImageAspect="Aspect.AspectFill"
+	   FlyoutHeaderBehavior="FlyoutHeaderBehavior.CollapseOnScroll">
+	<FlyoutHeader>
+		<XaminalsFlyoutHeader />
+	</FlyoutHeader>
+
+	<ChildContent>
+		<FlyoutItem Route="animals"
+					Title="Animals"
+					FlyoutDisplayOptions="FlyoutDisplayOptions.AsMultipleItems">
+			<Tab Title="Domestic"
+				 Route="domestic"
+				 Icon="@Paw">
+				<ShellContent Route="cats"
+							  Title="Cats"
+							  Icon="@Cat">
+					<CatsPage />
+				</ShellContent>
+
+				<ShellContent Route="dogs"
+							  Title="Dogs"
+							  Icon="@Dog">
+					<DogsPage />
+				</ShellContent>
+			</Tab>
+
+			<ShellContent Route="monkeys"
+						  Title="Monkeys"
+						  Icon="@Monkey">
+				<MonkeysPage />
+			</ShellContent>
+
+			<ShellContent Route="elephants"
+						  Title="Elephants"
+						  Icon="@Elephant">
+				<ElephantsPage />
+			</ShellContent>
+
+			<ShellContent Route="bears"
+						  Title="Bears"
+						  Icon="@Bear">
+				<BearsPage />
+			</ShellContent>
+		</FlyoutItem>
+
+		<ShellContent Route="about"
+					  Title="About"
+					  Icon="@Info">
+			<AboutPage />
+		</ShellContent>
+
+		<MenuItem Text="Random"
+				  IconImageSource="@Random"
+				  OnClick="OnRandomClick" />
+		<MenuItem Text="Help"
+				  IconImageSource="@Help"
+				  OnClick="OnHelpClick" />
+	</ChildContent>
+</Shell>
+
+@code
+{
+	[Inject] ShellNavigationManager NavigationManager { get; set; }
+
+	ImageSource Photo = new FileImageSource { File = "photo.png" };
+	ImageSource Paw = new FileImageSource { File = "paw.png" };
+	ImageSource Cat = new FileImageSource { File = "cat.png" };
+	ImageSource Dog = new FileImageSource { File = "dog.png" };
+	ImageSource Monkey = new FileImageSource { File = "monkey.png" };
+	ImageSource Elephant = new FileImageSource { File = "elephant.png" };
+	ImageSource Bear = new FileImageSource { File = "bear.png" };
+	ImageSource Info = new FileImageSource { File = "info.png" };
+	ImageSource Random = new FileImageSource { File = "random.png" };
+	ImageSource Help = new FileImageSource { File = "help.png" };
+
+	Random rand = new Random();
+
+	async Task OnRandomClick()
+	{
+		var routes = new[] { "monkeydetails", "beardetails", "catdetails", "dogdetails", "elephantdetails" };
+
+		string destinationRoute = routes.ElementAt(rand.Next(0, routes.Length));
+
+		var animals = destinationRoute switch
+		{
+			"monkeydetails" => MonkeyData.Monkeys,
+			"beardetails" => BearData.Bears,
+			"catdetails" => CatData.Cats,
+			"dogdetails" => DogData.Dogs,
+			"elephantdetails" => ElephantData.Elephants,
+			_ => throw new NotSupportedException()
+		};
+
+		var animalName = animals.ElementAt(rand.Next(0, animals.Count)).Name;
+
+		await NavigationManager.NavigateToAsync($"/{destinationRoute}/{animalName}");
+	}
+
+	async Task OnHelpClick()
+	{
+		var helpUrl = "https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/shell";
+		await Launcher.OpenAsync(helpUrl);
+	}
+}
