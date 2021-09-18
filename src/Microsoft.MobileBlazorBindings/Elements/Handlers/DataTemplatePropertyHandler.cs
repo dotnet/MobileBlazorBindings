@@ -28,6 +28,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _setPropertyAction(parent, dataTemplate);
         }
 
+        public void Remove()
+        {
+            // Because this Handler is used internally only, this method is no-op.
+        }
+
         // Because this is a 'fake' element, all matters related to physical trees
         // should be no-ops.
 

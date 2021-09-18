@@ -23,6 +23,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _propertyItems = _listPropertyAccessor((TElementType)parentElement);
         }
 
+        public void Remove()
+        {
+            // Because this Handler is used internally only, this method is no-op.
+        }
+
         void IMauiContainerElementHandler.AddChild(MC.Element child, int physicalSiblingIndex)
         {
             if (!(child is TItemType typedChild))
