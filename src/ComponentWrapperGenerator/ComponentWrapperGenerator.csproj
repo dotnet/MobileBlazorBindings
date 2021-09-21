@@ -17,12 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms.DualScreen" Version="5.0.0.1874">
+    <PackageReference Include="Xamarin.Forms.DualScreen" Version="5.0.0.2125">
       <IncludeAssets></IncludeAssets>
       <PrivateAssets></PrivateAssets>
       <GeneratePathProperty>true</GeneratePathProperty>
