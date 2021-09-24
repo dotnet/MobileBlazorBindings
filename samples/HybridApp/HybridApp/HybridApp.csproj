@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.961.33" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
     <PackageReference Include="System.Text.Json" Version="4.7.2" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
     <PackageReference Include="Xamarin.Forms.Platform.WPF" Version="5.0.0.2125" NoWarn="NU1701" />
