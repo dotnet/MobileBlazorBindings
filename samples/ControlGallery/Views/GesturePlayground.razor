@@ -1,0 +1,47 @@
+﻿@page "/gestureplayground"
+
+<ContentPage>
+    <StackLayout Margin="new Thickness(20)">
+
+        <Label Text="Tap me or pan me"
+               FontSize="40" BackgroundColor="Colors.LightCoral">
+            <TapGestureRecognizer NumberOfTapsRequired="1" OnTapped="@OnLabelTapped" />
+            <PanGestureRecognizer OnPanUpdated="@OnLabelPanned" />
+        </Label>
+
+        <Label Text="@($"The label above was clicked {count} times")" FontSize="@fontSize" BackgroundColor="Colors.AliceBlue" />
+
+        <Label Text="@($"Swipe left to delete, right to archive [STATE: {swipeState}]")" FontSize="40" BackgroundColor="Colors.AntiqueWhite">
+            <SwipeGestureRecognizer Direction="SwipeDirection.Left" OnSwiped="@OnSwipeLabel" />
+            <SwipeGestureRecognizer Direction="SwipeDirection.Right" OnSwiped="@OnSwipeLabel" />
+        </Label>
+
+    </StackLayout>
+</ContentPage>
+
+@code
+{
+    int count;
+    double fontSize = 20;
+    string swipeState = "none";
+
+    void OnLabelTapped()
+    {
+        count += 1;
+    }
+
+    void OnLabelPanned(MC.PanUpdatedEventArgs e)
+    {
+        fontSize = 20 + e.TotalX;
+    }
+
+    void OnSwipeLabel(MC.SwipedEventArgs e)
+    {
+        swipeState = e.Direction switch
+        {
+            SwipeDirection.Left => "deleted",
+            SwipeDirection.Right => "archive",
+            _ => "unknown: " + e.Direction.ToString(),
+        };
+    }
+}
