@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements;
 using Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers;
-using SK = SkiaSharp.Views.Forms;
+using SkiaSharp.Views.Maui;
+using SK = SkiaSharp.Views.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp
 {
@@ -17,7 +18,7 @@ namespace Microsoft.MobileBlazorBindings.SkiaSharp
                 .RegisterElementHandler<SKCanvasView>(renderer => new SKCanvasViewHandler(renderer, new SK.SKCanvasView()));
         }
 
-        [Parameter] public EventCallback<SK.SKPaintSurfaceEventArgs> OnPaintSurface { get; set; }
+        [Parameter] public EventCallback<SKPaintSurfaceEventArgs> OnPaintSurface { get; set; }
 
         public new SK.SKCanvasView NativeControl => ((SKCanvasViewHandler)ElementHandler).SKCanvasViewControl;
         public void InvalidateSurface()
