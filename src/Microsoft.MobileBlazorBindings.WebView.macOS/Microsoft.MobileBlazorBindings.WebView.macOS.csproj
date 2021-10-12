@@ -30,7 +30,8 @@
   <ItemGroup>
     <Reference Include="netstandard" />
 
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

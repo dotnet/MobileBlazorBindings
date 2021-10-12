@@ -10,16 +10,18 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityModel.OidcClient" Version="3.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.19" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
   </ItemGroup>
 
   <ItemGroup>

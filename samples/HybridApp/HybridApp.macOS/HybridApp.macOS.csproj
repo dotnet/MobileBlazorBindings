@@ -93,8 +93,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="System.Memory" Version="4.5.4" IncludeAssets="None" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />

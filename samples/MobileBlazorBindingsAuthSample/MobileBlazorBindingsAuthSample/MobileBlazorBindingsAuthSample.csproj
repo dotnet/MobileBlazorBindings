@@ -11,11 +11,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.1874" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.10" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.19" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.19" />
     <PackageReference Include="System.Net.Http.Json" Version="3.2.1" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
   </ItemGroup>
 
   <ItemGroup>
