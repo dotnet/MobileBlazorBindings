@@ -18,9 +18,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0-rc.1.21452.15" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-rc.1.21451.13" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-rc.1.21451.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.0-rc.2.21480.10" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-rc.2.21480.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0-rc.2.21480.5" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

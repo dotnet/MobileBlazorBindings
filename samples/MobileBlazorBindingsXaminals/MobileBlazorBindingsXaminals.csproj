@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android</TargetFrameworks>
-		<!--<TargetFrameworks>net6.0-ios;net6.0-android;net6.0-maccatalyst</TargetFrameworks>-->
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<UseMaui>true</UseMaui>
@@ -16,8 +15,7 @@
 		<ApplicationId>com.companyname.MobileBlazorBindingsXaminals</ApplicationId>
 
 		<!-- Versions -->
-		<ApplicationVersion>1.0</ApplicationVersion>
-		<AndroidVersionCode>1</AndroidVersionCode>
+		<ApplicationVersion>1</ApplicationVersion>
 
 		<!-- Required for C# Hot Reload -->
 		<UseInterpreter Condition="'$(Configuration)' == 'Debug'">True</UseInterpreter>
@@ -43,13 +41,14 @@
 		<PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="1.0.0-experimental1" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.WinUI" Version="1.0.0-experimental1" />
 		<PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="1.0.0-experimental1" NoWarn="NU1701" />
+		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.26-experimental1" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
 	  <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
 	</ItemGroup>
