@@ -7,6 +7,11 @@
 		<Title>Experimental binding of Skia Sharp in Mobile Blazor Bindings</Title>
 		<Description>Support for Skia Sharp for Experimental Mobile Blazor Bindings.</Description>
 		<PackageTags>blazor;mobileblazorbindings;SkiaSharp;</PackageTags>
+
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

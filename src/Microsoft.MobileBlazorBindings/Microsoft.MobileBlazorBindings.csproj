@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;net6.0-android;net6.0-windows10.0.19041</TargetFrameworks>
@@ -6,6 +6,11 @@
     <Title>Experimental Forms binding for Blazor</Title>
     <Description>Experimental Mobile Blazor Bindings enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
     <PackageTags>blazor;mobileblazorbindings</PackageTags>
+	
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
