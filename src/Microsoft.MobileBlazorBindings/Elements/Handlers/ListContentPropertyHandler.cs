@@ -8,7 +8,7 @@ using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ListContentPropertyHandler<TElementType, TItemType> : IMauiContainerElementHandler, INonChildContainerElement where TItemType : MC.Element
+    public class ListContentPropertyHandler<TElementType, TItemType> : IMauiContainerElementHandler, INonChildContainerElement where TItemType : class
     {
         private readonly Func<TElementType, IList<TItemType>> _listPropertyAccessor;
         private IList<TItemType> _propertyItems;

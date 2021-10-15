@@ -8,10 +8,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
 {
     public static partial class AttributeHelper
     {
-        private const string DefaultColorString = "default";
-
-        private static readonly Color DefaultColor = new();
-
         /// <summary>
         /// Helper method to serialize <see cref="Color" /> objects.
         /// </summary>
@@ -22,18 +18,13 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 return null;
             }
 
-            if (color.Equals(DefaultColor))
-            {
-                return DefaultColorString;
-            }
-
             return color.ToRgbaHex(true);
         }
 
         /// <summary>
         /// Helper method to deserialize <see cref="Color" /> objects.
         /// </summary>
-        public static Color StringToColor(object colorString, Color defaultValueIfNull = default)
+        public static Color StringToColor(object colorString, Color defaultValueIfNull = null)
         {
             if (colorString is null)
             {
@@ -43,14 +34,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 throw new ArgumentException("Expected parameter instance to be a string.", nameof(colorString));
             }
-            //if (colorAsString?.Length != 8 && colorAsString?.Length != DefaultColorString.Length)
-            //{
-            //    throw new ArgumentException($"Invalid color string '{colorString}'. Expected a hex color in the form 'AARRGGBB' or '{DefaultColorString}'.", nameof(colorString));
-            //}
-            if (colorAsString == DefaultColorString)
-            {
-                return DefaultColor;
-            }
+
             return Color.FromRgba(colorAsString);
         }
     }
