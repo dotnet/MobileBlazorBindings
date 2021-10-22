@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
@@ -6,7 +6,7 @@ using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class Entry : InputView
+    public partial class Editor
     {
         [Parameter] public EventCallback OnCompleted { get; set; }
 
