@@ -23,6 +23,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         [Parameter] public XF.WebViewSource Source { get; set; }
         [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
+        [Parameter] public EventCallback<Uri> OnNavigationStarting { get; set; }
+        [Parameter] public EventCallback<Uri> OnNavigationFinished { get; set; }
 
         public void SendMessage(string message)
         {
@@ -34,6 +36,8 @@ namespace Microsoft.MobileBlazorBindings.Elements
             base.RenderAttributes(builder);
 
             builder.AddAttribute("onwebmessagereceived", EventCallback.Factory.Create<WebMessageEventArgs>(this, HandleOnWebMessageReceived));
+            builder.AddAttribute("onnavigationstarting", EventCallback.Factory.Create<NavigationEventArgs>(this, HandleOnNavigationStarting));
+            builder.AddAttribute("onnavigationfinished", EventCallback.Factory.Create<NavigationEventArgs>(this, HandleOnNavigationFinished));
 
             switch (Source)
             {
@@ -49,9 +53,20 @@ namespace Microsoft.MobileBlazorBindings.Elements
         private Task HandleOnWebMessageReceived(WebMessageEventArgs args)
             => OnWebMessageReceived.InvokeAsync(args.Message);
 
+        private Task HandleOnNavigationStarting(NavigationEventArgs args)
+            => OnNavigationStarting.InvokeAsync(args.Uri);
+
+        private Task HandleOnNavigationFinished(NavigationEventArgs args)
+            => OnNavigationFinished.InvokeAsync(args.Uri);
+
         internal class WebMessageEventArgs : EventArgs
         {
             public string Message { get; set; }
+        }
+
+        internal class NavigationEventArgs : EventArgs
+        {
+            public Uri Uri { get; set; }
         }
     }
 }
