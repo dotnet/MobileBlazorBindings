@@ -3,6 +3,7 @@
 
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
+using Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Authentication.Msal
 {
