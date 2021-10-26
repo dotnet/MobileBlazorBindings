@@ -1,5 +1,5 @@
 parameters:
-  windowsPool: VSEng-MicroBuildVS2019
+  windowsPool: VSEngSS-MicroBuild2022-1ES
   macPool: MicroBuildV2MacPool
 
 jobs:
