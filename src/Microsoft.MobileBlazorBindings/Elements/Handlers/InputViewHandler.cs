@@ -18,7 +18,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 if (TextChangedEventHandlerId != default)
                 {
-                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new ChangeEventArgs { Value = e.NewTextValue }));
+                    // InputViewControl.Text is used here instead of TextChangedEventArgs.NewTextValue to prevent infinite loops.
+                    // See https://github.com/dotnet/MobileBlazorBindings/issues/430.
+                    renderer.Dispatcher.InvokeAsync(() => renderer.DispatchEventAsync(TextChangedEventHandlerId, null, new ChangeEventArgs { Value = InputViewControl.Text }));
                 }
             };
         }
