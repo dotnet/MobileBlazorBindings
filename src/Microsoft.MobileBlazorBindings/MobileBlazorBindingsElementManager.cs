@@ -43,7 +43,7 @@ namespace Microsoft.MobileBlazorBindings
                 return;
             }
 
-            if (!(parentHandler is IMauiContainerElementHandler parent))
+            if (parentHandler is not IMauiContainerElementHandler parent)
             {
                 throw new NotSupportedException($"Handler of type '{parentHandler.GetType().FullName}' representing element type " +
                     $"'{parentHandler.ElementControl?.GetType().FullName ?? "<null>"}' doesn't support adding a child " +
@@ -52,7 +52,7 @@ namespace Microsoft.MobileBlazorBindings
 
             parent.AddChild(childHandler.ElementControl, physicalSiblingIndex);
 
-            if (!(parentHandler is INonChildContainerElement))
+            if (parentHandler is not INonChildContainerElement)
             {
                 // Notify the child handler that its parent was set. This is needed for cases
                 // where the parent/child are a conceptual relationship and not represented

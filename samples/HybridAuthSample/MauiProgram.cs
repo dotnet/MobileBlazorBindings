@@ -1,12 +1,7 @@
 ﻿using HybridAuthApp;
 using Microsoft.AspNetCore.Components.WebView.Maui;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.Authentication;
-using System;
-using System.Net.Http;
 
 namespace HybridAuthSample
 {

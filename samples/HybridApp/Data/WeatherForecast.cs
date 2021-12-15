@@ -1,5 +1,3 @@
-using System;
-
 namespace HybridApp.Data
 {
     public class WeatherForecast

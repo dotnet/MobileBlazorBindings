@@ -47,7 +47,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         private Task HandleOnWebMessageReceived(WebMessageEventArgs args)
             => OnWebMessageReceived.InvokeAsync(args.Message);
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
         internal class WebMessageEventArgs : EventArgs
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
         {
             public string Message { get; set; }
         }

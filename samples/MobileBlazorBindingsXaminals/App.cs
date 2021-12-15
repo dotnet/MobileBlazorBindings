@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings;
 
 namespace MobileBlazorBindingsXaminals

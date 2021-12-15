@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Controls.Hosting;
-using Microsoft.Maui.Hosting;
-using Microsoft.MobileBlazorBindings;
+﻿using Microsoft.MobileBlazorBindings;
 
 namespace ControlGallery
 {
