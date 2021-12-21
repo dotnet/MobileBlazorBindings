@@ -9,8 +9,7 @@ namespace HybridApp
     {
         public App(MobileBlazorBindingsRenderer renderer)
         {
-            MainPage = new ContentPage();
-            _ = renderer.AddComponent<MainPage>(parent: MobileBlazorBindingsHostExtensions.CreateHandler(this, renderer));
+            renderer.AddComponent<MainPage>(this);
         }
     }
 }

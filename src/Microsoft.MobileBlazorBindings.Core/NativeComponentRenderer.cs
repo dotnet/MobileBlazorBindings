@@ -41,10 +41,11 @@ namespace Microsoft.MobileBlazorBindings.Core
         /// </summary>
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="parent"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        public async Task AddComponent<TComponent>(IElementHandler parent) where TComponent : IComponent
+        public async Task<TComponent> AddComponent<TComponent>(IElementHandler parent, Dictionary<string, string> parameters = null) where TComponent : IComponent
         {
-            await AddComponent(typeof(TComponent), parent).ConfigureAwait(false);
+            return (TComponent)await AddComponent(typeof(TComponent), parent, parameters).ConfigureAwait(false);
         }
 
         /// <summary>

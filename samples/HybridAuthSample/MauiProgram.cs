@@ -15,6 +15,7 @@ namespace HybridAuthSample
             builder
                 .RegisterBlazorMauiWebView()
                 .UseMauiApp<App>()
+                .UseMobileBlazorBindings()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -23,9 +24,7 @@ namespace HybridAuthSample
             builder.Services
                 .AddBlazorWebView()
                 .AddProtectedStorage()
-                .AddSingleton<CounterState>()
-                .AddSingleton<ShellNavigationManager>()
-                .AddScoped<MobileBlazorBindingsRenderer>();
+                .AddSingleton<CounterState>();
 
             builder.Services
                 .AddOidcAuthentication(options =>

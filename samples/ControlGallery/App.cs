@@ -9,8 +9,7 @@ namespace ControlGallery
     {
         public App(MobileBlazorBindingsRenderer renderer)
         {
-            MainPage = new ContentPage();
-            _ = renderer.AddComponent<AppShell>(parent: MobileBlazorBindingsHostExtensions.CreateHandler(this, renderer));
+            renderer.AddComponent<AppShell>(this);
         }
     }
 }

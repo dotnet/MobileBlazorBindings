@@ -9,14 +9,11 @@ namespace MobileBlazorBindingsXaminals
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMobileBlazorBindings()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
-
-            builder.Services
-                .AddSingleton<ShellNavigationManager>()
-                .AddScoped<MobileBlazorBindingsRenderer>();
 
             return builder.Build();
         }
