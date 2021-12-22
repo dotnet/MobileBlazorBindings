@@ -1,4 +1,6 @@
-﻿// Copyright (c) Microsoft Corporation.
+﻿#if !IOS && !MACCATALYST
+
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
@@ -32,3 +34,5 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
     }
 }
+
+#endif

@@ -1,4 +1,6 @@
-﻿namespace MobileBlazorBindingsXaminals
+﻿using Foundation;
+
+namespace MobileBlazorBindingsXaminals
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

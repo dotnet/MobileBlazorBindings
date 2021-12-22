@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿#if !IOS && !MACCATALYST
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
@@ -40,3 +42,5 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
     }
 }
+
+#endif

@@ -1,4 +1,6 @@
-﻿using Microsoft.MobileBlazorBindings.Core;
+﻿#if !IOS && !MACCATALYST
+
+using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections.Generic;
 using WVM = Microsoft.AspNetCore.Components.WebView.Maui;
@@ -59,3 +61,5 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
     }
 }
+
+#endif
