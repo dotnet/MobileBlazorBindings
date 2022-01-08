@@ -9,7 +9,7 @@
             <Button Text="Increment" OnClick="@CounterState.IncrementCount" VerticalOptions="LayoutOptions.Center" Padding="10" />
         </StackLayout>
 
-        <BlazorWebView HostPage="wwwroot/index.html" VerticalOptions="LayoutOptions.FillAndExpand">
+        <BlazorWebView HostPage="wwwroot/index.html">
             <RootComponents>
                 <RootComponent Selector="app" ComponentType="typeof(HybridApp.WebUI.App) "/>
             </RootComponents>

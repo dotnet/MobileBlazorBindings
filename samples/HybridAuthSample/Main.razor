@@ -1,9 +1,7 @@
 ﻿<ContentPage>
-	<StackLayout>
-		<BlazorWebView  HostPage="wwwroot/index.html" VerticalOptions="LayoutOptions.FillAndExpand">
-			<RootComponents>
-				<RootComponent ComponentType="typeof(HybridAuthApp.WebUI.App)" Selector="app" />
-			</RootComponents>
-		</BlazorWebView>
-	</StackLayout>
+	<BlazorWebView HostPage="wwwroot/index.html">
+		<RootComponents>
+			<RootComponent ComponentType="typeof(HybridAuthApp.WebUI.App)" Selector="app" />
+		</RootComponents>
+	</BlazorWebView>
 </ContentPage>
