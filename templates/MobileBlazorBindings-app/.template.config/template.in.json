@@ -3,7 +3,7 @@
     "author": "Microsoft",
     "classifications": [
         "Blazor",
-        "Xamarin.Forms"
+        "MAUI"
     ],
     "name": "Experimental Mobile Blazor Bindings App",
     "description": "A multiproject template for using Blazor to build native cross-platform applications.",
@@ -20,14 +20,6 @@
             "path": "NewApp.sln"
         },
         {
-            "condition": "CreateAndroidProject",
-            "path": "NewApp.Android\\NewApp.Android.csproj"
-        },
-        {
-            "condition": "CreateiOSProject",
-            "path": "NewApp.iOS\\NewApp.iOS.csproj"
-        },
-        {
             "path": "NewApp\\NewApp.csproj"
         }
     ],
@@ -36,9 +28,7 @@
     "preferNameDirectory": true,
     "guids": [
         "4C26868E-5E7C-458D-82E3-040509D0C71F", // Solution file (SLN)
-        "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library
-        "8D9F8CF0-E178-402D-8D40-A88B7B5F3D42", // Android
-        "91D74A40-E440-42AD-B51F-C2D641C49384" // iOS
+        "99E19497-29A6-4B77-B773-BEC55F9B55DC" // .NET Standard Library
     ],
     "symbols": {
         "MobileBlazorBindingsVersion": {
@@ -48,80 +38,6 @@
                 "value": "NuGetPackageVersionFromBuild"
             },
             "replaces": "MobileBlazorBindingsVersion"
-        },
-        "AppIdentifier": {
-            "type": "parameter",
-            "description": "Overrides the app's bundle identifier",
-            "datatype": "string"
-        },
-        "AndroidAppIdentifier": {
-            "type": "parameter",
-            "description": "Overrides the package name in the AndroidManifest.xml",
-            "datatype": "string"
-        },
-        "iOSAppIdentifier": {
-            "type": "parameter",
-            "description": "Overrides the Info.plist's CFBundleIdentifier",
-            "datatype": "string"
-        },
-        "AndroidAppIdentifierReplacer": {
-            "type": "generated",
-            "generator": "coalesce",
-            "parameters": {
-                "sourceVariableName": "AndroidAppIdentifier",
-                "fallbackVariableName": "AppIdentifier"
-            },
-            "replaces": "com.companyname.NewApp.Android"
-        },
-        "iOSAppIdentifierReplacer": {
-            "type": "generated",
-            "generator": "coalesce",
-            "parameters": {
-                "sourceVariableName": "iOSAppIdentifier",
-                "fallbackVariableName": "AppIdentifier"
-            },
-            "replaces": "com.companyname.NewApp.iOS"
-        },
-        "XamarinFormsSdk": {
-            "type": "parameter",
-            "dataType": "string",
-            "replaces": "XamarinFormsVersion",
-            "defaultValue": "5.0.0.1874"
-        },
-        "XamarinEssentialsSdk": {
-            "type": "parameter",
-            "dataType": "string",
-            "replaces": "XamarinEssentialsVersion",
-            "defaultValue": "1.6.0"
-        },
-        // Project Symbols
-        "CreateiOSProject": {
-            "type": "parameter",
-            "dataType": "bool",
-            "defaultValue": "true"
-        },
-        "CreateAndroidProject": {
-            "type": "parameter",
-            "dataType": "bool",
-            "defaultValue": "true"
         }
-    },
-    "sources": [
-        {
-            "modifiers": [
-                {
-                    "condition": "(!CreateiOSProject)",
-                    "exclude": [
-                        "NewApp.iOS/**/*"
-                    ]
-                },
-                {
-                    "condition": "(!CreateAndroidProject)",
-                    "exclude": [
-                        "NewApp.Android/**/*"
-                    ]
-                }
-            ]
-        }
-    ]
+    }
 }
