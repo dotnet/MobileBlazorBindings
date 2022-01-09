@@ -1,0 +1,48 @@
+﻿<StackLayout>
+    <StackLayout>
+        <StackLayout Orientation="StackOrientation.Horizontal"
+                     BackgroundColor="primaryColor">
+            <ContentView Padding="new Thickness(0,40,0,40)" VerticalOptions="LayoutOptions.FillAndExpand">
+                <Image Source="@(new FileImageSource{File = "xamarin_logo.png"})"
+                       VerticalOptions="LayoutOptions.Center"
+                       HeightRequest="64" />
+            </ContentView>
+        </StackLayout>
+    </StackLayout>
+    <ScrollView>
+        <StackLayout Orientation="StackOrientation.Vertical">
+            <Label FontSize="22">
+                <Span FontAttributes="FontAttributes.Bold" FontSize="22">AppName</Span>
+                <Span> </Span>
+                <Span TextColor="lightTextColor">1.0</Span>
+            </Label>
+            <Label>
+                <Span>This app is written in C# and native APIs using the </Span>
+                <Span FontAttributes="FontAttributes.Bold">Xamarin Platform</Span>
+                <Span>.</Span>
+            </Label>
+            <Label>
+                <Span>It shares code with its </Span>
+                <Span FontAttributes="FontAttributes.Bold">iOS, Android, and Windows</Span>
+                <Span> versions.</Span>
+            </Label>
+            <Button OnClick="OpenWeb"
+                    BackgroundColor="primaryColor"
+                    TextColor="Colors.White">
+                Learn more
+            </Button>
+        </StackLayout>
+    </ScrollView>
+</StackLayout>
+
+@code
+{
+    Color primaryColor = Color.FromArgb("2196F3");
+    Color accentColor = Color.FromArgb("96d1ff");
+    Color lightTextColor = Color.FromArgb("999999");
+
+    async Task OpenWeb()
+    {
+        await Launcher.OpenAsync(new Uri("https://xamarin.com/platform"));
+    }
+}
