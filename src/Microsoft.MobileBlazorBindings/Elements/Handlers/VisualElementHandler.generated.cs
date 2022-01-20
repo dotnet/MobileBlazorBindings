@@ -118,6 +118,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(MC.VisualElement.WidthRequest):
                     VisualElementControl.WidthRequest = AttributeHelper.StringToDouble((string)attributeValue, WidthRequestDefaultValue);
                     break;
+                case nameof(MC.VisualElement.ZIndex):
+                    VisualElementControl.ZIndex = AttributeHelper.GetInt(attributeValue);
+                    break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);
                     break;

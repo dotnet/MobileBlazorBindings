@@ -26,6 +26,8 @@ namespace Microsoft.MobileBlazorBindings.ShellNavigation
                 ?? throw new InvalidOperationException("The target element of the Shell navigation is supposed to be created at this point.");
         }
 
+        public override MC.Element GetOrCreate(IServiceProvider services) => GetOrCreate();
+
         public async Task CreateAsync()
         {
             _element = await _navigationManager.BuildPage(_componentType).ConfigureAwait(false);

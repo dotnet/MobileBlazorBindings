@@ -212,6 +212,7 @@ namespace {componentNamespace}
             typeof(Page),
             typeof(ResourceDictionary),
             typeof(RowDefinitionCollection),
+            typeof(Shadow),
             typeof(ShellContent),
             typeof(ShellItem),
             typeof(ShellSection),

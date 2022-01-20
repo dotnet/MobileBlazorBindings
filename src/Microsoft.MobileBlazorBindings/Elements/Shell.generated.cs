@@ -24,7 +24,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public Color FlyoutBackgroundColor { get; set; }
         [Parameter] public MC.ImageSource FlyoutBackgroundImage { get; set; }
         [Parameter] public Aspect? FlyoutBackgroundImageAspect { get; set; }
-        [Parameter] public MC.FlyoutBehavior? FlyoutBehavior { get; set; }
+        [Parameter] public FlyoutBehavior? FlyoutBehavior { get; set; }
         [Parameter] public MC.FlyoutHeaderBehavior? FlyoutHeaderBehavior { get; set; }
         [Parameter] public double? FlyoutHeight { get; set; }
         [Parameter] public MC.ImageSource FlyoutIcon { get; set; }

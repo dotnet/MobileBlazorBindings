@@ -41,6 +41,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? TranslationX { get; set; }
         [Parameter] public double? TranslationY { get; set; }
         [Parameter] public double? WidthRequest { get; set; }
+        [Parameter] public int? ZIndex { get; set; }
 
         public new MC.VisualElement NativeControl => ((VisualElementHandler)ElementHandler).VisualElementControl;
 
@@ -139,6 +140,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (WidthRequest != null)
             {
                 builder.AddAttribute(nameof(WidthRequest), AttributeHelper.DoubleToString(WidthRequest.Value));
+            }
+            if (ZIndex != null)
+            {
+                builder.AddAttribute(nameof(ZIndex), ZIndex.Value);
             }
 
             RenderAdditionalAttributes(builder);

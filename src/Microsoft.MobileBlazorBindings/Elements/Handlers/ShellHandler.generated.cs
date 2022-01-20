@@ -14,7 +14,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly Color FlyoutBackgroundColorDefaultValue = MC.Shell.FlyoutBackgroundColorProperty.DefaultValue is Color value ? value : default;
         private static readonly MC.ImageSource FlyoutBackgroundImageDefaultValue = MC.Shell.FlyoutBackgroundImageProperty.DefaultValue is MC.ImageSource value ? value : default;
         private static readonly Aspect FlyoutBackgroundImageAspectDefaultValue = MC.Shell.FlyoutBackgroundImageAspectProperty.DefaultValue is Aspect value ? value : default;
-        private static readonly MC.FlyoutBehavior FlyoutBehaviorDefaultValue = MC.Shell.FlyoutBehaviorProperty.DefaultValue is MC.FlyoutBehavior value ? value : default;
+        private static readonly FlyoutBehavior FlyoutBehaviorDefaultValue = MC.Shell.FlyoutBehaviorProperty.DefaultValue is FlyoutBehavior value ? value : default;
         private static readonly MC.FlyoutHeaderBehavior FlyoutHeaderBehaviorDefaultValue = MC.Shell.FlyoutHeaderBehaviorProperty.DefaultValue is MC.FlyoutHeaderBehavior value ? value : default;
         private static readonly double FlyoutHeightDefaultValue = MC.Shell.FlyoutHeightProperty.DefaultValue is double value ? value : default;
         private static readonly MC.ImageSource FlyoutIconDefaultValue = MC.Shell.FlyoutIconProperty.DefaultValue is MC.ImageSource value ? value : default;
@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     ShellControl.FlyoutBackgroundImageAspect = (Aspect)AttributeHelper.GetInt(attributeValue, (int)FlyoutBackgroundImageAspectDefaultValue);
                     break;
                 case nameof(MC.Shell.FlyoutBehavior):
-                    ShellControl.FlyoutBehavior = (MC.FlyoutBehavior)AttributeHelper.GetInt(attributeValue, (int)FlyoutBehaviorDefaultValue);
+                    ShellControl.FlyoutBehavior = (FlyoutBehavior)AttributeHelper.GetInt(attributeValue, (int)FlyoutBehaviorDefaultValue);
                     break;
                 case nameof(MC.Shell.FlyoutHeaderBehavior):
                     ShellControl.FlyoutHeaderBehavior = (MC.FlyoutHeaderBehavior)AttributeHelper.GetInt(attributeValue, (int)FlyoutHeaderBehaviorDefaultValue);
