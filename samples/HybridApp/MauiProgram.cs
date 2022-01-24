@@ -1,4 +1,7 @@
-﻿using HybridApp.Data;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using HybridApp.Data;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.MobileBlazorBindings;
 

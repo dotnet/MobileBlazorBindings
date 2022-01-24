@@ -1,7 +1,7 @@
-﻿#if WINDOWS
-
-// Copyright (c) Microsoft Corporation.
+﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
+
+#if WINDOWS
 
 using System;
 using System.Collections.Concurrent;

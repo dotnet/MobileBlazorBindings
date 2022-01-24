@@ -1,4 +1,7 @@
-﻿using Foundation;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Foundation;
 
 namespace MobileBlazorBindingsToDo.Platforms.iOS
 {

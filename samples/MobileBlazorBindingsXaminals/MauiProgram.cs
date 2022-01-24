@@ -1,4 +1,7 @@
-﻿using Microsoft.MobileBlazorBindings;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.MobileBlazorBindings;
 
 namespace MobileBlazorBindingsXaminals
 {

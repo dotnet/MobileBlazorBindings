@@ -1,4 +1,7 @@
-﻿namespace ControlGallery.Models
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+namespace ControlGallery.Models
 {
     public class PickerModel
     {

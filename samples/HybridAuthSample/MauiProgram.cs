@@ -1,4 +1,7 @@
-﻿using HybridAuthApp;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using HybridAuthApp;
 using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.Authentication;

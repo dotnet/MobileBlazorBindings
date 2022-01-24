@@ -1,4 +1,7 @@
-﻿using Android.App;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Android.App;
 using Android.Runtime;
 
 namespace HybridAuthSample

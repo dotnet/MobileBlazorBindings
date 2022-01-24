@@ -1,4 +1,7 @@
-﻿using ObjCRuntime;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using ObjCRuntime;
 using UIKit;
 
 namespace MobileBlazorBindingsToDo.Platforms.iOS

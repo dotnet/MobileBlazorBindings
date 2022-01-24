@@ -1,4 +1,7 @@
-﻿#if !IOS && !MACCATALYST
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+#if !IOS && !MACCATALYST
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;

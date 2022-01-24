@@ -1,4 +1,7 @@
-﻿using MC = Microsoft.Maui.Controls;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {

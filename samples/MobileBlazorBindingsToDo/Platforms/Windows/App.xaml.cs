@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.UI.Xaml;
 using MobileBlazorBindingsToDo;
 
 // To learn more about WinUI, the WinUI project structure,
