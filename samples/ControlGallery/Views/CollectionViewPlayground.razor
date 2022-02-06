@@ -1,10 +1,18 @@
 ﻿@using ControlGallery.Views.CollectionView
 
+@inject ShellNavigationManager NavigationManager
+
 @page "/collectionviewplayground"
 
-<TabbedPage>
-    <SelectionPlayground />
-    <GridLayoutPlayground />
-    <AddRemovePlayground />
-    <InfiniteScrollPlayground />
-</TabbedPage>
+<ContentPage>
+	<ScrollView>
+		<StackLayout Padding="10">
+			<Label Text="Select a playground..." FontSize="30" FontAttributes="FontAttributes.Bold" />
+			<BoxView Margin="10" HeightRequest="2" Color="Colors.DarkGray" HorizontalOptions="LayoutOptions.Fill" />
+			<Button Text="Add / Remove" OnClick="@(() => NavigationManager.NavigateToAsync("/collectionviewplayground/add-remove"))" />
+			<Button Text="Grid Layout" OnClick="@(() => NavigationManager.NavigateToAsync("/collectionviewplayground/grid"))" />
+			<Button Text="Infinite scroll" OnClick="@(() => NavigationManager.NavigateToAsync("/collectionviewplayground/infinite-scroll"))" />
+			<Button Text="Selection" OnClick="@(() => NavigationManager.NavigateToAsync("/collectionviewplayground/selection"))" />
+		</StackLayout>
+	</ScrollView>
+</ContentPage>
