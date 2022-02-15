@@ -2,6 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
@@ -16,7 +17,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 renderer => new SwipeGestureRecognizerHandler(renderer, new MC.SwipeGestureRecognizer()));
         }
 
-        [Parameter] public MC.SwipeDirection? Direction { get; set; }
+        [Parameter] public SwipeDirection? Direction { get; set; }
         [Parameter] public uint? Threshold { get; set; }
 
         [Parameter] public EventCallback<MC.SwipedEventArgs> OnSwiped { get; set; }

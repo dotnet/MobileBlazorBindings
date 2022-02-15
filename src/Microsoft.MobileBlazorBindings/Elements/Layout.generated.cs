@@ -18,6 +18,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         }
 
         [Parameter] public bool? IgnoreSafeArea { get; set; }
+        [Parameter] public bool? IsClippedToBounds { get; set; }
         [Parameter] public Thickness? Padding { get; set; }
 
         public new MC.Layout NativeControl => ((LayoutHandler)ElementHandler).LayoutControl;
@@ -29,6 +30,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (IgnoreSafeArea != null)
             {
                 builder.AddAttribute(nameof(IgnoreSafeArea), IgnoreSafeArea.Value);
+            }
+            if (IsClippedToBounds != null)
+            {
+                builder.AddAttribute(nameof(IsClippedToBounds), IsClippedToBounds.Value);
             }
             if (Padding != null)
             {

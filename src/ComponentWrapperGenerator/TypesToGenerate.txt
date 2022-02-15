@@ -19,7 +19,6 @@ GestureElement
 GradientBrush
 GradientStop
 Grid
-GridLayout
 #GroupableItemsView // Manually written to use custom logic for generics and binding
 #GridCell // Not based on real XF type
 Image

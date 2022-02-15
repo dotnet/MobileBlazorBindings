@@ -10,6 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class LayoutHandler : ViewHandler
     {
+        private static readonly bool IsClippedToBoundsDefaultValue = MC.Layout.IsClippedToBoundsProperty.DefaultValue is bool value ? value : default;
         private static readonly Thickness PaddingDefaultValue = MC.Layout.PaddingProperty.DefaultValue is Thickness value ? value : default;
 
         public LayoutHandler(NativeComponentRenderer renderer, MC.Layout layoutControl) : base(renderer, layoutControl)
@@ -29,6 +30,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             {
                 case nameof(MC.Layout.IgnoreSafeArea):
                     LayoutControl.IgnoreSafeArea = AttributeHelper.GetBool(attributeValue);
+                    break;
+                case nameof(MC.Layout.IsClippedToBounds):
+                    LayoutControl.IsClippedToBounds = AttributeHelper.GetBool(attributeValue, IsClippedToBoundsDefaultValue);
                     break;
                 case nameof(MC.Layout.Padding):
                     LayoutControl.Padding = AttributeHelper.StringToThickness(attributeValue, PaddingDefaultValue);
