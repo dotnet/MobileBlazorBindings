@@ -59,6 +59,7 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj" />
 	  <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
 	</ItemGroup>
 
