@@ -26,13 +26,18 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
             }
             set
             {
-                if (_contentView != null && _contentView != value)
+                if (_contentView == null)
                 {
-                    throw new NotSupportedException("Cannot re-assign ContentView after being originally set.");
+                    _contentView = value;
+                    OnContentViewSet();
                 }
-
-                _contentView = value;
-                OnContentViewSet();
+                else
+                {
+                    if (_contentView != value)
+                    {
+                        throw new NotSupportedException("Cannot re-assign ContentView after being originally set.");
+                    }
+                }
             }
         }
 
@@ -50,9 +55,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 
             ContentView.BindingContextChanged += (_, __) =>
             {
-                if (ContentView.BindingContext != null && _item != ContentView.BindingContext)
+                var newItem = ContentView.BindingContext;
+                if (newItem != null && newItem != _item)
                 {
-                    _item = ContentView.BindingContext;
+                    _item = newItem;
                     StateHasChanged();
                 }
             };
