@@ -1,11 +1,11 @@
-﻿// Copyright (c) Microsoft Corporation.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class StackLayout
+    public abstract partial class Layout : View
     {
 #pragma warning disable CA1721 // Property names should not match get methods
         [Parameter] public RenderFragment ChildContent { get; set; }

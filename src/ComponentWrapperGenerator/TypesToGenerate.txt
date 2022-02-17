@@ -21,6 +21,7 @@ GradientStop
 Grid
 #GroupableItemsView // Manually written to use custom logic for generics and binding
 #GridCell // Not based on real XF type
+HorizontalStackLayout
 Image
 ImageButton
 InputView
@@ -62,6 +63,7 @@ TemplatedPage
 TemplatedView
 TimePicker
 ToolbarItem
+VerticalStackLayout
 View
 VisualElement
 
