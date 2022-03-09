@@ -21,7 +21,7 @@ namespace Microsoft.MobileBlazorBindings
 
         public override Dispatcher Dispatcher { get; } = new XamarinDeviceDispatcher();
 
-        public Task<TComponent> AddComponent<TComponent>(MC.Element parent, Dictionary<string, string> parameters = null) where TComponent : IComponent
+        public Task<TComponent> AddComponent<TComponent>(MC.Element parent, Dictionary<string, object> parameters = null) where TComponent : IComponent
         {
             if (parent is MC.Application app)
             {
