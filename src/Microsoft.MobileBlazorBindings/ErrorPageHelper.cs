@@ -3,6 +3,7 @@
 
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using Microsoft.Maui.Dispatching;
 using Microsoft.Maui.Graphics;
 using System;
 using System.Diagnostics;
@@ -15,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings
         {
             Debug.WriteLine($"Fatal exception caught: '{exception?.GetType().Name}': '{exception?.Message}'");
 
-            Device.InvokeOnMainThreadAsync(() =>
+            Application.Current.Dispatcher.DispatchAsync(() =>
             {
                 Application.Current.MainPage = GetErrorPageForException(exception);
             });
