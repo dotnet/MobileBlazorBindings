@@ -22,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? AnchorY { get; set; }
         [Parameter] public Color BackgroundColor { get; set; }
         [Parameter] public FlowDirection? FlowDirection { get; set; }
-        [Parameter] public Rectangle? Frame { get; set; }
+        [Parameter] public Rect? Frame { get; set; }
         [Parameter] public double? HeightRequest { get; set; }
         [Parameter] public bool? InputTransparent { get; set; }
         [Parameter] public bool? IsEnabled { get; set; }
@@ -67,7 +67,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (Frame != null)
             {
-                builder.AddAttribute(nameof(Frame), AttributeHelper.RectangleToString(Frame.Value));
+                builder.AddAttribute(nameof(Frame), AttributeHelper.RectToString(Frame.Value));
             }
             if (HeightRequest != null)
             {

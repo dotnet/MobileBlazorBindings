@@ -62,7 +62,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     VisualElementControl.FlowDirection = (FlowDirection)AttributeHelper.GetInt(attributeValue, (int)FlowDirectionDefaultValue);
                     break;
                 case nameof(MC.VisualElement.Frame):
-                    VisualElementControl.Frame = AttributeHelper.StringToRectangle(attributeValue);
+                    VisualElementControl.Frame = AttributeHelper.StringToRect(attributeValue);
                     break;
                 case nameof(MC.VisualElement.HeightRequest):
                     VisualElementControl.HeightRequest = AttributeHelper.StringToDouble((string)attributeValue, HeightRequestDefaultValue);

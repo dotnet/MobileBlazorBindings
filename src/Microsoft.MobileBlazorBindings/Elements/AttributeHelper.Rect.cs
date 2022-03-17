@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to serialize <see cref="Thickness" /> objects.
         /// </summary>
-        public static string RectangleToString(Rectangle rectangle)
+        public static string RectToString(Rect rectangle)
         {
             return rectangle.ToString();
         }
@@ -20,7 +20,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// <summary>
         /// Helper method to deserialize <see cref="Thickness" /> objects.
         /// </summary>
-        public static Rectangle StringToRectangle(object rectangleString, Rectangle defaultValueIfNull = default)
+        public static Rect StringToRect(object rectangleString, Rect defaultValueIfNull = default)
         {
             if (rectangleString is null)
             {
@@ -31,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 throw new ArgumentException("Expected parameter instance to be a string.", nameof(rectangleString));
             }
 
-            return Rectangle.TryParse(rectangleAsString, out var rectangle)
+            return Rect.TryParse(rectangleAsString, out var rectangle)
                 ? rectangle
                 : throw new ArgumentException("Cannot parse Rectangle string.");
         }
