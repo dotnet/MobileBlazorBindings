@@ -10,9 +10,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
         public MbbDataTemplate(DataTemplateItemsComponent<T> dataTemplateItemsAccessor)
             : base(() =>
             {
-                var contentView = new MC.ContentView();
-                dataTemplateItemsAccessor.Add(contentView);
-                return contentView;
+                var itemRootView = new MC.VerticalStackLayout();
+                dataTemplateItemsAccessor.Add(itemRootView);
+                return itemRootView;
             })
         {
         }
