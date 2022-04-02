@@ -12,6 +12,6 @@
 </ContentPage>
 
 @code {
-    MC.IItemsLayout _itemsLayout = new MC.GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
+    IItemsLayout _itemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
     List<int> _intItems = Enumerable.Range(1, 100).ToList();
 }

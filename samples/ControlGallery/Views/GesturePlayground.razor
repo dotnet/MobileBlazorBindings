@@ -30,12 +30,12 @@
         count += 1;
     }
 
-    void OnLabelPanned(MC.PanUpdatedEventArgs e)
+    void OnLabelPanned(PanUpdatedEventArgs e)
     {
         fontSize = 20 + e.TotalX;
     }
 
-    void OnSwipeLabel(MC.SwipedEventArgs e)
+    void OnSwipeLabel(SwipedEventArgs e)
     {
         swipeState = e.Direction switch
         {
