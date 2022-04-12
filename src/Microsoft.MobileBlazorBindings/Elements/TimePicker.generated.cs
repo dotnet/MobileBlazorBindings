@@ -3,7 +3,6 @@
 
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
@@ -29,7 +28,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public double? FontSize { get; set; }
         [Parameter] public string Format { get; set; }
         [Parameter] public Color TextColor { get; set; }
-        [Parameter] public TextTransform? TextTransform { get; set; }
         [Parameter] public TimeSpan? Time { get; set; }
 
         public new MC.TimePicker NativeControl => ((TimePickerHandler)ElementHandler).TimePickerControl;
@@ -65,10 +63,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
-            }
-            if (TextTransform != null)
-            {
-                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
             if (Time != null)
             {

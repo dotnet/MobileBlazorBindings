@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Client;
-using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
 using System.Collections.Generic;
@@ -93,8 +93,8 @@ namespace Microsoft.MobileBlazorBindings.Authentication.Msal
         private void SetUpSerializationHandlers(IProtectedStorage protectedStorage)
         {
             // these platforms have their own secure storage.
-            if (Device.RuntimePlatform == Device.iOS ||
-                Device.RuntimePlatform == Device.Android)
+            if (DeviceInfo.Platform == DevicePlatform.Android
+                || DeviceInfo.Platform == DevicePlatform.iOS)
             {
                 return;
             }

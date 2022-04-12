@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using MC = Microsoft.Maui.Controls;
-using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
@@ -18,7 +17,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly double FontSizeDefaultValue = MC.TimePicker.FontSizeProperty.DefaultValue is double value ? value : default;
         private static readonly string FormatDefaultValue = MC.TimePicker.FormatProperty.DefaultValue is string value ? value : default;
         private static readonly Color TextColorDefaultValue = MC.TimePicker.TextColorProperty.DefaultValue is Color value ? value : default;
-        private static readonly TextTransform TextTransformDefaultValue = MC.TimePicker.TextTransformProperty.DefaultValue is TextTransform value ? value : default;
         private static readonly TimeSpan TimeDefaultValue = MC.TimePicker.TimeProperty.DefaultValue is TimeSpan value ? value : default;
 
         public TimePickerHandler(NativeComponentRenderer renderer, MC.TimePicker timePickerControl) : base(renderer, timePickerControl)
@@ -56,9 +54,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(MC.TimePicker.TextColor):
                     TimePickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue, TextColorDefaultValue);
-                    break;
-                case nameof(MC.TimePicker.TextTransform):
-                    TimePickerControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
                     break;
                 case nameof(MC.TimePicker.Time):
                     TimePickerControl.Time = AttributeHelper.StringToTimeSpan(attributeValue, TimeDefaultValue);

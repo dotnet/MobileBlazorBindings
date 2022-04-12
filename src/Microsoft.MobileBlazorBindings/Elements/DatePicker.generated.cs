@@ -3,7 +3,6 @@
 
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
@@ -32,7 +31,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public DateTime? MaximumDate { get; set; }
         [Parameter] public DateTime? MinimumDate { get; set; }
         [Parameter] public Color TextColor { get; set; }
-        [Parameter] public TextTransform? TextTransform { get; set; }
 
         public new MC.DatePicker NativeControl => ((DatePickerHandler)ElementHandler).DatePickerControl;
 
@@ -79,10 +77,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
-            }
-            if (TextTransform != null)
-            {
-                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
 
             RenderAdditionalAttributes(builder);

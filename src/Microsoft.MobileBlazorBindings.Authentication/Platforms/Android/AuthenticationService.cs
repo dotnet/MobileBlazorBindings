@@ -2,7 +2,7 @@
 // Licensed under the MIT license.
 
 using Microsoft.Extensions.Options;
-using Microsoft.Maui.Essentials;
+using Microsoft.Maui.Authentication;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
 using System;
 using System.Linq;

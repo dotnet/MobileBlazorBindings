@@ -82,9 +82,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 case nameof(MC.Picker.TextColor):
                     PickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue);
                     break;
-                case nameof(MC.Picker.TextTransform):
-                    PickerControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransform.Default);
-                    break;
                 case nameof(MC.Picker.Title):
                     PickerControl.Title = (string)attributeValue;
                     break;

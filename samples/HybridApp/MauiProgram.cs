@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using HybridApp.Data;
-using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.MobileBlazorBindings;
 
 namespace HybridApp
@@ -13,7 +12,6 @@ namespace HybridApp
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .RegisterBlazorMauiWebView()
                 .UseMauiApp<App>()
                 .UseMobileBlazorBindings()
                 .ConfigureFonts(fonts =>
@@ -21,7 +19,7 @@ namespace HybridApp
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            builder.Services.AddBlazorWebView();
+            builder.Services.AddMauiBlazorWebView();
             builder.Services.AddSingleton<WeatherForecastService>();
             builder.Services.AddSingleton<CounterState>();
 

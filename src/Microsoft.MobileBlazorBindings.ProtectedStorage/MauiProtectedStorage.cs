@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.Maui.Essentials;
+using Microsoft.Maui.Storage;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;

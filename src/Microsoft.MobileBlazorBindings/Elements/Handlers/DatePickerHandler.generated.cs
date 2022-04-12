@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using MC = Microsoft.Maui.Controls;
-using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
@@ -21,7 +20,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         private static readonly DateTime MaximumDateDefaultValue = MC.DatePicker.MaximumDateProperty.DefaultValue is DateTime value ? value : default;
         private static readonly DateTime MinimumDateDefaultValue = MC.DatePicker.MinimumDateProperty.DefaultValue is DateTime value ? value : default;
         private static readonly Color TextColorDefaultValue = MC.DatePicker.TextColorProperty.DefaultValue is Color value ? value : default;
-        private static readonly TextTransform TextTransformDefaultValue = MC.DatePicker.TextTransformProperty.DefaultValue is TextTransform value ? value : default;
 
         public DatePickerHandler(NativeComponentRenderer renderer, MC.DatePicker datePickerControl) : base(renderer, datePickerControl)
         {
@@ -67,9 +65,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     break;
                 case nameof(MC.DatePicker.TextColor):
                     DatePickerControl.TextColor = AttributeHelper.StringToColor((string)attributeValue, TextColorDefaultValue);
-                    break;
-                case nameof(MC.DatePicker.TextTransform):
-                    DatePickerControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

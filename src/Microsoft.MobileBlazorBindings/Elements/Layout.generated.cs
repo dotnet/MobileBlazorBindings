@@ -17,6 +17,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             RegisterAdditionalHandlers();
         }
 
+        [Parameter] public bool? CascadeInputTransparent { get; set; }
         [Parameter] public bool? IgnoreSafeArea { get; set; }
         [Parameter] public bool? IsClippedToBounds { get; set; }
         [Parameter] public Thickness? Padding { get; set; }
@@ -27,6 +28,10 @@ namespace Microsoft.MobileBlazorBindings.Elements
         {
             base.RenderAttributes(builder);
 
+            if (CascadeInputTransparent != null)
+            {
+                builder.AddAttribute(nameof(CascadeInputTransparent), CascadeInputTransparent.Value);
+            }
             if (IgnoreSafeArea != null)
             {
                 builder.AddAttribute(nameof(IgnoreSafeArea), IgnoreSafeArea.Value);

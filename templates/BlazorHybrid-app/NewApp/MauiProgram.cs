@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using Microsoft.MobileBlazorBindings;
-
-namespace NewApp;
+﻿namespace NewApp;
 
 public static class MauiProgram
 {
@@ -9,7 +6,6 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
         builder
-            .RegisterBlazorMauiWebView()
             .UseMauiApp<App>()
             .UseMobileBlazorBindings()
             .ConfigureFonts(fonts =>
@@ -17,7 +13,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
             });
 
-        builder.Services.AddBlazorWebView();
+        builder.Services.AddMauiBlazorWebView();
         builder.Services.AddSingleton<CounterState>();
 
         return builder.Build();

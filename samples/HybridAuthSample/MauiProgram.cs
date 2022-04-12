@@ -2,7 +2,6 @@
 // Licensed under the MIT license.
 
 using HybridAuthApp;
-using Microsoft.AspNetCore.Components.WebView.Maui;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.Authentication;
 
@@ -16,7 +15,6 @@ namespace HybridAuthSample
         {
             var builder = MauiApp.CreateBuilder();
             builder
-                .RegisterBlazorMauiWebView()
                 .UseMauiApp<App>()
                 .UseMobileBlazorBindings()
                 .ConfigureFonts(fonts =>
@@ -25,7 +23,7 @@ namespace HybridAuthSample
                 });
 
             builder.Services
-                .AddBlazorWebView()
+                .AddMauiBlazorWebView()
                 .AddProtectedStorage()
                 .AddSingleton<CounterState>();
 

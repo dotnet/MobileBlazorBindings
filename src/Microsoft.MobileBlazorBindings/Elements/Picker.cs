@@ -59,7 +59,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         /// The <see cref="T:Xamarin.Forms.Color" /> value.
         /// </value>
         [Parameter] public Color TitleColor { get; set; }
-        [Parameter] public TextTransform? TextTransform { get; set; }
         /// <summary>
         /// Gets or sets the vertical alignement of the Text property. This is a bindable property.
         /// </summary>
@@ -110,10 +109,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
             if (TextColor != null)
             {
                 builder.AddAttribute(nameof(TextColor), AttributeHelper.ColorToString(TextColor));
-            }
-            if (TextTransform != null)
-            {
-                builder.AddAttribute(nameof(TextTransform), (int)TextTransform.Value);
             }
             if (Title != null)
             {

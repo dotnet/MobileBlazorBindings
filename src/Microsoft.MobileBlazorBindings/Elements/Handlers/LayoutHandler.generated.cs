@@ -10,6 +10,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class LayoutHandler : ViewHandler
     {
+        private static readonly bool CascadeInputTransparentDefaultValue = MC.Layout.CascadeInputTransparentProperty.DefaultValue is bool value ? value : default;
         private static readonly bool IsClippedToBoundsDefaultValue = MC.Layout.IsClippedToBoundsProperty.DefaultValue is bool value ? value : default;
         private static readonly Thickness PaddingDefaultValue = MC.Layout.PaddingProperty.DefaultValue is Thickness value ? value : default;
 
@@ -28,6 +29,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (attributeName)
             {
+                case nameof(MC.Layout.CascadeInputTransparent):
+                    LayoutControl.CascadeInputTransparent = AttributeHelper.GetBool(attributeValue, CascadeInputTransparentDefaultValue);
+                    break;
                 case nameof(MC.Layout.IgnoreSafeArea):
                     LayoutControl.IgnoreSafeArea = AttributeHelper.GetBool(attributeValue);
                     break;
