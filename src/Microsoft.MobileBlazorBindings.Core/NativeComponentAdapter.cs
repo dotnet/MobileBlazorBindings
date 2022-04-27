@@ -79,7 +79,7 @@ namespace Microsoft.MobileBlazorBindings.Core
                             {
                                 handleChildContentText.HandleText(edit.SiblingIndex, frame.TextContent);
                             }
-                            else
+                            else if (!string.IsNullOrWhiteSpace(frame.TextContent))
                             {
                                 throw new Exception("Cannot set text content on child that doesn't handle inner text content.");
                             }
@@ -102,7 +102,7 @@ namespace Microsoft.MobileBlazorBindings.Core
                             {
                                 handleChildContentText.HandleText(edit.SiblingIndex, frame.MarkupContent);
                             }
-                            else
+                            else if (!string.IsNullOrWhiteSpace(frame.MarkupContent))
                             {
                                 throw new Exception("Cannot set markup content on child that doesn't handle inner text content.");
                             }
