@@ -3,7 +3,6 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
@@ -101,12 +100,15 @@ namespace Microsoft.MobileBlazorBindings
 
         internal async Task<MC.Page> BuildPage(Type componentType)
         {
+#pragma warning disable CA2000 // Dispose objects before losing scope. Scope is disposed when page is closed.
+            var scope = _services.CreateScope();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+            var serviceProvider = scope.ServiceProvider;
+
             var container = new RootContainerHandler();
             var route = NavigationParameters[componentType];
 
-#pragma warning disable CA2000 // Dispose objects before losing scope. Renderer is disposed when page is closed.
-            var renderer = new MobileBlazorBindingsRenderer(_services, _services.GetRequiredService<ILoggerFactory>());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+            var renderer = serviceProvider.GetRequiredService<MobileBlazorBindingsRenderer>();
 
             var convertedParameters = ConvertParameters(componentType, route.Parameters);
             var addComponentTask = renderer.AddComponent(componentType, container, convertedParameters);
@@ -122,29 +124,16 @@ namespace Microsoft.MobileBlazorBindings
             var page = container.Elements.FirstOrDefault() as MC.Page
                 ?? throw new InvalidOperationException("The target component of a Shell navigation must derive from the Page component.");
 
-            DisposeRendererWhenPageIsClosed(renderer, page);
+            page.ParentChanged += DisposeScopeWhenParentRemoved;
 
             return page;
-        }
 
-        private void DisposeRendererWhenPageIsClosed(MobileBlazorBindingsRenderer renderer, MC.Page page)
-        {
-            // Unfortunately, XF does not expose any Destroyed event for elements.
-            // Therefore we subscribe to Navigated event, and consider page as destroyed 
-            // if it is not present in the navigation stack.
-            MC.Shell.Current.Navigated += DisposeWhenNavigatedAway;
-
-            void DisposeWhenNavigatedAway(object sender, MC.ShellNavigatedEventArgs args)
+            void DisposeScopeWhenParentRemoved(object _, EventArgs __)
             {
-                // We need to check all navigationStacks for all Shell items.
-                var currentPages = MC.Shell.Current.Items
-                    .SelectMany(i => i.Items)
-                    .SelectMany(i => i.Navigation.NavigationStack);
-
-                if (!currentPages.Contains(page))
+                if (page.Parent is null)
                 {
-                    MC.Shell.Current.Navigated -= DisposeWhenNavigatedAway;
-                    renderer.Dispose();
+                    scope.Dispose();
+                    page.ParentChanged -= DisposeScopeWhenParentRemoved;
                 }
             }
         }
