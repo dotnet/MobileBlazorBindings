@@ -22,10 +22,9 @@ namespace HybridAuthSample
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 });
 
-            builder.Services
-                .AddMauiBlazorWebView()
-                .AddProtectedStorage()
-                .AddSingleton<CounterState>();
+            builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddProtectedStorage();
+            builder.Services.AddSingleton<CounterState>();
 
             builder.Services
                 .AddOidcAuthentication(options =>
