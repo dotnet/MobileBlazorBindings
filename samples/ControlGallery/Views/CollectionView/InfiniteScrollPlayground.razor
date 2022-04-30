@@ -3,23 +3,21 @@
 @page "/collectionviewplayground/infinite-scroll"
 
 <ContentPage Title="Infinite scroll">
-    <StackLayout>
-        <CollectionView ItemsSource="_intItems"
-                        RemainingItemsThreshold="2"
-                        OnRemainingItemsThresholdReached="LoadItems">
-            <Header>
-                <Label Text="Scroll to load more items." />
-            </Header>
+    <CollectionView ItemsSource="_intItems"
+                    RemainingItemsThreshold="2"
+                    OnRemainingItemsThresholdReached="LoadItems">
+        <Header>
+            <Label Text="Scroll to load more items." />
+        </Header>
 
-            <ItemTemplate>
-                <Item Value="@context" />
-            </ItemTemplate>
+        <ItemTemplate>
+            <Item Value="@context" />
+        </ItemTemplate>
 
-            <Footer>
-                <ActivityIndicator IsRunning="_loading" />
-            </Footer>
-        </CollectionView>
-    </StackLayout>
+        <Footer>
+            <ActivityIndicator IsRunning="_loading" />
+        </Footer>
+    </CollectionView>
 </ContentPage>
 
 @code {
