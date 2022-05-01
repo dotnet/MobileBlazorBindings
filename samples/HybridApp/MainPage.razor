@@ -2,20 +2,22 @@
 @implements IDisposable
 
 <ContentPage>
-    <StackLayout>
+    <Grid RowDefinitions="Auto,*">
+        <GridCell Row="0">
+            <StackLayout Margin="new Thickness(20)" Orientation="StackOrientation.Horizontal">
+                <Label Text="@($"Hello, World! {CounterState.CurrentCount}")" FontSize="40" HorizontalOptions="LayoutOptions.StartAndExpand" />
+                <Button Text="Increment" OnClick="@CounterState.IncrementCount" VerticalOptions="LayoutOptions.Center" Padding="10" />
+            </StackLayout>
+        </GridCell>
 
-        <StackLayout Margin="new Thickness(20)" Orientation="StackOrientation.Horizontal">
-            <Label Text="@($"Hello, World! {CounterState.CurrentCount}")" FontSize="40" HorizontalOptions="LayoutOptions.StartAndExpand" />
-            <Button Text="Increment" OnClick="@CounterState.IncrementCount" VerticalOptions="LayoutOptions.Center" Padding="10" />
-        </StackLayout>
-
-        <BlazorWebView HostPage="wwwroot/index.html">
-            <RootComponents>
-                <RootComponent Selector="#app" ComponentType="typeof(HybridApp.WebUI.App) "/>
-            </RootComponents>
-        </BlazorWebView>
-
-    </StackLayout>
+        <GridCell Row="1">
+            <BlazorWebView HostPage="wwwroot/index.html" VerticalOptions="LayoutOptions.Fill">
+                <RootComponents>
+                    <RootComponent Selector="#app" ComponentType="typeof(HybridApp.WebUI.App) " />
+                </RootComponents>
+            </BlazorWebView>
+        </GridCell>
+    </Grid>
 </ContentPage>
 
 

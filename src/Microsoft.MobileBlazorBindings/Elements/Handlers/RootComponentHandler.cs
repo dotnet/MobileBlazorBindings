@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-#if !IOS && !MACCATALYST
-
 using Microsoft.MobileBlazorBindings.Core;
 using System;
 using System.Collections.Generic;
@@ -64,5 +62,3 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
     }
 }
-
-#endif

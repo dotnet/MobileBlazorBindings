@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0-android;net6.0-windows10.0.19041</TargetFrameworks>
+	<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-windows10.0.19041</TargetFrameworks>
     <NoWarn>CS1591;CA1054;CA1303;CA1056;CA2007;CA2237;CA1835</NoWarn>
     <Title>Authentication support for Mobile Blazor Bindings applications using OpenID Connect</Title>
     <Description>Add support for authentication in your Mobile Blazor Bindings application with OpenID Connect.</Description>
@@ -13,7 +13,6 @@
   <ItemGroup>
     <PackageReference Include="IdentityModel.OidcClient" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

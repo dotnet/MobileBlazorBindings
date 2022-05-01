@@ -21,12 +21,6 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public MC.WebViewSource Source { get; set; }
         [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
 
-        // Is that still needed?
-        //public void SendMessage(string message)
-        //{
-        //    ((WebViewHandler)ElementHandler).Control.SendMessage(message);
-        //}
-
         protected override void RenderAttributes(AttributesBuilder builder)
         {
             base.RenderAttributes(builder);
