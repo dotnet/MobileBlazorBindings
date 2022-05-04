@@ -17,7 +17,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 
-		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.187" />
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.256" />
 	</ItemGroup>
 
 	<ItemGroup>

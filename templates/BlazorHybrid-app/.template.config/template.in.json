@@ -29,7 +29,8 @@
     "preferNameDirectory": true,
     "guids": [
         "4C26868E-5E7C-458D-82E3-040509D0C71F", // Solution file (SLN)
-        "99E19497-29A6-4B77-B773-BEC55F9B55DC" // .NET Standard Library
+        "99E19497-29A6-4B77-B773-BEC55F9B55DC", // .NET Standard Library
+        "3E8CB37F-D0CD-408A-9078-686DA8504A75"  // ApplicationIdGuid
     ],
     "symbols": {
         "MobileBlazorBindingsVersion": {
