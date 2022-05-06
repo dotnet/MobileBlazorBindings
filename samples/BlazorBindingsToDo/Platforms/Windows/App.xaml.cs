@@ -24,12 +24,5 @@ namespace BlazorBindingsToDoSample.WinUI
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-
-            Platform.OnLaunched(args);
-        }
     }
 }

@@ -1,8 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
 namespace BlazorBindingsToDo
 {

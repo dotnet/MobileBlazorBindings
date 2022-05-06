@@ -1,7 +1,5 @@
-﻿// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-
-using Foundation;
+﻿using Foundation;
+using Microsoft.Maui;
 
 namespace BlazorBindingsToDo
 {
