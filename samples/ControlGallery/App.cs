@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings;
+using BlazorBindings.Maui;
 
 namespace ControlGallery
 {
     public class App : Application
     {
-        public App(MobileBlazorBindingsRenderer renderer)
+        public App(MauiBlazorBindingsRenderer renderer)
         {
             renderer.AddComponent<AppShell>(this);
         }

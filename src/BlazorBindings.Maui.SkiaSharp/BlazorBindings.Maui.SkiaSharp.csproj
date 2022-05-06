@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-windows10.0.19041</TargetFrameworks>
+		<UseMaui>true</UseMaui>
+		<Title>Experimental binding of Skia Sharp in Maui Blazor Bindings</Title>
+		<Description>Support for Skia Sharp for Maui Blazor Bindings.</Description>
+		<PackageTags>blazor;blazorbindings;SkiaSharp;</PackageTags>
+
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</TargetPlatformMinVersion>		
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0-preview.256" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BlazorBindings.Maui\BlazorBindings.Maui.csproj" />
+	</ItemGroup>
+	
+</Project>

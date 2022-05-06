@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings.SkiaSharp;
+using BlazorBindings.Maui.SkiaSharp;
 using SkiaSharp;
 using SkiaSharp.Views.Maui;
 using System;

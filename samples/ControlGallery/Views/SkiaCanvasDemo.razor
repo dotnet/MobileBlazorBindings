@@ -3,10 +3,10 @@
     <StackLayout Padding="20">
         <Slider Margin="20" ValueChanged="RotationSliderChanged" />
 
-        <Microsoft.MobileBlazorBindings.SkiaSharp.SKCanvasView @ref="CanvasView"
+        <BlazorBindings.Maui.SkiaSharp.SKCanvasView @ref="CanvasView"
                       OnPaintSurface="PaintSurface"
                       VerticalOptions="LayoutOptions.FillAndExpand" />
-        <Microsoft.MobileBlazorBindings.SkiaSharp.SKCanvasView @ref="CanvasView2"
+        <BlazorBindings.Maui.SkiaSharp.SKCanvasView @ref="CanvasView2"
                       OnPaintSurface="PaintSurface2"
                       VerticalOptions="LayoutOptions.FillAndExpand" />
     </StackLayout>

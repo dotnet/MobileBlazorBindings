@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using Microsoft.MobileBlazorBindings;
+using BlazorBindings.Maui;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace ControlGallery
@@ -14,7 +14,7 @@ namespace ControlGallery
             builder
                 .UseMauiApp<App>()
                 .UseSkiaSharp()
-                .UseMobileBlazorBindings()
+                .UseMauiBlazorBindings()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

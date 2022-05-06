@@ -71,7 +71,7 @@ namespace ComponentWrapperGenerator
             var usings = new List<UsingStatement>
             {
                 new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, },
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
+                new UsingStatement { Namespace = "BlazorBindings.Core", IsUsed = true, },
                 new UsingStatement { Namespace = $"{componentNamespace}.Handlers", IsUsed = true, },
                 new UsingStatement { Namespace = "System.Threading.Tasks", IsUsed = true, },
                 new UsingStatement { Namespace = "Microsoft.Maui.Controls", Alias = "MC" },
@@ -474,7 +474,7 @@ namespace {componentNamespace}
             var usings = new List<UsingStatement>
             {
                 //new UsingStatement { Namespace = "Microsoft.AspNetCore.Components", IsUsed = true, }, // Typically needed only when there are event handlers for the EventArgs types
-                new UsingStatement { Namespace = "Microsoft.MobileBlazorBindings.Core", IsUsed = true, },
+                new UsingStatement { Namespace = "BlazorBindings.Core", IsUsed = true, },
                 new UsingStatement { Namespace = "System", IsUsed = true, },
                 new UsingStatement { Namespace = "Microsoft.Maui.Controls", Alias = "MC" },
                 new UsingStatement { Namespace = "Microsoft.Maui.Controls.Compatibility", Alias = "MCC" },

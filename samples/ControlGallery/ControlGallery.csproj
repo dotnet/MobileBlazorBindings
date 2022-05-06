@@ -46,8 +46,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings.SkiaSharp\Microsoft.MobileBlazorBindings.SkiaSharp.csproj" />
-	  <ProjectReference Include="..\..\src\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
+	  <ProjectReference Include="..\..\src\BlazorBindings.Maui.SkiaSharp\BlazorBindings.Maui.SkiaSharp.csproj" />
+	  <ProjectReference Include="..\..\src\BlazorBindings.Maui\BlazorBindings.Maui.csproj" />
 	</ItemGroup>
 
 </Project>

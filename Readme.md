@@ -1,4 +1,4 @@
-# Experimental Mobile Blazor Bindings
+# BlazorBindings.Maui
 
 ## Getting Started
 
@@ -6,7 +6,7 @@ Check out the documentation for how to build your first app: https://docs.micros
 
 ## What is it?
 
-Mobile Blazor Bindings enable developers to build native and hybrid mobile apps using C# and .NET for Android, iOS, Windows, macOS, and Tizen using familiar web programming patterns. This means you can use the Blazor programming model and Razor syntax to define UI components and behaviors of an application. The UI components that are included are based on Xamarin.Forms native UI controls, which results in beautiful native mobile apps. In hybrid apps you can embed Blazor web UI built with HTML directly in the app in any composition, all running in the same app process. No web servers.
+Maui Blazor Bindings enable developers to build native and hybrid mobile apps using C# and .NET for Android, iOS, Windows, macOS, and Tizen using familiar web programming patterns. This means you can use the Blazor programming model and Razor syntax to define UI components and behaviors of an application. The UI components that are included are based on MAUI native UI controls, which results in beautiful native mobile apps.
 
 Here is a sample Counter component that renders native UI, which may look familiar to Blazor developers, that increments a value on each button press:
 
@@ -32,7 +32,7 @@ Here is the code above running in the Android Emulator:
 
 <img src="https://devblogs.microsoft.com/aspnet/wp-content/uploads/sites/16/2020/01/blazor-android-counter-2.gif" alt="Clicking increment button in Android emulator" width="300" height="533" class="aligncenter size-full wp-image-23061" />
 
-## More info on Mobile Blazor Bindings
+## More info on BlazorBindings.Maui
 
 To get started, all you need is the [.NET Core 3.1 SDK][1], Visual Studio or Visual Studio for Mac, and the ASP.NET and web development and Mobile development with .NET (Xamarin.Forms) workloads installed.
 

@@ -42,7 +42,7 @@ namespace ComponentWrapperGenerator
                 FileHeader = @"// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 ",
-                RootNamespace = "Microsoft.MobileBlazorBindings.Elements",
+                RootNamespace = "BlazorBindings.Maui.Elements",
             };
 
             // xml location is incorrect.

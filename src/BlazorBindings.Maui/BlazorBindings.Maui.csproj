@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0-windows10.0.19041</TargetFrameworks>
+		<UseMaui>true</UseMaui>
+		<Title>Maui binding for Blazor</Title>
+		<Description>Experimental Maui Blazor Bindings enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
+		<PackageTags>blazor;blazorbindings</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!--We cannot use Microsoft.NET.Sdk.Razor because of this bug https://github.com/dotnet/maui/issues/3536.
+		Therefore we reference WebView.Maui package directly, but excluding .targets files.-->
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.300-rc.2.5513" IncludeAssets="compile;runtime" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\BlazorBindings.Core\BlazorBindings.Core.csproj" />
+	</ItemGroup>
+
+</Project>

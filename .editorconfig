@@ -197,3 +197,10 @@ dotnet_naming_style.begins_with_i.required_prefix = I
 dotnet_naming_style.begins_with_i.required_suffix = 
 dotnet_naming_style.begins_with_i.word_separator = 
 dotnet_naming_style.begins_with_i.capitalization = pascal_case
+
+
+# BL0006: Do not use RenderTree types
+dotnet_diagnostic.BL0006.severity = none
+
+# CA1724: The type name conflicts in whole or in part with the namespace name. Change either name to eliminate the conflict.
+dotnet_diagnostic.CA1724.severity = none
