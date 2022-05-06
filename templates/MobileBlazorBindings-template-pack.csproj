@@ -70,12 +70,6 @@
   </Target>
 
   <ItemGroup>
-    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.Templates.*.nupkg">
-      <Authenticode>NuGet</Authenticode>
-    </FilesToSign>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="BlazorHybrid-app\.template.config\template.in.json" />
     <None Include="MobileBlazorBindings-app\.template.config\template.in.json" />
   </ItemGroup>
@@ -91,11 +85,5 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
+	
 </Project>
