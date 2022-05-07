@@ -1,0 +1,47 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-2022
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0        
+    - name: Install .NET 6.0.300-preview.22204.3
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.300-preview.22204.3'
+        include-prerelease: true
+    - name: Install MAUI
+      run: |
+        dotnet workload install maui `
+        --from-rollback-file https://aka.ms/dotnet/maui/main.json `
+        --source https://pkgs.dev.azure.com/dnceng/public/_packaging/darc-pub-dotnet-runtime-a21b9a2d/nuget/v3/index.json `
+        --source https://pkgs.dev.azure.com/dnceng/public/_packaging/darc-pub-dotnet-emsdk-52e9452f-3/nuget/v3/index.json `
+        --source https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json `
+        --source https://api.nuget.org/v3/index.json
+    - name: Restore dependencies
+      run: dotnet restore BlazorBindings.Maui.sln
+    - name: Build
+      run: dotnet pack -o ./packages -c Release
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.0.0
+      with:
+        path: packages
+
+  publish-to-myget:
+    runs-on: windows-2022
+    needs: [build]
+    steps:
+    - uses: actions/download-artifact@v3.0.0
+    
+    - name: Publish to Myget
+      run: dotnet nuget push */*.nupkg -k ${{ secrets.MYGET_TOKEN }} -s https://www.myget.org/F/blazorbindings/api/v2/package

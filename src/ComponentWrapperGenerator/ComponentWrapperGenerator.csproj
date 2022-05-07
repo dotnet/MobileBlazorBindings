@@ -5,6 +5,7 @@
 		<TargetFrameworks>net6.0</TargetFrameworks>
 		<UseMaui>true</UseMaui>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>

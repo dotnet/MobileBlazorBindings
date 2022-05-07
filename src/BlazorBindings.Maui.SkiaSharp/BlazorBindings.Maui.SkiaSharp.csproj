@@ -7,9 +7,6 @@
 		<Title>Experimental binding of Skia Sharp in Maui Blazor Bindings</Title>
 		<Description>Support for Skia Sharp for Maui Blazor Bindings.</Description>
 		<PackageTags>blazor;blazorbindings;SkiaSharp;</PackageTags>
-
-		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.18362.0</TargetPlatformMinVersion>		
 	</PropertyGroup>
 
 	<ItemGroup>
