@@ -12,7 +12,7 @@
 	<ItemGroup>
 		<!--We cannot use Microsoft.NET.Sdk.Razor because of this bug https://github.com/dotnet/maui/issues/3536.
 		Therefore we reference WebView.Maui package directly, but excluding .targets files.-->
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.300-rc.2.5513" IncludeAssets="compile;runtime" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.300-rc.3.5667" IncludeAssets="compile;runtime" />
 	</ItemGroup>
 
 	<ItemGroup>
