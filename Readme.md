@@ -32,11 +32,9 @@ Here is the code above running in the Android Emulator:
 
 <img src="https://devblogs.microsoft.com/aspnet/wp-content/uploads/sites/16/2020/01/blazor-android-counter-2.gif" alt="Clicking increment button in Android emulator" width="300" height="533" class="aligncenter size-full wp-image-23061" />
 
-## More info on BlazorBindings.Maui
+## About this repository
 
-To get started, all you need is the [.NET Core 3.1 SDK][1], Visual Studio or Visual Studio for Mac, and the ASP.NET and web development and Mobile development with .NET (Xamarin.Forms) workloads installed.
-
-Get started by reading the Getting Started section in the [docs](https://docs.microsoft.com/mobile-blazor-bindings/) and read through the related walkthroughs.
+This repository is a fork of Microsoft's [Experimental MobileBlazorBindings](https://github.com/dotnet/MobileBlazorBindings). That repository hasn't received much of an attention recently, so I decided to fork it and maintain separately. If at any point of time Microsoft developers decide to push that repository moving forward, I'll gladly contribute all of my changes to the original repository. 
 
 ## Contributing
 
