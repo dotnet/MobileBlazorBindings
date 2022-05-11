@@ -1,57 +1,26 @@
 ﻿<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+	<Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
-  <PropertyGroup>
-    <LangVersion>10.0</LangVersion>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <NoWarn>$(NoWarn);CS1591;CA1303</NoWarn>
+	<PropertyGroup>
+		<LangVersion>10.0</LangVersion>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);CS1591;CA1303</NoWarn>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+		<PackageReleaseNotes>Release notes are available at: https://dreamescaper.github.io/MobileBlazorBindingsDocs/maui-blazor-bindings/release-notes/preview-6.html</PackageReleaseNotes>
+	</PropertyGroup>
 
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)\strongname.snk</AssemblyOriginatorKeyFile>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+	</ItemGroup>
 
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-    <PackageReleaseNotes>Release notes are available at: https://aka.ms/mbb-preview6-rel-notes</PackageReleaseNotes>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.1" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <None Include="..\..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
-      <Pack>true</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>  
-
-  <PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
-    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>10.0</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-tvos'))">
-    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>10.0</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst'))">
-    <SupportedOSPlatformVersion>13.1</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>13.1</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-macos'))">
-    <SupportedOSPlatformVersion>10.14</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>10.14</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
-    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>21.0</TargetPlatformMinVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework.Contains('-windows10'))">
-    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-  </PropertyGroup>
+	<ItemGroup>
+		<None Include="..\..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
