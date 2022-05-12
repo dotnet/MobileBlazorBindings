@@ -1,89 +1,80 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <InputFilename ParameterType="System.String" Required="true" />
-      <OutputFilename ParameterType="System.String" Required="true" />
-      <MatchExpression ParameterType="System.String" Required="true" />
-      <ReplacementText ParameterType="System.String" Required="true" />
-    </ParameterGroup>
-    <Task>
-      <Using Namespace="System" />
-      <Using Namespace="System.IO" />
-      <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs">
-        <![CDATA[
+	<UsingTask TaskName="ReplaceFileText" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+		<ParameterGroup>
+			<InputFilename ParameterType="System.String" Required="true" />
+			<OutputFilename ParameterType="System.String" Required="true" />
+			<MatchExpression ParameterType="System.String" Required="true" />
+			<ReplacementText ParameterType="System.String" Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System" />
+			<Using Namespace="System.IO" />
+			<Using Namespace="System.Text.RegularExpressions" />
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
             File.WriteAllText(
                 OutputFilename,
                 Regex.Replace(File.ReadAllText(InputFilename), MatchExpression, ReplacementText)
                 );
             Console.WriteLine("Saved modified '{0}' to {1}'.", InputFilename, OutputFilename);
           ]]>
-      </Code>
-    </Task>
-  </UsingTask>
+			</Code>
+		</Task>
+	</UsingTask>
 
-  <PropertyGroup>
-    <PackageType>Template</PackageType>
-    <PackageId>Microsoft.MobileBlazorBindings.Templates</PackageId>
-    <Title>Experimental Mobile Blazor Bindings Templates</Title>
-    <Description>Templates to use when creating apps and hybrid apps with Experimental Mobile Blazor Bindings for iOS, Android, WPF, and macOS.</Description>
-    <PackageTags>dotnet-new;templates;blazor;mobileblazorbindings</PackageTags>
-    <NoWarn>$(NoWarn);NU5128</NoWarn>
+	<PropertyGroup>
+		<PackageType>Template</PackageType>
+		<PackageId>BlazorBindings.Maui.Templates</PackageId>
+		<Title>MAUI Blazor Bindings Templates</Title>
+		<Description>Templates to use when creating apps and hybrid apps with MAUI Blazor Bindings for iOS, Android, WPF, and macOS.</Description>
+		<PackageTags>dotnet-new;templates;blazor;mauiblazorbindings</PackageTags>
+		<NoWarn>$(NoWarn);NU5128</NoWarn>
 
-    <TargetFramework>netstandard2.0</TargetFramework>
+		<TargetFramework>netstandard2.0</TargetFramework>
 
-    <IncludeContentInPack>true</IncludeContentInPack>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <ContentTargetFolders>content</ContentTargetFolders>
+		<IncludeContentInPack>true</IncludeContentInPack>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<ContentTargetFolders>content</ContentTargetFolders>
 
-    <!--
+		<!--
       Disable C# default compilation features/warnings because this project doesn't use C#.
     -->
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <NoWarn>$(NOWARN);CS2008;CS8021</NoWarn>
-  </PropertyGroup>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<NoWarn>$(NOWARN);CS2008;CS8021</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Content Include="
-                 BlazorHybrid-app\**\*;
-                 MobileBlazorBindings-app\**\*;
-             "
-             Exclude="
+	<ItemGroup>
+		<Content Include="BlazorBindingsMaui-app\**\*"
+				 Exclude="
                  **\bin\**;
                  **\obj\**;
                  **\template.in.json;
                  **\.gitignore" />
-    <Compile Remove="**\*" />
-  </ItemGroup>
+		<Compile Remove="**\*" />
+	</ItemGroup>
 
-  <Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion" BeforeTargets="CopyFilesToOutputDirectory">
-    <Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
+	<Target Name="SetNuGetPackageVersionInTemplateJson" DependsOnTargets="GetBuildVersion" AfterTargets="GetBuildVersion" BeforeTargets="CopyFilesToOutputDirectory">
+		<Message Text="Replacing NuGetPackageVersionFromBuild with '$(NuGetPackageVersion)'" Importance="High" />
 
-    <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\BlazorHybrid-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\BlazorHybrid-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
-    <ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\MobileBlazorBindings-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
+		<ReplaceFileText InputFilename="$(MSBuildProjectDirectory)\BlazorBindingsMaui-app\.template.config\template.in.json" OutputFilename="$(MSBuildProjectDirectory)\BlazorBindingsMaui-app\.template.config\template.json" MatchExpression="NuGetPackageVersionFromBuild" ReplacementText="$(NuGetPackageVersion)" />
 
-    <Message Importance="High" Text="PATHPATH OutDir = $(OutDir)" />
-    <Message Importance="High" Text="PATHPATH IntermediateOutputPath =  $(IntermediateOutputPath)" />
-    <Message Importance="High" Text="PATHPATH OutputPath =  $(OutputPath)" />
-    <Message Importance="High" Text="PATHPATH PackageOutputPath =  $(PackageOutputPath)" />
-  </Target>
+		<Message Importance="High" Text="PATHPATH OutDir = $(OutDir)" />
+		<Message Importance="High" Text="PATHPATH IntermediateOutputPath =  $(IntermediateOutputPath)" />
+		<Message Importance="High" Text="PATHPATH OutputPath =  $(OutputPath)" />
+		<Message Importance="High" Text="PATHPATH PackageOutputPath =  $(PackageOutputPath)" />
+	</Target>
 
-  <ItemGroup>
-    <None Include="BlazorHybrid-app\.template.config\template.in.json" />
-    <None Include="MobileBlazorBindings-app\.template.config\template.in.json" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="BlazorBindingsMaui-app\.template.config\template.in.json" />
+		<None Include="BlazorBindingsMaui-app\.template.config\.gitignore" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="BlazorHybrid-app\.template.config\.gitignore" />
-    <None Include="MobileBlazorBindings-app\.template.config\.gitignore" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
+			<Pack>true</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Include="..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
-      <Pack>true</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-	
 </Project>

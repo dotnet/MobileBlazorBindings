@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBindingsXaminals", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBindingsToDo", "samples\BlazorBindingsToDo\BlazorBindingsToDo.csproj", "{399DA09C-D565-4445-8F4D-6B7AFCA6071E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBindings.Maui-template-pack", "templates\BlazorBindings.Maui-template-pack.csproj", "{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,18 @@ Global
 		{399DA09C-D565-4445-8F4D-6B7AFCA6071E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{399DA09C-D565-4445-8F4D-6B7AFCA6071E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{399DA09C-D565-4445-8F4D-6B7AFCA6071E}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhone.Build.0 = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +186,7 @@ Global
 		{DA44514B-591B-447A-9EAF-E1A89EE59903} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
 		{F116930A-543B-4478-A1C6-0A2822BD6A29} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
 		{399DA09C-D565-4445-8F4D-6B7AFCA6071E} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
+		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A645A7FF-3F09-414D-A391-7E50C3597F05}

@@ -7,12 +7,25 @@
 		<Title>Maui binding for Blazor</Title>
 		<Description>Experimental Maui Blazor Bindings enables using Blazor syntax in .razor files to build native apps for iOS and Android.</Description>
 		<PackageTags>blazor;blazorbindings</PackageTags>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!--We cannot use Microsoft.NET.Sdk.Razor because of this bug https://github.com/dotnet/maui/issues/3536.
 		Therefore we reference WebView.Maui package directly, but excluding .targets files.-->
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="6.0.300-rc.3.5667" IncludeAssets="compile;runtime" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!--Added due to dotnet build issues. Remove after MAUI update. -->
+		<PackageReference Include="Microsoft.Maui.Extensions" Version="6.0.300-rc.3.5667" />
+		<PackageReference Include="Microsoft.Maui.Dependencies" Version="6.0.300-rc.3.5667" />
 	</ItemGroup>
 
 	<ItemGroup>
