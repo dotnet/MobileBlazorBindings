@@ -2,7 +2,7 @@
 
 ## Getting Started
 
-Check out the documentation for how to build your first app: https://docs.microsoft.com/mobile-blazor-bindings
+Check out the documentation for how to build your first app: https://dreamescaper.github.io/MobileBlazorBindingsDocs
 
 ## What is it?
 
