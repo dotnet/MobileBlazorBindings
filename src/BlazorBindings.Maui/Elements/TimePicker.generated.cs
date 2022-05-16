@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System;
 using System.Threading.Tasks;
 
@@ -30,7 +30,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public Color TextColor { get; set; }
         [Parameter] public TimeSpan? Time { get; set; }
 
-        public new MC.TimePicker NativeControl => ((TimePickerHandler)ElementHandler).TimePickerControl;
+        public new MC.TimePicker NativeControl => (ElementHandler as TimePickerHandler)?.TimePickerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

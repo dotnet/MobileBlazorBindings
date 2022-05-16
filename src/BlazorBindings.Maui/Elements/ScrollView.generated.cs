@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -24,7 +24,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public ScrollOrientation? Orientation { get; set; }
         [Parameter] public ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
-        public new MC.ScrollView NativeControl => ((ScrollViewHandler)ElementHandler).ScrollViewControl;
+        public new MC.ScrollView NativeControl => (ElementHandler as ScrollViewHandler)?.ScrollViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

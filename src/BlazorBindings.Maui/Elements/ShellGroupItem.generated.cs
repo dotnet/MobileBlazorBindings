@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -21,7 +21,7 @@ namespace BlazorBindings.Maui.Elements
 
         [Parameter] public MC.FlyoutDisplayOptions? FlyoutDisplayOptions { get; set; }
 
-        public new MC.ShellGroupItem NativeControl => ((ShellGroupItemHandler)ElementHandler).ShellGroupItemControl;
+        public new MC.ShellGroupItem NativeControl => (ElementHandler as ShellGroupItemHandler)?.ShellGroupItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

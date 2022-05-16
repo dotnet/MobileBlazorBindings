@@ -18,7 +18,7 @@ namespace BlazorBindings.Maui.Elements
 
         [Parameter] public EventCallback<MC.PanUpdatedEventArgs> OnPanUpdated { get; set; }
 
-        public new MC.PanGestureRecognizer NativeControl => ((PanGestureRecognizerHandler)ElementHandler).PanGestureRecognizerControl;
+        public new MC.PanGestureRecognizer NativeControl => (ElementHandler as PanGestureRecognizerHandler)?.PanGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

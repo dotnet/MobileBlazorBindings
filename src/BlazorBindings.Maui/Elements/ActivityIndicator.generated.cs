@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -23,7 +23,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public Color Color { get; set; }
         [Parameter] public bool? IsRunning { get; set; }
 
-        public new MC.ActivityIndicator NativeControl => ((ActivityIndicatorHandler)ElementHandler).ActivityIndicatorControl;
+        public new MC.ActivityIndicator NativeControl => (ElementHandler as ActivityIndicatorHandler)?.ActivityIndicatorControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

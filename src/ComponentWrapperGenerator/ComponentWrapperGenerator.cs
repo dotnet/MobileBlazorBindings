@@ -150,7 +150,7 @@ namespace {componentNamespace}
             {staticConstructorBody.Trim()}
         }}
 { propertyDeclarations}
-        public new {componentNamespacePrefix}{componentName} NativeControl => (({componentHandlerName})ElementHandler).{componentName}Control;
+        public new {componentNamespacePrefix}{componentName} NativeControl => (ElementHandler as {componentHandlerName})?.{componentName}Control;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {{

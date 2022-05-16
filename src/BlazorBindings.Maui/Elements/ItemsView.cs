@@ -36,7 +36,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public EventCallback<MC.ItemsViewScrolledEventArgs> OnScrolled { get; set; }
         [Parameter] public EventCallback<MC.ScrollToRequestEventArgs> OnScrollToRequested { get; set; }
 
-        public new MC.ItemsView NativeControl => ((ItemsViewHandler)ElementHandler).ItemsViewControl;
+        public new MC.ItemsView NativeControl => (ElementHandler as ItemsViewHandler)?.ItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

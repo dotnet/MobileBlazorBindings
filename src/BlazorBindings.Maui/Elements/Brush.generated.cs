@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -16,7 +16,7 @@ namespace BlazorBindings.Maui.Elements
             RegisterAdditionalHandlers();
         }
 
-        public new MC.Brush NativeControl => ((BrushHandler)ElementHandler).BrushControl;
+        public new MC.Brush NativeControl => (ElementHandler as BrushHandler)?.BrushControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

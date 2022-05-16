@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -22,7 +22,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public double? ColumnSpacing { get; set; }
         [Parameter] public double? RowSpacing { get; set; }
 
-        public new MC.Grid NativeControl => ((GridHandler)ElementHandler).GridControl;
+        public new MC.Grid NativeControl => (ElementHandler as GridHandler)?.GridControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

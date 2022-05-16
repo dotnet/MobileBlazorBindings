@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -19,7 +19,7 @@ namespace BlazorBindings.Maui.Elements
             RegisterAdditionalHandlers();
         }
 
-        public new MC.ShellSection NativeControl => ((ShellSectionHandler)ElementHandler).ShellSectionControl;
+        public new MC.ShellSection NativeControl => (ElementHandler as ShellSectionHandler)?.ShellSectionControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

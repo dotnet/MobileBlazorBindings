@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -19,7 +19,7 @@ namespace BlazorBindings.Maui.Elements
             RegisterAdditionalHandlers();
         }
 
-        public new MC.ContentPage NativeControl => ((ContentPageHandler)ElementHandler).ContentPageControl;
+        public new MC.ContentPage NativeControl => (ElementHandler as ContentPageHandler)?.ContentPageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

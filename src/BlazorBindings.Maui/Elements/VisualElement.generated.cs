@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -43,7 +43,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public double? WidthRequest { get; set; }
         [Parameter] public int? ZIndex { get; set; }
 
-        public new MC.VisualElement NativeControl => ((VisualElementHandler)ElementHandler).VisualElementControl;
+        public new MC.VisualElement NativeControl => (ElementHandler as VisualElementHandler)?.VisualElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

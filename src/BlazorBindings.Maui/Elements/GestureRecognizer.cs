@@ -9,6 +9,6 @@ namespace BlazorBindings.Maui.Elements
 {
     public class GestureRecognizer : NativeControlComponentBase
     {
-        public MC.GestureRecognizer NativeControl => ((GestureRecognizerHandler)ElementHandler).GestureRecognizerControl;
+        public MC.GestureRecognizer NativeControl => (ElementHandler as GestureRecognizerHandler)?.GestureRecognizerControl;
     }
 }

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System;
 using System.Threading.Tasks;
 
@@ -32,7 +32,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public DateTime? MinimumDate { get; set; }
         [Parameter] public Color TextColor { get; set; }
 
-        public new MC.DatePicker NativeControl => ((DatePickerHandler)ElementHandler).DatePickerControl;
+        public new MC.DatePicker NativeControl => (ElementHandler as DatePickerHandler)?.DatePickerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

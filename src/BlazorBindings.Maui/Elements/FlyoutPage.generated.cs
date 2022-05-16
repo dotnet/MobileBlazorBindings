@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -23,7 +23,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public bool? IsGestureEnabled { get; set; }
         [Parameter] public bool? IsPresented { get; set; }
 
-        public new MC.FlyoutPage NativeControl => ((FlyoutPageHandler)ElementHandler).FlyoutPageControl;
+        public new MC.FlyoutPage NativeControl => (ElementHandler as FlyoutPageHandler)?.FlyoutPageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

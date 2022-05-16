@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -27,7 +27,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public string Route { get; set; }
         [Parameter] public string Title { get; set; }
 
-        public new MC.BaseShellItem NativeControl => ((BaseShellItemHandler)ElementHandler).BaseShellItemControl;
+        public new MC.BaseShellItem NativeControl => (ElementHandler as BaseShellItemHandler)?.BaseShellItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -23,7 +23,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public Color Color { get; set; }
         [Parameter] public float? Offset { get; set; }
 
-        public new MC.GradientStop NativeControl => ((GradientStopHandler)ElementHandler).GradientStopControl;
+        public new MC.GradientStop NativeControl => (ElementHandler as GradientStopHandler)?.GradientStopControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

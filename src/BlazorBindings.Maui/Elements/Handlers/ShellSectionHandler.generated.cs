@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
 using BlazorBindings.Core;
+using MC = Microsoft.Maui.Controls;
 using System;
 
 namespace BlazorBindings.Maui.Elements.Handlers

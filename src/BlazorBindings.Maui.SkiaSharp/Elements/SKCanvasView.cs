@@ -20,7 +20,7 @@ namespace BlazorBindings.Maui.SkiaSharp
 
         [Parameter] public EventCallback<SKPaintSurfaceEventArgs> OnPaintSurface { get; set; }
 
-        public new SK.SKCanvasView NativeControl => ((SKCanvasViewHandler)ElementHandler).SKCanvasViewControl;
+        public new SK.SKCanvasView NativeControl => (ElementHandler as SKCanvasViewHandler)?.SKCanvasViewControl;
         public void InvalidateSurface()
         {
             NativeControl.InvalidateSurface();

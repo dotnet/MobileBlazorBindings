@@ -20,7 +20,7 @@ namespace BlazorBindings.Maui.Elements
 
         [Parameter] public EventCallback OnTapped { get; set; }
 
-        public new MC.TapGestureRecognizer NativeControl => ((TapGestureRecognizerHandler)ElementHandler).TapGestureRecognizerControl;
+        public new MC.TapGestureRecognizer NativeControl => (ElementHandler as TapGestureRecognizerHandler)?.TapGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

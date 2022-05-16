@@ -22,7 +22,7 @@ namespace BlazorBindings.Maui.Elements
 
         [Parameter] public EventCallback<MC.SwipedEventArgs> OnSwiped { get; set; }
 
-        public new MC.SwipeGestureRecognizer NativeControl => ((SwipeGestureRecognizerHandler)ElementHandler).SwipeGestureRecognizerControl;
+        public new MC.SwipeGestureRecognizer NativeControl => (ElementHandler as SwipeGestureRecognizerHandler)?.SwipeGestureRecognizerControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

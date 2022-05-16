@@ -12,7 +12,7 @@ namespace BlazorBindings.Maui.Elements
         // Grouping is not supported at this moment
         // [Parameter] public bool? IsGrouped { get; set; }
 
-        public new MC.GroupableItemsView NativeControl => ((GroupableItemsViewHandler)ElementHandler).GroupableItemsViewControl;
+        public new MC.GroupableItemsView NativeControl => (ElementHandler as GroupableItemsViewHandler)?.GroupableItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

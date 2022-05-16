@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -18,7 +18,7 @@ namespace BlazorBindings.Maui.Elements
 
         [Parameter] public double? Spacing { get; set; }
 
-        public new MC.StackBase NativeControl => ((StackBaseHandler)ElementHandler).StackBaseControl;
+        public new MC.StackBase NativeControl => (ElementHandler as StackBaseHandler)?.StackBaseControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

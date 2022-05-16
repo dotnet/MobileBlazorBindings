@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -24,7 +24,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public Color Color { get; set; }
         [Parameter] public CornerRadius? CornerRadius { get; set; }
 
-        public new MC.BoxView NativeControl => ((BoxViewHandler)ElementHandler).BoxViewControl;
+        public new MC.BoxView NativeControl => (ElementHandler as BoxViewHandler)?.BoxViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

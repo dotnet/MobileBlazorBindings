@@ -22,7 +22,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public EventCallback<IList<object>> SelectedItemsChanged { get; set; }
         [Parameter] public EventCallback<object> SelectedItemChanged { get; set; }
 
-        public new MC.SelectableItemsView NativeControl => ((SelectableItemsViewHandler)ElementHandler).SelectableItemsViewControl;
+        public new MC.SelectableItemsView NativeControl => (ElementHandler as SelectableItemsViewHandler)?.SelectableItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

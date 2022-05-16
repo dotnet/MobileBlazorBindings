@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MC = Microsoft.Maui.Controls;
-using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements.Handlers;
+using MC = Microsoft.Maui.Controls;
+using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -22,7 +22,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public MC.ToolbarItemOrder? Order { get; set; }
         [Parameter] public int? Priority { get; set; }
 
-        public new MC.ToolbarItem NativeControl => ((ToolbarItemHandler)ElementHandler).ToolbarItemControl;
+        public new MC.ToolbarItem NativeControl => (ElementHandler as ToolbarItemHandler)?.ToolbarItemControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

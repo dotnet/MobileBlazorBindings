@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -33,7 +33,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public int? SelectionLength { get; set; }
         [Parameter] public TextAlignment? VerticalTextAlignment { get; set; }
 
-        public new MC.Entry NativeControl => ((EntryHandler)ElementHandler).EntryControl;
+        public new MC.Entry NativeControl => (ElementHandler as EntryHandler)?.EntryControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

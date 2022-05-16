@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using BlazorBindings.Maui.Elements.Handlers;
 using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
-using BlazorBindings.Core;
-using BlazorBindings.Maui.Elements.Handlers;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements
@@ -29,7 +29,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public Color TextColor { get; set; }
         [Parameter] public TextTransform? TextTransform { get; set; }
 
-        public new MC.InputView NativeControl => ((InputViewHandler)ElementHandler).InputViewControl;
+        public new MC.InputView NativeControl => (ElementHandler as InputViewHandler)?.InputViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

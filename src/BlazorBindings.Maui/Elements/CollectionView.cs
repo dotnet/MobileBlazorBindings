@@ -15,6 +15,6 @@ namespace BlazorBindings.Maui.Elements
                 renderer => new CollectionViewHandler(renderer, new MC.CollectionView()));
         }
 
-        public new MC.CollectionView NativeControl => ((CollectionViewHandler)ElementHandler).CollectionViewControl;
+        public new MC.CollectionView NativeControl => (ElementHandler as CollectionViewHandler)?.CollectionViewControl;
     }
 }

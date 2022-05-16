@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using MCC = Microsoft.Maui.Controls.Compatibility;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Maui;
 using BlazorBindings.Core;
 using BlazorBindings.Maui.Elements;
 using BlazorBindings.Maui.Elements.Compatibility.Handlers;
+using MCC = Microsoft.Maui.Controls.Compatibility;
+using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
 using System.Threading.Tasks;
 
 namespace BlazorBindings.Maui.Elements.Compatibility
@@ -22,7 +22,7 @@ namespace BlazorBindings.Maui.Elements.Compatibility
         [Parameter] public bool? IsClippedToBounds { get; set; }
         [Parameter] public Thickness? Padding { get; set; }
 
-        public new MCC.Layout NativeControl => ((LayoutHandler)ElementHandler).LayoutControl;
+        public new MCC.Layout NativeControl => (ElementHandler as LayoutHandler)?.LayoutControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

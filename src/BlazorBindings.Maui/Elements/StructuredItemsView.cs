@@ -25,7 +25,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public RenderFragment Header { get; set; }
         [Parameter] public RenderFragment Footer { get; set; }
 
-        public new MC.StructuredItemsView NativeControl => ((StructuredItemsViewHandler)ElementHandler).StructuredItemsViewControl;
+        public new MC.StructuredItemsView NativeControl => (ElementHandler as StructuredItemsViewHandler)?.StructuredItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

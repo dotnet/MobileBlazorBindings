@@ -13,7 +13,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public string ClassId { get; set; }
         [Parameter] public string StyleId { get; set; }
 
-        public MC.Element NativeControl => ((Handlers.ElementHandler)ElementHandler).ElementControl;
+        public MC.Element NativeControl => (ElementHandler as Handlers.ElementHandler)?.ElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
