@@ -4,6 +4,7 @@
 using Microsoft.AspNetCore.Components;
 using BlazorBindings.Core;
 using MC = Microsoft.Maui.Controls;
+using System.Collections.Generic;
 
 namespace BlazorBindings.Maui.Elements
 {
@@ -12,6 +13,7 @@ namespace BlazorBindings.Maui.Elements
         [Parameter] public string AutomationId { get; set; }
         [Parameter] public string ClassId { get; set; }
         [Parameter] public string StyleId { get; set; }
+        [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object> AdditionalProperties { get; set; }
 
         public MC.Element NativeControl => (ElementHandler as Handlers.ElementHandler)?.ElementControl;
 
@@ -30,6 +32,13 @@ namespace BlazorBindings.Maui.Elements
             if (StyleId != null)
             {
                 builder.AddAttribute(nameof(StyleId), StyleId);
+            }
+            if (AdditionalProperties != null)
+            {
+                foreach (var keyValue in AdditionalProperties)
+                {
+                    builder.AddAttribute(keyValue.Key, AttributeHelper.ObjectToAttribute(keyValue.Value));
+                }
             }
         }
     }
