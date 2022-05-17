@@ -1,4 +1,5 @@
 ﻿@page "/navigation"
+@using ControlGallery.Models
 @inject ShellNavigationManager NavigationManager
 
 <ContentPage>
@@ -15,6 +16,7 @@
             <Button Text="Navigate with Guid" OnClick="NavigateWithGuid"></Button>
             <Button Text="Navigate with Nullable<Guid>" OnClick="NavigateWithNullableGuid"></Button>
             <Button Text="Navigate with Bool" OnClick="NavigateWithBool"></Button>
+            <Button Text="Navigate with query parameters" OnClick="NavigateWithAdditionalParameters"></Button>
         </StackLayout>
     </ScrollView>
 </ContentPage>
@@ -32,4 +34,10 @@
     async Task NavigateWithGuid() => await NavigationManager.NavigateToAsync($"/guid/{Guid.NewGuid()}");
     async Task NavigateWithNullableGuid() => await NavigationManager.NavigateToAsync($"/nullable-guid/{Guid.NewGuid()}");
     async Task NavigateWithBool() => await NavigationManager.NavigateToAsync("/bool/true");
+
+    async Task NavigateWithAdditionalParameters() => await NavigationManager.NavigateToAsync("/target", new Dictionary<string, object>
+        {
+            ["Query1"] = new NavigationParameterModel { Name = "Q1", Value = "V1" },
+            ["Query2"] = new NavigationParameterModel { Name = "Q2", Value = null }
+        });
 }

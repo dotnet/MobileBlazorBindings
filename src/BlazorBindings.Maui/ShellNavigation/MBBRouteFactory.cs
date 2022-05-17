@@ -8,7 +8,7 @@ using MC = Microsoft.Maui.Controls;
 namespace BlazorBindings.Maui.ShellNavigation
 {
     //Based on the forms TypeRouteFactory https://github.com/xamarin/Xamarin.Forms/blob/9fd882e6c598a51bffbbb2f4de72c3bd9023ab41/Xamarin.Forms.Core/Routing.cs
-    public class MBBRouteFactory : MC.RouteFactory
+    internal class MBBRouteFactory : MC.RouteFactory
     {
         private readonly Type _componentType;
         private readonly ShellNavigationManager _navigationManager;

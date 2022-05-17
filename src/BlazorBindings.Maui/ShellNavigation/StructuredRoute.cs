@@ -8,7 +8,7 @@ using System.Linq;
 namespace BlazorBindings.Maui.ShellNavigation
 {
     //Used to map blazor route syntax to forms query syntax
-    public class StructuredRoute
+    internal class StructuredRoute
     {
 #pragma warning disable CA1056 // Uri properties should not be strings
         public string OriginalUri { get; }//Full route as it is registered in the razor component
@@ -41,12 +41,12 @@ namespace BlazorBindings.Maui.ShellNavigation
             }
         }
 
-        internal static StructuredRouteResult FindBestMatch(string uri, List<StructuredRoute> routes)
+        internal static StructuredRouteResult FindBestMatch(string uri, List<StructuredRoute> routes, Dictionary<string, object> additionalParameters)
         {
             var match = routes.FirstOrDefault(x => x.BaseUri == uri);
             if (match != null && match.ParameterCount == 0)
             {
-                return new StructuredRouteResult(match);
+                return new StructuredRouteResult(match, additionalParameters: additionalParameters);
             }
 
             var pieces = uri.Split('/').ToList();
@@ -71,27 +71,31 @@ namespace BlazorBindings.Maui.ShellNavigation
             }
 
             parameters.Reverse();
-            return new StructuredRouteResult(match, parameters);
+            return new StructuredRouteResult(match, parameters, additionalParameters);
         }
     }
 
-    public class StructuredRouteResult
+    internal class StructuredRouteResult
     {
         public StructuredRoute Route { get; }
-        public Dictionary<string, string> Parameters { get; } = new Dictionary<string, string>();
+        public Dictionary<string, string> PathParameters { get; } = new Dictionary<string, string>();
+        public Dictionary<string, object> AdditionalParameters { get; }
 
-        public StructuredRouteResult(StructuredRoute match)
-        {
-            Route = match;
-        }
-
-        public StructuredRouteResult(StructuredRoute match, List<string> parameters)
+        public StructuredRouteResult(StructuredRoute match,
+            List<string> parameters = null,
+            Dictionary<string, object> additionalParameters = null)
         {
             Route = match ?? throw new ArgumentNullException(nameof(match));
-            for (var i = 0; i < match.ParameterKeys.Count; i++)
+
+            if (parameters is not null)
             {
-                Parameters[match.ParameterKeys[i]] = parameters.ElementAtOrDefault(i);
+                for (var i = 0; i < match.ParameterKeys.Count; i++)
+                {
+                    PathParameters[match.ParameterKeys[i]] = parameters.ElementAtOrDefault(i);
+                }
             }
+
+            AdditionalParameters = additionalParameters;
         }
     }
 }
