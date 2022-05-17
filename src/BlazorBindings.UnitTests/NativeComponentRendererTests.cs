@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlazorBindings.UnitTests
 {
@@ -23,6 +24,12 @@ namespace BlazorBindings.UnitTests
             [Parameter] public int? NullableIntParameter { get; set; }
             [Parameter] public object ObjectParameter { get; set; }
             public string NonParameter { get; set; }
+
+            public override Task SetParametersAsync(ParameterView parameters)
+            {
+                parameters.SetParameterProperties(this);
+                return Task.CompletedTask;
+            }
         }
 
         public static IEnumerable<TestCaseData> SetParameterTestData
@@ -39,10 +46,10 @@ namespace BlazorBindings.UnitTests
         }
 
         [TestCaseSource(nameof(SetParameterTestData))]
-        public void SetParameterTest(Dictionary<string, object> parameters)
+        public async Task SetParameterTest(Dictionary<string, object> parameters)
         {
             var component = new TestComponent();
-            NativeComponentRenderer.SetParameterArguments(component, parameters);
+            await NativeComponentRenderer.SetParameterArguments(component, parameters);
 
             var parameterKeyValue = parameters.FirstOrDefault();
             var prop = component.GetType().GetProperty(parameterKeyValue.Key);
@@ -57,7 +64,7 @@ namespace BlazorBindings.UnitTests
             var value = "NotAnInt";
 
             var parameters = new Dictionary<string, object> { { "IntParameter", value } };
-            Assert.Throws<ArgumentException>(() => NativeComponentRenderer.SetParameterArguments(component, parameters));
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await NativeComponentRenderer.SetParameterArguments(component, parameters));
         }
 
         [Test]
@@ -67,7 +74,7 @@ namespace BlazorBindings.UnitTests
             var value = "NonParameter";
 
             var parameters = new Dictionary<string, object> { { "NonParameter", value } };
-            Assert.Throws<InvalidOperationException>(() => NativeComponentRenderer.SetParameterArguments(component, parameters));
+            Assert.ThrowsAsync<InvalidOperationException>(async () => await NativeComponentRenderer.SetParameterArguments(component, parameters));
         }
     }
 }

@@ -71,7 +71,7 @@ namespace BlazorBindings.Core
 
                     _componentIdToAdapter[componentId] = rootAdapter;
 
-                    SetParameterArguments(component, parameters);
+                    await SetParameterArguments(component, parameters);
 
                     await RenderRootComponentAsync(componentId).ConfigureAwait(false);
                     return component;
@@ -155,7 +155,7 @@ namespace BlazorBindings.Core
             return result;
         }
 
-        internal static void SetParameterArguments(IComponent component, Dictionary<string, object> arguments)
+        internal static async Task SetParameterArguments(IComponent component, Dictionary<string, object> arguments)
         {
             if (component == null)
             {
@@ -167,23 +167,8 @@ namespace BlazorBindings.Core
                 return;
             }
 
-            foreach (var parameter in arguments)
-            {
-                var prop = component.GetType().GetProperty(parameter.Key);
-
-                if (prop == null)
-                {
-                    throw new InvalidOperationException($"Object of type '{component.GetType()}' does not have a property matching the name '{parameter.Key}'.");
-                }
-
-                var parameterAttribute = prop.GetCustomAttribute(typeof(ParameterAttribute));
-                if (parameterAttribute == null)
-                {
-                    throw new InvalidOperationException($"Object of type '{component.GetType()}' has a property matching the name '{parameter.Key}', but it does not have [ParameterAttribute] or [CascadingParameterAttribute] applied.");
-                }
-
-                prop.SetValue(component, parameter.Value);
-            }
+            var parameterView = ParameterView.FromDictionary(arguments);
+            await component.SetParametersAsync(parameterView);
         }
     }
 }
