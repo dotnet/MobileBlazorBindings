@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using MC = Microsoft.Maui.Controls;
+using System.Runtime.ExceptionServices;
 
 namespace BlazorBindings.Maui
 {
@@ -115,6 +116,12 @@ namespace BlazorBindings.Maui
             var elementAddedTask = container.WaitForElementAsync();
 
             await Task.WhenAny(addComponentTask, elementAddedTask).ConfigureAwait(false);
+
+            if (addComponentTask.Exception != null)
+            {
+                var exception = addComponentTask.Exception.InnerException;
+                ExceptionDispatchInfo.Throw(exception);
+            }
 
             if (container.Elements.Count != 1)
             {
