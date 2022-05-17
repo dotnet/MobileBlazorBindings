@@ -4,14 +4,15 @@
     <ScrollView>
         <StackLayout Padding="10" Spacing="12">
             <Label Text="Select a playground..." FontSize="30" FontAttributes="FontAttributes.Bold" />
-            <BoxView Margin="10" HeightRequest="2" Color="Colors.DarkGray" HorizontalOptions="LayoutOptions.FillAndExpand" />
-            <Button Text="Common controls" OnClick="@(async () => await NavigationManager.NavigateToAsync("/commoncontrols"))"></Button>
-            <Button Text="Navigation playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/navigation"))"></Button>
-            <Button Text="Gesture playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/gestureplayground"))"></Button>
-            <Button Text="Skia Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/skia"))"></Button>
-            <Button Text="Picker Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/pickerplayground"))"></Button>
-            <Button Text="Editor Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/editorplayground"))"></Button>
-            <Button Text="CollectionView Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/collectionviewplayground"))"></Button>
+            <BoxView Margin="10" HeightRequest="2" Color="Colors.DarkGray" HorizontalOptions="LayoutOptions.Fill" />
+            <Button Text="Common controls" OnClick="@(async () => await NavigationManager.NavigateToAsync("/commoncontrols"))" />
+            <Button Text="Navigation playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/navigation"))" />
+            <Button Text="Gesture playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/gestureplayground"))" />
+            <Button Text="Skia Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/skia"))" />
+            <Button Text="Picker Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/pickerplayground"))" />
+            <Button Text="Editor Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/editorplayground"))" />
+            <Button Text="CollectionView Playground" OnClick="@(async () => await NavigationManager.NavigateToAsync("/collectionviewplayground"))" />
+            <Button Text="Grids" OnClick="@(async () => await NavigationManager.NavigateToAsync("/grids"))" />
         </StackLayout>
     </ScrollView>
 </ContentPage>
