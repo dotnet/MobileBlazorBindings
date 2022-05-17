@@ -1,5 +1,7 @@
 # BlazorBindings.Maui
 
+[![Nuget](https://img.shields.io/nuget/v/BlazorBindings.Maui)](https://www.nuget.org/packages/BlazorBindings.Maui/)
+
 ## Getting Started
 
 Check out the documentation for how to build your first app: https://dreamescaper.github.io/MobileBlazorBindingsDocs
