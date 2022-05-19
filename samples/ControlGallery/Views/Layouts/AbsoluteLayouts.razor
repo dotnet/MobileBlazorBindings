@@ -1,0 +1,79 @@
+﻿@page "/layouts/absolute"
+@using Microsoft.Maui.Layouts
+
+<ContentPage Title="Absolute Layouts">
+    <ScrollView>
+        <VerticalStackLayout Padding="8" Spacing="12">
+            <Label Text="Absolute Layout with absolute values" />
+
+            <AbsoluteLayout>
+                <BoxView Color="Colors.Silver" AbsoluteLayout.LayoutBounds="0, 10, 200, 5" />
+                <BoxView Color="Colors.Silver" AbsoluteLayout.LayoutBounds="0, 20, 200, 5" />
+                <BoxView Color="Colors.Silver" AbsoluteLayout.LayoutBounds=@(new Rect(10, 0, 5, 65)) />
+                <BoxView Color="Colors.Silver" AbsoluteLayout.LayoutBounds=@(new Rect(20, 0, 5, 65)) />
+
+                <Label Text="Stylish Header"
+                       FontSize="24"
+                       AbsoluteLayout.LayoutBounds="30, 25" />
+            </AbsoluteLayout>
+
+
+            <Label Text="Absolute Layout with proportional values" Padding="new(0, 30, 0, 0)" />
+
+            <AbsoluteLayout HeightRequest="150">
+                <BoxView Color="Colors.Blue"
+                         AbsoluteLayout.LayoutBounds="0.5, 0, 100, 25"
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+
+                <BoxView Color="Colors.Green"
+                         AbsoluteLayout.LayoutBounds="0, 0.5, 25, 100"
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+
+                <BoxView Color="Colors.Red"
+                         AbsoluteLayout.LayoutBounds="1, 0.5, 25, 100"
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+
+                <BoxView Color="Colors.Black"
+                         AbsoluteLayout.LayoutBounds="0.5, 1, 100, 25"
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+
+                <Label Text="Centered text"
+                       AbsoluteLayout.LayoutBounds="0.5, 0.5, 110, 25"
+                       AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+            </AbsoluteLayout>
+
+            <Label Text="Absolute Layout with computed values" Padding="new(0, 30, 0, 0)" />
+
+            <AbsoluteLayout HeightRequest="200">
+                <BoxView Color="Colors.Green"
+                         CornerRadius="10"
+                         AbsoluteLayout.LayoutBounds=@(new Rect(_greenX, _greenY, 20, 20))
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+
+                <BoxView Color="Colors.Blue"
+                         CornerRadius="8"
+                         AbsoluteLayout.LayoutBounds=@(new Rect(_blueX, _blueY, 16, 16))
+                         AbsoluteLayout.LayoutFlags="@AbsoluteLayoutFlags.PositionProportional" />
+            </AbsoluteLayout>
+
+            <Slider Minimum="0" Maximum="1" ValueChanged="SliderValueChanged" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    double _greenX;
+    double _greenY;
+    double _blueX;
+    double _blueY;
+
+    void SliderValueChanged(double value)
+    {
+        _blueX = value;
+        _greenX = value;
+
+        _greenY = (-Math.Cos(_blueX * 10) + 1) / 2;
+        _blueY = (-Math.Cos(_blueX * 20) + 1) / 2;
+    }
+}
