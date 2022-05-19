@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace BlazorBindings.Maui.Elements
 {
@@ -15,7 +16,6 @@ namespace BlazorBindings.Maui.Elements
             return value switch
             {
                 null => defaultValueIfNull,
-                bool bln => bln,
                 string str when str == "1" => true,
                 string str when str == "0" => false,
                 string str when bool.TryParse(str, out var bln) => bln,
@@ -28,9 +28,19 @@ namespace BlazorBindings.Maui.Elements
             return value switch
             {
                 null => defaultValueIfNull,
-                int i => i,
                 string str => int.Parse(str, CultureInfo.InvariantCulture),
                 _ => throw new NotSupportedException($"Cannot get int value from {value.GetType().Name} attribute.")
+            };
+        }
+
+        public static T GetEnum<T>(object value, T defaultValueIfNull = default) where T : struct, Enum
+        {
+            return value switch
+            {
+                null => defaultValueIfNull,
+                string str when int.TryParse(str, out var i) => Unsafe.As<int, T>(ref i),
+                string str when Enum.TryParse<T>(str, out var e) => e,
+                _ => throw new NotSupportedException($"Cannot get {typeof(T).Name} value from {value.GetType().Name} attribute.")
             };
         }
 
