@@ -1,13 +1,17 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using BlazorBindings.Core;
+using System;
 using System.Diagnostics;
 using MC = Microsoft.Maui.Controls;
 
 namespace BlazorBindings.Maui.Elements.Handlers
 {
-    public partial class LabelHandler : ViewHandler, IMauiContainerElementHandler
+    public partial class LabelHandler : ViewHandler, IMauiContainerElementHandler, IHandleChildContentText
     {
+        private readonly TextSpanContainer _textSpanContainer = new();
+
         public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             var childAsSpan = child as MC.Span;
@@ -45,6 +49,21 @@ namespace BlazorBindings.Maui.Elements.Handlers
 
             var formattedString = GetFormattedString();
             formattedString.Spans.Remove(childAsSpan);
+        }
+
+        public void HandleText(int index, string text)
+        {
+            if (LabelControl.FormattedText != null)
+            {
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    throw new InvalidOperationException("Cannot use both string content and Spans for Label.");
+                }
+            }
+            else
+            {
+                LabelControl.Text = _textSpanContainer.GetUpdatedText(index, text);
+            }
         }
 
         private MC.FormattedString GetFormattedString()

@@ -12,7 +12,7 @@ namespace BlazorBindings.Core
     /// </summary>
     public class TextSpanContainer
     {
-        private readonly List<string> _textSpans = new List<string>();
+        private readonly List<string> _textSpans = new();
 
         public TextSpanContainer(bool trimWhitespace = true)
         {
@@ -42,9 +42,9 @@ namespace BlazorBindings.Core
             }
             _textSpans[index] = text;
 
-            var allText = string.Join(string.Empty, _textSpans);
+            var allText = string.Concat(_textSpans);
             return TrimWhitespace
-                ? allText?.Trim()
+                ? allText.Trim()
                 : allText;
         }
     }
