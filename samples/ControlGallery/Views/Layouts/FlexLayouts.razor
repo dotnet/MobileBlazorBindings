@@ -1,0 +1,79 @@
+﻿@page "/layouts/flex"
+
+@using Microsoft.Maui.Layouts
+
+<ContentPage>
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="10">
+
+            <Label Text="FlexLayout with Row direction" />
+            <FlexLayout Direction="FlexDirection.Row"
+                        HorizontalOptions="LayoutOptions.Fill"
+                        HeightRequest="20">
+                <BoxView Color="Colors.Red" FlexLayout.Basis="20%" />
+                <BoxView Color="Colors.Green" FlexLayout.Basis="80%" />
+                <BoxView Color="Colors.Blue" FlexLayout.Basis="20%" />
+            </FlexLayout>
+
+
+            <Label Text="FlexLayout with wrapping" />
+            <FlexLayout Wrap="FlexWrap.Wrap" HeightRequest="300">
+                @foreach (var color in _colors)
+                {
+                    <BoxView Color="color" HeightRequest="50" WidthRequest="50" Margin="5" />
+                }
+            </FlexLayout>
+
+            <Label Text="Flex page layout" />
+            <FlexLayout Direction="FlexDirection.Column" HeightRequest="200">
+                <Label Text="HEADER"
+                       FontSize="18"
+                       BackgroundColor="Colors.Aqua"
+                       HorizontalTextAlignment="TextAlignment.Center" />
+
+                <FlexLayout FlexLayout.Grow="1">
+                    <Label Text="CONTENT"
+                           FontSize="18"
+                           BackgroundColor="Colors.Gray"
+                           HorizontalTextAlignment="TextAlignment.Center"
+                           VerticalTextAlignment="TextAlignment.Center"
+                           FlexLayout.Grow="1" />
+
+                    <BoxView FlexLayout.Basis="50"
+                             FlexLayout.Order="-1"
+                             Color="Colors.Blue" />
+
+                    <BoxView FlexLayout.Basis="50"
+                             Color="Colors.Green" />
+                </FlexLayout>
+
+                <Label Text="FOOTER"
+                       FontSize="18"
+                       BackgroundColor="Colors.Pink"
+                       HorizontalTextAlignment="TextAlignment.Center" />
+            </FlexLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    Color[] _colors = new[] {
+        Colors.AliceBlue,
+        Colors.Aqua,
+        Colors.Azure,
+        Colors.Beige,
+        Colors.Bisque,
+        Colors.Black,
+        Colors.Blue,
+        Colors.Brown,
+        Colors.BurlyWood,
+        Colors.Crimson,
+        Colors.DarkGray,
+        Colors.CornflowerBlue,
+        Colors.DarkOliveGreen,
+        Colors.Fuchsia,
+        Colors.AliceBlue,
+        Colors.DarkSeaGreen
+    };
+}
