@@ -13,6 +13,7 @@ DatePicker
 Editor
 #Element // Element is special so we don't generate it
 Entry
+FlexLayout
 FlyoutItem
 #FormattedString // Not used anymore because Label directly contains Span elements
 Frame

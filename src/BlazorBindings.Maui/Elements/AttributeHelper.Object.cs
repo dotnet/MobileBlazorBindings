@@ -4,13 +4,14 @@
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Layouts;
 using System;
 
 namespace BlazorBindings.Maui.Elements
 {
     public static partial class AttributeHelper
     {
-        public static object ObjectToAttribute<T>(T value)
+        public static object ObjectToAttribute(object value)
         {
             if (value == null || value is string || value is int || value is Delegate)
                 return value;
@@ -30,8 +31,9 @@ namespace BlazorBindings.Maui.Elements
                 GridLength gridLength => GridLengthToString(gridLength),
                 LayoutOptions layoutOptions => LayoutOptionsToString(layoutOptions),
                 Thickness thickness => ThicknessToString(thickness),
+                FlexBasis flexBasis => FlexBasisToString(flexBasis),
                 TimeSpan timeSpan => TimeSpanToString(timeSpan),
-                Enum => (int)(object)value,
+                Enum => (int)value,
                 _ => ObjectToDelegate(value)
             };
         }
