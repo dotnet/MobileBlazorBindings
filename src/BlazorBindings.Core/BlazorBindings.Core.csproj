@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
-		<Title>Blazor Bindings Core Runtime (experimental)</Title>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<Title>Blazor Bindings Core Runtime</Title>
 		<Description>Common logic for using Blazor to target native renderers. For mobile app projects for Android and iOS use the BlazorBindings.Maui package.</Description>
 		<PackageTags>blazor;blazorbindings</PackageTags>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.5" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
 	</ItemGroup>
