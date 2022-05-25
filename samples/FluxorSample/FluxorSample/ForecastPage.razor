@@ -1,0 +1,32 @@
+﻿@using FluxorSample.Store
+@using FluxorSample.Store.WeatherUseCase
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@inject IState<WeatherState> WeatherState
+@inject IDispatcher Dispatcher
+
+<ContentPage OnAppearing="OnAppearing">
+    <VerticalStackLayout Spacing="10">
+        <ActivityIndicator IsRunning="true" IsVisible="WeatherState.Value.IsLoading" />
+
+        @foreach (var forecast in WeatherState.Value.Forecasts)
+        {
+            <Frame CornerRadius="10" BackgroundColor="Colors.Orange">
+                <VerticalStackLayout>
+                    <Label FontSize="10" Text="@forecast.Date.ToShortDateString()" />
+                    <Label FontSize="14" Text="@forecast.Summary" />
+                    <Label FontSize="10" Text=@($"{forecast.TemperatureC}°") />
+                </VerticalStackLayout>
+            </Frame>
+        }
+
+    </VerticalStackLayout>
+</ContentPage>
+
+@code {
+    void OnAppearing()
+    {
+        Dispatcher.Dispatch(new FetchDataAction());
+    }
+}

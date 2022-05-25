@@ -1,0 +1,22 @@
+﻿@using FluxorSample.Store.CounterUseCase
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+@inject IState<CounterState> CounterState
+
+<Shell>
+    <ShellContent Title=@($"Counter - {CounterState.Value.ClickCount}")>
+        <CounterPage />
+    </ShellContent>
+    <ShellContent Title="Weather Forecast">
+        <ForecastPage />
+    </ShellContent>
+</Shell>
+
+@code {
+    [Inject] IStore Store { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Store.InitializeAsync();
+    }
+}

@@ -1,0 +1,48 @@
+﻿@using FluxorSample.Store
+@using FluxorSample.Store.CounterUseCase
+
+@inherits Fluxor.Blazor.Web.Components.FluxorComponent
+
+@inject IState<CounterState> CounterState
+@inject IDispatcher Dispatcher
+
+<ContentPage>
+    <ScrollView>
+        <VerticalStackLayout Spacing="25"
+                             Padding="new(30,0)"
+                             VerticalOptions="LayoutOptions.Center">
+
+            <Image Source="dotNetBotSource"
+                   HeightRequest="200"
+                   HorizontalOptions="LayoutOptions.Center" />
+
+            <Label Text="Hello, World!"
+                   FontSize="32"
+                   HorizontalOptions="LayoutOptions.Center" />
+
+            <Label Text="Welcome to .NET Multi-platform App UI"
+                   FontSize="18"
+                   HorizontalOptions="LayoutOptions.Center" />
+
+            <Button Text="@ButtonText"
+                    HorizontalOptions="LayoutOptions.Center"
+                    OnClick="OnCounterClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    ImageSource dotNetBotSource = ImageSource.FromFile("dotnet_bot.png");
+
+    string ButtonText => CounterState.Value.ClickCount switch
+    {
+        0 => "Click me",
+        1 => $"Clicked 1 time",
+        int i => $"Clicked {i} times"
+    };
+
+    void OnCounterClicked()
+    {
+        Dispatcher.Dispatch(new IncrementCounterAction());
+    }
+}

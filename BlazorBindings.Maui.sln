@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBindingsToDo", "sampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorBindings.Maui-template-pack", "templates\BlazorBindings.Maui-template-pack.csproj", "{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluxorSample", "samples\FluxorSample\FluxorSample\FluxorSample.csproj", "{B68B3CDE-6E08-4652-A1B8-4118892DFA38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,24 @@ Global
 		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhone.Build.0 = Release|Any CPU
 		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhone.Deploy.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Debug|iPhoneSimulator.Deploy.0 = Debug|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhone.Build.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhone.Deploy.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,6 +207,7 @@ Global
 		{F116930A-543B-4478-A1C6-0A2822BD6A29} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
 		{399DA09C-D565-4445-8F4D-6B7AFCA6071E} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
 		{C6F7D875-91DD-4ADE-9B3E-9693CD1FEE65} = {175AB6E2-5FB5-4C15-94C2-DCA2EE6B0703}
+		{B68B3CDE-6E08-4652-A1B8-4118892DFA38} = {50192AAF-25B6-447A-99AA-BA8161DBB594}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A645A7FF-3F09-414D-A391-7E50C3597F05}
