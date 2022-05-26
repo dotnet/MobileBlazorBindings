@@ -9,11 +9,11 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-		<PackageReleaseNotes>Release notes are available at: https://dreamescaper.github.io/MobileBlazorBindingsDocs/maui-blazor-bindings/release-notes/preview-6.html</PackageReleaseNotes>
+		<PackageReleaseNotes>Release notes are available at: https://dreamescaper.github.io/MobileBlazorBindingsDocs/maui-blazor-bindings/release-notes/preview-8.html</PackageReleaseNotes>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup>

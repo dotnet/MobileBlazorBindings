@@ -6,8 +6,6 @@ root = true
 
 #### Core EditorConfig Options ####
 
-file_header_template = Copyright (c) Microsoft Corporation.\nLicensed under the MIT license.
-
 # Indentation and spacing
 indent_size = 4
 indent_style = space
