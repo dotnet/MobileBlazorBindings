@@ -1,0 +1,29 @@
+﻿<ContentPage Title="Selection">
+    <StackLayout>
+        <Button Text="Select Random" OnClick="SelectRandom" />
+
+        <Label Text=@($"Selected Items: {(_selectedItems == null ? "" : string.Join(", ", _selectedItems))}") />
+
+        <CollectionView ItemsSource="_intItems"
+                        SelectionMode="SelectionMode.Multiple"
+                        @bind-SelectedItems="_selectedItems">
+            <ItemTemplate>
+                <Item Value="@context" />
+            </ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>
+
+@code {
+    Random _random = new Random();
+    List<int> _intItems = Enumerable.Range(1, 100).ToList();
+    IList<object> _selectedItems;
+
+    void SelectRandom()
+    {
+        _selectedItems = _selectedItems ?? new List<object>();
+
+        _selectedItems.Clear();
+        _selectedItems.Add(_random.Next(1, 10));
+    }
+}

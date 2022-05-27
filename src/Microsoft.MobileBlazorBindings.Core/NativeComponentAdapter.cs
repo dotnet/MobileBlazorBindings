@@ -250,7 +250,7 @@ namespace Microsoft.MobileBlazorBindings.Core
             ref var frame = ref frames[frameIndex];
             var elementName = frame.ElementName;
             var elementHandlerFactory = ElementHandlerRegistry.ElementHandlers[elementName];
-            var elementHandler = elementHandlerFactory.CreateElementHandler(new ElementHandlerFactoryContext(Renderer, _closestPhysicalParent));
+            var elementHandler = elementHandlerFactory.CreateElementHandler(new ElementHandlerFactoryContext(Renderer, _closestPhysicalParent, _targetComponent));
 
             if (_targetComponent is NativeControlComponentBase componentInstance)
             {

@@ -1,0 +1,15 @@
+﻿<ContentPage Title="Grid Layout">
+    <CollectionView ItemsSource="_intItems"
+                    SelectionMode="SelectionMode.Single"
+                    ItemsLayout="_itemsLayout">
+
+        <ItemTemplate>
+            <Item Value="@context" />
+        </ItemTemplate>
+    </CollectionView>
+</ContentPage>
+
+@code {
+    IItemsLayout _itemsLayout = new GridItemsLayout(5, ItemsLayoutOrientation.Vertical);
+    List<int> _intItems = Enumerable.Range(1, 100).ToList();
+}
