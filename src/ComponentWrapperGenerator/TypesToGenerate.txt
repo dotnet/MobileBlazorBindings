@@ -5,6 +5,7 @@ BaseShellItem
 BoxView
 Button
 CheckBox
+#CollectionView // Manually written to use custom logic for generics and binding
 ContentPage
 ContentView
 DatePicker
@@ -15,10 +16,12 @@ FlyoutItem
 Frame
 GestureElement
 Grid
+#GroupableItemsView // Manually written to use custom logic for generics and binding
 #GridCell // Not based on real XF type
 Image
 ImageButton
 InputView
+#ItemsView // Manually written to use custom logic for generics and binding
 Label
 Layout
 #FlyoutDetailPage // Not based on real XF type
@@ -31,6 +34,7 @@ Page
 #Picker // Manually written to use custom logic for generics and binding
 ProgressBar
 ScrollView
+#SelectableItemsView // Manually written to use custom logic for generics and binding
 Shell
 ShellContent
 #ShellFlyoutHeader // Not based on real XF type
@@ -41,6 +45,7 @@ Slider
 Span
 StackLayout
 Stepper
+#StructuredItemsView  // Manually written to use custom logic for generics and binding
 #StyleSheet // Not based on real XF type
 Switch
 Tab
