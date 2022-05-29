@@ -1,0 +1,46 @@
+﻿@page "/controls/radiobuttons"
+
+<ContentPage Title="RadioButtons">
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="10">
+            <Label Text=@($"RadioButtons with int values. Selected value: {selectedIntValue}") />
+
+            <RadioButtonGroup @bind-SelectedValue="selectedIntValue">
+                <RadioButton Value="24" />
+                <RadioButton Value="25" />
+                <RadioButton Value="26" />
+            </RadioButtonGroup>
+
+            <Label Text=@($"RadioButtons with pre-selected enum value and titles. Selected value: {selectedEnumValue}") />
+
+            <RadioButtonGroup @bind-SelectedValue="selectedEnumValue">
+                <RadioButton Value="ValueEnum.A" Title="First (A)" />
+                <RadioButton Value="ValueEnum.B" Title="Second (B)" />
+                <RadioButton Value="ValueEnum.C" Title="Third (C)" />
+            </RadioButtonGroup>
+
+            <Button Text="Change selection" OnClick="ChangeSelection" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    int? selectedIntValue;
+    ValueEnum selectedEnumValue = ValueEnum.B;
+
+    void ChangeSelection()
+    {
+        selectedEnumValue = selectedEnumValue switch
+        {
+            ValueEnum.A => ValueEnum.B,
+            ValueEnum.B => ValueEnum.C,
+            _ => ValueEnum.A
+        };
+    }
+
+    enum ValueEnum
+    {
+        A, B, C
+    }
+}

@@ -41,6 +41,7 @@ Page
 #Picker // Manually written to use custom logic for generics and binding
 ProgressBar
 RadialGradientBrush 
+RadioButton
 ScrollView
 #SelectableItemsView // Manually written to use custom logic for generics and binding
 Shell
