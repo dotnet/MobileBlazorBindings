@@ -57,7 +57,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             XF.Shell.SetNavBarIsVisible(Target, (bool)XF.Shell.NavBarIsVisibleProperty.DefaultValue);
             XF.Shell.SetNavBarHasShadow(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
-            XF.Shell.SetTabBarIsVisible(Target, (bool)XF.Shell.NavBarHasShadowProperty.DefaultValue);
+            XF.Shell.SetTabBarIsVisible(Target, (bool)XF.Shell.TabBarIsVisibleProperty.DefaultValue);
             XF.Shell.SetBackgroundColor(Target, (XF.Color)XF.Shell.BackgroundColorProperty.DefaultValue);
             XF.Shell.SetDisabledColor(Target, (XF.Color)XF.Shell.DisabledColorProperty.DefaultValue);
             XF.Shell.SetForegroundColor(Target, (XF.Color)XF.Shell.ForegroundColorProperty.DefaultValue);
