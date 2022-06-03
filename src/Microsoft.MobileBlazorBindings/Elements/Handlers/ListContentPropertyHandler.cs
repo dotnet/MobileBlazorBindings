@@ -59,5 +59,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             // in this class should get called.
             throw new NotSupportedException();
         }
+
+        void INonPhysicalChild.Remove()
+        {
+        }
     }
 }
