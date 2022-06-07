@@ -10,6 +10,7 @@ CheckBox
 ContentPage
 ContentView
 DatePicker
+Editor
 #Element // Element is special so we don't generate it
 Entry
 FlyoutItem

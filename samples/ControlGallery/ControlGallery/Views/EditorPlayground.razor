@@ -1,0 +1,19 @@
+﻿@page "/editorplayground"
+
+<ContentPage>
+    <StackLayout Margin="20">
+        <Editor @bind-Text="_text" OnCompleted="OnCompleted" AutoSize="EditorAutoSizeOption.TextChanges" />
+        <Label Text=@($"Edits count: {_editsNumber}. Text entered: {_text}")/>
+    </StackLayout>
+</ContentPage>
+
+@code
+{
+    string _text;
+    int _editsNumber;
+
+    void OnCompleted()
+    {
+        _editsNumber++;
+    }
+}
