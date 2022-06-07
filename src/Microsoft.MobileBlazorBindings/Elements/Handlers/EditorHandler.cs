@@ -5,7 +5,7 @@ using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class EntryHandler : InputViewHandler
+    public partial class EditorHandler : InputViewHandler
     {
         partial void Initialize(NativeComponentRenderer renderer)
         {
@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 eventName: "oncompleted",
                 setId: id => CompletedEventHandlerId = id,
                 clearId: id => { if (CompletedEventHandlerId == id) { CompletedEventHandlerId = 0; } });
-            EntryControl.Completed += (s, e) =>
+            EditorControl.Completed += (s, e) =>
             {
                 if (CompletedEventHandlerId != default)
                 {
