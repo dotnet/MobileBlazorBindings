@@ -50,7 +50,7 @@ namespace Microsoft.MobileBlazorBindings
         //This version also allows an optional set of parameters
         //The only downside is you can't have design/compiletime type safety
         //There's a lot of duplicate code between the two, can probably refactor the core of the method into a separate method that they both call
-        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type, System.Collections.Generic.Dictionary<string, string> parameters = null)
+        public static async Task<IComponent> AddComponent(this IServiceProvider services, XF.Element parent, Type type, System.Collections.Generic.Dictionary<string, object> parameters = null)
         {
             if (services is null)
             {
