@@ -28,11 +28,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             _setPropertyAction(parent, dataTemplate);
         }
 
-        public void Remove()
-        {
-            // Because this Handler is used internally only, this method is no-op.
-        }
-
         // Because this is a 'fake' element, all matters related to physical trees
         // should be no-ops.
 
@@ -54,6 +49,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
             // in this class should get called.
             throw new NotSupportedException();
+        }
+
+        void INonPhysicalChild.Remove()
+        {
         }
     }
 }
