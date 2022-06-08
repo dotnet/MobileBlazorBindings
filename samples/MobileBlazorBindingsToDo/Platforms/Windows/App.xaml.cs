@@ -2,12 +2,11 @@
 // Licensed under the MIT license.
 
 using Microsoft.UI.Xaml;
-using MobileBlazorBindingsToDo;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-namespace MobileBlazorBindingsToDoSample.WinUI
+namespace MobileBlazorBindingsToDo.WinUI
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -24,12 +23,5 @@ namespace MobileBlazorBindingsToDoSample.WinUI
         }
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-
-            Platform.OnLaunched(args);
-        }
     }
 }

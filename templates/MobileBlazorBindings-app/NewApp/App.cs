@@ -6,6 +6,6 @@ public partial class App : Application
 {
     public App(MobileBlazorBindingsRenderer renderer)
     {
-        renderer.AddComponent<MainPage>(this);
+        renderer.AddComponent<AppShell>(this);
     }
 }

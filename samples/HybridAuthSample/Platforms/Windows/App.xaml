@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="HybridAuthSample.WinUI.App"
+    x:Class="HybridAuthApp.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:HybridAuthSample.WinUI">
+    xmlns:local="using:HybridAuthApp.WinUI">
 
 </maui:MauiWinUIApplication>

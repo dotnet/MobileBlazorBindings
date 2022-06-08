@@ -1,8 +1,7 @@
 ﻿using Foundation;
 using Microsoft.Maui;
-using Microsoft.Maui.Hosting;
 
-namespace HybridAuthSample
+namespace HybridAuthApp
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

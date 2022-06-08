@@ -1,6 +1,7 @@
 ﻿using Foundation;
+using Microsoft.Maui;
 
-namespace HybridAuthApp
+namespace MobileBlazorBindingsToDo
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

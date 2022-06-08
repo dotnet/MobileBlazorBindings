@@ -3,7 +3,7 @@
 
 using Foundation;
 
-namespace MobileBlazorBindingsToDo.Platforms.iOS
+namespace MobileBlazorBindingsToDo
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate

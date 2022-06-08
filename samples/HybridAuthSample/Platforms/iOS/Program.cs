@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace HybridAuthSample
+namespace HybridAuthApp
 {
     public class Program
     {

@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using HybridAuthApp;
 using Microsoft.MobileBlazorBindings;
 using Microsoft.MobileBlazorBindings.Authentication;
 
-namespace HybridAuthSample
+namespace HybridAuthApp
 {
     public static class MauiProgram
     {
@@ -50,7 +49,7 @@ namespace HybridAuthSample
                .AddHttpMessageHandler(() => new ApiAuthorizationMessageHandler(BaseUrl));
 
             // Add the http client as the default to inject.
-            builder.Services.AddScoped<HttpClient>(sp =>
+            builder.Services.AddScoped(sp =>
             {
                 var accessTokenProvider = sp.GetRequiredService<IAccessTokenProvider>();
                 var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();

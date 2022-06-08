@@ -4,7 +4,7 @@
 using Android.App;
 using Android.Runtime;
 
-namespace MobileBlazorBindingsToDo.Platforms.Android
+namespace MobileBlazorBindingsToDo
 {
     [Application]
     public class MainApplication : MauiApplication

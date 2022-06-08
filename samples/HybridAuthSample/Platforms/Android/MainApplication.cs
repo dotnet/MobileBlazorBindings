@@ -4,7 +4,7 @@
 using Android.App;
 using Android.Runtime;
 
-namespace HybridAuthSample
+namespace HybridAuthApp
 {
     [Application]
     public class MainApplication : MauiApplication

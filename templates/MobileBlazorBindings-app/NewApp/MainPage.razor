@@ -1,10 +1,44 @@
-﻿<ContentPage>
-    <StackLayout Margin="20">
+﻿@page "/main"
 
-        <Label Text="Hello, World!"
-               FontSize="40" />
+<ContentPage>
+    <ScrollView>
+        <VerticalStackLayout Spacing="25"
+                             Padding="new(30,0)"
+                             VerticalOptions="LayoutOptions.Center">
 
-        <Counter />
+            <Image Source="dotNetBotSource"
+                   HeightRequest="200"
+                   HorizontalOptions="LayoutOptions.Center" />
 
-    </StackLayout>
+            <Label Text="Hello, World!"
+                   FontSize="32"
+                   HorizontalOptions="LayoutOptions.Center" />
+
+            <Label Text="Welcome to .NET Multi-platform App UI"
+                   FontSize="18"
+                   HorizontalOptions="LayoutOptions.Center" />
+
+            <Button Text="@ButtonText"
+                    HorizontalOptions="LayoutOptions.Center"
+                    OnClick="OnCounterClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
+
+@code {
+    ImageSource dotNetBotSource = ImageSource.FromFile("dotnet_bot.png");
+
+    int count = 0;
+
+    string ButtonText => count switch
+    {
+        0 => "Click me",
+        1 => $"Clicked 1 time",
+        _ => $"Clicked {count} times"
+    };
+
+    void OnCounterClicked()
+    {
+        count++;
+    }
+}
