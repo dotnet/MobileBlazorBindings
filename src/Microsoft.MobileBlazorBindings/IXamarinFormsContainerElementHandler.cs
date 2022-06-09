@@ -1,14 +1,14 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings
 {
-    public interface IXamarinFormsContainerElementHandler : IXamarinFormsElementHandler
+    public interface IMauiContainerElementHandler : IMauiElementHandler
     {
-        void AddChild(XF.Element child, int physicalSiblingIndex);
-        void RemoveChild(XF.Element child);
-        int GetChildIndex(XF.Element child);
+        void AddChild(MC.Element child, int physicalSiblingIndex);
+        void RemoveChild(MC.Element child);
+        int GetChildIndex(MC.Element child);
     }
 }

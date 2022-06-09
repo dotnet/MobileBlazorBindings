@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -16,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             RegisterAdditionalHandlers();
         }
 
-        public new XF.GradientBrush NativeControl => ((GradientBrushHandler)ElementHandler).GradientBrushControl;
+        public new MC.GradientBrush NativeControl => ((GradientBrushHandler)ElementHandler).GradientBrushControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

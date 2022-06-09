@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,12 +14,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static TemplatedPage()
         {
             ElementHandlerRegistry.RegisterElementHandler<TemplatedPage>(
-                renderer => new TemplatedPageHandler(renderer, new XF.TemplatedPage()));
+                renderer => new TemplatedPageHandler(renderer, new MC.TemplatedPage()));
 
             RegisterAdditionalHandlers();
         }
 
-        public new XF.TemplatedPage NativeControl => ((TemplatedPageHandler)ElementHandler).TemplatedPageControl;
+        public new MC.TemplatedPage NativeControl => ((TemplatedPageHandler)ElementHandler).TemplatedPageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

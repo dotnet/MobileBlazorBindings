@@ -3,11 +3,11 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class FlyoutPageHandler : PageHandler, IXamarinFormsContainerElementHandler
+    public partial class FlyoutPageHandler : PageHandler, IMauiContainerElementHandler
     {
 #pragma warning disable IDE0060 // Remove unused parameter
 #pragma warning disable CA1801 // Parameter is never used
@@ -22,11 +22,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             // The Flyout page must have its Title set:
             // https://github.com/xamarin/Xamarin.Forms/blob/5.0.0/Xamarin.Forms.Core/FlyoutPage.cs#L72
-            FlyoutPageControl.Flyout = new XF.Page() { Title = "Title" };
-            FlyoutPageControl.Detail = new XF.Page();
+            FlyoutPageControl.Flyout = new MC.Page() { Title = "Title" };
+            FlyoutPageControl.Detail = new MC.Page();
         }
 
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
@@ -47,7 +47,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
             if (child is null)
             {
@@ -56,11 +56,11 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             if (child == FlyoutPageControl.Flyout)
             {
-                FlyoutPageControl.Flyout = new XF.Page() { Title = "Title" };
+                FlyoutPageControl.Flyout = new MC.Page() { Title = "Title" };
             }
             else if (child == FlyoutPageControl.Detail)
             {
-                FlyoutPageControl.Detail = new XF.Page();
+                FlyoutPageControl.Detail = new MC.Page();
             }
             else
             {
@@ -68,7 +68,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             // Not sure whether elements "order" matters here
             return child switch

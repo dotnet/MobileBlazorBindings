@@ -3,7 +3,7 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -13,7 +13,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public string ClassId { get; set; }
         [Parameter] public string StyleId { get; set; }
 
-        public XF.Element NativeControl => ((Handlers.ElementHandler)ElementHandler).ElementControl;
+        public MC.Element NativeControl => ((Handlers.ElementHandler)ElementHandler).ElementControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

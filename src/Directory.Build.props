@@ -2,7 +2,7 @@
   <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>10.0</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);CS1591;CA1303</NoWarn>
 
@@ -21,16 +21,37 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
+	
   <ItemGroup>
     <None Include="..\..\THIRD-PARTY-NOTICES.txt" Link="THIRD-PARTY-NOTICES.txt">
       <Pack>true</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
+  </ItemGroup>  
+
+  <PropertyGroup Condition="$(TargetFramework.Contains('-ios'))">
+    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-tvos'))">
+    <SupportedOSPlatformVersion>10.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-maccatalyst'))">
+    <SupportedOSPlatformVersion>13.1</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>13.1</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-macos'))">
+    <SupportedOSPlatformVersion>10.14</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.14</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-android'))">
+    <SupportedOSPlatformVersion>21.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>21.0</TargetPlatformMinVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.Contains('-windows10'))">
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+  </PropertyGroup>
 
 </Project>

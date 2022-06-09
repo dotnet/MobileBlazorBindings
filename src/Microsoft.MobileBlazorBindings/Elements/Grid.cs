@@ -6,7 +6,7 @@ using Microsoft.MobileBlazorBindings.Core;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class Grid : Layout
+    public partial class Grid
     {
         /// <summary>
         /// A comma-separated list of column definitions. A column definition can be:
@@ -30,11 +30,5 @@ namespace Microsoft.MobileBlazorBindings.Elements
                 builder.AddAttribute(nameof(RowDefinitions), RowDefinitions);
             }
         }
-
-#pragma warning disable CA1721 // Property names should not match get methods
-        [Parameter] public RenderFragment ChildContent { get; set; }
-#pragma warning restore CA1721 // Property names should not match get methods
-
-        protected override RenderFragment GetChildContent() => ChildContent;
     }
 }

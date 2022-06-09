@@ -3,15 +3,15 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class ElementHandler : IXamarinFormsElementHandler
+    public class ElementHandler : IMauiElementHandler
     {
         private readonly EventManager _eventManager = new EventManager();
 
-        public ElementHandler(NativeComponentRenderer renderer, XF.Element elementControl)
+        public ElementHandler(NativeComponentRenderer renderer, MC.Element elementControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             ElementControl = elementControl ?? throw new ArgumentNullException(nameof(elementControl));
@@ -23,20 +23,20 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public NativeComponentRenderer Renderer { get; }
-        public XF.Element ElementControl { get; }
+        public MC.Element ElementControl { get; }
         public object TargetElement => ElementControl;
 
         public virtual void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.Element.AutomationId):
+                case nameof(MC.Element.AutomationId):
                     ElementControl.AutomationId = (string)attributeValue;
                     break;
-                case nameof(XF.Element.ClassId):
+                case nameof(MC.Element.ClassId):
                     ElementControl.ClassId = (string)attributeValue;
                     break;
-                case nameof(XF.Element.StyleId):
+                case nameof(MC.Element.StyleId):
                     ElementControl.StyleId = (string)attributeValue;
                     break;
                 default:
@@ -59,12 +59,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return ElementControl.Parent != null;
         }
 
-        public virtual bool IsParentedTo(XF.Element parent)
+        public virtual bool IsParentedTo(MC.Element parent)
         {
             return ElementControl.Parent == parent;
         }
 
-        public virtual void SetParent(XF.Element parent)
+        public virtual void SetParent(MC.Element parent)
         {
             ElementControl.Parent = parent;
         }

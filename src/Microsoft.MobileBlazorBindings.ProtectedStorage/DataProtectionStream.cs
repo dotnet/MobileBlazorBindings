@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#if WINDOWS
+
 using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -216,3 +218,5 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         }
     }
 }
+
+#endif

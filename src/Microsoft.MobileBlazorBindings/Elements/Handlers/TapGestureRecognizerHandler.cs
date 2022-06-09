@@ -3,13 +3,13 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class TapGestureRecognizerHandler : GestureRecognizerHandler
     {
-        public TapGestureRecognizerHandler(NativeComponentRenderer renderer, XF.TapGestureRecognizer tapGestureRecognizerControl) : base(renderer, tapGestureRecognizerControl)
+        public TapGestureRecognizerHandler(NativeComponentRenderer renderer, MC.TapGestureRecognizer tapGestureRecognizerControl) : base(renderer, tapGestureRecognizerControl)
         {
             TapGestureRecognizerControl = tapGestureRecognizerControl ?? throw new ArgumentNullException(nameof(tapGestureRecognizerControl));
 
@@ -26,7 +26,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        public XF.TapGestureRecognizer TapGestureRecognizerControl { get; }
+        public MC.TapGestureRecognizer TapGestureRecognizerControl { get; }
 
         public ulong TappedEventHandlerId { get; set; }
 

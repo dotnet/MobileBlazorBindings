@@ -1,44 +1,30 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    public partial class ScrollView : Layout
+    public partial class ScrollView : Microsoft.MobileBlazorBindings.Elements.Compatibility.Layout
     {
         static ScrollView()
         {
             ElementHandlerRegistry.RegisterElementHandler<ScrollView>(
-                renderer => new ScrollViewHandler(renderer, new XF.ScrollView()));
+                renderer => new ScrollViewHandler(renderer, new MC.ScrollView()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets a value that controls when the horizontal scroll bar is visible.
-        /// </summary>
-        /// <value>
-        /// A value that controls when the horizontal scroll bar is visible.
-        /// </value>
-        [Parameter] public XF.ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
-        /// <summary>
-        /// Gets or sets the scrolling direction of the ScrollView. This is a bindable property.
-        /// </summary>
-        [Parameter] public XF.ScrollOrientation? Orientation { get; set; }
-        /// <summary>
-        /// Gets or sets a value that controls when the vertical scroll bar is visible.
-        /// </summary>
-        /// <value>
-        /// A value that controls when the vertical scroll bar is visible.
-        /// </value>
-        [Parameter] public XF.ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
+        [Parameter] public ScrollBarVisibility? HorizontalScrollBarVisibility { get; set; }
+        [Parameter] public ScrollOrientation? Orientation { get; set; }
+        [Parameter] public ScrollBarVisibility? VerticalScrollBarVisibility { get; set; }
 
-        public new XF.ScrollView NativeControl => ((ScrollViewHandler)ElementHandler).ScrollViewControl;
+        public new MC.ScrollView NativeControl => ((ScrollViewHandler)ElementHandler).ScrollViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SolidColorBrushHandler : BrushHandler
     {
-        private static readonly XF.Color ColorDefaultValue = XF.SolidColorBrush.ColorProperty.DefaultValue is XF.Color value ? value : default;
+        private static readonly Color ColorDefaultValue = MC.SolidColorBrush.ColorProperty.DefaultValue is Color value ? value : default;
 
-        public SolidColorBrushHandler(NativeComponentRenderer renderer, XF.SolidColorBrush solidColorBrushControl) : base(renderer, solidColorBrushControl)
+        public SolidColorBrushHandler(NativeComponentRenderer renderer, MC.SolidColorBrush solidColorBrushControl) : base(renderer, solidColorBrushControl)
         {
             SolidColorBrushControl = solidColorBrushControl ?? throw new ArgumentNullException(nameof(solidColorBrushControl));
 
@@ -20,13 +21,13 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.SolidColorBrush SolidColorBrushControl { get; }
+        public MC.SolidColorBrush SolidColorBrushControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.SolidColorBrush.Color):
+                case nameof(MC.SolidColorBrush.Color):
                     SolidColorBrushControl.Color = AttributeHelper.StringToColor((string)attributeValue, ColorDefaultValue);
                     break;
                 default:

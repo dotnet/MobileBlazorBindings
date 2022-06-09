@@ -2,15 +2,15 @@
 // Licensed under the MIT license.
 
 using System.Diagnostics;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class TabbedPageHandler : PageHandler, IXamarinFormsContainerElementHandler
+    public partial class TabbedPageHandler : PageHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
-            var childAsPage = child as XF.Page;
+            var childAsPage = child as MC.Page;
 
             if (physicalSiblingIndex <= TabbedPageControl.Children.Count)
             {
@@ -23,14 +23,14 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
-            return TabbedPageControl.Children.IndexOf(child as XF.Page);
+            return TabbedPageControl.Children.IndexOf(child as MC.Page);
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
-            TabbedPageControl.Children.Remove(child as XF.Page);
+            TabbedPageControl.Children.Remove(child as MC.Page);
         }
     }
 }

@@ -3,7 +3,6 @@
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
@@ -11,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings
 {
@@ -31,7 +30,7 @@ namespace Microsoft.MobileBlazorBindings
         //TODO This route matching could be better. Can we use the ASPNEt version?
         private void FindRoutes()
         {
-            var assembly = XF.Application.Current.GetType().Assembly;
+            var assembly = MC.Application.Current.GetType().Assembly;
             var pages = assembly.GetTypes().Where(x => x.GetCustomAttributes<RouteAttribute>().Any());//TODO: Could this be more efficient if it only looked for classes that are razor components? Or maybe thats an extra step that would slow things down. Profiler required.
             foreach (var page in pages)
             {
@@ -51,7 +50,7 @@ namespace Microsoft.MobileBlazorBindings
 
                         //Register with XamarinForms so it can handle Navigation.
                         var routeFactory = new MBBRouteFactory(page, this);
-                        XF.Routing.RegisterRoute(structuredRoute.BaseUri, routeFactory);
+                        MC.Routing.RegisterRoute(structuredRoute.BaseUri, routeFactory);
 
                         //Also register route in our own list for setting parameters and tracking if it is registered;
                         Routes.Add(structuredRoute);
@@ -91,7 +90,7 @@ namespace Microsoft.MobileBlazorBindings
                     throw new InvalidOperationException($"A route factory for URI '{uri}' could not be found. It should have been registered automatically in the {nameof(ShellNavigationManager)} constructor.");
                 }
                 await routeFactory.CreateAsync().ConfigureAwait(true);
-                await XF.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
+                await MC.Shell.Current.GoToAsync(route.Route.BaseUri).ConfigureAwait(false);
             }
             else
             {
@@ -99,14 +98,17 @@ namespace Microsoft.MobileBlazorBindings
             }
         }
 
-        internal async Task<XF.Page> BuildPage(Type componentType)
+        internal async Task<MC.Page> BuildPage(Type componentType)
         {
+#pragma warning disable CA2000 // Dispose objects before losing scope. Scope is disposed when page is closed.
+            var scope = _services.CreateScope();
+#pragma warning restore CA2000 // Dispose objects before losing scope
+            var serviceProvider = scope.ServiceProvider;
+
             var container = new RootContainerHandler();
             var route = NavigationParameters[componentType];
 
-#pragma warning disable CA2000 // Dispose objects before losing scope. Renderer is disposed when page is closed.
-            var renderer = new MobileBlazorBindingsRenderer(_services, _services.GetRequiredService<ILoggerFactory>());
-#pragma warning restore CA2000 // Dispose objects before losing scope
+            var renderer = serviceProvider.GetRequiredService<MobileBlazorBindingsRenderer>();
 
             var convertedParameters = ConvertParameters(componentType, route.Parameters);
             var addComponentTask = renderer.AddComponent(componentType, container, convertedParameters);
@@ -119,32 +121,19 @@ namespace Microsoft.MobileBlazorBindings
                 throw new InvalidOperationException("The target component of a Shell navigation must have exactly one root element.");
             }
 
-            var page = container.Elements.FirstOrDefault() as XF.Page
+            var page = container.Elements.FirstOrDefault() as MC.Page
                 ?? throw new InvalidOperationException("The target component of a Shell navigation must derive from the Page component.");
 
-            DisposeRendererWhenPageIsClosed(renderer, page);
+            page.ParentChanged += DisposeScopeWhenParentRemoved;
 
             return page;
-        }
 
-        private void DisposeRendererWhenPageIsClosed(MobileBlazorBindingsRenderer renderer, XF.Page page)
-        {
-            // Unfortunately, XF does not expose any Destroyed event for elements.
-            // Therefore we subscribe to Navigated event, and consider page as destroyed 
-            // if it is not present in the navigation stack.
-            XF.Shell.Current.Navigated += DisposeWhenNavigatedAway;
-
-            void DisposeWhenNavigatedAway(object sender, XF.ShellNavigatedEventArgs args)
+            void DisposeScopeWhenParentRemoved(object _, EventArgs __)
             {
-                // We need to check all navigationStacks for all Shell items.
-                var currentPages = XF.Shell.Current.Items
-                    .SelectMany(i => i.Items)
-                    .SelectMany(i => i.Navigation.NavigationStack);
-
-                if (!currentPages.Contains(page))
+                if (page.Parent is null)
                 {
-                    XF.Shell.Current.Navigated -= DisposeWhenNavigatedAway;
-                    renderer.Dispose();
+                    scope.Dispose();
+                    page.ParentChanged -= DisposeScopeWhenParentRemoved;
                 }
             }
         }

@@ -3,16 +3,16 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class GestureRecognizerHandler : IXamarinFormsElementHandler, INonChildContainerElement
+    public class GestureRecognizerHandler : IMauiElementHandler, INonChildContainerElement
     {
         private readonly EventManager _eventManager = new EventManager();
         private object _parentElement;
 
-        public GestureRecognizerHandler(NativeComponentRenderer renderer, XF.GestureRecognizer gestureRecognizerControl)
+        public GestureRecognizerHandler(NativeComponentRenderer renderer, MC.GestureRecognizer gestureRecognizerControl)
         {
             Renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
             GestureRecognizerControl = gestureRecognizerControl ?? throw new ArgumentNullException(nameof(gestureRecognizerControl));
@@ -24,8 +24,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         }
 
         public NativeComponentRenderer Renderer { get; }
-        public XF.GestureRecognizer GestureRecognizerControl { get; }
-        public XF.Element ElementControl => GestureRecognizerControl;
+        public MC.GestureRecognizer GestureRecognizerControl { get; }
+        public MC.Element ElementControl => GestureRecognizerControl;
         public object TargetElement => GestureRecognizerControl;
 
         public virtual void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
@@ -48,14 +48,14 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             return false;
         }
 
-        public bool IsParentedTo(XF.Element parent)
+        public bool IsParentedTo(MC.Element parent)
         {
             // Because this is a 'fake' element, all matters related to physical trees
             // should be no-ops.
             return false;
         }
 
-        public void SetParent(XF.Element parent)
+        public void SetParent(MC.Element parent)
         {
             // This should never get called. Instead, INonChildContainerElement.SetParent() implemented
             // in this class should get called.
@@ -73,10 +73,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
             switch (_parentElement)
             {
-                case XF.View view:
+                case MC.View view:
                     view.GestureRecognizers.Add(GestureRecognizerControl);
                     break;
-                case XF.GestureElement gestureElement:
+                case MC.GestureElement gestureElement:
                     gestureElement.GestureRecognizers.Add(GestureRecognizerControl);
                     break;
                 default:
@@ -88,10 +88,10 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
         {
             switch (_parentElement)
             {
-                case XF.View view:
+                case MC.View view:
                     view.GestureRecognizers.Remove(GestureRecognizerControl);
                     break;
-                case XF.GestureElement gestureElement:
+                case MC.GestureElement gestureElement:
                     gestureElement.GestureRecognizers.Remove(GestureRecognizerControl);
                     break;
                 default:

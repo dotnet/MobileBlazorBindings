@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,27 +15,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ProgressBar()
         {
             ElementHandlerRegistry.RegisterElementHandler<ProgressBar>(
-                renderer => new ProgressBarHandler(renderer, new XF.ProgressBar()));
+                renderer => new ProgressBarHandler(renderer, new MC.ProgressBar()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets the progress value.
-        /// </summary>
-        /// <value>
-        /// Gets or sets a value that specifies the fraction of the bar that is colored.
-        /// </value>
         [Parameter] public double? Progress { get; set; }
-        /// <summary>
-        /// Get or sets the color of the progress bar.
-        /// </summary>
-        /// <value>
-        /// The color of the progress bar.
-        /// </value>
-        [Parameter] public XF.Color? ProgressColor { get; set; }
+        [Parameter] public Color ProgressColor { get; set; }
 
-        public new XF.ProgressBar NativeControl => ((ProgressBarHandler)ElementHandler).ProgressBarControl;
+        public new MC.ProgressBar NativeControl => ((ProgressBarHandler)ElementHandler).ProgressBarControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -46,7 +35,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (ProgressColor != null)
             {
-                builder.AddAttribute(nameof(ProgressColor), AttributeHelper.ColorToString(ProgressColor.Value));
+                builder.AddAttribute(nameof(ProgressColor), AttributeHelper.ColorToString(ProgressColor));
             }
 
             RenderAdditionalAttributes(builder);

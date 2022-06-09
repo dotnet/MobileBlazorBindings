@@ -3,12 +3,12 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
     public class GestureRecognizer : NativeControlComponentBase
     {
-        public XF.GestureRecognizer NativeControl => ((GestureRecognizerHandler)ElementHandler).GestureRecognizerControl;
+        public MC.GestureRecognizer NativeControl => ((GestureRecognizerHandler)ElementHandler).GestureRecognizerControl;
     }
 }

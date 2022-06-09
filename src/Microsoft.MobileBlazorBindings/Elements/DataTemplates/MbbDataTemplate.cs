@@ -1,15 +1,18 @@
-﻿using XF = Xamarin.Forms;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {
-    internal class MbbDataTemplate<T> : XF.DataTemplate
+    internal class MbbDataTemplate<T> : MC.DataTemplate
     {
         public MbbDataTemplate(DataTemplateItemsComponent<T> dataTemplateItemsAccessor)
             : base(() =>
             {
-                var contentView = new XF.ContentView();
-                dataTemplateItemsAccessor.Add(contentView);
-                return contentView;
+                var itemRootView = new MC.VerticalStackLayout();
+                dataTemplateItemsAccessor.Add(itemRootView);
+                return itemRootView;
             })
         {
         }

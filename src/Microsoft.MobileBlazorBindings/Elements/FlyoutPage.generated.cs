@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,16 +14,16 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static FlyoutPage()
         {
             ElementHandlerRegistry.RegisterElementHandler<FlyoutPage>(
-                renderer => new FlyoutPageHandler(renderer, new XF.FlyoutPage()));
+                renderer => new FlyoutPageHandler(renderer, new MC.FlyoutPage()));
 
             RegisterAdditionalHandlers();
         }
 
-        [Parameter] public XF.FlyoutLayoutBehavior? FlyoutLayoutBehavior { get; set; }
+        [Parameter] public MC.FlyoutLayoutBehavior? FlyoutLayoutBehavior { get; set; }
         [Parameter] public bool? IsGestureEnabled { get; set; }
         [Parameter] public bool? IsPresented { get; set; }
 
-        public new XF.FlyoutPage NativeControl => ((FlyoutPageHandler)ElementHandler).FlyoutPageControl;
+        public new MC.FlyoutPage NativeControl => ((FlyoutPageHandler)ElementHandler).FlyoutPageControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

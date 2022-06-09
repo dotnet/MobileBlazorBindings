@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,15 +15,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static CheckBox()
         {
             ElementHandlerRegistry.RegisterElementHandler<CheckBox>(
-                renderer => new CheckBoxHandler(renderer, new XF.CheckBox()));
+                renderer => new CheckBoxHandler(renderer, new MC.CheckBox()));
 
             RegisterAdditionalHandlers();
         }
 
-        [Parameter] public XF.Color? Color { get; set; }
+        [Parameter] public Color Color { get; set; }
         [Parameter] public bool? IsChecked { get; set; }
 
-        public new XF.CheckBox NativeControl => ((CheckBoxHandler)ElementHandler).CheckBoxControl;
+        public new MC.CheckBox NativeControl => ((CheckBoxHandler)ElementHandler).CheckBoxControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -30,7 +31,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             if (Color != null)
             {
-                builder.AddAttribute(nameof(Color), AttributeHelper.ColorToString(Color.Value));
+                builder.AddAttribute(nameof(Color), AttributeHelper.ColorToString(Color));
             }
             if (IsChecked != null)
             {

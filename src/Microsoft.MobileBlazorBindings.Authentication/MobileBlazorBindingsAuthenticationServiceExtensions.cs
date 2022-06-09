@@ -9,7 +9,6 @@ using Microsoft.MobileBlazorBindings.Authentication.Internal;
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Xamarin.Forms;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -35,24 +34,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddOptions();
             services.AddAuthorizationCore();
 
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                case Device.macOS:
-                    services.TryAddScoped<AuthenticationStateProvider, AppleAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
-                    break;
-                case Device.Android:
-                    services.TryAddScoped<AuthenticationStateProvider, AndroidAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
-                    break;
-                case Device.WPF:
-                    services.TryAddScoped<AuthenticationStateProvider, WindowsAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
-                    break;
-                case Device.Tizen:
-                    services.TryAddScoped<AuthenticationStateProvider, TizenAuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
-                    break;
-                default:
-                    throw new PlatformNotSupportedException($"Platform {Device.RuntimePlatform} is not supported by {ThisAssembly.AssemblyName}");
-            }
+            services.TryAddScoped<AuthenticationStateProvider, AuthenticationService<TRemoteAuthenticationState, TAccount, TProviderOptions>>();
 
             services.TryAddScoped(sp =>
             {

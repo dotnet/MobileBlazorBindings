@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class GradientStopHandler : ElementHandler
     {
-        private static readonly XF.Color ColorDefaultValue = XF.GradientStop.ColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly float OffsetDefaultValue = XF.GradientStop.OffsetProperty.DefaultValue is float value ? value : default;
+        private static readonly Color ColorDefaultValue = MC.GradientStop.ColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly float OffsetDefaultValue = MC.GradientStop.OffsetProperty.DefaultValue is float value ? value : default;
 
-        public GradientStopHandler(NativeComponentRenderer renderer, XF.GradientStop gradientStopControl) : base(renderer, gradientStopControl)
+        public GradientStopHandler(NativeComponentRenderer renderer, MC.GradientStop gradientStopControl) : base(renderer, gradientStopControl)
         {
             GradientStopControl = gradientStopControl ?? throw new ArgumentNullException(nameof(gradientStopControl));
 
@@ -21,16 +22,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.GradientStop GradientStopControl { get; }
+        public MC.GradientStop GradientStopControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.GradientStop.Color):
+                case nameof(MC.GradientStop.Color):
                     GradientStopControl.Color = AttributeHelper.StringToColor((string)attributeValue, ColorDefaultValue);
                     break;
-                case nameof(XF.GradientStop.Offset):
+                case nameof(MC.GradientStop.Offset):
                     GradientStopControl.Offset = AttributeHelper.StringToSingle((string)attributeValue, OffsetDefaultValue);
                     break;
                 default:

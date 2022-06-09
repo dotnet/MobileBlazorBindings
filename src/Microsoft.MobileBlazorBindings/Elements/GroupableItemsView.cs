@@ -3,7 +3,7 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -12,7 +12,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         // Grouping is not supported at this moment
         // [Parameter] public bool? IsGrouped { get; set; }
 
-        public new XF.GroupableItemsView NativeControl => ((GroupableItemsViewHandler)ElementHandler).GroupableItemsViewControl;
+        public new MC.GroupableItemsView NativeControl => ((GroupableItemsViewHandler)ElementHandler).GroupableItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

@@ -2,9 +2,9 @@
 // Licensed under the MIT license.
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -13,16 +13,16 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public bool? NavBarIsVisible { get; set; }
         [Parameter] public bool? NavBarHasShadow { get; set; }
         [Parameter] public bool? TabBarIsVisible { get; set; }
-        [Parameter] public XF.Color? BackgroundColor { get; set; }
-        [Parameter] public XF.Color? DisabledColor { get; set; }
-        [Parameter] public XF.Color? ForegroundColor { get; set; }
-        [Parameter] public XF.Color? TabBarBackgroundColor { get; set; }
-        [Parameter] public XF.Color? TabBarDisabledColor { get; set; }
-        [Parameter] public XF.Color? TabBarForegroundColor { get; set; }
-        [Parameter] public XF.Color? TabBarTitleColor { get; set; }
-        [Parameter] public XF.Color? TabBarUnselectedColor { get; set; }
-        [Parameter] public XF.Color? TitleColor { get; set; }
-        [Parameter] public XF.Color? UnselectedColor { get; set; }
+        [Parameter] public Color BackgroundColor { get; set; }
+        [Parameter] public Color DisabledColor { get; set; }
+        [Parameter] public Color ForegroundColor { get; set; }
+        [Parameter] public Color TabBarBackgroundColor { get; set; }
+        [Parameter] public Color TabBarDisabledColor { get; set; }
+        [Parameter] public Color TabBarForegroundColor { get; set; }
+        [Parameter] public Color TabBarTitleColor { get; set; }
+        [Parameter] public Color TabBarUnselectedColor { get; set; }
+        [Parameter] public Color TitleColor { get; set; }
+        [Parameter] public Color UnselectedColor { get; set; }
 
         static ShellProperties()
         {
@@ -44,45 +44,45 @@ namespace Microsoft.MobileBlazorBindings.Elements
             {
                 builder.AddAttribute(nameof(TabBarIsVisible), TabBarIsVisible.Value);
             }
-            if (BackgroundColor.HasValue)
+            if (BackgroundColor is not null)
             {
-                builder.AddAttribute(nameof(BackgroundColor), AttributeHelper.ColorToString(BackgroundColor.Value));
+                builder.AddAttribute(nameof(BackgroundColor), AttributeHelper.ColorToString(BackgroundColor));
             }
-            if (DisabledColor.HasValue)
+            if (DisabledColor is not null)
             {
-                builder.AddAttribute(nameof(DisabledColor), AttributeHelper.ColorToString(DisabledColor.Value));
+                builder.AddAttribute(nameof(DisabledColor), AttributeHelper.ColorToString(DisabledColor));
             }
-            if (ForegroundColor.HasValue)
+            if (ForegroundColor is not null)
             {
-                builder.AddAttribute(nameof(ForegroundColor), AttributeHelper.ColorToString(ForegroundColor.Value));
+                builder.AddAttribute(nameof(ForegroundColor), AttributeHelper.ColorToString(ForegroundColor));
             }
-            if (TabBarBackgroundColor.HasValue)
+            if (TabBarBackgroundColor is not null)
             {
-                builder.AddAttribute(nameof(TabBarBackgroundColor), AttributeHelper.ColorToString(TabBarBackgroundColor.Value));
+                builder.AddAttribute(nameof(TabBarBackgroundColor), AttributeHelper.ColorToString(TabBarBackgroundColor));
             }
-            if (TabBarDisabledColor.HasValue)
+            if (TabBarDisabledColor is not null)
             {
-                builder.AddAttribute(nameof(TabBarDisabledColor), AttributeHelper.ColorToString(TabBarDisabledColor.Value));
+                builder.AddAttribute(nameof(TabBarDisabledColor), AttributeHelper.ColorToString(TabBarDisabledColor));
             }
-            if (TabBarForegroundColor.HasValue)
+            if (TabBarForegroundColor is not null)
             {
-                builder.AddAttribute(nameof(TabBarForegroundColor), AttributeHelper.ColorToString(TabBarForegroundColor.Value));
+                builder.AddAttribute(nameof(TabBarForegroundColor), AttributeHelper.ColorToString(TabBarForegroundColor));
             }
-            if (TabBarTitleColor.HasValue)
+            if (TabBarTitleColor is not null)
             {
-                builder.AddAttribute(nameof(TabBarTitleColor), AttributeHelper.ColorToString(TabBarTitleColor.Value));
+                builder.AddAttribute(nameof(TabBarTitleColor), AttributeHelper.ColorToString(TabBarTitleColor));
             }
-            if (TabBarUnselectedColor.HasValue)
+            if (TabBarUnselectedColor is not null)
             {
-                builder.AddAttribute(nameof(TabBarUnselectedColor), AttributeHelper.ColorToString(TabBarUnselectedColor.Value));
+                builder.AddAttribute(nameof(TabBarUnselectedColor), AttributeHelper.ColorToString(TabBarUnselectedColor));
             }
-            if (TitleColor.HasValue)
+            if (TitleColor is not null)
             {
-                builder.AddAttribute(nameof(TitleColor), AttributeHelper.ColorToString(TitleColor.Value));
+                builder.AddAttribute(nameof(TitleColor), AttributeHelper.ColorToString(TitleColor));
             }
-            if (UnselectedColor.HasValue)
+            if (UnselectedColor is not null)
             {
-                builder.AddAttribute(nameof(UnselectedColor), AttributeHelper.ColorToString(UnselectedColor.Value));
+                builder.AddAttribute(nameof(UnselectedColor), AttributeHelper.ColorToString(UnselectedColor));
             }
         }
     }

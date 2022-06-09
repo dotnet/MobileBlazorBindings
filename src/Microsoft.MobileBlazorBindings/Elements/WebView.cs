@@ -4,30 +4,22 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using Microsoft.MobileBlazorBindings.WebView.Elements;
 using System;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-#pragma warning disable CA1724 // Type name conflicts with namespace
     public class WebView : View
-#pragma warning restore CA1724 // Type name conflicts with namespace
     {
         static WebView()
         {
             ElementHandlerRegistry
-                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new WebViewExtended(new DefaulBlazorErrorHandler())));
+                .RegisterElementHandler<WebView>(renderer => new WebViewHandler(renderer, new MC.WebView()));
         }
 
-        [Parameter] public XF.WebViewSource Source { get; set; }
+        [Parameter] public MC.WebViewSource Source { get; set; }
         [Parameter] public EventCallback<string> OnWebMessageReceived { get; set; }
-
-        public void SendMessage(string message)
-        {
-            ((WebViewHandler)ElementHandler).Control.SendMessage(message);
-        }
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -37,11 +29,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
             switch (Source)
             {
-                case XF.HtmlWebViewSource htmlWebViewSource:
-                    builder.AddAttribute(nameof(XF.HtmlWebViewSource), htmlWebViewSource.Html);
+                case MC.HtmlWebViewSource htmlWebViewSource:
+                    builder.AddAttribute(nameof(MC.HtmlWebViewSource), htmlWebViewSource.Html);
                     break;
-                case XF.UrlWebViewSource urlWebViewSource:
-                    builder.AddAttribute(nameof(XF.UrlWebViewSource), urlWebViewSource.Url);
+                case MC.UrlWebViewSource urlWebViewSource:
+                    builder.AddAttribute(nameof(MC.UrlWebViewSource), urlWebViewSource.Url);
                     break;
             }
         }
@@ -49,7 +41,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         private Task HandleOnWebMessageReceived(WebMessageEventArgs args)
             => OnWebMessageReceived.InvokeAsync(args.Message);
 
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
         internal class WebMessageEventArgs : EventArgs
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
         {
             public string Message { get; set; }
         }

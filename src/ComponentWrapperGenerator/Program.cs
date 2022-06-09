@@ -14,8 +14,8 @@ namespace ComponentWrapperGenerator
         private static readonly List<ComponentLocation> ComponentLocations =
             new List<ComponentLocation>
             {
-                new ComponentLocation(typeof(Xamarin.Forms.Element).Assembly, "Xamarin.Forms", "XF", @"bin\Debug\netcoreapp3.0\Xamarin.Forms.Core.xml"),
-                new ComponentLocation(typeof(Xamarin.Forms.DualScreen.TwoPaneView).Assembly, "Xamarin.Forms.DualScreen", "XFD", null),
+                new ComponentLocation(typeof(Microsoft.Maui.Controls.Element).Assembly, "Microsoft.Maui.Controls", @"bin\Debug\netcoreapp3.0\Xamarin.Forms.Core.xml"),
+                //new ComponentLocation(typeof(Xamarin.Forms.DualScreen.TwoPaneView).Assembly, "Xamarin.Forms.DualScreen", "XFD", null),
             };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
@@ -45,9 +45,12 @@ namespace ComponentWrapperGenerator
                 RootNamespace = "Microsoft.MobileBlazorBindings.Elements",
             };
 
-            var xmlDocs = LoadXmlDocs(ComponentLocations.Select(loc => loc.XmlDocFilename).Where(loc => loc != null));
+            // xml location is incorrect.
+            // LoadXmlDocs(ComponentLocations.Select(loc => loc.XmlDocFilename).Where(loc => loc != null));
+            var xmlDocs = Array.Empty<XmlDocument>();
 
-            var generator = new ComponentWrapperGenerator(settings, xmlDocs);
+            var namespaces = ComponentLocations.Select(l => l.NamespaceName).ToList();
+            var generator = new ComponentWrapperGenerator(settings, xmlDocs, namespaces);
 
             foreach (var typeNameToGenerate in listOfTypeNamesToGenerate)
             {
@@ -68,6 +71,7 @@ namespace ComponentWrapperGenerator
                     Console.WriteLine();
                     continue;
                 }
+
                 generator.GenerateComponentWrapper(typeToGenerate, outputFolder);
                 Console.WriteLine();
             }

@@ -2,22 +2,22 @@
 // Licensed under the MIT license.
 
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     /// <summary>
     /// Placeholder element typically used with <see cref="ParentChildManager{TParent, TChild}"/>. This
-    /// element is used when an instance of <see cref="XF.Element"/> is required, but is not used.
+    /// element is used when an instance of <see cref="MC.Element"/> is required, but is not used.
     /// </summary>
-    public sealed class DummyElement : XF.Element
+    public sealed class DummyElement : MC.Element
     {
         protected override void OnParentSet()
         {
             ThrowForInvalidOperation();
         }
 
-        protected override void OnChildAdded(XF.Element child)
+        protected override void OnChildAdded(MC.Element child)
         {
             ThrowForInvalidOperation();
         }

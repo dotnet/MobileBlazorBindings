@@ -4,7 +4,7 @@
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System;
-using SK = SkiaSharp.Views.Forms;
+using SK = SkiaSharp.Views.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.SkiaSharp.Elements.Handlers
 {

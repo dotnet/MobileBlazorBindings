@@ -1,28 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Title>Experimental binding of Skia Sharp in Mobile Blazor Bindings</Title>
-    <Description>Support for Skia Sharp for Experimental Mobile Blazor Bindings.</Description>
-    <PackageTags>blazor;mobileblazorbindings;SkiaSharp;</PackageTags>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<UseMaui>true</UseMaui>
+		<Title>Experimental binding of Skia Sharp in Mobile Blazor Bindings</Title>
+		<Description>Support for Skia Sharp for Experimental Mobile Blazor Bindings.</Description>
+		<PackageTags>blazor;mobileblazorbindings;SkiaSharp;</PackageTags>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.2" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2125" />
-  </ItemGroup>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">10.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">13.1</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>	
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core" Version="0.4.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 
-  <ItemGroup>
-    <FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.SkiaSharp.dll">
-      <Authenticode>Microsoft400</Authenticode>
-    </FilesToSign>
-  </ItemGroup>
+		<PackageReference Include="SkiaSharp.Views.Maui.Controls" Version="2.88.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Microsoft.MobileBlazorBindings\Microsoft.MobileBlazorBindings.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<FilesToSign Include="$(OutDir)\Microsoft.MobileBlazorBindings.SkiaSharp.dll">
+			<Authenticode>Microsoft400</Authenticode>
+		</FilesToSign>
+	</ItemGroup>
 </Project>

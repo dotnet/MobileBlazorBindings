@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,18 +14,18 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static StructuredItemsView()
         {
             ElementHandlerRegistry.RegisterPropertyContentHandler<StructuredItemsView<T>>(nameof(Header),
-                _ => new ContentPropertyHandler<XF.StructuredItemsView>((itemsView, valueElement) => itemsView.Header = valueElement));
+                _ => new ContentPropertyHandler<MC.StructuredItemsView>((itemsView, valueElement) => itemsView.Header = valueElement));
 
             ElementHandlerRegistry.RegisterPropertyContentHandler<StructuredItemsView<T>>(nameof(Footer),
-                _ => new ContentPropertyHandler<XF.StructuredItemsView>((itemsView, valueElement) => itemsView.Footer = valueElement));
+                _ => new ContentPropertyHandler<MC.StructuredItemsView>((itemsView, valueElement) => itemsView.Footer = valueElement));
         }
 
-        [Parameter] public XF.ItemSizingStrategy? ItemSizingStrategy { get; set; }
-        [Parameter] public XF.IItemsLayout ItemsLayout { get; set; }
+        [Parameter] public MC.ItemSizingStrategy? ItemSizingStrategy { get; set; }
+        [Parameter] public MC.IItemsLayout ItemsLayout { get; set; }
         [Parameter] public RenderFragment Header { get; set; }
         [Parameter] public RenderFragment Footer { get; set; }
 
-        public new XF.StructuredItemsView NativeControl => ((StructuredItemsViewHandler)ElementHandler).StructuredItemsViewControl;
+        public new MC.StructuredItemsView NativeControl => ((StructuredItemsViewHandler)ElementHandler).StructuredItemsViewControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

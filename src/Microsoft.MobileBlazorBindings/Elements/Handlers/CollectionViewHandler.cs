@@ -3,17 +3,17 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class CollectionViewHandler : GroupableItemsViewHandler
     {
-        public CollectionViewHandler(NativeComponentRenderer renderer, XF.CollectionView collectionViewControl) : base(renderer, collectionViewControl)
+        public CollectionViewHandler(NativeComponentRenderer renderer, MC.CollectionView collectionViewControl) : base(renderer, collectionViewControl)
         {
             CollectionViewControl = collectionViewControl ?? throw new ArgumentNullException(nameof(collectionViewControl));
         }
 
-        public XF.CollectionView CollectionViewControl { get; }
+        public MC.CollectionView CollectionViewControl { get; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui.Controls;
 using System;
 using System.Globalization;
-using Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {

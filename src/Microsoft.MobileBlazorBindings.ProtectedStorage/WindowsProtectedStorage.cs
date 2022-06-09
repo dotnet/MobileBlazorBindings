@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+#if WINDOWS
+
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -167,3 +169,5 @@ namespace Microsoft.MobileBlazorBindings.ProtectedStorage
         }
     }
 }
+
+#endif

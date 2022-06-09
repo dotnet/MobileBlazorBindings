@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,16 +14,16 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static partial void RegisterAdditionalHandlers()
         {
             ElementHandlerRegistry.RegisterPropertyContentHandler<Page>(nameof(ToolbarItems),
-                _ => new ListContentPropertyHandler<XF.Page, XF.ToolbarItem>(page => page.ToolbarItems));
+                _ => new ListContentPropertyHandler<MC.Page, MC.ToolbarItem>(page => page.ToolbarItems));
         }
 
         /// <summary>
-        /// Indicates that the <see cref="Xamarin.Forms.Page" /> is about to appear.
+        /// Indicates that the <see cref="MC.Page" /> is about to appear.
         /// </summary>
         [Parameter] public EventCallback OnAppearing { get; set; }
 
         /// <summary>
-        /// Indicates that the <see cref="Xamarin.Forms.Page" /> is about to cease displaying.
+        /// Indicates that the <see cref="MC.Page" /> is about to cease displaying.
         /// </summary>
         [Parameter] public EventCallback OnDisappearing { get; set; }
 

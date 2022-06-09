@@ -1,27 +1,29 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class SpanHandler : GestureElementHandler
     {
-        private static readonly XF.Color BackgroundColorDefaultValue = XF.Span.BackgroundColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly double CharacterSpacingDefaultValue = XF.Span.CharacterSpacingProperty.DefaultValue is double value ? value : default;
-        private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.Span.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
-        private static readonly string FontFamilyDefaultValue = XF.Span.FontFamilyProperty.DefaultValue is string value ? value : default;
-        private static readonly double FontSizeDefaultValue = XF.Span.FontSizeProperty.DefaultValue is double value ? value : default;
-        private static readonly XF.Color ForegroundColorDefaultValue = XF.Span.ForegroundColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly double LineHeightDefaultValue = XF.Span.LineHeightProperty.DefaultValue is double value ? value : default;
-        private static readonly string TextDefaultValue = XF.Span.TextProperty.DefaultValue is string value ? value : default;
-        private static readonly XF.Color TextColorDefaultValue = XF.Span.TextColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.TextDecorations TextDecorationsDefaultValue = XF.Span.TextDecorationsProperty.DefaultValue is XF.TextDecorations value ? value : default;
-        private static readonly XF.TextTransform TextTransformDefaultValue = XF.Span.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
+        private static readonly Color BackgroundColorDefaultValue = MC.Span.BackgroundColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly double CharacterSpacingDefaultValue = MC.Span.CharacterSpacingProperty.DefaultValue is double value ? value : default;
+        private static readonly MC.FontAttributes FontAttributesDefaultValue = MC.Span.FontAttributesProperty.DefaultValue is MC.FontAttributes value ? value : default;
+        private static readonly bool FontAutoScalingEnabledDefaultValue = MC.Span.FontAutoScalingEnabledProperty.DefaultValue is bool value ? value : default;
+        private static readonly string FontFamilyDefaultValue = MC.Span.FontFamilyProperty.DefaultValue is string value ? value : default;
+        private static readonly double FontSizeDefaultValue = MC.Span.FontSizeProperty.DefaultValue is double value ? value : default;
+        private static readonly double LineHeightDefaultValue = MC.Span.LineHeightProperty.DefaultValue is double value ? value : default;
+        private static readonly string TextDefaultValue = MC.Span.TextProperty.DefaultValue is string value ? value : default;
+        private static readonly Color TextColorDefaultValue = MC.Span.TextColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly TextDecorations TextDecorationsDefaultValue = MC.Span.TextDecorationsProperty.DefaultValue is TextDecorations value ? value : default;
+        private static readonly TextTransform TextTransformDefaultValue = MC.Span.TextTransformProperty.DefaultValue is TextTransform value ? value : default;
 
-        public SpanHandler(NativeComponentRenderer renderer, XF.Span spanControl) : base(renderer, spanControl)
+        public SpanHandler(NativeComponentRenderer renderer, MC.Span spanControl) : base(renderer, spanControl)
         {
             SpanControl = spanControl ?? throw new ArgumentNullException(nameof(spanControl));
 
@@ -30,44 +32,44 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.Span SpanControl { get; }
+        public MC.Span SpanControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.Span.BackgroundColor):
+                case nameof(MC.Span.BackgroundColor):
                     SpanControl.BackgroundColor = AttributeHelper.StringToColor((string)attributeValue, BackgroundColorDefaultValue);
                     break;
-                case nameof(XF.Span.CharacterSpacing):
+                case nameof(MC.Span.CharacterSpacing):
                     SpanControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue, CharacterSpacingDefaultValue);
                     break;
-                case nameof(XF.Span.FontAttributes):
-                    SpanControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
+                case nameof(MC.Span.FontAttributes):
+                    SpanControl.FontAttributes = (MC.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
                     break;
-                case nameof(XF.Span.FontFamily):
+                case nameof(MC.Span.FontAutoScalingEnabled):
+                    SpanControl.FontAutoScalingEnabled = AttributeHelper.GetBool(attributeValue, FontAutoScalingEnabledDefaultValue);
+                    break;
+                case nameof(MC.Span.FontFamily):
                     SpanControl.FontFamily = (string)attributeValue ?? FontFamilyDefaultValue;
                     break;
-                case nameof(XF.Span.FontSize):
+                case nameof(MC.Span.FontSize):
                     SpanControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, FontSizeDefaultValue);
                     break;
-                case nameof(XF.Span.ForegroundColor):
-                    SpanControl.ForegroundColor = AttributeHelper.StringToColor((string)attributeValue, ForegroundColorDefaultValue);
-                    break;
-                case nameof(XF.Span.LineHeight):
+                case nameof(MC.Span.LineHeight):
                     SpanControl.LineHeight = AttributeHelper.StringToDouble((string)attributeValue, LineHeightDefaultValue);
                     break;
-                case nameof(XF.Span.Text):
+                case nameof(MC.Span.Text):
                     SpanControl.Text = (string)attributeValue ?? TextDefaultValue;
                     break;
-                case nameof(XF.Span.TextColor):
+                case nameof(MC.Span.TextColor):
                     SpanControl.TextColor = AttributeHelper.StringToColor((string)attributeValue, TextColorDefaultValue);
                     break;
-                case nameof(XF.Span.TextDecorations):
-                    SpanControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue, (int)TextDecorationsDefaultValue);
+                case nameof(MC.Span.TextDecorations):
+                    SpanControl.TextDecorations = (TextDecorations)AttributeHelper.GetInt(attributeValue, (int)TextDecorationsDefaultValue);
                     break;
-                case nameof(XF.Span.TextTransform):
-                    SpanControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
+                case nameof(MC.Span.TextTransform):
+                    SpanControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

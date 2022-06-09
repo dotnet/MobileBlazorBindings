@@ -1,18 +1,19 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class LinearGradientBrushHandler : GradientBrushHandler
     {
-        private static readonly XF.Point EndPointDefaultValue = XF.LinearGradientBrush.EndPointProperty.DefaultValue is XF.Point value ? value : default;
-        private static readonly XF.Point StartPointDefaultValue = XF.LinearGradientBrush.StartPointProperty.DefaultValue is XF.Point value ? value : default;
+        private static readonly Point EndPointDefaultValue = MC.LinearGradientBrush.EndPointProperty.DefaultValue is Point value ? value : default;
+        private static readonly Point StartPointDefaultValue = MC.LinearGradientBrush.StartPointProperty.DefaultValue is Point value ? value : default;
 
-        public LinearGradientBrushHandler(NativeComponentRenderer renderer, XF.LinearGradientBrush linearGradientBrushControl) : base(renderer, linearGradientBrushControl)
+        public LinearGradientBrushHandler(NativeComponentRenderer renderer, MC.LinearGradientBrush linearGradientBrushControl) : base(renderer, linearGradientBrushControl)
         {
             LinearGradientBrushControl = linearGradientBrushControl ?? throw new ArgumentNullException(nameof(linearGradientBrushControl));
 
@@ -21,16 +22,16 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.LinearGradientBrush LinearGradientBrushControl { get; }
+        public MC.LinearGradientBrush LinearGradientBrushControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.LinearGradientBrush.EndPoint):
+                case nameof(MC.LinearGradientBrush.EndPoint):
                     LinearGradientBrushControl.EndPoint = AttributeHelper.StringToPoint(attributeValue, EndPointDefaultValue);
                     break;
-                case nameof(XF.LinearGradientBrush.StartPoint):
+                case nameof(MC.LinearGradientBrush.StartPoint):
                     LinearGradientBrushControl.StartPoint = AttributeHelper.StringToPoint(attributeValue, StartPointDefaultValue);
                     break;
                 default:

@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class FlyoutItemHandler : ShellItemHandler
     {
 
-        public FlyoutItemHandler(NativeComponentRenderer renderer, XF.FlyoutItem flyoutItemControl) : base(renderer, flyoutItemControl)
+        public FlyoutItemHandler(NativeComponentRenderer renderer, MC.FlyoutItem flyoutItemControl) : base(renderer, flyoutItemControl)
         {
             FlyoutItemControl = flyoutItemControl ?? throw new ArgumentNullException(nameof(flyoutItemControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.FlyoutItem FlyoutItemControl { get; }
+        public MC.FlyoutItem FlyoutItemControl { get; }
     }
 }

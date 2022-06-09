@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT license.
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Collections.Generic;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 {
@@ -15,9 +18,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
 
             foreach (var itemRoot in _itemRoots)
             {
-                builder.OpenComponent<InitializedContentView>(1);
+                builder.OpenComponent<InitializedVerticalStackLayout>(1);
 
-                builder.AddAttribute(2, nameof(InitializedContentView.NativeControl), itemRoot);
+                builder.AddAttribute(2, nameof(InitializedVerticalStackLayout.NativeControl), itemRoot);
                 builder.AddAttribute(3, "ChildContent", (RenderFragment)(builder =>
                 {
                     builder.OpenComponent<DataTemplateItemComponent<T>>(4);
@@ -36,9 +39,9 @@ namespace Microsoft.MobileBlazorBindings.Elements.DataTemplates
         [Parameter] public string ElementName { get; set; }
         [Parameter] public RenderFragment<T> Template { get; set; }
 
-        private readonly List<XF.ContentView> _itemRoots = new List<XF.ContentView>();
+        private readonly List<MC.VerticalStackLayout> _itemRoots = new();
 
-        public void Add(XF.ContentView templateRoot)
+        public void Add(MC.VerticalStackLayout templateRoot)
         {
             _itemRoots.Add(templateRoot);
             StateHasChanged();

@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,56 +15,20 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static Slider()
         {
             ElementHandlerRegistry.RegisterElementHandler<Slider>(
-                renderer => new SliderHandler(renderer, new XF.Slider()));
+                renderer => new SliderHandler(renderer, new MC.Slider()));
 
             RegisterAdditionalHandlers();
         }
 
-        /// <summary>
-        /// Gets or sets the maximum selectable value for the Slider. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
         [Parameter] public double? Maximum { get; set; }
-        /// <summary>
-        /// Gets or sets the color of the portion of the slider track that contains the maximum value of the slider.
-        /// </summary>
-        /// <value>
-        /// Thhe color of the portion of the slider track that contains the maximum value of the slider.
-        /// </value>
-        [Parameter] public XF.Color? MaximumTrackColor { get; set; }
-        /// <summary>
-        /// Gets or sets the minimum selectable value for the Slider. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
+        [Parameter] public Color MaximumTrackColor { get; set; }
         [Parameter] public double? Minimum { get; set; }
-        /// <summary>
-        /// Gets or sets the color of the portion of the slider track that contains the minimum value of the slider.
-        /// </summary>
-        /// <value>
-        /// Thhe color of the portion of the slider track that contains the minimum value of the slider.
-        /// </value>
-        [Parameter] public XF.Color? MinimumTrackColor { get; set; }
-        /// <summary>
-        /// Gets or sets the color of the slider thumb button.
-        /// </summary>
-        /// <value>
-        /// The color of the slider thumb button.
-        /// </value>
-        [Parameter] public XF.Color? ThumbColor { get; set; }
-        [Parameter] public XF.ImageSource ThumbImageSource { get; set; }
-        /// <summary>
-        /// Gets or sets the current value. This is a bindable property.
-        /// </summary>
-        /// <value>
-        /// A double.
-        /// </value>
+        [Parameter] public Color MinimumTrackColor { get; set; }
+        [Parameter] public Color ThumbColor { get; set; }
+        [Parameter] public MC.ImageSource ThumbImageSource { get; set; }
         [Parameter] public double? Value { get; set; }
 
-        public new XF.Slider NativeControl => ((SliderHandler)ElementHandler).SliderControl;
+        public new MC.Slider NativeControl => ((SliderHandler)ElementHandler).SliderControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {
@@ -75,7 +40,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (MaximumTrackColor != null)
             {
-                builder.AddAttribute(nameof(MaximumTrackColor), AttributeHelper.ColorToString(MaximumTrackColor.Value));
+                builder.AddAttribute(nameof(MaximumTrackColor), AttributeHelper.ColorToString(MaximumTrackColor));
             }
             if (Minimum != null)
             {
@@ -83,11 +48,11 @@ namespace Microsoft.MobileBlazorBindings.Elements
             }
             if (MinimumTrackColor != null)
             {
-                builder.AddAttribute(nameof(MinimumTrackColor), AttributeHelper.ColorToString(MinimumTrackColor.Value));
+                builder.AddAttribute(nameof(MinimumTrackColor), AttributeHelper.ColorToString(MinimumTrackColor));
             }
             if (ThumbColor != null)
             {
-                builder.AddAttribute(nameof(ThumbColor), AttributeHelper.ColorToString(ThumbColor.Value));
+                builder.AddAttribute(nameof(ThumbColor), AttributeHelper.ColorToString(ThumbColor));
             }
             if (ThumbImageSource != null)
             {

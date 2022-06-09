@@ -1,31 +1,34 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
+using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class LabelHandler : ViewHandler
     {
-        private static readonly double CharacterSpacingDefaultValue = XF.Label.CharacterSpacingProperty.DefaultValue is double value ? value : default;
-        private static readonly XF.FontAttributes FontAttributesDefaultValue = XF.Label.FontAttributesProperty.DefaultValue is XF.FontAttributes value ? value : default;
-        private static readonly string FontFamilyDefaultValue = XF.Label.FontFamilyProperty.DefaultValue is string value ? value : default;
-        private static readonly double FontSizeDefaultValue = XF.Label.FontSizeProperty.DefaultValue is double value ? value : default;
-        private static readonly XF.TextAlignment HorizontalTextAlignmentDefaultValue = XF.Label.HorizontalTextAlignmentProperty.DefaultValue is XF.TextAlignment value ? value : default;
-        private static readonly XF.LineBreakMode LineBreakModeDefaultValue = XF.Label.LineBreakModeProperty.DefaultValue is XF.LineBreakMode value ? value : default;
-        private static readonly double LineHeightDefaultValue = XF.Label.LineHeightProperty.DefaultValue is double value ? value : default;
-        private static readonly int MaxLinesDefaultValue = XF.Label.MaxLinesProperty.DefaultValue is int value ? value : default;
-        private static readonly XF.Thickness PaddingDefaultValue = XF.Label.PaddingProperty.DefaultValue is XF.Thickness value ? value : default;
-        private static readonly string TextDefaultValue = XF.Label.TextProperty.DefaultValue is string value ? value : default;
-        private static readonly XF.Color TextColorDefaultValue = XF.Label.TextColorProperty.DefaultValue is XF.Color value ? value : default;
-        private static readonly XF.TextDecorations TextDecorationsDefaultValue = XF.Label.TextDecorationsProperty.DefaultValue is XF.TextDecorations value ? value : default;
-        private static readonly XF.TextTransform TextTransformDefaultValue = XF.Label.TextTransformProperty.DefaultValue is XF.TextTransform value ? value : default;
-        private static readonly XF.TextType TextTypeDefaultValue = XF.Label.TextTypeProperty.DefaultValue is XF.TextType value ? value : default;
-        private static readonly XF.TextAlignment VerticalTextAlignmentDefaultValue = XF.Label.VerticalTextAlignmentProperty.DefaultValue is XF.TextAlignment value ? value : default;
+        private static readonly double CharacterSpacingDefaultValue = MC.Label.CharacterSpacingProperty.DefaultValue is double value ? value : default;
+        private static readonly MC.FontAttributes FontAttributesDefaultValue = MC.Label.FontAttributesProperty.DefaultValue is MC.FontAttributes value ? value : default;
+        private static readonly bool FontAutoScalingEnabledDefaultValue = MC.Label.FontAutoScalingEnabledProperty.DefaultValue is bool value ? value : default;
+        private static readonly string FontFamilyDefaultValue = MC.Label.FontFamilyProperty.DefaultValue is string value ? value : default;
+        private static readonly double FontSizeDefaultValue = MC.Label.FontSizeProperty.DefaultValue is double value ? value : default;
+        private static readonly TextAlignment HorizontalTextAlignmentDefaultValue = MC.Label.HorizontalTextAlignmentProperty.DefaultValue is TextAlignment value ? value : default;
+        private static readonly LineBreakMode LineBreakModeDefaultValue = MC.Label.LineBreakModeProperty.DefaultValue is LineBreakMode value ? value : default;
+        private static readonly double LineHeightDefaultValue = MC.Label.LineHeightProperty.DefaultValue is double value ? value : default;
+        private static readonly int MaxLinesDefaultValue = MC.Label.MaxLinesProperty.DefaultValue is int value ? value : default;
+        private static readonly Thickness PaddingDefaultValue = MC.Label.PaddingProperty.DefaultValue is Thickness value ? value : default;
+        private static readonly string TextDefaultValue = MC.Label.TextProperty.DefaultValue is string value ? value : default;
+        private static readonly Color TextColorDefaultValue = MC.Label.TextColorProperty.DefaultValue is Color value ? value : default;
+        private static readonly TextDecorations TextDecorationsDefaultValue = MC.Label.TextDecorationsProperty.DefaultValue is TextDecorations value ? value : default;
+        private static readonly TextTransform TextTransformDefaultValue = MC.Label.TextTransformProperty.DefaultValue is TextTransform value ? value : default;
+        private static readonly TextType TextTypeDefaultValue = MC.Label.TextTypeProperty.DefaultValue is TextType value ? value : default;
+        private static readonly TextAlignment VerticalTextAlignmentDefaultValue = MC.Label.VerticalTextAlignmentProperty.DefaultValue is TextAlignment value ? value : default;
 
-        public LabelHandler(NativeComponentRenderer renderer, XF.Label labelControl) : base(renderer, labelControl)
+        public LabelHandler(NativeComponentRenderer renderer, MC.Label labelControl) : base(renderer, labelControl)
         {
             LabelControl = labelControl ?? throw new ArgumentNullException(nameof(labelControl));
 
@@ -34,56 +37,59 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.Label LabelControl { get; }
+        public MC.Label LabelControl { get; }
 
         public override void ApplyAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
             switch (attributeName)
             {
-                case nameof(XF.Label.CharacterSpacing):
+                case nameof(MC.Label.CharacterSpacing):
                     LabelControl.CharacterSpacing = AttributeHelper.StringToDouble((string)attributeValue, CharacterSpacingDefaultValue);
                     break;
-                case nameof(XF.Label.FontAttributes):
-                    LabelControl.FontAttributes = (XF.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
+                case nameof(MC.Label.FontAttributes):
+                    LabelControl.FontAttributes = (MC.FontAttributes)AttributeHelper.GetInt(attributeValue, (int)FontAttributesDefaultValue);
                     break;
-                case nameof(XF.Label.FontFamily):
+                case nameof(MC.Label.FontAutoScalingEnabled):
+                    LabelControl.FontAutoScalingEnabled = AttributeHelper.GetBool(attributeValue, FontAutoScalingEnabledDefaultValue);
+                    break;
+                case nameof(MC.Label.FontFamily):
                     LabelControl.FontFamily = (string)attributeValue ?? FontFamilyDefaultValue;
                     break;
-                case nameof(XF.Label.FontSize):
+                case nameof(MC.Label.FontSize):
                     LabelControl.FontSize = AttributeHelper.StringToDouble((string)attributeValue, FontSizeDefaultValue);
                     break;
-                case nameof(XF.Label.HorizontalTextAlignment):
-                    LabelControl.HorizontalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue, (int)HorizontalTextAlignmentDefaultValue);
+                case nameof(MC.Label.HorizontalTextAlignment):
+                    LabelControl.HorizontalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue, (int)HorizontalTextAlignmentDefaultValue);
                     break;
-                case nameof(XF.Label.LineBreakMode):
-                    LabelControl.LineBreakMode = (XF.LineBreakMode)AttributeHelper.GetInt(attributeValue, (int)LineBreakModeDefaultValue);
+                case nameof(MC.Label.LineBreakMode):
+                    LabelControl.LineBreakMode = (LineBreakMode)AttributeHelper.GetInt(attributeValue, (int)LineBreakModeDefaultValue);
                     break;
-                case nameof(XF.Label.LineHeight):
+                case nameof(MC.Label.LineHeight):
                     LabelControl.LineHeight = AttributeHelper.StringToDouble((string)attributeValue, LineHeightDefaultValue);
                     break;
-                case nameof(XF.Label.MaxLines):
+                case nameof(MC.Label.MaxLines):
                     LabelControl.MaxLines = AttributeHelper.GetInt(attributeValue, MaxLinesDefaultValue);
                     break;
-                case nameof(XF.Label.Padding):
+                case nameof(MC.Label.Padding):
                     LabelControl.Padding = AttributeHelper.StringToThickness(attributeValue, PaddingDefaultValue);
                     break;
-                case nameof(XF.Label.Text):
+                case nameof(MC.Label.Text):
                     LabelControl.Text = (string)attributeValue ?? TextDefaultValue;
                     break;
-                case nameof(XF.Label.TextColor):
+                case nameof(MC.Label.TextColor):
                     LabelControl.TextColor = AttributeHelper.StringToColor((string)attributeValue, TextColorDefaultValue);
                     break;
-                case nameof(XF.Label.TextDecorations):
-                    LabelControl.TextDecorations = (XF.TextDecorations)AttributeHelper.GetInt(attributeValue, (int)TextDecorationsDefaultValue);
+                case nameof(MC.Label.TextDecorations):
+                    LabelControl.TextDecorations = (TextDecorations)AttributeHelper.GetInt(attributeValue, (int)TextDecorationsDefaultValue);
                     break;
-                case nameof(XF.Label.TextTransform):
-                    LabelControl.TextTransform = (XF.TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
+                case nameof(MC.Label.TextTransform):
+                    LabelControl.TextTransform = (TextTransform)AttributeHelper.GetInt(attributeValue, (int)TextTransformDefaultValue);
                     break;
-                case nameof(XF.Label.TextType):
-                    LabelControl.TextType = (XF.TextType)AttributeHelper.GetInt(attributeValue, (int)TextTypeDefaultValue);
+                case nameof(MC.Label.TextType):
+                    LabelControl.TextType = (TextType)AttributeHelper.GetInt(attributeValue, (int)TextTypeDefaultValue);
                     break;
-                case nameof(XF.Label.VerticalTextAlignment):
-                    LabelControl.VerticalTextAlignment = (XF.TextAlignment)AttributeHelper.GetInt(attributeValue, (int)VerticalTextAlignmentDefaultValue);
+                case nameof(MC.Label.VerticalTextAlignment):
+                    LabelControl.VerticalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue, (int)VerticalTextAlignmentDefaultValue);
                     break;
                 default:
                     base.ApplyAttribute(attributeEventHandlerId, attributeName, attributeValue, attributeEventUpdatesAttributeName);

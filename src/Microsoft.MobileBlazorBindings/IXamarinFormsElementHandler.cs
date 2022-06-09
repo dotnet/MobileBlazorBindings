@@ -2,16 +2,15 @@
 // Licensed under the MIT license.
 
 using Microsoft.MobileBlazorBindings.Core;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings
 {
-    public interface IXamarinFormsElementHandler : IElementHandler
+    public interface IMauiElementHandler : IElementHandler
     {
-        XF.Element ElementControl { get; }
+        Maui.Controls.Element ElementControl { get; }
 
         bool IsParented();
-        bool IsParentedTo(XF.Element parent);
-        void SetParent(XF.Element parent);
+        bool IsParentedTo(Maui.Controls.Element parent);
+        void SetParent(Maui.Controls.Element parent);
     }
 }

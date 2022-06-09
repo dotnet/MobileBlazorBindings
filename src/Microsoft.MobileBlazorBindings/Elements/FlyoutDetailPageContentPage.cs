@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
-    internal sealed class FlyoutDetailPageContentPage : XF.ContentPage
+    internal sealed class FlyoutDetailPageContentPage : MC.ContentPage
     {
     }
 }

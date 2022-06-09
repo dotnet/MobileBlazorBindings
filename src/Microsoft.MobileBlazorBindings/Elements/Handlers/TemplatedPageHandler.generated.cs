@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public partial class TemplatedPageHandler : PageHandler
     {
 
-        public TemplatedPageHandler(NativeComponentRenderer renderer, XF.TemplatedPage templatedPageControl) : base(renderer, templatedPageControl)
+        public TemplatedPageHandler(NativeComponentRenderer renderer, MC.TemplatedPage templatedPageControl) : base(renderer, templatedPageControl)
         {
             TemplatedPageControl = templatedPageControl ?? throw new ArgumentNullException(nameof(templatedPageControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.TemplatedPage TemplatedPageControl { get; }
+        public MC.TemplatedPage TemplatedPageControl { get; }
     }
 }

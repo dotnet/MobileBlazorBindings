@@ -3,7 +3,7 @@
 
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -12,9 +12,9 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static CollectionView()
         {
             ElementHandlerRegistry.RegisterElementHandler<CollectionView<T>>(
-                renderer => new CollectionViewHandler(renderer, new XF.CollectionView()));
+                renderer => new CollectionViewHandler(renderer, new MC.CollectionView()));
         }
 
-        public new XF.CollectionView NativeControl => ((CollectionViewHandler)ElementHandler).CollectionViewControl;
+        public new MC.CollectionView NativeControl => ((CollectionViewHandler)ElementHandler).CollectionViewControl;
     }
 }

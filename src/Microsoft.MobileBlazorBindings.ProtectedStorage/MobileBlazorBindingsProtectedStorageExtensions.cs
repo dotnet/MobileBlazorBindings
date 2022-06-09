@@ -3,8 +3,6 @@
 
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.MobileBlazorBindings.ProtectedStorage;
-using System;
-using Xamarin.Forms;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -20,21 +18,11 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns>The service collection.</returns>
         public static IServiceCollection AddProtectedStorage(this IServiceCollection services)
         {
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                case Device.macOS:
-                case Device.Android:
-                case Device.Tizen:
-                    services.TryAddSingleton<IProtectedStorage, XamarinProtectedStorage>();
-                    break;
-                case Device.WPF:
-                    services.TryAddSingleton<IProtectedStorage, WindowsProtectedStorage>();
-                    break;
-                default:
-                    throw new PlatformNotSupportedException($"Platform {Device.RuntimePlatform} is not supported by {ThisAssembly.AssemblyName}");
-            }
-
+#if WINDOWS
+            services.TryAddSingleton<IProtectedStorage, WindowsProtectedStorage>();
+#else
+            services.TryAddSingleton<IProtectedStorage, MauiProtectedStorage>();
+#endif
             return services;
         }
     }

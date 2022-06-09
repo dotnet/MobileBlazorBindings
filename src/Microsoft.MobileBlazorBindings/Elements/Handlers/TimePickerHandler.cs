@@ -16,7 +16,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                 clearId: id => { if (TimeChangedEventHandlerId == id) { TimeChangedEventHandlerId = 0; } });
             TimePickerControl.PropertyChanged += (s, e) =>
             {
-                // XF.TimePicker doesn't have a TimeSelected or TimeChanged event, so we use the generic PropertyChanged event instead
+                // MC.TimePicker doesn't have a TimeSelected or TimeChanged event, so we use the generic PropertyChanged event instead
                 if (e.PropertyName == nameof(TimePickerControl.Time))
                 {
                     if (TimeChangedEventHandlerId != default)

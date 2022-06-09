@@ -1,0 +1,31 @@
+﻿@page "/commoncontrols"
+
+<ContentPage>
+    <VerticalStackLayout Margin="20">
+
+        <Slider Minimum="0" Maximum="20" @bind-Value="_sliderValue" />
+        <Label>
+            <Span>Slider is @_sliderValue</Span>
+        </Label>
+
+        <HorizontalStackLayout>
+            <Button Text="Favorite?" OnClick="ToggleFavorite" />
+
+            <Image Source="@(isFavorite ? _favorite : _nonFavorite)" />
+        </HorizontalStackLayout>
+    </VerticalStackLayout>
+</ContentPage>
+
+@code
+{
+    ImageSource _favorite = new FileImageSource { File = "favorite.png" };
+    ImageSource _nonFavorite = new FileImageSource { File = "not_favorite.png" };
+
+    private double _sliderValue;
+    bool isFavorite;
+
+    void ToggleFavorite()
+    {
+        isFavorite = !isFavorite;
+    }
+}

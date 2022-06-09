@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public abstract partial class BaseMenuItemHandler : ElementHandler
     {
 
-        public BaseMenuItemHandler(NativeComponentRenderer renderer, XF.BaseMenuItem baseMenuItemControl) : base(renderer, baseMenuItemControl)
+        public BaseMenuItemHandler(NativeComponentRenderer renderer, MC.BaseMenuItem baseMenuItemControl) : base(renderer, baseMenuItemControl)
         {
             BaseMenuItemControl = baseMenuItemControl ?? throw new ArgumentNullException(nameof(baseMenuItemControl));
 
@@ -19,6 +19,6 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         partial void Initialize(NativeComponentRenderer renderer);
 
-        public XF.BaseMenuItem BaseMenuItemControl { get; }
+        public MC.BaseMenuItem BaseMenuItemControl { get; }
     }
 }

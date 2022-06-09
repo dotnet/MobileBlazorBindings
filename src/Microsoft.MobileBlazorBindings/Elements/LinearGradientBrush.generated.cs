@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,15 +15,15 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static LinearGradientBrush()
         {
             ElementHandlerRegistry.RegisterElementHandler<LinearGradientBrush>(
-                renderer => new LinearGradientBrushHandler(renderer, new XF.LinearGradientBrush()));
+                renderer => new LinearGradientBrushHandler(renderer, new MC.LinearGradientBrush()));
 
             RegisterAdditionalHandlers();
         }
 
-        [Parameter] public XF.Point? EndPoint { get; set; }
-        [Parameter] public XF.Point? StartPoint { get; set; }
+        [Parameter] public Point? EndPoint { get; set; }
+        [Parameter] public Point? StartPoint { get; set; }
 
-        public new XF.LinearGradientBrush NativeControl => ((LinearGradientBrushHandler)ElementHandler).LinearGradientBrushControl;
+        public new MC.LinearGradientBrush NativeControl => ((LinearGradientBrushHandler)ElementHandler).LinearGradientBrushControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

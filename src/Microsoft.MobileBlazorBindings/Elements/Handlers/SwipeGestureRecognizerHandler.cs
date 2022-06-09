@@ -1,15 +1,16 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using Microsoft.Maui;
 using Microsoft.MobileBlazorBindings.Core;
 using System;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
     public class SwipeGestureRecognizerHandler : GestureRecognizerHandler
     {
-        public SwipeGestureRecognizerHandler(NativeComponentRenderer renderer, XF.SwipeGestureRecognizer swipeGestureRecognizerControl) : base(renderer, swipeGestureRecognizerControl)
+        public SwipeGestureRecognizerHandler(NativeComponentRenderer renderer, MC.SwipeGestureRecognizer swipeGestureRecognizerControl) : base(renderer, swipeGestureRecognizerControl)
         {
             SwipeGestureRecognizerControl = swipeGestureRecognizerControl ?? throw new ArgumentNullException(nameof(swipeGestureRecognizerControl));
 
@@ -26,7 +27,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             };
         }
 
-        public XF.SwipeGestureRecognizer SwipeGestureRecognizerControl { get; }
+        public MC.SwipeGestureRecognizer SwipeGestureRecognizerControl { get; }
 
         public ulong SwipedEventHandlerId { get; set; }
 
@@ -35,7 +36,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             switch (attributeName)
             {
                 case nameof(SwipeGestureRecognizer.Direction):
-                    SwipeGestureRecognizerControl.Direction = (XF.SwipeDirection)AttributeHelper.GetInt(attributeValue);
+                    SwipeGestureRecognizerControl.Direction = (SwipeDirection)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(SwipeGestureRecognizer.Threshold):
                     SwipeGestureRecognizerControl.Threshold = AttributeHelper.StringToUInt32((string)attributeValue, 100u);

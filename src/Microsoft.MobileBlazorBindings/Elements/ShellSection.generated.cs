@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 
+using MC = Microsoft.Maui.Controls;
 using Microsoft.AspNetCore.Components;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using System.Threading.Tasks;
-using XF = Xamarin.Forms;
 
 namespace Microsoft.MobileBlazorBindings.Elements
 {
@@ -14,12 +14,12 @@ namespace Microsoft.MobileBlazorBindings.Elements
         static ShellSection()
         {
             ElementHandlerRegistry.RegisterElementHandler<ShellSection>(
-                renderer => new ShellSectionHandler(renderer, new XF.ShellSection()));
+                renderer => new ShellSectionHandler(renderer, new MC.ShellSection()));
 
             RegisterAdditionalHandlers();
         }
 
-        public new XF.ShellSection NativeControl => ((ShellSectionHandler)ElementHandler).ShellSectionControl;
+        public new MC.ShellSection NativeControl => ((ShellSectionHandler)ElementHandler).ShellSectionControl;
 
         protected override void RenderAttributes(AttributesBuilder builder)
         {

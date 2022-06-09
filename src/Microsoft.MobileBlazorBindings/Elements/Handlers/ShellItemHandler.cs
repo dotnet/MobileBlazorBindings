@@ -4,24 +4,24 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using XF = Xamarin.Forms;
+using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public partial class ShellItemHandler : ShellGroupItemHandler, IXamarinFormsContainerElementHandler
+    public partial class ShellItemHandler : ShellGroupItemHandler, IMauiContainerElementHandler
     {
-        public virtual void AddChild(XF.Element child, int physicalSiblingIndex)
+        public virtual void AddChild(MC.Element child, int physicalSiblingIndex)
         {
             if (child is null)
             {
                 throw new ArgumentNullException(nameof(child));
             }
 
-            XF.ShellSection sectionToAdd = child switch
+            MC.ShellSection sectionToAdd = child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => childAsTemplatedPage,  // Implicit conversion
-                XF.ShellContent childAsShellContent => childAsShellContent,  // Implicit conversion
-                XF.ShellSection childAsShellSection => childAsShellSection,
+                MC.TemplatedPage childAsTemplatedPage => childAsTemplatedPage,  // Implicit conversion
+                MC.ShellContent childAsShellContent => childAsShellContent,  // Implicit conversion
+                MC.ShellSection childAsShellSection => childAsShellSection,
                 _ => throw new NotSupportedException($"Handler of type '{GetType().FullName}' representing element type '{TargetElement?.GetType().FullName ?? "<null>"}' doesn't support adding a child (child type is '{child.GetType().FullName}').")
             };
 
@@ -36,7 +36,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public virtual void RemoveChild(XF.Element child)
+        public virtual void RemoveChild(MC.Element child)
         {
             if (child is null)
             {
@@ -49,7 +49,7 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             ShellItemControl.Items.Remove(sectionToRemove);
         }
 
-        public override void SetParent(XF.Element parent)
+        public override void SetParent(MC.Element parent)
         {
             if (ElementControl.Parent == null)
             {
@@ -58,29 +58,29 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
             }
         }
 
-        public int GetChildIndex(XF.Element child)
+        public int GetChildIndex(MC.Element child)
         {
             var section = GetSectionForElement(child);
             return ShellItemControl.Items.IndexOf(section);
         }
 
-        private XF.ShellSection GetSectionForElement(XF.Element child)
+        private MC.ShellSection GetSectionForElement(MC.Element child)
         {
             return child switch
             {
-                XF.TemplatedPage childAsTemplatedPage => GetSectionForTemplatedPage(childAsTemplatedPage),
-                XF.ShellContent childAsShellContent => GetSectionForContent(childAsShellContent),
-                XF.ShellSection childAsShellSection => childAsShellSection,
+                MC.TemplatedPage childAsTemplatedPage => GetSectionForTemplatedPage(childAsTemplatedPage),
+                MC.ShellContent childAsShellContent => GetSectionForContent(childAsShellContent),
+                MC.ShellSection childAsShellSection => childAsShellSection,
                 _ => null
             };
         }
 
-        private XF.ShellSection GetSectionForContent(XF.ShellContent shellContent)
+        private MC.ShellSection GetSectionForContent(MC.ShellContent shellContent)
         {
             return ShellItemControl.Items.FirstOrDefault(section => section.Items.Contains(shellContent));
         }
 
-        private XF.ShellSection GetSectionForTemplatedPage(XF.TemplatedPage templatedPage)
+        private MC.ShellSection GetSectionForTemplatedPage(MC.TemplatedPage templatedPage)
         {
             return ShellItemControl.Items
                 .FirstOrDefault(section => section.Items.Any(contect => contect.Content == templatedPage));
