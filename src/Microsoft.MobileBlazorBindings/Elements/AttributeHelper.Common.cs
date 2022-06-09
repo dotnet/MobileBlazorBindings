@@ -12,16 +12,26 @@ namespace Microsoft.MobileBlazorBindings.Elements
     {
         public static bool GetBool(object value, bool defaultValueIfNull = default)
         {
-            return (value == null)
-                ? defaultValueIfNull
-                : (string.Equals((string)value, "1", StringComparison.Ordinal));
+            return value switch
+            {
+                null => defaultValueIfNull,
+                bool bln => bln,
+                string str when str == "1" => true,
+                string str when str == "0" => false,
+                string str when bool.TryParse(str, out var bln) => bln,
+                _ => throw new NotSupportedException($"Cannot get bool value from {value.GetType().Name} attribute.")
+            };
         }
 
         public static int GetInt(object value, int defaultValueIfNull = default)
         {
-            return (value == null)
-                ? defaultValueIfNull
-                : int.Parse((string)value, CultureInfo.InvariantCulture);
+            return value switch
+            {
+                null => defaultValueIfNull,
+                int i => i,
+                string str => int.Parse(str, CultureInfo.InvariantCulture),
+                _ => throw new NotSupportedException($"Cannot get int value from {value.GetType().Name} attribute.")
+            };
         }
 
         /// <summary>

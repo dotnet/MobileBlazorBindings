@@ -1,4 +1,9 @@
-﻿<ContentPage @ref="page">
+﻿<ContentPage @ref="page"
+             Title="Shell Properties"
+             Shell.NavBarIsVisible="@navBarVisible"
+             Shell.TabBarIsVisible="@tabBarVisible"
+             Shell.TitleColor="@titleColor">
+
     <ToolbarItems>
         <ToolbarItem Text="Help" OnClick="ShowHelp" />
     </ToolbarItems>
@@ -11,10 +16,6 @@
     </Background>
 
     <ChildContent>
-        <ShellProperties NavBarIsVisible="navBarVisible"
-                         TabBarIsVisible="tabBarVisible"
-                         TitleColor="titleColor" />
-
         <StackLayout>
             <StackLayout Orientation="StackOrientation.Horizontal">
                 <Label Text="Enable NavBar: " />

@@ -51,6 +51,12 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 
         public virtual bool ApplyAdditionalAttribute(ulong attributeEventHandlerId, string attributeName, object attributeValue, string attributeEventUpdatesAttributeName)
         {
+            if (AttachedPropertyRegistry.AttachedPropertyHandlers.TryGetValue(attributeName, out var handler))
+            {
+                handler(ElementControl, attributeValue);
+                return true;
+            }
+
             return false;
         }
 
