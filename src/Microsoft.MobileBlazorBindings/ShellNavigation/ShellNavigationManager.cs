@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using System.Threading.Tasks;
 using MC = Microsoft.Maui.Controls;
 
@@ -115,6 +116,13 @@ namespace Microsoft.MobileBlazorBindings
             var elementAddedTask = container.WaitForElementAsync();
 
             await Task.WhenAny(addComponentTask, elementAddedTask).ConfigureAwait(false);
+
+            if (addComponentTask.Exception != null)
+            {
+                // If any exception ecountered during the rendering - throw it directly instead of wrapping in another exception.
+                var exception = addComponentTask.Exception.InnerException;
+                ExceptionDispatchInfo.Throw(exception);
+            }
 
             if (container.Elements.Count != 1)
             {
