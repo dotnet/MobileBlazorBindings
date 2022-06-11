@@ -1,0 +1,32 @@
+﻿@page "/controls/labels"
+
+<ContentPage>
+    <ScrollView>
+        <VerticalStackLayout Padding="10" Spacing="20">
+
+            <Label Text="Static label with Text property" />
+
+            <Label>Static label with child content</Label>
+
+            <Label Text=@($"Dynamic - {RandomText} - label with Text property") />
+
+            <Label>Dynamic - @RandomText - label with child content</Label>
+
+            <Label>
+                <Span Text="Label with spans " />
+                <Span TextColor="Colors.Red">with color, </Span>
+                <Span TextDecorations="TextDecorations.Strikethrough" Text="text decorations" />
+                <Span FontAttributes="FontAttributes.Bold" Text=" and font attributes." />
+            </Label>
+
+            <Label Text="Label with bigger font size" FontSize="24" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+
+@code {
+    Random _random = new();
+
+    string RandomText => _random.Next().ToString();
+}
