@@ -9,6 +9,7 @@
 @page "/guid/{Guid}"
 @page "/nullable-guid/{NullableGuid}"
 @page "/bool/{Bool}"
+@using ControlGallery.Models
 
 <ContentPage>
     <StackLayout>
@@ -26,6 +27,8 @@
         <Label Text="@($"Guid = {Guid}")"></Label>
         <Label Text="@($"Guid? = {NullableGuid}")"></Label>
         <Label Text="@($"Bool = {Bool}")"></Label>
+        <Label Text="@($"Query1 = Name:{Query1?.Name}, Value:{Query1?.Value}")"></Label>
+        <Label Text="@($"Query2 = Name:{Query2?.Name}, Value:{Query2?.Value}")"></Label>
     </StackLayout>
 </ContentPage>
 
@@ -41,6 +44,6 @@
     [Parameter] public Guid Guid { get; set; }
     [Parameter] public Guid? NullableGuid { get; set; }
     [Parameter] public bool Bool { get; set; }
-
-
+    [Parameter] public NavigationParameterModel Query1 { get; set; }
+    [Parameter] public NavigationParameterModel Query2 { get; set; }
 }

@@ -66,14 +66,14 @@ namespace Microsoft.MobileBlazorBindings
         }
 
 #pragma warning disable CA1054 // Uri parameters should not be strings
-        public void NavigateTo(string uri)
+        public void NavigateTo(string uri, Dictionary<string, object> parameters = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
-            _ = NavigateToAsync(uri);
+            _ = NavigateToAsync(uri, parameters);
         }
 
 #pragma warning disable CA1054 // Uri parameters should not be strings
-        public async Task NavigateToAsync(string uri)
+        public async Task NavigateToAsync(string uri, Dictionary<string, object> parameters = null)
 #pragma warning restore CA1054 // Uri parameters should not be strings
         {
             if (uri is null)
@@ -81,7 +81,7 @@ namespace Microsoft.MobileBlazorBindings
                 throw new ArgumentNullException(nameof(uri));
             }
 
-            var route = StructuredRoute.FindBestMatch(uri, Routes);
+            var route = StructuredRoute.FindBestMatch(uri, Routes, parameters);
 
             if (route != null)
             {
@@ -111,8 +111,24 @@ namespace Microsoft.MobileBlazorBindings
 
             var renderer = serviceProvider.GetRequiredService<MobileBlazorBindingsRenderer>();
 
-            var convertedParameters = ConvertParameters(componentType, route.Parameters);
-            var addComponentTask = renderer.AddComponent(componentType, container, convertedParameters);
+            var parameters = ConvertParameters(componentType, route.PathParameters);
+
+            if (route.AdditionalParameters is not null)
+            {
+                if (parameters is null)
+                {
+                    parameters = route.AdditionalParameters;
+                }
+                else
+                {
+                    foreach (var (key, value) in route.AdditionalParameters)
+                    {
+                        parameters.Add(key, value);
+                    }
+                }
+            }
+
+            var addComponentTask = renderer.AddComponent(componentType, container, parameters);
             var elementAddedTask = container.WaitForElementAsync();
 
             await Task.WhenAny(addComponentTask, elementAddedTask).ConfigureAwait(false);
