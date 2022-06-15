@@ -9,7 +9,7 @@
             <Label Text="Picker Playground" FontSize="30">
             </Label>
 
-            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.Fill" />
 
             <Label Padding="5" FontAttributes="FontAttributes.Bold" Text="Picker with models and all display properties" />
             <Picker CharacterSpacing="3"
@@ -22,12 +22,12 @@
                     Title="Select a model"
                     TitleColor="Colors.Blue"
                     VerticalTextAlignment="TextAlignment.End"
-                    ItemDisplayBinding="Name"
+                    ItemDisplayBinding="i => i.Name"
                     @bind-SelectedItem="SelectedModel">
             </Picker>
             <Label Padding="5" Text="@("Selected model: " + SelectedModel?.Name ?? "(none)")"></Label>
 
-            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.Fill" />
 
             <Label FontAttributes="FontAttributes.Bold" Text="Picker with string" />
             <Picker @bind-SelectedItem="SelectedString"
@@ -35,21 +35,21 @@
                     ItemsSource="Strings" />
             <Label Text="@("Selected string: " + SelectedString ?? "(none)")"></Label>
 
-            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.Fill" />
 
             <Label FontAttributes="FontAttributes.Bold" Text="Picker with models and default item selected" />
             <Picker @bind-SelectedItem="SelectedModelDefault"
                     Title="Select a model"
-                    ItemDisplayBinding="Name"
+                    ItemDisplayBinding="ItemDisplay"
                     ItemsSource="ModelsWithDefault" />
             <Label Text="@("Selected model: " + SelectedModelDefault?.Name ?? "(none)")"></Label>
 
-            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.FillAndExpand" />
+            <BoxView HeightRequest="2" Color="Colors.Gray" HorizontalOptions="LayoutOptions.Fill" />
 
             <Label FontAttributes="FontAttributes.Bold" Text="Index Based Picker" />
             <Picker ItemsSource="Models"
                     Title="Select a model and the index will bind"
-                    ItemDisplayBinding="Name"
+                    ItemDisplayBinding="i => i.Name"
                     @bind-SelectedIndex="SelectedIndex">
             </Picker>
             <Label Text="@("Selected model: " + Models.ElementAtOrDefault(SelectedIndex)?.Name ?? "(none)")"></Label>
@@ -102,5 +102,10 @@
         SelectedString = Strings.LastOrDefault();
         SelectedModelDefault = ModelsWithDefault.LastOrDefault();
         SelectedIndex = -1;
+    }
+
+    public string ItemDisplay(PickerModel model)
+    {
+        return $"❤️{model.Name}❤️";
     }
 }

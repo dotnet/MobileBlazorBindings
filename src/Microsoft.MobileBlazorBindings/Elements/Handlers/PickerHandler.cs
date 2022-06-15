@@ -10,7 +10,7 @@ using MC = Microsoft.Maui.Controls;
 
 namespace Microsoft.MobileBlazorBindings.Elements.Handlers
 {
-    public class PickerHandler : ViewHandler
+    public class PickerHandler<TItem> : ViewHandler
     {
         public PickerHandler(NativeComponentRenderer renderer, MC.Picker pickerControl) : base(renderer, pickerControl)
         {
@@ -68,7 +68,8 @@ namespace Microsoft.MobileBlazorBindings.Elements.Handlers
                     PickerControl.HorizontalTextAlignment = (TextAlignment)AttributeHelper.GetInt(attributeValue);
                     break;
                 case nameof(MC.Picker.ItemDisplayBinding):
-                    PickerControl.ItemDisplayBinding = new MC.Binding((string)attributeValue);
+                    var func = (Func<TItem, string>)attributeValue;
+                    PickerControl.ItemDisplayBinding = new MC.Internals.TypedBinding<TItem, string>((item) => (func(item), true), null, null);
                     break;
                 case nameof(MC.Picker.ItemsSource):
                     var items = AttributeHelper.DelegateToObject<IList>(attributeValue);

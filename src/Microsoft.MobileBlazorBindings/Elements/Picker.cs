@@ -6,6 +6,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Graphics;
 using Microsoft.MobileBlazorBindings.Core;
 using Microsoft.MobileBlazorBindings.Elements.Handlers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MC = Microsoft.Maui.Controls;
@@ -21,7 +22,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
         [Parameter] public IList<TItem> ItemsSource { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
         [Parameter] public string Title { get; set; }
-        [Parameter] public string ItemDisplayBinding { get; set; }
+        [Parameter] public Func<TItem, string> ItemDisplayBinding { get; set; }
         [Parameter] public TItem SelectedItem { get; set; }
         [Parameter] public int SelectedIndex { get; set; } = -1;
         [Parameter] public EventCallback<TItem> SelectedItemChanged { get; set; }
@@ -67,7 +68,7 @@ namespace Microsoft.MobileBlazorBindings.Elements
 
         static Picker()
         {
-            ElementHandlerRegistry.RegisterElementHandler<Picker<TItem>>(renderer => new PickerHandler(renderer, new MC.Picker()));
+            ElementHandlerRegistry.RegisterElementHandler<Picker<TItem>>(renderer => new PickerHandler<TItem>(renderer, new MC.Picker()));
         }
 
         protected override void RenderAttributes(AttributesBuilder builder)
