@@ -1,6 +1,7 @@
 jobs:
 - job: FakeBuild
   displayName: Fake build
+  pool: VSEngSS-MicroBuild2022-1ES
   steps:
   - script: echo Fake build (no op)
 
