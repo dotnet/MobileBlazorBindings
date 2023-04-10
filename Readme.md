@@ -10,7 +10,7 @@ Mobile Blazor Bindings enable developers to build native and hybrid mobile apps 
 
 Here is a sample Counter component that renders native UI, which may look familiar to Blazor developers, that increments a value on each button press:
 
-```xml
+```razor
 <StackLayout>
     <Label FontSize="30">You pressed @count times </Label>
     <Button Text="+1" OnClick="@HandleClick" />
