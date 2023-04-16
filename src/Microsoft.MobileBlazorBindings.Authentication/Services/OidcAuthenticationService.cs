@@ -313,16 +313,19 @@ namespace Microsoft.MobileBlazorBindings.Authentication
                 throw new OptionsValidationException("ResponseMode", typeof(OidcProviderOptions), new string[] { $"{oidcProviderOptions.ResponseMode} is not a valid response mode." });
             }
 
-            return new OidcClient(new OidcClientOptions()
-            {
-                Authority = oidcProviderOptions.Authority,
-                ClientId = oidcProviderOptions.ClientId,
-                PostLogoutRedirectUri = oidcProviderOptions.PostLogoutRedirectUri,
-                RedirectUri = oidcProviderOptions.RedirectUri,
-                ResponseMode = responseMode,
-                LoadProfile = false,
-                Scope = string.Join(" ", oidcProviderOptions.DefaultScopes),
-            });
+            var oidcClientOptions = new OidcClientOptions
+                                    {
+                                        Authority = oidcProviderOptions.Authority,
+                                        ClientId = oidcProviderOptions.ClientId,
+                                        PostLogoutRedirectUri = oidcProviderOptions.PostLogoutRedirectUri,
+                                        RedirectUri = oidcProviderOptions.RedirectUri,
+                                        ResponseMode = responseMode,
+                                        LoadProfile = false,
+                                        Scope = string.Join(" ", oidcProviderOptions.DefaultScopes),
+                                    };
+
+            oidcClientOptions.Policy.Discovery.RequireHttps = oidcProviderOptions.RequireHttpsMetadata;
+            return new OidcClient(oidcClientOptions);
         }
 
         /// <summary>

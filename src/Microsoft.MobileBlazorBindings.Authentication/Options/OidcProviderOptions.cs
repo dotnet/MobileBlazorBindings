@@ -62,5 +62,10 @@ namespace Microsoft.MobileBlazorBindings.Authentication
         /// </summary>
         [JsonPropertyName("response_mode")]
         public string ResponseMode { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether require https for request metadata.
+        /// </summary>
+        public bool RequireHttpsMetadata { get; set; } = true;
     }
 }
