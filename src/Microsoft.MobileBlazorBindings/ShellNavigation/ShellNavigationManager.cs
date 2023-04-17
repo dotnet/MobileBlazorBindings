@@ -7,6 +7,7 @@ using Microsoft.MobileBlazorBindings.Elements.Handlers;
 using Microsoft.MobileBlazorBindings.ShellNavigation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -183,7 +184,7 @@ namespace Microsoft.MobileBlazorBindings
             }
             else if (type == typeof(int))
             {
-                success = int.TryParse(s, out var parsed);
+                success = int.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var parsed);
                 result = parsed;
             }
             else if (type == typeof(Guid))
@@ -198,27 +199,27 @@ namespace Microsoft.MobileBlazorBindings
             }
             else if (type == typeof(DateTime))
             {
-                success = DateTime.TryParse(s, out var parsed);
+                success = DateTime.TryParse(s,DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, out var parsed);
                 result = parsed;
             }
             else if (type == typeof(decimal))
             {
-                success = decimal.TryParse(s, out var parsed);
+                success = decimal.TryParse(s, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out var parsed);
                 result = parsed;
             }
             else if (type == typeof(double))
             {
-                success = double.TryParse(s, out var parsed);
+                success = double.TryParse(s, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var parsed);
                 result = parsed;
             }
             else if (type == typeof(float))
             {
-                success = float.TryParse(s, out var parsed);
+                success = float.TryParse(s, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out var parsed);
                 result = parsed;
             }
             else if (type == typeof(long))
             {
-                success = long.TryParse(s, out var parsed);
+                success = long.TryParse(s, NumberStyles.Integer, NumberFormatInfo.InvariantInfo, out var parsed);
                 result = parsed;
             }
             else

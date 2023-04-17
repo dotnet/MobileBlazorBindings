@@ -71,9 +71,8 @@ namespace Microsoft.MobileBlazorBindings.Core
 
                     _componentIdToAdapter[componentId] = rootAdapter;
 
-                    SetParameterArguments(component, parameters);
-
-                    await RenderRootComponentAsync(componentId).ConfigureAwait(false);
+                    var parameterView = parameters?.Count > 0 ? ParameterView.FromDictionary(parameters) : ParameterView.Empty;
+                    await RenderRootComponentAsync(componentId, parameterView).ConfigureAwait(false);
                     return component;
                 }).ConfigureAwait(false);
             }
@@ -153,37 +152,6 @@ namespace Microsoft.MobileBlazorBindings.Core
             var result = new NativeComponentAdapter(this, physicalParent);
             _componentIdToAdapter[componentId] = result;
             return result;
-        }
-
-        internal static void SetParameterArguments(IComponent component, Dictionary<string, object> arguments)
-        {
-            if (component == null)
-            {
-                throw new ArgumentNullException(nameof(component));
-            }
-            if (arguments == null || arguments.Count == 0)
-            {
-                //parameters will often be null. e.g. if you navigate with no parameters or when creating a root component.
-                return;
-            }
-
-            foreach (var parameter in arguments)
-            {
-                var prop = component.GetType().GetProperty(parameter.Key);
-
-                if (prop == null)
-                {
-                    throw new InvalidOperationException($"Object of type '{component.GetType()}' does not have a property matching the name '{parameter.Key}'.");
-                }
-
-                var parameterAttribute = prop.GetCustomAttribute(typeof(ParameterAttribute));
-                if (parameterAttribute == null)
-                {
-                    throw new InvalidOperationException($"Object of type '{component.GetType()}' has a property matching the name '{parameter.Key}', but it does not have [ParameterAttribute] or [CascadingParameterAttribute] applied.");
-                }
-
-                prop.SetValue(component, parameter.Value);
-            }
         }
     }
 }
