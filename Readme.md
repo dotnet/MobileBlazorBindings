@@ -1,4 +1,10 @@
-# Experimental Mobile Blazor Bindings
+# Experimental Mobile Blazor Bindings - ARCHIVED
+
+**Please see https://github.com/dotnet/MobileBlazorBindings/issues/480 for the archival announcement and where to go from here.**
+
+---
+
+---
 
 ## Getting Started
 
